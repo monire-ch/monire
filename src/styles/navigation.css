@@ -1,0 +1,162 @@
+/* Header */
+.header {
+  @apply relative z-30 w-full;
+
+  &.sticky-header {
+    @apply sticky top-5 z-50 transition-[transform,opacity,0.3s_background] duration-500;
+  }
+
+  &.scroll-up {
+    .hs-dropdown-menu.mega-menu {
+      @apply pointer-events-auto;
+    }
+  }
+
+  &.scroll-down,
+  &.scroll-up {
+    > .container {
+      @apply lg:max-w-5xl!;
+    }
+
+    .nav-item {
+      > .nav-link {
+        @apply lg:px-4 lg:py-2 xl:px-4;
+      }
+    }
+  }
+
+  /* Header Customize */
+  > .container {
+    @apply mx-auto transition-all duration-300 ease-[cubic-bezier(0.617,1.5,0.68,1)];
+
+    > nav {
+      @apply bg-theme-dark/70 rounded-full backdrop-blur-md;
+    }
+  }
+}
+
+.header .logo-wrapper {
+  .logo-text {
+    @apply text-white;
+  }
+}
+
+/* Language Switcher */
+.header .language-switcher {
+  @apply relative rounded-full bg-white/5 text-white;
+
+  .language-switcher-button {
+    @apply flex items-center gap-2 px-3.5 py-1.5 text-inherit uppercase;
+
+    svg * {
+      @apply stroke-current!;
+    }
+  }
+
+  .language-switcher-dropdown {
+    @apply bg-theme-dark/10 hs-dropdown-open:opacity-100 absolute top-[calc(100%+0.5rem)] right-0 min-w-32 space-y-px rounded-lg p-px opacity-0 transition-[opacity,margin] lg:transform-none!;
+
+    li a {
+      @apply bg-theme-dark hover:border-border-light block rounded-full border-2 border-transparent px-4 py-1.5 text-center text-white transition;
+
+      &.active {
+        @apply bg-primary/5 text-primary;
+      }
+    }
+  }
+}
+
+/* Navbar */
+.navbar {
+  @apply lg:flex!;
+  @apply flex max-h-[80vh] max-lg:left-0 max-lg:overflow-auto max-lg:rounded-3xl lg:relative lg:ml-auto lg:bg-transparent;
+  @apply max-lg:bg-theme-dark max-lg:hs-dropdown-open:opacity-100 mx-auto max-lg:top-full max-lg:z-40 max-lg:hidden max-lg:w-full max-lg:flex-col max-lg:space-y-1 max-lg:border max-lg:p-2 max-lg:opacity-0 max-lg:transition-[opacity,margin] lg:items-center;
+
+  .nav-item {
+    > .nav-link {
+      @apply relative flex items-center rounded-full px-4 py-1.5 text-white transition-all duration-300 lg:py-2 lg:hover:bg-white/5 xl:px-6;
+
+      /* Active Menu Style */
+      &.nav-link-active,
+      .hs-dropdown-toggle.active {
+        @apply bg-white/5 text-white;
+      }
+    }
+  }
+
+  /* Regular Dropdown */
+  [data-icon="arrow-down"] * {
+    @apply stroke-current!;
+  }
+
+  .nav-dropdown {
+    .nav-dropdown-toggle {
+      @apply cursor-pointer select-none;
+
+      svg {
+        @apply inline-block;
+      }
+    }
+
+    /* Add Background Color to Toggle Button If Dropdown Open */
+    &.open > .nav-dropdown-toggle {
+      @apply max-lg:bg-white/5 max-lg:text-white;
+    }
+
+    .nav-dropdown-list {
+      @apply bg-theme-dark z-10 min-w-52 rounded-xl border p-1 max-lg:static!;
+
+      .nav-dropdown-item {
+        .nav-dropdown-link {
+          @apply rounded-full px-2.5 py-2 text-inherit transition hover:bg-white/5 hover:text-white lg:px-5;
+        }
+      }
+    }
+  }
+
+  /* Show navbar on click on small devices */
+  &.expanded {
+    @apply translate-x-0 translate-y-0 max-lg:visible;
+  }
+}
+
+/* Badge */
+.navbar .badge {
+  @apply relative inline-block;
+
+  &:not(.badge-dot) {
+    @apply relative ml-2 inline-block rounded-full px-2 py-px text-[10px] font-medium;
+  }
+
+  &.badge-dot {
+    @apply absolute top-1 -right-3 h-1.5 w-1.5 rounded-full lg:-top-1;
+  }
+
+  &.badge-primary {
+    @apply bg-primary text-white;
+
+    &.badge-dot {
+      @apply bg-blue-400;
+    }
+  }
+
+  &.badge-info {
+    @apply text-dark bg-gray-200;
+  }
+
+  &.badge-success {
+    @apply bg-green-700 text-green-100;
+
+    &.badge-dot {
+      @apply bg-green-400;
+    }
+  }
+
+  &.badge-danger {
+    @apply bg-red-600 text-red-100;
+
+    &.badge-dot {
+      @apply bg-red-600;
+    }
+  }
+}

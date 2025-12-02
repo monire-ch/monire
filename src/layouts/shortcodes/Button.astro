@@ -1,0 +1,81 @@
+---
+/**
+ * Example Usage
+
+  <Button label="Example Button" url="/" />
+  <Button variant="outline" label="With External Link" url="https://astro.build" />
+  <Button variant="text" label="Example Button" url="/" />
+
+ */
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+
+type Props = {
+  label: string;
+  url: string;
+  rel?: string;
+  target?: string;
+  variant: "fill" | "outline" | "text";
+};
+
+const { label, url, rel, target, variant = "fill" } = Astro.props;
+---
+
+<a
+  {...{
+    // Set `rel` attribute for external urls or use provided value
+    rel: url?.startsWith("http")
+      ? rel || "noopener noreferrer"
+      : rel || undefined,
+
+    // Set `target` to "_blank" for external urls unless otherwise specified
+    target: url?.startsWith("http") ? target || "_blank" : target || undefined,
+  }}
+  class:list={[
+    "not-prose btn me-2.5",
+    {
+      "btn-text btn-text-secondary has-icon-moving-animation":
+        variant === "text",
+    },
+    {
+      "has-text-flip-animation btn-primary": variant === "fill",
+    },
+    {
+      "has-text-flip-animation btn-outline-white has-hover-ring-animation":
+        variant === "outline",
+    },
+  ]}
+  {...{
+    "data-content": variant !== "text" ? label : undefined,
+  }}
+  href={getLocaleUrlCTM(url, Astro.currentLocale)}>
+  {label}
+  {
+    variant === "text" && (
+      <span class="icons-wrapper ms-2 inline-flex h-2.5 w-2.5 items-center justify-center">
+        <span class="icon icon-before flex items-center justify-center">
+          <OptimizedImage
+            alt="icon"
+            inlineSvg={true}
+            width={24}
+            height={24}
+            class="h-6 w-6"
+            src="/images/icons/svg/arrow-top-right.svg"
+          />
+        </span>
+        <span
+          class="icon icon-after flex items-center justify-center"
+          aria-hidden="true">
+          <OptimizedImage
+            alt="icon"
+            inlineSvg={true}
+            width={24}
+            height={24}
+            class="h-6 w-6"
+            src="/images/icons/svg/arrow-top-right.svg"
+          />
+        </span>
+      </span>
+    )
+  }
+</a>

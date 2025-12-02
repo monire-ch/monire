@@ -1,0 +1,46 @@
+/* prettier-ignore */
+@theme inline {
+  /* Configure base font size, type scale, and font families in `src/config/fonts.json` */
+  --leading-body: 1.8;
+  --leading-inherit: inherit;
+
+  /* Colors */
+  --color-primary: #4F1AD6;
+  --color-secondary: #B2A6F1;
+  --color-accent: #1A122E;
+  --color-body: #0e0c0c;
+  --color-border-light: #242222;
+  --color-theme-dark: #1A191C;
+  
+  --color-text-default: #C8C1C1;
+  --color-dark: #000E30;
+  --color-light: #fff6f6;
+
+  /* Screen */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 540px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1320px;
+
+  /* Typography */
+  --text-base: 1rem;
+  --text-base-scale: 1.272;
+  --text-base-sm: calc(var(--text-base) * 0.9);
+
+  --text-display-1: calc(var(--text-base) * pow(var(--text-base-scale), 8.8)); /* 115px  */
+
+  --text-h1: calc(var(--text-base) * pow(var(--text-base-scale), 6));
+  --text-h2: calc(var(--text-base) * pow(var(--text-base-scale), 5));
+  --text-h3: calc(var(--text-base) * pow(var(--text-base-scale), 4));
+  --text-h4: calc(var(--text-base) * pow(var(--text-base-scale), 3));
+  --text-h5: calc(var(--text-base) * pow(var(--text-base-scale), 2));
+  --text-h6: calc(var(--text-base) * pow(var(--text-base-scale), 1));
+
+  --text-h1-sm: calc(var(--text-h1) * 0.7);
+  --text-h2-sm: calc(var(--text-h2) * 0.7);
+  --text-h3-sm: calc(var(--text-h3) * 0.7);
+  --text-h4-sm: calc(var(--text-h4) * 0.9);
+  --text-h5-sm: calc(var(--text-h5) * 0.9);
+  --text-h6-sm: calc(var(--text-h6) * 0.9);
+}

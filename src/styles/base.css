@@ -1,0 +1,108 @@
+html {
+  @apply text-base-sm scroll-smooth md:text-base;
+  /* For Syne Font Make All Numbers Same Height */
+  font-feature-settings:
+    "lnum" 1,
+    "tnum" 1;
+  /* Lining and tabular numbers */
+}
+
+body {
+  @apply bg-body font-primary text-text-default leading-normal font-normal;
+}
+
+/* Custom Scrollbar */
+* {
+  @apply [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-thumb]:bg-white/5 [&::-webkit-scrollbar-track]:bg-white/5;
+}
+.has-customized-scrollbar {
+  @apply [&::-webkit-scrollbar]:w-3! [&::-webkit-scrollbar-thumb]:bg-white/5! [&::-webkit-scrollbar-track]:bg-white/5!;
+}
+
+/* Global Section Spacing */
+main.has-section-spacing-md section {
+  @apply pt-16;
+}
+
+main.has-section-spacing-lg > section {
+  @apply pt-16 md:pt-32;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-secondary leading-tight font-medium tracking-wide text-white;
+
+  br {
+    @apply max-md:hidden;
+  }
+}
+
+h1,
+.h1 {
+  @apply text-h1-sm md:text-h1;
+}
+
+h2,
+.h2 {
+  @apply text-h2-sm md:text-h2;
+}
+
+h3,
+.h3 {
+  @apply text-h3-sm md:text-h3;
+}
+
+h4,
+.h4 {
+  @apply text-h4;
+}
+
+h5,
+.h5 {
+  @apply text-h5;
+}
+
+h6,
+.h6 {
+  @apply text-h6;
+}
+
+b,
+strong {
+  @apply text-white;
+}
+
+code {
+  @apply after:border-none;
+}
+
+a {
+  @apply text-secondary;
+}
+
+p {
+  br {
+    @apply max-md:hidden;
+  }
+}
+
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
+* {
+  @apply border-border-light;
+}
+
+/* Adds pointer cursor to buttons */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

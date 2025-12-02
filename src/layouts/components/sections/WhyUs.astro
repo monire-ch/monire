@@ -1,0 +1,217 @@
+---
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+import type { Button, Section } from "@/types";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import ButtonLink from "../buttons/ButtonLink.astro";
+import Icons from "@/helpers/Icons.astro";
+
+// Type for this section data
+type whyUsSectionType = Section & {
+  layoutType?: "modern" | "creative";
+  list: {
+    title: string;
+    titleSize: string;
+    image?: string;
+    descriptionFontSize?: "sm" | "lg";
+    description: string;
+    ctaBtn: Button;
+    bouncedContent?: {
+      enable: boolean;
+      bgImage: string;
+      list: string[];
+    };
+  }[];
+};
+type Props = {
+  content?: whyUsSectionType;
+};
+
+// Fetching the default content for the this section
+let defaultContent = (
+  await getEntryCTM("sections", "why-us", Astro.currentLocale)
+)?.data as whyUsSectionType;
+
+// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
+// The 'content' prop should match the structure of 'defaultContent'.
+// Allows using this section with different content across multiple pages.
+// If 'content' is missing, 'defaultContent' will be used.
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as whyUsSectionType;
+
+// Extracting required values from 'content' object
+let {
+  enable = true,
+  title,
+  subtitle,
+  layoutType = "creative",
+  list,
+} = actualContent as whyUsSectionType;
+
+const isModernLayout = layoutType === "modern";
+---
+
+{
+  enable && (
+    <section class="relative">
+      <div class="container space-y-12 md:space-y-16">
+        <div
+          class="mx-auto shrink-0 text-center lg:max-w-2xl"
+          data-aos="fade-up-sm">
+          <Subtitle content={subtitle} />
+          {title && (
+            <h2
+              class="has-italic-text capitalize"
+              set:html={markdownify(title)}
+            />
+          )}
+        </div>
+        <div
+          class="grid gap-14 lg:grid-cols-2"
+          data-aos="fade-up-sm"
+          data-aos-delay="200">
+          {list.map((item, index) => {
+            const isFullWidth = (index + 1) % 3 === 0;
+            const isEven = index % 2 !== 0 && !isFullWidth;
+            const isOdd = index % 2 === 0 && !isFullWidth;
+
+            return (
+              <div
+                class:list={[
+                  {
+                    "from-primary/0 to-primary/35 bg-linear-80 lg:col-span-2 lg:grid-cols-2":
+                      isFullWidth,
+                    "xl:pt-20": isFullWidth && !isModernLayout,
+                    "from-primary/5 via-primary/40 to-primary/30 bg-linear-30":
+                      isEven,
+                    "from-primary/35 to-body -bg-linear-20": isOdd,
+                    "xl:pl-20": isEven && !isModernLayout,
+                    "xl:pr-20": isOdd && !isModernLayout,
+                    "px-8 py-10 xl:px-12 xl:py-16": isModernLayout,
+                  },
+                  "grid overflow-hidden rounded-3xl",
+                ]}>
+                <div
+                  class:list={[
+                    {
+                      "max-lg:order-2 md:flex md:flex-col md:justify-center":
+                        isFullWidth,
+                    },
+                    {
+                      "order-1": isOdd,
+                      "order-1 mt-auto h-fit lg:order-2": isEven,
+                      "mb-10 lg:mb-16": isOdd && isModernLayout,
+                      "lg:text-end": isEven && !isModernLayout,
+                      "px-8 py-10 lg:px-10 lg:py-10 xl:px-16 xl:py-16":
+                        !isModernLayout,
+                    },
+                  ]}>
+                  {item.title && (
+                    <h3
+                      class:list={[
+                        "prose-strong:font-medium prose-strong:text-secondary mb-8",
+                        {
+                          "text-h5/relaxed": item.titleSize === "sm",
+                        },
+                      ]}
+                      set:html={markdownify(item.title)}
+                    />
+                  )}
+                  {item.description && (
+                    <div
+                      class="prose-styles"
+                      set:html={markdownify(item.description, true)}
+                    />
+                  )}
+                  {item.ctaBtn?.enable && (
+                    <div class="mt-2">
+                      <ButtonLink
+                        class="has-icon-moving-animation flex w-fit flex-row-reverse items-center gap-5 rounded-none p-0 text-white"
+                        content={item.ctaBtn}>
+                        <span class="bg-primary icons-wrapper icons-wrapper inline-flex h-12 w-12 items-center justify-center rounded-full">
+                          <span class="icon icon-before flex items-center justify-center">
+                            <Icons icon="ArrowUpRight" class="text-2xl" />
+                          </span>
+                          <span
+                            class="icon icon-after flex items-center justify-center"
+                            aria-hidden="true">
+                            <Icons icon="ArrowUpRight" class="text-2xl" />
+                          </span>
+                        </span>
+                      </ButtonLink>
+                    </div>
+                  )}
+                </div>
+
+                {/* Images */}
+                <div
+                  class:list={[
+                    "relative overflow-hidden",
+                    {
+                      "mb-auto h-fit max-lg:mt-10 lg:mb-16 xl:mb-0":
+                        isEven && isModernLayout,
+                      // Right Side Image
+                      "order-2": isOdd,
+                      // Left Side Image
+                      "order-2 lg:order-1": isEven,
+                      "max-lg:order-2": isFullWidth,
+                    },
+                  ]}>
+                  {item.image ? (
+                    <OptimizedImage
+                      src={item.image}
+                      class:list={[
+                        "min-w-full",
+                        {
+                          "rounded-bl-3xl lg:object-bottom-left":
+                            isEven && !isModernLayout,
+                          "rounded-tr-3xl lg:object-top-right":
+                            isOdd && !isModernLayout,
+                          "h-[200px] object-cover object-top md:min-h-full lg:object-cover":
+                            !isFullWidth && !isModernLayout,
+                          "h-[200px] rounded-xl object-cover object-top md:h-[300px]":
+                            isModernLayout && !isFullWidth,
+                          "mx-auto block h-[200px] w-auto object-contain! sm:h-full md:h-[350px]":
+                            isFullWidth,
+                        },
+                      ]}
+                    />
+                  ) : (
+                    item.bouncedContent?.bgImage && (
+                      <div class="relative min-h-full p-5">
+                        <OptimizedImage
+                          src={item.bouncedContent?.bgImage}
+                          class:list={[
+                            "pointer-events-none absolute inset-0 size-full min-h-full rounded-tl-3xl object-cover",
+                          ]}
+                        />
+                        <div class="draggable-wrapper relative h-full min-h-72 w-full overscroll-contain md:min-h-96">
+                          {item.bouncedContent?.list.map((item) => (
+                            <div
+                              class="draggable bg-primary/50 absolute w-fit cursor-grab rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap text-white select-none md:text-lg"
+                              set:html={markdownify(item)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import draggable from "@/lib/utils/draggable";
+
+  draggable();
+</script>

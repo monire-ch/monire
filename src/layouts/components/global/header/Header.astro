@@ -1,0 +1,135 @@
+---
+import Logo from "@/components/global/Logo.astro";
+import config from ".astro/config.generated.json" with { type: "json" };
+import LanguageSwitcher from "@/layouts/components/global/header/LanguageSwitcher.astro";
+import NavigationButton from "@/layouts/components/global/header/NavigationButton.astro";
+import NavMenuItem from "@/layouts/components/global/header/MenuItem.astro";
+import NavToggleBtn from "@/layouts/components/global/header/NavToggleBtn.astro";
+import type { NavigationLink } from "@/types";
+import { useTranslations } from "@/lib/utils/i18nUtils";
+import { sortByWeight } from "@/lib/utils/sortFunctions";
+import { filteredEnabled } from "@/lib/utils/filteredEnabled";
+
+const t = await useTranslations(Astro.currentLocale as string);
+let main = t("main") as NavigationLink[];
+main = filteredEnabled(main);
+
+// Sort menus by weight
+main = sortByWeight(main) as NavigationLink[];
+
+// Is Homepage
+const isHomepage =
+  Astro.url.pathname === "/" ||
+  Astro.url.pathname === `/${Astro.currentLocale}/`;
+
+const {
+  site: { logoHoverAnimation },
+  settings: { stickyHeader, navigationButton },
+} = config;
+---
+
+{
+  !isHomepage && (
+    <div
+      class="absolute top-0 left-1/2 -z-30 h-1/2 w-full -translate-x-1/2 overflow-hidden"
+      aria-hidden="true">
+      <div class="absolute top-[-550px] left-[-10%] h-[800px] w-[800px] bg-[radial-gradient(53.29%_50%_at_50%_50%,var(--color-primary)_0%,rgba(39,27,69,0)_100%)]" />
+      <div class="absolute top-[-550px] right-[-10%] h-[800px] w-[800px] bg-[radial-gradient(53.29%_50%_at_50%_50%,var(--color-primary)_0%,rgba(39,27,69,0)_100%)]" />
+    </div>
+  )
+}
+
+<header
+  class:list={[
+    "header group/header mt-5 transform",
+    { "sticky-header": stickyHeader },
+  ]}>
+  <div class="relative container">
+    <nav
+      class="hs-dropdown relative flex items-center justify-between px-2 py-2.5 [--auto-close:inside] [--gpu-acceleration:false] [--strategy:absolute] lg:[--strategy:static]">
+      <Logo class={logoHoverAnimation ? "has-hover-animation" : ""} />
+
+      <ul
+        id="nav-menu"
+        class="navbar hs-dropdown-menu hs-dropdown-open:flex hs-dropdown-open:mt-2! has-customized-scrollbar max-lg:absolute max-lg:transform-none! lg:transform-none!">
+        {main.map((menu) => <NavMenuItem menu={menu} />)}
+
+        {/* Language Switcher For Small Devices */}
+        {
+          config.settings.multilingual.enable && (
+            <li class="max-lg:px-4 max-lg:py-2 lg:hidden" role="menuitem">
+              <LanguageSwitcher />
+            </li>
+          )
+        }
+        {
+          navigationButton.enable && (
+            <li class="max-lg:px-4 max-lg:py-2 lg:hidden" role="menuitem">
+              {navigationButton.enable && (
+                <NavigationButton
+                  navigationButton={navigationButton}
+                  navigationbuttonLabel={t("navigation.buttonLabel")}
+                />
+              )}
+            </li>
+          )
+        }
+      </ul>
+
+      {/* Navigation Button For Large Devices */}
+      {
+        (navigationButton.enable || config.settings.multilingual.enable) && (
+          <div class="hidden gap-3.5 max-lg:me-4 max-lg:ml-auto lg:flex lg:items-center">
+            {config.settings.multilingual.enable && <LanguageSwitcher />}
+            {navigationButton.enable && (
+              <NavigationButton
+                navigationButton={navigationButton}
+                navigationbuttonLabel={t("navigation.buttonLabel")}
+              />
+            )}
+          </div>
+        )
+      }
+      <NavToggleBtn />
+    </nav>
+  </div>
+</header>
+<script>
+  import "@/plugins/preline/dropdown";
+
+  function stickyHeader(): void {
+    const header = document.querySelector(
+      ".sticky-header",
+    ) as HTMLElement | null;
+    if (!header) return; // Early exit if no header is found
+
+    let prevScrollPos = window.scrollY;
+
+    if (prevScrollPos > 0) {
+      header.classList.add("scroll-up");
+    }
+
+    window.addEventListener("scroll", () => {
+      const currentScrollPos = window.scrollY;
+
+      if (prevScrollPos > currentScrollPos) {
+        // Scrolling up
+        header.classList.remove("scroll-down");
+        header.classList.add("scroll-up");
+      } else if (prevScrollPos < currentScrollPos) {
+        // Scrolling down
+        header.classList.remove("scroll-up");
+        header.classList.add("scroll-down");
+      }
+
+      if (currentScrollPos === 0) {
+        header.classList.remove("scroll-up");
+        header.classList.remove("scroll-down");
+      }
+
+      prevScrollPos = currentScrollPos;
+    });
+  }
+
+  stickyHeader();
+</script>

@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@import "./theme.css";
+@plugin "../plugins/fontTailwindPlugin.js";
+
+/* Preline UI */
+@source "../../node_modules/preline/dist/*.js";
+@import "../../node_modules/preline/variants.css";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+@import "./safe.css";
+
+@layer base {
+  @import "./base.css";
+}
+
+@layer components {
+  @import "./animation.css";
+  @import "./navigation.css";
+  @import "./components.css";
+}

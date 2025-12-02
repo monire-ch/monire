@@ -1,0 +1,98 @@
+---
+import Icons from "@/helpers/Icons.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+
+interface Props {
+  changelogContent?: boolean;
+  content: any[];
+  class?: string;
+  [key: string]: any;
+}
+
+const { content: list, changelogContent, ...rest } = Astro.props;
+---
+
+<div {...rest}>
+  <div class="hs-accordion-group space-y-5">
+    {
+      list.map((item, index) => {
+        const uniqueId = rest.tabIndex
+          ? rest.tabIndex + "-" + (index + 1)
+          : index + 1;
+
+        return (
+          <div
+            class:list={[
+              "bg-primary/25 rounded-lg px-5",
+              "hs-accordion hs-accordion-active:opacity-100 opacity-70",
+              item.active && "active",
+            ]}
+            id={"faq-" + uniqueId}>
+            <button
+              aria-expanded={item.active ? "true" : "false"}
+              class="hs-accordion-toggle hs-accordion-active:border-b flex w-full items-center justify-between py-5 text-start text-lg text-white"
+              aria-controls={"faq-content-" + uniqueId}>
+              <span set:html={item.title} />
+              <span class="hs-accordion-active:rotate-180 transition duration-300">
+                <Icons icon="ArrowUpRight" class="text-xl text-white" />
+              </span>
+            </button>
+            <div
+              role="region"
+              id={"faq-content-" + uniqueId}
+              aria-labelledby={"faq-" + uniqueId}
+              class:list={[
+                "hs-accordion-content overflow-hidden transition-[height] duration-300",
+                !item.active && "hidden",
+              ]}>
+              {changelogContent ? (
+                <div class="space-y-4 py-5">
+                  {item.list.map((item: any) => (
+                    <div class="space-y-4">
+                      <div class="bg-primary/10 inline-flex items-center gap-2 rounded-full px-2 py-1.5 text-xs">
+                        <div
+                          class={`changelog-badge h-3 w-3 rounded-full changelog-badge-${item.color}`}
+                        />
+                        {markdownify(item.label)}
+                      </div>
+                      <div set:html={markdownify(item.content)} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  class="prose-styles py-5"
+                  set:html={markdownify(item.content, true)}
+                />
+              )}
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  // Recalculate AOS Elements positions after accordion is opened
+  // @ts-nocheck
+  import AOS from "aos";
+  import HSAccordion from "preline/src/plugins/accordion";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const accordions = document.querySelectorAll(".hs-accordion");
+
+    accordions.forEach((accordion) => {
+      setTimeout(() => {
+        const { element } = HSAccordion.getInstance(
+          `#${accordion.getAttribute("id")}`,
+          true,
+        );
+
+        element.on("open", () => {
+          AOS.refresh();
+        });
+      }, 1000);
+    });
+  });
+</script>

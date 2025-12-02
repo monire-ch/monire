@@ -1,0 +1,36 @@
+---
+import { getCollectionCTM } from "@/lib/contentParser.astro";
+import { slugifyyy } from "@/lib/utils/textConverter";
+import config from ".astro/config.generated.json" with { type: "json" };
+
+// get all taxonomies from frontmatter
+export const getTaxonomy = async (
+  collection: any,
+  name: string,
+  lang: string | undefined = config.settings.multilingual.defaultLanguage,
+) => {
+  const singlePages = await getCollectionCTM(collection, lang);
+
+  const uniqueTaxonomies = new Map<string, { name: string; slug: string }>();
+
+  singlePages.forEach((page: any) => {
+    let taxonomyPages = page.data[name] || [];
+    if (import.meta.env.PROD) {
+      taxonomyPages =
+        !page.data.draft && !page.data.excludeFromSitemap
+          ? page.data[name] || []
+          : [];
+    }
+
+    taxonomyPages = [...taxonomyPages];
+    taxonomyPages.forEach((category: string) => {
+      if (category) {
+        const slug = slugifyyy(category);
+        slug && uniqueTaxonomies.set(category, { name: category, slug });
+      }
+    });
+  });
+
+  return Array.from(uniqueTaxonomies.values());
+};
+---

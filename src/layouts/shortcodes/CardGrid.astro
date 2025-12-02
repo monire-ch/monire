@@ -1,0 +1,37 @@
+---
+/**
+ * Example Usage
+
+  <CardGrid>
+    <Card
+      icon="/images/icons/svg/success.svg"
+      title="200+"
+      description="Increased Customer Satisfaction"
+    />
+    <Card
+      icon="/images/icons/svg/revenue.svg"
+      title="25+"
+      description="Enhanced Personalization"
+    />
+    <Card
+      icon="/images/icons/svg/glorify.svg"
+      title="10:1"
+      description="Improved Retention"
+    />
+  </CardGrid>
+
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "stats-component grid place-items-stretch gap-6 sm:grid-cols-2 md:grid-cols-3",
+    className,
+  ]}>
+  <slot />
+</div>

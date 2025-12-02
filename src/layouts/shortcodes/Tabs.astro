@@ -1,0 +1,67 @@
+---
+/**
+ * Example Usage
+
+  <Tabs>
+    <Tab name="Overview">
+      #### How Can We Assist You?
+
+      We offer personalized consultations to help you achieve your personal and professional goals. Choose a tab below to explore our services.
+
+      - Personal Coaching
+      - Career Counseling
+      - Conflict Resolution
+      - Life Advice
+    </Tab>
+  </Tabs>
+
+ */
+import { parseHTML } from "linkedom";
+
+// Render all the slot content
+const slotContent = await Astro.slots.render("default");
+
+// Parse the rendered content
+const { document } = parseHTML(slotContent);
+const tabElements = Array.from(document.children) as Element[];
+---
+
+<div class="flex flex-col bg-white/5">
+  <nav
+    class="inline-flex flex-wrap divide-x border-x"
+    aria-label="Tabs"
+    role="tablist"
+    aria-orientation="horizontal">
+    {
+      tabElements.map((tab, index) => (
+        <button
+          type="button"
+          class={`tab-button [&.active]:bg-secondary/5 [&.active]:text-secondary w-fit flex-1 border-t px-8 py-2.5 ${index === 0 ? "active" : ""}`}
+          id={`tab-${index}`}
+          aria-controls={`panel-${index}`}
+          role="tab"
+          aria-selected={index === 0 ? "true" : "false"}
+          data-hs-tab={`#panel-${index}`}>
+          {(tab as Element).getAttribute("data-name") || `Tab ${index + 1}`}
+        </button>
+      ))
+    }
+  </nav>
+
+  <div class="border p-4">
+    {
+      tabElements.map((tab, index) => (
+        <div
+          id={`panel-${index}`}
+          class={`prose-styles tab-panel ${index === 0 ? "" : "hidden"}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${index}`}
+          set:html={(tab as Element).innerHTML}
+        />
+      ))
+    }
+  </div>
+</div>
+<script>
+  import "@preline/tabs";
+</script>

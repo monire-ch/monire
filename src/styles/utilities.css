@@ -1,0 +1,20 @@
+@utility box-shadow-primary {
+  @apply shadow-primary/5;
+  box-shadow: 0px 0px 20px var(--tw-shadow-color);
+}
+
+@utility translate-centered {
+  @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@utility translate-y-centered {
+  @apply top-1/2 -translate-y-1/2;
+}
+
+@utility translate-x-centered {
+  @apply left-1/2 -translate-x-1/2;
+}
+
+@utility stretched-link {
+  @apply relative before:absolute before:inset-0;
+}

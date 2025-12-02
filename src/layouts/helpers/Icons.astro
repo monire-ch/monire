@@ -1,0 +1,36 @@
+---
+import type { IconProps } from "@lucide/astro";
+
+interface Props extends IconProps {
+  icon: keyof typeof import("@lucide/astro");
+}
+
+const { icon, ...restProps } = Astro.props;
+---
+
+<div data-lucide={icon} {...restProps}></div>
+
+<script>
+  const iconElems = document.querySelectorAll("[data-lucide]");
+  const lucideModule = await import("lucide");
+
+  iconElems.forEach((iconElem) => {
+    const iconName = iconElem.getAttribute("data-lucide");
+    if (!iconName) return;
+
+    // @ts-expect-error
+    const IconDef = lucideModule[iconName];
+    if (!IconDef) {
+      console.warn(`Lucide icon "${iconName}" not found`);
+      return;
+    }
+
+    const svg = lucideModule.createElement(IconDef, {
+      ...Object.fromEntries(
+        [...iconElem.attributes].map((attr) => [attr.name, attr.value]),
+      ),
+    });
+
+    iconElem.replaceWith(svg);
+  });
+</script>

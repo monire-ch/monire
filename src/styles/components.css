@@ -1,0 +1,481 @@
+/* content style */
+.prose-styles {
+  @apply prose text-text-default max-w-none;
+
+  /* Typography */
+  @apply prose-headings:scroll-mt-32 prose-headings:font-medium prose-headings:mb-[.6em] prose-headings:mt-10 prose-headings:text-light;
+  @apply prose-h1:text-h1-sm;
+  @apply prose-h2:text-h2-sm;
+  @apply prose-h3:text-h3-sm;
+  @apply prose-h4:text-h4-sm;
+  @apply prose-h5:text-h5-sm;
+  @apply prose-h6:text-h6;
+  @apply prose-strong:text-secondary prose-strong:font-normal;
+  @apply prose-pre:bg-white/5;
+  @apply prose-a:text-secondary prose-a:underline prose-a:transition prose-a:duration-300 prose-a:font-normal [&_a:hover]:no-underline;
+  @apply prose-p:text-text-default prose-p:mt-2 prose-p:mb-3;
+
+  @apply prose-hr:mt-0 prose-hr:mb-[1em] prose-hr:border-border-light;
+  @apply prose-code:px-1 prose-code:text-secondary;
+
+  /* Image */
+  @apply prose-img:mt-2.5 prose-img:max-w-full;
+
+  /* Table */
+  @apply prose-thead:border-border-light prose-thead:bg-white/5;
+  @apply prose-tr:border-border-light;
+  @apply prose-td:relative prose-td:z-10 prose-td:px-3 prose-td:py-4.5;
+  @apply prose-th:relative prose-th:z-10 prose-th:px-4 prose-th:py-4.5 prose-th:text-light;
+  @apply prose-table:relative prose-table:overflow-hidden prose-table:before:absolute prose-table:before:left-0 prose-table:before:top-0 prose-table:before:h-full prose-table:before:w-full prose-table:before:border-border-light prose-table:before:rounded-[inherit] prose-table:before:border prose-table:before:content-[""];
+
+  /* Blockquote */
+  @apply prose-blockquote:prose-p:first-of-type:before:hidden prose-blockquote:prose-p:last-of-type:after:hidden prose-blockquote:space-y-4! prose-blockquote:font-normal prose-blockquote:border-l prose-blockquote:bg-secondary/5 prose-blockquote:border-secondary! prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:not-italic;
+
+  /* Remove Quote for first and last child element inside blockquote */
+  blockquote {
+    @apply prose-p:my-0;
+  }
+
+  /* Unordered & Ordered List */
+  @apply prose-ol:mt-0 prose-ul:mt-0 prose-ul:list-none prose-ul:pl-0 prose-li:text-text-default;
+
+  ul:not(.list-unstyled) {
+    @apply prose-p:mb-0 list-none;
+    @apply prose-li:after:content-[""];
+    @apply prose-li:after:w-4 prose-li:after:h-4 prose-li:after:bg-white/10 prose-li:relative prose-li:after:absolute prose-li:after:left-0 prose-li:after:top-[0.35em] prose-li:pl-8 prose-li:after:rounded-full;
+    @apply prose-li:before:content-[""];
+    @apply prose-li:before:w-1.5 prose-li:before:h-1.5 prose-li:before:bg-white prose-li:relative prose-li:before:absolute prose-li:before:left-1.25 prose-li:before:top-2.75 prose-li:pl-[1.8em] prose-li:before:rounded-full;
+  }
+
+  ol {
+    @apply prose-li:ps-0 list-none;
+
+    &,
+    ol {
+      counter-reset: list-counter;
+    }
+
+    > li {
+      @apply text-secondary relative;
+      counter-increment: list-counter;
+
+      &::before {
+        content: counters(list-counter, ".") ". ";
+        @apply absolute right-[101%] opacity-70;
+      }
+    }
+  }
+
+  /* Remove spacing for first and last child */
+  & > *:first-child {
+    @apply mt-0;
+  }
+
+  & > *:last-child {
+    @apply mb-0;
+  }
+
+  > img:not(:last-child),
+  > pre:not(:last-child),
+  > .testimonial-component:not(:last-child),
+  > .styled-list:not(:last-child),
+  > .image-list-component:not(:last-child),
+  > .stats-component:not(:last-child) {
+    @apply mb-10!;
+  }
+
+  /* Code */
+  pre {
+    @apply mt-0 mb-6;
+    @apply rounded-none!;
+    @apply [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2;
+
+    > code {
+      @apply block;
+    }
+  }
+
+  /* Styled List */
+  .styled-list {
+    @apply prose-ul:gap-2!;
+    strong {
+      @apply pe-0!;
+    }
+
+    ul {
+      @apply mb-0 gap-0;
+    }
+
+    li {
+      @apply my-0 after:hidden;
+
+      @apply relative pl-10 before:right-4;
+      &::before {
+        @apply absolute top-[0.3em] left-0 content-[""];
+        @apply h-5 w-5 rounded-full border border-none bg-white/5 bg-center bg-no-repeat shadow-lg;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 13 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 4.5L5.5 8.5L11.5 1.5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+      }
+    }
+  }
+
+  /* Stats Component */
+  .stats-component {
+    @apply mt-[2.66rem];
+
+    .stats-item {
+      @apply xl:gap-20;
+    }
+
+    p {
+      @apply text-text-default opacity-100;
+    }
+  }
+
+  /* Accordion */
+  .hs-accordion-content {
+    p,
+    li {
+      @apply text-text-default/80;
+    }
+  }
+}
+
+/* marquee style */
+.marquee {
+  --marquee-width: 100%;
+
+  @apply mx-auto w-(--marquee-width) overflow-x-hidden;
+
+  &.marquee-pause-on-hover {
+    .marquee-content:hover {
+      animation-play-state: paused;
+    }
+  }
+
+  .marquee-content {
+    --width: 100%;
+    --end-transform: translateX(
+      calc(-1 * var(--marquee-element-width) * var(--marquee-elements))
+    );
+
+    animation: marquee var(--marquee-duration) linear infinite
+      var(--marquee-reverse);
+
+    &.marquee-element-width-auto {
+      --width: max-width;
+      --end-transform: translateX(calc(-1 * var(--total-width)));
+    }
+
+    width: var(--width);
+  }
+
+  @theme {
+    --animate-marquee: marquee var(--marquee-duration) linear infinite
+      var(--marquee-reverse);
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: var(--end-transform);
+      }
+    }
+  }
+}
+/* Table of Contents style */
+.toc {
+  --active-offset: 3.1875rem;
+
+  &.scroll-menu > ul {
+    @apply before:bg-primary [&>a]:text-primary text-[0.8125rem] before:absolute before:top-0 before:-left-px before:mt-(--active-offset) before:h-4 before:w-px before:transition-all before:duration-300 before:ease-in;
+
+    a {
+      @apply text-text-default;
+    }
+  }
+
+  ul li:not(:last-child) {
+    @apply mb-1.5 pb-1.5;
+  }
+
+  &.scroll-menu a.active {
+    @apply text-primary;
+  }
+}
+
+.banner-gradient::after {
+  @apply via-primary/15 from-body/0 to-primary/80 pointer-events-none absolute bottom-0 left-0 -z-10 size-full bg-linear-to-b via-35% to-70% content-[''];
+}
+.section-gradient::after {
+  @apply bg-[radial-gradient(50%_50%_at_50%_50%,--theme(--color-primary/30%)_0%,--theme(--color-primary/0%)_100%)] pointer-events-none absolute bottom-72 left-1/2 h-[540px] w-4/5 -translate-x-1/2 content-[''] md:rotate-[-20deg];
+}
+
+*[class*="container"] {
+  @apply mx-auto px-4;
+}
+
+/* Fit To Screen (Prevent Screen Flash ) */
+.fit-to-screen {
+  @apply flex min-h-[102vh] flex-col justify-start;
+}
+
+/* Logo */
+.logo-wrapper {
+  @apply flex items-center gap-2;
+
+  .logo {
+    @apply w-10!;
+    @apply flex w-10 items-center gap-x-4;
+  }
+
+  &.has-hover-animation {
+    @apply prose-img:duration-300 prose-img:transform prose-img:transition prose-img:ease-in;
+
+    &:hover img {
+      @apply animate-spin;
+    }
+  }
+
+  .logo-text {
+    @apply text-xl/inherit font-secondary font-normal tracking-wider;
+  }
+}
+
+/* Hide alternate logo */
+header {
+  .logo {
+    @apply inline-block;
+  }
+
+  .logo-alternate {
+    @apply hidden;
+  }
+}
+
+/* Show main logo in footer */
+footer {
+  .logo-wrapper {
+    .logo-text {
+      @apply text-h5 text-white;
+    }
+
+    &.logo-alternate {
+      @apply hidden;
+    }
+  }
+}
+
+/* Changelog Page Changes Badge */
+.changelog-badge {
+  &.changelog-badge-emerald {
+    @apply bg-green-400;
+  }
+
+  &.changelog-badge-indigo {
+    @apply bg-indigo-500;
+  }
+
+  &.changelog-badge-slate {
+    @apply bg-stone-300;
+  }
+
+  &.changelog-badge-crimson {
+    @apply bg-rose-500;
+  }
+
+  &.changelog-badge-amber {
+    @apply bg-orange-400;
+  }
+}
+
+.has-italic-text strong {
+  @apply font-tertiary font-normal text-inherit italic;
+}
+
+/* Icon Color Override */
+.match-brand-color {
+  *[fill="#"] {
+    @apply [fill-color:themes(colors.primary)]!;
+  }
+  *[stroke="#"] {
+    @apply [stroke-color:themes(colors.primary)]!;
+  }
+
+  *[stop-color="#"] {
+    @apply [stop-color:themes(colors.primary)]!;
+  }
+}
+
+[data-icon]:not(.match-brand-color),
+.has-inherited-colors {
+  *[fill*="#"] {
+    fill: currentColor !important;
+  }
+
+  *[stroke*="#"] {
+    stroke: currentColor !important;
+  }
+}
+
+/* Animated Video Play Button */
+.has-animated-waves {
+  @apply bg-primary relative z-10;
+  @apply before:bg-primary/80 after:bg-primary/80;
+
+  .icon {
+    @apply ml-2 h-6 w-6 text-white lg:h-8 lg:w-8;
+  }
+
+  &.waves-sm {
+    &::before,
+    &::after {
+      @apply animate-[waves-sm_2s_linear_infinite];
+      @apply h-10 w-10;
+    }
+
+    @theme {
+      --animate-waves: waves-sm 1.5s linear infinite;
+      @keyframes waves-sm {
+        0% {
+          transform: scale(0.2, 0.2);
+          opacity: 0;
+        }
+
+        50% {
+          opacity: 0.9;
+        }
+
+        100% {
+          transform: scale(1.2, 1.2);
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  &.waves-white {
+    @apply bg-white;
+
+    &::before,
+    &::after {
+      @apply bg-white;
+    }
+
+    .icon {
+      @apply text-primary;
+    }
+  }
+
+  @apply before:[animation-delay:.2s]! after:[animation-delay:0.5s]!;
+
+  &::before,
+  &::after {
+    @apply absolute -z-10 h-40 w-40 rounded-full opacity-0 content-[""];
+    @apply animate-[waves_2s_linear_infinite];
+  }
+
+  @theme {
+    --animate-waves: waves 1.5s linear infinite;
+    @keyframes waves {
+      0% {
+        transform: scale(0.2, 0.2);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 0.9;
+      }
+
+      100% {
+        transform: scale(0.9, 0.9);
+        opacity: 0;
+      }
+    }
+  }
+}
+
+/* Custom List Style */
+.has-list {
+  li:not(:last-child) > *:first-child:not(strong),
+  & > span:not(:last-child) {
+    @apply relative;
+    @apply pr-8 after:absolute after:top-1/2 after:-translate-y-1/2;
+  }
+
+  &.has-list-dot {
+    li:not(:last-child) > *:first-child {
+      @apply relative;
+      @apply after:bg-primary after:right-3.5 after:h-1 after:w-1 after:rounded-full;
+    }
+  }
+
+  &.has-list-slash {
+    li:not(:last-child) > *:first-child,
+    > span:not(:last-child) {
+      @apply relative pr-10 after:right-4;
+      @apply after:h-[110%] after:w-px after:rotate-28 after:rounded-full;
+    }
+
+    &.slash-dark > li:not(:last-child) > *:first-child {
+      @apply after:bg-theme-dark/10;
+    }
+
+    &:not(.slash-dark) > li:not(:last-child) > *:first-child {
+      @apply after:bg-white/50;
+    }
+  }
+
+  &.has-list-check:not(.styled-list),
+  &.has-list-check:not(.styled-list) ul {
+    li {
+      @apply relative pl-8 before:right-2;
+
+      &::before {
+        @apply absolute top-[0.3em] left-0 content-[""];
+        @apply h-[.8em] w-[.8em] border-none bg-center bg-no-repeat shadow-lg;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.7048 0.152545C13.7834 0.212172 13.8494 0.286703 13.8991 0.371871C13.9488 0.45704 13.9812 0.551175 13.9945 0.648889C14.0078 0.746602 14.0017 0.845976 13.9765 0.941322C13.9513 1.03667 13.9076 1.12612 13.8478 1.20455L5.84782 11.7045C5.78293 11.7896 5.70059 11.8598 5.60634 11.9104C5.51209 11.961 5.4081 11.9909 5.30135 11.998C5.19461 12.0051 5.08758 11.9892 4.98745 11.9516C4.88732 11.9139 4.79641 11.8552 4.72082 11.7795L0.220823 7.27954C0.0883431 7.13737 0.0162199 6.94932 0.0196481 6.75502C0.0230763 6.56072 0.101788 6.37534 0.239201 6.23792C0.376614 6.10051 0.561999 6.0218 0.7563 6.01837C0.950602 6.01494 1.13865 6.08707 1.28082 6.21955L5.17482 10.1125L12.6548 0.295545C12.7752 0.137497 12.9534 0.0336733 13.1502 0.00686313C13.3471 -0.0199471 13.5466 0.0324471 13.7048 0.152545Z' fill='white'/%3E%3C/svg%3E%0A");
+      }
+    }
+  }
+}
+
+/* Odometer (Number Count With Animation) Default Style Reset */
+.odometer {
+  span,
+  .odometer-inside {
+    @apply inline-block!;
+  }
+
+  &,
+  * {
+    @apply leading-inherit! font-[inherit]! text-inherit!;
+  }
+
+  /* change default duration from default 3s to "duration" */
+  &.odometer-animating-up .odometer-ribbon-inner,
+  &.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+    transition-duration: var(--odometer-duration, 2s) !important;
+  }
+}
+
+.video-player:empty {
+  @apply h-96 bg-black;
+}
+
+[data-lucide] {
+  width: 1em;
+  height: 1em;
+}
+
+[data-icon]:not(.match-brand-color),
+.has-inherited-colors {
+  *[fill*="#"] {
+    fill: currentColor !important;
+  }
+
+  *[stroke*="#"] {
+    stroke: currentColor !important;
+  }
+}

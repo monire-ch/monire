@@ -1,0 +1,131 @@
+---
+import bgOptimizedImage from "@/lib/utils/bgOptimizedImage";
+import type { VideoConfig } from "@/types";
+
+let {
+  src,
+  provider = "youtube",
+  poster,
+  autoplay = true,
+  type,
+} = Astro.props as VideoConfig;
+
+// Default settings (https://github.com/sampotts/plyr?tab=readme-ov-file#options)
+const config = {
+  hideControls: true,
+  debug: false,
+  iconUrl: "/plyr/plyr.svg",
+  blankVideo: "/plyr/blank.mp4",
+  youtube: {
+    noCookie: true,
+  },
+  ...Astro.props,
+};
+
+const isLocalHostedVideo = src?.includes("/videos/") && provider === "html5";
+poster = poster && (await bgOptimizedImage(poster));
+---
+
+{
+  src && (
+    <div class="not-prose video-inline">
+      {isLocalHostedVideo ? (
+        <video
+          controls
+          playsinline
+          class="video-inline-player"
+          {...{
+            "data-autoplay": `${autoplay === true ? "true" : "false"}`,
+            "data-poster": poster || undefined,
+            "data-plyr-config": `${JSON.stringify(config)}`,
+          }}>
+          <source src={src} type={type} />
+        </video>
+      ) : (
+        <div
+          class="video-inline-player"
+          {...{
+            "data-autoplay": `${autoplay === true ? "true" : "false"}`,
+            "data-plyr-provider": provider || undefined,
+            "data-plyr-embed-id": src || undefined,
+            "data-plyr-poster": poster || undefined,
+            "data-plyr-config": `${JSON.stringify(config)}`,
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+<script>
+  // @ts-nocheck
+  import AOS from "aos";
+
+  // Function to handle AOS-related fixes
+  function removeAosAttributesAfterAnimation() {
+    const handleAosAnimateClass = (mutationsList: MutationRecord[]) => {
+      mutationsList.forEach((mutation: MutationRecord) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.target.classList.contains("aos-animate")
+        ) {
+          setTimeout(() => {
+            mutation.target.removeAttribute("data-aos");
+            mutation.target.removeAttribute("data-aos-delay");
+          }, 1000);
+        }
+      });
+    };
+
+    const content = document.querySelector(".has-video-modal");
+
+    if (content) {
+      const observer = new MutationObserver(handleAosAnimateClass);
+
+      observer.observe(content, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+  }
+
+  // Initialize ScrollTrigger for lazy loading
+  function initializeScrollTrigger() {
+    const targetElement = document.querySelector(".video-inline");
+
+    if (!targetElement) return;
+
+    const checkViewportAndLoadScript = () => {
+      const rect = targetElement.getBoundingClientRect();
+      const isInViewport = rect.top < window.innerHeight - 100;
+
+      if (isInViewport) {
+        // Load script and initialize features
+        removeAosAttributesAfterAnimation();
+
+        (async () => {
+          try {
+            const { default: Plyr } = await import("plyr");
+            await import("plyr/dist/plyr.css");
+
+            Plyr.setup(".video-inline-player");
+          } catch (error) {
+            console.error("Failed to load Plyr", error);
+          }
+        })();
+
+        // Clean up event listener after loading
+        window.removeEventListener("scroll", checkViewportAndLoadScript);
+      }
+    };
+
+    // Listen for scroll events
+    window.addEventListener("scroll", checkViewportAndLoadScript);
+
+    // Check immediately in case the element is already in the viewport
+    checkViewportAndLoadScript();
+  }
+
+  // Initialize the scroll-based trigger
+  initializeScrollTrigger();
+</script>

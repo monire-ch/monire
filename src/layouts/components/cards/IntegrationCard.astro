@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { markdownify } from "@/lib/utils/textConverter";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+import OptimizedImage from "../utilities/OptimizedImage.astro";
+
+type Props = CollectionEntry<"integration">;
+
+let { data: content, slug, collection } = Astro.props;
+const { title, excerpt, image } = content;
+---
+
+<div
+  class="border-primary/30 hover:bg-accent relative space-y-8 rounded-lg border p-5 transition-colors duration-300">
+  <div class="flex items-center gap-4">
+    {
+      image && (
+        <OptimizedImage
+          width={48}
+          height={48}
+          class="bg-primary/10 h-12 w-12 rounded-sm"
+          src={image}
+          alt={`Related to ${title}`}
+        />
+      )
+    }
+    {title && <h3 class="h6" set:html={markdownify(title)} />}
+    <a
+      href={getLocaleUrlCTM(slug, Astro.currentLocale, collection)}
+      class="absolute inset-0 size-full">
+      <span class="sr-only">
+        {"Learn more about " + title?.toLowerCase()}
+      </span>
+    </a>
+  </div>
+  {excerpt && <p set:html={markdownify(excerpt)} />}
+</div>

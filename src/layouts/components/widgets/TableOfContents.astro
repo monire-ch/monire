@@ -1,0 +1,82 @@
+---
+import type { TocHeading } from "@/types";
+import RecursiveToc from "@/layouts/components/widgets/RecursiveToc.astro";
+import Icons from "@/helpers/Icons.astro";
+import config from ".astro/config.generated.json" with { type: "json" };
+
+interface Props {
+  toc: TocHeading[];
+  marker?: boolean;
+  className?: string;
+}
+
+const { tableOfContents } = config.settings.markup;
+
+const { toc, className, marker = true, ...rest } = Astro.props;
+---
+
+{
+  toc && (
+    <div
+      class:list={[
+        "hs-accordion",
+        { active: tableOfContents?.expanded },
+        className,
+      ]}
+      {...rest}>
+      <button
+        class="hs-accordion-toggle mb-2 flex w-full items-center justify-between border-b pb-2 text-white"
+        aria-expanded="true"
+        aria-controls="toc-collapse">
+        <span class="text-base-sm font-primary font-normal tracking-widest uppercase md:text-base">
+          Table of Contents
+        </span>
+        <span class="hs-accordion-active:rotate-180 flex h-9 w-9 items-center justify-center rounded-full transition duration-300">
+          <Icons icon="ChevronDown" />
+        </span>
+      </button>
+      <nav
+        id="toc-collapse"
+        class:list={[
+          "hs-accordion-content toc prose-styles prose-a:text-text-default prose-ul:pl-0 overflow-hidden transition-[height] duration-300",
+          marker && "scroll-menu",
+          { hidden: tableOfContents?.expanded === false },
+        ]}>
+        <ol class="has-customized-scrollbar max-h-60 overflow-auto">
+          {toc.map((heading: TocHeading) => (
+            <li>
+              <a href={`#${heading.slug}`}>{heading.text}</a>
+              {heading.subheadings && heading.subheadings.length > 0 && (
+                <RecursiveToc toc={heading.subheadings} />
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+  )
+}
+
+<script>
+  import "@preline/accordion";
+  import { ScrollMenu } from "@/plugins/scroll-menu.ts";
+
+  const toc = document.querySelector(".scroll-menu > ol") as HTMLElement;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    if (toc)
+      new ScrollMenu(".scroll-menu a", {
+        activeOffset: 128, // Custom active offset from top
+        scrollOffset: 128, // Custom scroll offset
+        smoothScroll: false, // Disable smooth scrolling for immediate scroll
+        // autoSetFirstActive: true,
+        afterActive: (activeItem) => {
+          const offset = activeItem.offsetTop + 3;
+
+          if (toc) {
+            toc.setAttribute("style", `--active-offset: ${offset}px`);
+          }
+        },
+      });
+  });
+</script>

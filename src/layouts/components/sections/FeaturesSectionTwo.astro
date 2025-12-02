@@ -1,0 +1,79 @@
+---
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { Section } from "@/types";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+
+// Type for this section data
+type sectionType = Section & {
+  list: string[];
+};
+type Props = {
+  content?: sectionType;
+  class?: string;
+};
+
+// Fetching the default content for the this section
+let defaultContent = (
+  await getEntryCTM("sections", "features-section-two", Astro.currentLocale)
+)?.data as sectionType;
+
+// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
+// The 'content' prop should match the structure of 'defaultContent'.
+// Allows using this section with different content across multiple pages.
+// If 'content' is missing, 'defaultContent' will be used.
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as sectionType;
+
+// Extracting required values from 'content' object
+let { enable = true, title, subtitle, list } = actualContent as sectionType;
+---
+
+{
+  enable && (
+    <section class:list={[Astro.props.class]}>
+      <div class="relative">
+        <div class="container space-y-12 rounded-xl px-5 py-7 md:px-10 md:py-14 lg:space-y-16 lg:rounded-3xl">
+          {list && (
+            <div
+              class="draggable-wrapper min-h-128 lg:min-h-168"
+              data-aos="fade-up-sm"
+              draggable="false"
+              data-aos-delay={200}>
+              {title && (
+                <div
+                  class="mx-auto max-w-2xl text-center select-none"
+                  data-aos="fade-up-sm">
+                  <Subtitle content={subtitle} />
+                  <h2
+                    class="has-italic-text capitalize"
+                    set:html={markdownify(title)}
+                  />
+                </div>
+              )}
+              {list.map((item) => (
+                <div class="draggable bg-primary/60 flex items-center justify-center rounded-full p-4 text-center text-white lg:h-36 lg:w-36">
+                  {item && (
+                    <div
+                      class="text-sm font-medium select-none md:text-xl"
+                      set:html={markdownify(item)}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import draggable from "@/lib/utils/draggable";
+
+  draggable();
+</script>

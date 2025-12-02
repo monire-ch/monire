@@ -1,0 +1,152 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import type {
+  ComparisonCategory,
+  PricingComparison,
+  PricingTier,
+} from "@/types";
+
+type Props = {
+  class?: string;
+  content: {
+    list: PricingTier[];
+    selectedPlanIndex: number;
+    comparison: ComparisonCategory[];
+  };
+};
+
+const {
+  class: className,
+  content: { list, selectedPlanIndex, comparison },
+} = Astro.props;
+---
+
+<section class:list={[className, "hidden lg:block"]}>
+  <div class="container">
+    <table
+      class="section-gradient relative w-full after:-top-40 after:-z-10"
+      data-aos="fade-up-sm">
+      <caption class="sr-only">Pricing Table Comparison</caption>
+      <colgroup>
+        <col class="w-[30%]" />
+        <col class="w-1/5" />
+        <col class="w-1/5" />
+        <col class="w-1/5" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th></th>
+          {
+            list.map((item, index) => (
+              <th>
+                <div
+                  class:list={[
+                    "space-y-4 px-8 py-4",
+                    index === selectedPlanIndex &&
+                      "bg-primary/5 border-primary/50 rounded-t-lg border border-b-0",
+                  ]}>
+                  <span
+                    class="block font-medium"
+                    set:html={markdownify(item.name)}
+                  />
+
+                  {item?.ctaBtn?.enable && (
+                    <a
+                      href={item?.ctaBtn?.url}
+                      data-content={markdownify(item?.ctaBtn?.label)}
+                      class:list={[
+                        "btn btn-sm has-text-flip-animation w-full rounded-md!",
+                        {
+                          "btn-primary": item?.featured,
+                        },
+                        {
+                          "btn-outline-white": !item?.featured,
+                        },
+                      ]}
+                      set:html={markdownify(item?.ctaBtn?.label)}
+                    />
+                  )}
+                </div>
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          comparison?.map((item, index) => (
+            <>
+              {/* Group Name Row - eg: Features */}
+              <tr class="border-primary/25 border-b">
+                <td class:list={[index !== 0 && "pt-16", "py-4"]}>
+                  <span
+                    class="block text-lg font-medium text-white"
+                    set:html={markdownify(item.label)}
+                  />
+                </td>
+                {list.map((_, i) => (
+                  <td
+                    class:list={[
+                      "py-4",
+                      i === selectedPlanIndex &&
+                        "bg-primary/5 border-primary/50 border-x",
+                    ]}
+                  />
+                ))}
+              </tr>
+
+              {/* Each feature row of the upper group - eg: Integrations, Shared links */}
+              {item.list.map((i) => (
+                <tr class="border-primary/10 border-b">
+                  <td class="py-4" set:html={markdownify(i.value)} />
+                  {i.included.map((includedIn, i) => (
+                    <td
+                      class:list={[
+                        "px-8 py-4 text-center text-sm",
+                        i === selectedPlanIndex &&
+                          "bg-primary/5 border-primary/50 border-x",
+                      ]}>
+                      {includedIn === true ? (
+                        <svg
+                          class="text-secondary mx-auto"
+                          width="14"
+                          height="13"
+                          viewBox="0 0 14 13"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M13.7048 0.652545C13.7834 0.712172 13.8494 0.786703 13.8991 0.871871C13.9488 0.95704 13.9812 1.05117 13.9945 1.14889C14.0078 1.2466 14.0017 1.34598 13.9765 1.44132C13.9513 1.53667 13.9076 1.62612 13.8478 1.70455L5.84782 12.2045C5.78293 12.2896 5.70059 12.3598 5.60634 12.4104C5.51209 12.461 5.4081 12.4909 5.30135 12.498C5.19461 12.5051 5.08758 12.4892 4.98745 12.4516C4.88732 12.4139 4.79641 12.3552 4.72082 12.2795L0.220823 7.77954C0.0883431 7.63737 0.0162199 7.44932 0.0196481 7.25502C0.0230763 7.06072 0.101788 6.87534 0.239201 6.73792C0.376614 6.60051 0.561999 6.5218 0.7563 6.51837C0.950602 6.51494 1.13865 6.58707 1.28082 6.71955L5.17482 10.6125L12.6548 0.795545C12.7752 0.637497 12.9534 0.533673 13.1502 0.506863C13.3471 0.480053 13.5466 0.532447 13.7048 0.652545Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      ) : includedIn === false ? (
+                        <svg
+                          class="text-secondary mx-auto opacity-35"
+                          width="13"
+                          height="3"
+                          viewBox="0 0 13 3"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M0.800781 1.5C0.800781 1.30109 0.879799 1.11032 1.02045 0.96967C1.1611 0.829018 1.35187 0.75 1.55078 0.75H12.0508C12.2497 0.75 12.4405 0.829018 12.5811 0.96967C12.7218 1.11032 12.8008 1.30109 12.8008 1.5C12.8008 1.69891 12.7218 1.88968 12.5811 2.03033C12.4405 2.17098 12.2497 2.25 12.0508 2.25H1.55078C1.35187 2.25 1.1611 2.17098 1.02045 2.03033C0.879799 1.88968 0.800781 1.69891 0.800781 1.5Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      ) : (
+                        includedIn
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

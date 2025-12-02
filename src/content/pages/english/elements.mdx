@@ -1,0 +1,461 @@
+---
+title: "Elements"
+metaDescription: This is a example description
+draft: false
+---
+
+## Text Formatting [.text-h4]
+
+---
+
+### Bold Text [.text-h5]
+
+To make text bold, use `**` or `__` around the word or phrase:  
+**Example**: **This text is bold** or **This text is bold**
+
+### Italic Text [.text-h5]
+
+To italicize text, use `*` or `_` around the word or phrase:  
+**Example**: _This text is italic_ or _This text is italic_
+
+### Underline Text [.text-h5]
+
+To underline text, use HTML `<u>` tags:
+
+**Example**:
+
+`<u>This text is underlined</u>`
+
+**Result**:
+
+<u>This text is underlined</u>
+
+### Strikethrough [.text-h5]
+
+To strike through text, use `~~` around the word or phrase:  
+**Example**: ~~This text is struck through~~
+
+## Button [.text-h4]
+
+---
+
+```jsx
+<Button label="Example Button" url="/" />
+<Button variant="outline" label="With External Link" url="https://astro.build" />
+<Button variant="text" label="Example Button" url="/" />
+```
+
+<Button label="Example Button" url="/" />
+<Button
+  variant="outline"
+  label="With External Link"
+  url="https://astro.build"
+/>
+<Button variant="text" label="Example Button" url="/" />
+
+## Accordion [.text-h4]
+
+---
+
+```jsx
+<Accordion label="Example Accordion Label 01" group="accordion-01" expanded="true">
+
+We offer a wide range of services including web development, branding, and digital marketing to help businesses grow and succeed.
+
+* **Essentials**: Focused workshop to identify core values and USP.
+* **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
+* **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
+
+</Accordion>
+
+<Accordion label="Example Accordion Label 02" group="accordion-01" expanded="false">
+
+We offer a wide range of services including web development, branding, and digital marketing to help businesses grow and succeed.
+
+* **Essentials**: Focused workshop to identify core values and USP.
+* **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
+* **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
+
+</Accordion>
+```
+
+<Accordion label="Example Accordion Label 01" group="accordion-01" expanded="true">
+
+We offer a wide range of services including web development, branding, and digital marketing to help businesses grow and succeed.
+
+- **Essentials**: Focused workshop to identify core values and USP.
+- **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
+- **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
+
+</Accordion>
+
+<Accordion label="Example Accordion Label 02" group="accordion-01" expanded="false">
+
+We offer a wide range of services including web development, branding, and digital marketing to help businesses grow and succeed.
+
+- **Essentials**: Focused workshop to identify core values and USP.
+- **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
+- **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
+
+</Accordion>
+
+## Tab [.text-h4]
+
+---
+
+```jsx
+<Tabs>
+  <Tab name="Overview">
+    **How Can We Assist You?** We offer personalized consultations to help you
+    achieve your personal and professional goals. Choose a tab below to explore
+    our services. - Personal Coaching - Career Counseling - Conflict Resolution
+    - Life Advice
+  </Tab>
+
+  <Tab name="Coaching">
+    **Personal Coaching: Unlock Your Potential** Get personalized coaching to
+    overcome challenges and set meaningful goals. We focus on: - Confidence
+    Building - Emotional Intelligence - Overcoming Procrastination
+  </Tab>
+</Tabs>
+```
+
+<Tabs>
+  <Tab name="Overview">
+    **How Can We Assist You?**
+
+    We offer personalized consultations to help you achieve your personal and professional goals. Choose a tab below to explore our services.
+
+    - Personal Coaching
+    - Career Counseling
+    - Conflict Resolution
+    - Life Advice
+
+  </Tab>
+
+  <Tab name="Coaching">
+    **Personal Coaching: Unlock Your Potential**
+
+    Get personalized coaching to overcome challenges and set meaningful goals. We focus on:
+    - Confidence Building
+    - Emotional Intelligence
+    - Overcoming Procrastination
+
+  </Tab>
+
+  <Tab name="Counseling">
+    **Career Counseling: Find Your Path**
+
+    Need help with your career? We provide:
+    - Career Path Guidance
+    - Resume & Interview Prep
+    - Job Market Insights
+
+  </Tab>
+
+  <Tab name="Resolution">
+    **Conflict Resolution: Build Stronger Relationships**
+
+    Resolve disputes effectively with:
+    - Mediation Services
+    - Communication Strategies
+    - Anger Management Techniques
+
+  </Tab>
+</Tabs>
+
+## Youtube Video [.text-h4]
+
+---
+
+<VideoInline src="LXb3EKWsInQ" provider="youtube" />
+
+## Custom Video [.text-h4]
+
+---
+
+<VideoInline
+  src="/videos/saas-test-video.mp4"
+  provider="html5"
+  poster="/images/video-thumbnail.jpg"
+/>
+
+## Notice [.text-h4]
+
+---
+
+<Notice type="info" title="Information">
+  This is an informational message.
+</Notice>
+
+<Notice type="warning">This is a warning message without a title.</Notice>
+
+<Notice type="success" title="Success!">
+  Your changes have been saved successfully.
+</Notice>
+
+<Notice type="error" title="Error!">
+  Something went wrong. Please try again.
+</Notice>
+
+## Blockquote [.text-h4]
+
+---
+
+To create a blockquote, start the line with a `>`:  
+**Example**:
+
+> This is a blockquote.  
+> It spans multiple lines.
+>
+> _Author_
+
+## Code [.text-h4]
+
+---
+
+To format inline code, use backticks (\`):  
+**Example**: `This is inline code`
+
+For multi-line code blocks, use triple backticks (\`\`\`):  
+**Example**:
+
+```jsx
+<a
+  {...{
+    // Set `rel` attribute for external urls or use provided value
+    rel: ctaBtn.url?.startsWith("http")
+      ? ctaBtn.rel || "noopener noreferrer"
+      : ctaBtn.rel || undefined,
+
+    // Set `target` to "_blank" for external urls unless otherwise specified
+    target: ctaBtn.url?.startsWith("http")
+      ? ctaBtn.target || "_blank"
+      : ctaBtn.target || undefined,
+  }}
+  class="relative flex items-center"
+  href={getLocaleUrlCTM(ctaBtn.url, Astro.currentLocale)}
+>
+  <span
+    class="btn btn-outline-white has-text-flip-animation"
+    data-content={ctaBtn.label}
+  >
+    {ctaBtn.label}
+  </span>
+  <span class="icon">
+    <OptimizedImage
+      alt="icon"
+      inlineSvg={true}
+      class="h-4 w-4 text-white"
+      src="/images/icons/svg/arrow-top-right.svg"
+    />
+  </span>
+</a>
+```
+
+## Horizontal Rule [.text-h4]
+
+---
+
+To create a horizontal rule, use three or more dashes (`---`), asterisks (`***`), or underscores (`___`) on a new line:  
+**Example**:
+
+---
+
+## Headings [.text-h4]
+
+---
+
+Create headings by adding `#` symbols before your text. Add custom class by bracket `[.class-name]`.  
+**Example**:
+
+```txt
+# Heading 1 [.custom-class .another-class]
+## Heading 2 [.custom-class .another-class4]
+### Heading 3 [.custom-class .another-class]
+#### Heading 4 [.custom-class .another-class]
+##### Heading 5 [.custom-class .another-class] [.text-h4]
+###### Heading 6 [.custom-class .another-class] [.text-h5]
+```
+
+## Table [.text-h4]
+
+---
+
+Create tables using pipes (`|`) and dashes (`-`):
+
+**Example**:  
+| Column 1 | Column 2 | Column 3 |  
+|----------|----------|----------|  
+| Data 1 | Data 2 | Data 3 |  
+| Data 4 | Data 5 | Data 6 |
+
+## Images [.text-h4]
+
+---
+
+Local Image ![alt text](/images/og-image.jpg)
+Remote Image ![alt text](https://images.unsplash.com/photo-1741514230333-d6a6a89c4a40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+
+## Components [.text-h4]
+
+---
+
+### Styled List [.text-h5]
+
+---
+
+```md
+<ListCheck>
+
+- **Inconsistent Customer Interactions**: Customers experienced varying levels of service quality across different channels.
+- **Lack of Personalization**: Limited data integration led to generic, one-size-fits-all communication.
+- **Customer Retention**: Difficulty in retaining customers due to inadequate follow-up and engagement.
+
+</ListCheck>
+```
+
+<ListCheck>
+
+- **Inconsistent Customer Interactions**: Customers experienced varying levels of service quality across different channels.
+- **Lack of Personalization**: Limited data integration led to generic, one-size-fits-all communication.
+- **Customer Retention**: Difficulty in retaining customers due to inadequate follow-up and engagement.
+
+</ListCheck>
+
+### Card Grid [.text-h5]
+
+---
+
+```jsx
+<CardGrid>
+  <Card
+    icon="/images/icons/svg/success.svg"
+    title="200+"
+    description="Increased Customer Satisfaction"
+  />
+  <Card
+    icon="/images/icons/svg/revenue.svg"
+    title="25+"
+    description="Enhanced Personalization"
+  />
+  <Card
+    icon="/images/icons/svg/glorify.svg"
+    title="10:1"
+    description="Improved Retention"
+  />
+</CardGrid>
+```
+
+<CardGrid>
+
+<Card
+  icon="/images/icons/svg/success.svg"
+  title="200+"
+  description="Increased Customer Satisfaction"
+/>
+<Card
+  icon="/images/icons/svg/revenue.svg"
+  title="25+"
+  description="Enhanced Personalization"
+/>
+<Card
+  icon="/images/icons/svg/glorify.svg"
+  title="10:1"
+  description="Improved Retention"
+/>
+
+</CardGrid>
+
+### ImageList With Video [.text-h5]
+
+---
+
+```jsx
+<ImageList>
+  <ImageItem
+    imageSrc="/images/gallery/1.jpg"
+    imageAlt="example alt text"
+    videoSrc="LXb3EKWsInQ"
+  />
+  <ImageItem
+    imageSrc="/images/gallery/2.jpg"
+    imageAlt="example alt text"
+    videoSrc="/videos/saas-test-video.mp4"
+    videoProvider="html5"
+  />
+  <ImageItem
+    width="1/2"
+    imageSrc="/images/gallery/3.jpg"
+    imageAlt="example alt text"
+  />
+  <ImageItem
+    width="1/2"
+    imageSrc="/images/gallery/4.jpg"
+    imageAlt="example alt text"
+  />
+</ImageList>
+```
+
+<ImageList>
+
+<ImageItem
+  imageSrc="/images/gallery/1.jpg"
+  imageAlt="example alt text"
+  videoSrc="LXb3EKWsInQ"
+/>
+<ImageItem
+  imageSrc="/images/gallery/2.jpg"
+  imageAlt="example alt text"
+  videoSrc="/videos/saas-test-video.mp4"
+  videoProvider="html5"
+/>
+<ImageItem
+  width="1/2"
+  imageSrc="/images/gallery/3.jpg"
+  imageAlt="example alt text"
+/>
+<ImageItem
+  width="1/2"
+  imageSrc="/images/gallery/4.jpg"
+  imageAlt="example alt text"
+/>
+
+</ImageList>
+
+### Testimonial [.text-h5]
+
+---
+
+```jsx
+<Testimonial
+  customerImage="/images/customers/avatar/1.jpg"
+  customerName="Sarah Jones"
+  customerRole="CEO, Founder"
+  customerCompanyLogo="/images/customers/company-logo/acme.png"
+  customerCompanyName="Acme Inc."
+>
+  Our partnership with Upstart demonstrates the power of a well-executed
+  customer engagement strategy. By integrating advanced technologies and
+  data-driven insights, we helped them achieve a more personalized, consistent,
+  and rewarding customer experience. At Upstart, we are committed to helping
+  businesses like Oloyon revolutionize their customer engagement and drive
+  long-term success.
+</Testimonial>
+```
+
+<Testimonial
+customerImage = "/images/customers/avatar/1.jpg"
+customerName = "Sarah Jones"
+customerRole = "CEO, Founder"
+customerCompanyLogo = "/images/customers/company-logo/acme.png"
+customerCompanyName = "Acme Inc.">
+
+Our partnership with Upstart demonstrates the power of a well-executed customer
+engagement strategy. By integrating advanced technologies and data-driven
+insights, we helped them achieve a more personalized, consistent, and
+rewarding customer experience. At Upstart, we are committed to helping
+businesses like Oloyon revolutionize their customer engagement and drive
+long-term success.
+
+</Testimonial>

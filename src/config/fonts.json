@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Satoshi",
+    "variants": [
+      {
+        "weight": "400",
+        "src": ["./src/assets/fonts/satoshi-400.woff2"]
+      },
+      {
+        "weight": "500",
+        "src": ["./src/assets/fonts/satoshi-500.woff2"]
+      }
+    ],
+    "provider": "local",
+    "preload": false,
+    "cssVariable": "--font-primary",
+    "fallback": "sans-serif"
+  },
+  {
+    "name": "Syne",
+    "variants": [
+      {
+        "style": "normal",
+        "weight": "500"
+      }
+    ],
+    "preload": true,
+    "provider": "google",
+    "subsets": ["latin"],
+    "cssVariable": "--font-secondary",
+    "fallback": "sans-serif"
+  },
+  {
+    "name": "Instrument Serif",
+    "variants": [
+      {
+        "style": "normal",
+        "weight": "400"
+      }
+    ],
+    "preload": true,
+    "provider": "google",
+    "subsets": ["latin"],
+    "cssVariable": "--font-tertiary",
+    "fallback": "sans-serif"
+  }
+]

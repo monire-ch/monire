@@ -1,0 +1,77 @@
+---
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { Section } from "@/types";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+
+// Type for this section data
+type featuresSectionType = Section & {
+  list: {
+    title: string;
+    description: string;
+  }[];
+};
+type Props = {
+  content?: featuresSectionType;
+};
+
+// Fetching the default content for the this section
+let defaultContent = (
+  await getEntryCTM("sections", "features-section", Astro.currentLocale)
+)?.data as featuresSectionType;
+
+// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
+// The 'content' prop should match the structure of 'defaultContent'.
+// Allows using this section with different content across multiple pages.
+// If 'content' is missing, 'defaultContent' will be used.
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as featuresSectionType;
+
+// Extracting required values from 'content' object
+let {
+  enable = true,
+  title,
+  subtitle,
+  list,
+} = actualContent as featuresSectionType;
+---
+
+{
+  enable && (
+    <section>
+      <div class="section-gradient relative after:top-0">
+        <div class="container space-y-16 md:space-y-28">
+          {title && (
+            <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
+              <Subtitle content={subtitle} />
+              <h2
+                class="has-italic-text capitalize"
+                set:html={markdownify(title)}
+              />
+            </div>
+          )}
+          {list && (
+            <div
+              class="grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3"
+              data-aos="fade-up-sm"
+              data-aos-delay="200">
+              {list.map((item) => (
+                <div class="border-primary/40 before:bg-primary relative space-y-5 before:absolute before:-left-px before:content-[''] last:border-b-0 last:pb-0 max-sm:border-b max-sm:pb-10 before:max-sm:bottom-0 before:max-sm:h-px before:max-sm:w-1/4 last:before:max-sm:hidden sm:border-l sm:pl-10 before:sm:top-1/2 before:sm:h-1/4 before:sm:w-px before:sm:-translate-y-1/2">
+                  {item.title && (
+                    <h3 class="h4" set:html={markdownify(item.title)} />
+                  )}
+                  {item.description && (
+                    <p set:html={markdownify(item.description)} />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,80 @@
+---
+import { absoluteUrl } from "@/lib/utils/absoluteUrl";
+import config from ".astro/config.generated.json" with { type: "json" };
+import { plainify, removeWhitespace } from "@/lib/utils/textConverter";
+
+// Destructure optional props with default fallback to config values
+let {
+  title,
+  metaTitle,
+  description,
+  metaDescription,
+  disableTagline,
+  image = config.opengraph.image,
+  twitter = config.opengraph.twitter,
+  twitterCard = config.opengraph.twitterCard,
+  ogType = config.opengraph.ogType,
+  ogLocale = config.opengraph.ogLocale,
+} = Astro.props;
+
+// Get the possible value for title and description and remove any line breaks and extra spaces
+title = plainify(metaTitle ? metaTitle : title ? title : config.site.title);
+title = removeWhitespace(title);
+
+description = plainify(
+  metaDescription
+    ? metaDescription
+    : description
+      ? description
+      : config.site.description,
+);
+
+description = removeWhitespace(description);
+
+// Generate the full URL for the current page
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+
+// Add tagline & separator to title
+if (!disableTagline) {
+  title =
+    title +
+    (config.site.tagline &&
+      (config.site.taglineSeparator || " - ") + config.site.tagline);
+}
+---
+
+<!-------------------------
+    Standard Open Graph
+--------------------------->{
+  image && <meta property="og:image" content={absoluteUrl(image, Astro)} />
+}
+{title && <meta property="og:title" content={removeWhitespace(title)} />}
+{
+  config.site.title && (
+    <meta
+      property="og:site_name"
+      content={removeWhitespace(config.site.title)}
+    />
+  )
+}
+{
+  description && (
+    <meta property="og:description" content={removeWhitespace(description)} />
+  )
+}
+{ogType && <meta property="og:type" content={ogType} />}
+{ogLocale && <meta property="og:locale" content={ogLocale} />}
+{pageUrl && <meta property="og:url" content={pageUrl} />}
+
+<!------------------------
+    Twitter Open Graph
+-------------------------->
+{twitter && <meta name="twitter:creator" content={removeWhitespace(twitter)} />}
+{title && <meta name="twitter:title" content={removeWhitespace(title)} />}
+{
+  description && (
+    <meta name="twitter:description" content={removeWhitespace(description)} />
+  )
+}
+{twitterCard && <meta name="twitter:card" content={twitterCard} />}
+{image && <meta name="twitter:image" content={absoluteUrl(image, Astro)} />}

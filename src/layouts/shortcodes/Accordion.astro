@@ -1,0 +1,105 @@
+---
+/**
+ * Accordion Shortcode
+ * Pass group in order to close other accordions when one is opened
+ * @see https://preline.co/plugins/html/accordion.html
+ */
+
+/**
+  * Example Usage
+
+  <Accordion label="Example Accordion Label 01" group="accordion-01" expanded="false">
+
+  We offer a wide range of services including web development, branding, and digital marketing to help businesses grow and succeed.
+
+  * **Essentials**: Focused workshop to identify core values and USP.
+  * **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
+  * **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
+
+  </Accordion>
+
+  */
+
+import type { FAQItem } from "@/types";
+import Icons from "@/helpers/Icons.astro";
+import uniqueIdGenerator from "@/lib/utils/uniqueIdGenerator";
+
+interface Props {
+  content: FAQItem[];
+  class?: string;
+  [key: string]: any;
+}
+
+const { label, group, expanded } = Astro.props;
+
+const uniqueId = uniqueIdGenerator(label.toLowerCase());
+
+const isExpanded = expanded === "true";
+---
+
+<div
+  data-group={group}
+  class:list={[
+    "hs-accordion hs-accordion-active:bg-primary/25 bg-primary/15 my-4 rounded-xl",
+    isExpanded && "active",
+  ]}
+  id={"hs-accordion-" + uniqueId}>
+  <button
+    aria-expanded={isExpanded ? "true" : "false"}
+    class="hs-accordion-toggle text-light flex w-full items-center justify-between px-6 py-4 text-start"
+    aria-controls={"hs-accordion-content-" + uniqueId}>
+    <span set:html={label} />
+    <span class="hs-accordion-active:rotate-180 transition duration-300">
+      <Icons icon="ChevronUp" class="text-light text-lg" />
+    </span>
+  </button>
+  <div
+    role="region"
+    id={"hs-accordion-content-" + uniqueId}
+    aria-labelledby={"hs-accordion-" + uniqueId}
+    class:list={[
+      "hs-accordion-content overflow-hidden transition-[height] duration-300",
+      !isExpanded && "hidden",
+    ]}>
+    <div class="prose-styles mx-6 border-t py-4">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script>
+  // Recalculate AOS Elements positions after accordion is opened
+  // @ts-nocheck
+  import AOS from "aos";
+  import HSAccordion from "preline/src/plugins/accordion";
+
+  window.addEventListener("load", () => {
+    const accordions = document.querySelectorAll(".hs-accordion");
+
+    // Close other accordions when one is opened of the same group
+    accordions.forEach((currentAccordion) => {
+      const { element } = HSAccordion.getInstance(currentAccordion, true);
+
+      element.on("open", () => {
+        const group = currentAccordion.getAttribute("data-group");
+
+        if (group) {
+          const accordions = document.querySelectorAll(
+            `.hs-accordion[data-group="${group}"]`,
+          );
+
+          accordions.forEach((accordion) => {
+            if (accordion !== element.el) {
+              const { element: elem } = HSAccordion.getInstance(
+                `#${accordion.getAttribute("id")}`,
+                true,
+              );
+
+              elem.hide();
+            }
+          });
+        }
+      });
+    });
+  });
+</script>

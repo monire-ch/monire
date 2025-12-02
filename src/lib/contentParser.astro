@@ -1,0 +1,74 @@
+---
+import config from ".astro/config.generated.json" with { type: "json" };
+import languages from "@/config/language.json";
+import {
+  getCollection,
+  type CollectionEntry,
+  type CollectionKey,
+} from "astro:content";
+
+export const getCollectionCTM = async <C extends CollectionKey>(
+  collectionName: C,
+  lang: string | undefined,
+): Promise<CollectionEntry<C>[]> => {
+  const { defaultLanguage } = config.settings.multilingual;
+
+  const selectedLanguageCode = lang || defaultLanguage;
+
+  const language = languages.find(
+    (l: any) => l.languageCode == selectedLanguageCode,
+  );
+
+  if (!language) {
+    throw new Error("Language not found");
+  }
+
+  const { contentDir } = language;
+
+  const pages: CollectionEntry<C>[] = (await getCollection(
+    collectionName as any,
+    (item: any) => {
+      return item.id.startsWith(contentDir) && !item.id.endsWith("-index.md");
+    },
+  )) as CollectionEntry<C>[];
+
+  // Prevent generation of pages with `draft: true` in production
+  if (import.meta.env.PROD) {
+    return pages.filter((page) => !page.data.draft);
+  }
+
+  return pages;
+};
+
+export const getEntryCTM = async <C extends CollectionKey>(
+  collectionName: C,
+  subCollectionName: string,
+  lang?: string, // Optional, defaults to undefined
+): Promise<CollectionEntry<C>> => {
+  const { defaultLanguage } = config.settings.multilingual;
+
+  const selectedLanguageCode = lang || defaultLanguage;
+
+  const language = languages.find(
+    (l: any) => l.languageCode === selectedLanguageCode,
+  );
+
+  if (!language) {
+    throw new Error(`Language '${selectedLanguageCode}' not found.`);
+  }
+
+  const contentDir = language.contentDir;
+  const path = subCollectionName
+    ? `${contentDir}/${subCollectionName}`
+    : contentDir;
+
+  const entries = await getCollection(collectionName, ({ id }: any) => {
+    // Remove extension like .md or .mdx
+    const extensionExcluded = id.replace(/\.mdx?$/, "");
+
+    return extensionExcluded === path;
+  });
+
+  return entries && (entries[0] as CollectionEntry<C>);
+};
+---

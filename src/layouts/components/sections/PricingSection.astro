@@ -1,0 +1,302 @@
+---
+import type {
+  PricingPlans,
+  PricingComparison,
+  PricingTier,
+  Section,
+} from "@/types";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import { markdownify } from "@/lib/utils/textConverter";
+import PricingCard from "@/layouts/components/cards/PricingCard.astro";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+import PricingComparisonSection from "@/components/sections/PricingComparison.astro";
+
+export type pricingSectionType = Section &
+  PricingComparison & {
+    plans: PricingPlans;
+    list: PricingTier[];
+  };
+
+type Props = {
+  content?: pricingSectionType;
+  layout?: "comparison" | "regular";
+  class?: string;
+};
+
+// Fetching the default content for the this section
+let defaultContent = (
+  await getEntryCTM("sections", "pricing-section", Astro.currentLocale)
+)?.data as pricingSectionType;
+
+// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
+// The 'content' prop should match the structure of 'defaultContent'.
+// Allows using this section with different content across multiple pages.
+// If 'content' is missing, 'defaultContent' will be used.
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as pricingSectionType;
+
+// Extracting required values from 'content' object
+let {
+  enable = true,
+  title,
+  subtitle,
+  plans,
+  comparison,
+  list,
+} = actualContent as pricingSectionType;
+
+const { class: className, layout = "regular" } = Astro.props;
+
+const selectedPlanIndex = list.findIndex((item) => item.featured);
+---
+
+{
+  enable &&
+    (layout === "regular" ? (
+      <section class:list={["relative", className]}>
+        <div class="container space-y-12 md:space-y-16">
+          <div
+            class="mx-auto max-w-2xl justify-start space-y-5 text-center"
+            data-aos="fade-up-sm">
+            {title && (
+              <div>
+                <Subtitle content={subtitle} />
+                <h2
+                  class="has-italic-text capitalize"
+                  set:html={markdownify(title)}
+                />
+              </div>
+            )}
+            {plans && plans.enable && plans.list.length > 0 && (
+              <div class="bg-primary relative mx-auto flex w-fit flex-wrap rounded-full p-2">
+                <span
+                  class="pricing-plan-highlighter absolute top-0 left-0 h-full w-1/2 rounded-full bg-white transition-all duration-300"
+                  aria-hidden="true"
+                />
+                {plans.list.map((item) => (
+                  <button
+                    data-plan-btn={item.label.toLowerCase()}
+                    class:list={[
+                      "pricing-plan-btn [&.active]:text-primary relative rounded-full px-4 py-1.5 text-sm font-medium tracking-wider text-white transition delay-100",
+                      {
+                        active: item.selected,
+                      },
+                    ]}
+                    set:html={markdownify(item.label)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          {list && list.length > 0 && (
+            <div
+              class:list={[
+                "grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 xl:gap-x-12",
+              ]}
+              data-aos="fade-up-sm"
+              data-aos-delay="200">
+              {list.map((item, index) => (
+                <div class="bg-body min-h-full">
+                  <PricingCard
+                    index={index}
+                    content={{ ...item, plans, comparison }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    ) : (
+      <PricingComparisonSection
+        content={{ comparison, selectedPlanIndex, list }}
+      />
+    ))
+}
+
+<script>
+  interface HighlighterOptions {
+    selector: string; // CSS selector for the target elements
+    highlightElementSelector: string; // CSS selector for the highlight element
+    triggerEvent?: "hover" | "click"; // Trigger event: 'hover' or 'click'
+    activeClass?: string; // Class name for the initially active element
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Helper function to reset the number to zero for animation readiness
+    const addZero = (originalValue: string): string => {
+      return originalValue.replace(/\d/g, "0");
+    };
+
+    // Get all buttons that toggle pricing plans
+    const priceToggleBtns = document.querySelectorAll(
+      "[data-plan-btn]",
+    ) as NodeListOf<HTMLButtonElement>;
+
+    // Function to reset and hide all plans
+    const resetPlans = (selectedPlan: string): void => {
+      document.querySelectorAll("[data-plan]").forEach((planElement) => {
+        const element = planElement as HTMLElement;
+        const priceElement = element.querySelector(
+          "[data-count]",
+        ) as HTMLElement | null;
+
+        // Reset price to zero and hide the plan
+        if (priceElement) {
+          priceElement.textContent = addZero(priceElement.dataset.count || "");
+        }
+
+        // Hide non-selected plans
+        if (element.dataset.plan !== selectedPlan) {
+          element.classList.add("hidden");
+          element.classList.remove("active");
+        }
+      });
+    };
+
+    // Function to show and activate the selected plan
+    const activatePlan = (selectedPlan: string): void => {
+      document
+        .querySelectorAll(`[data-plan="${selectedPlan}"]`)
+        .forEach((planElement) => {
+          const element = planElement as HTMLElement;
+          const priceElement = element.querySelector(
+            "[data-count]",
+          ) as HTMLElement | null;
+
+          // Restore the original value
+          if (priceElement) {
+            priceElement.textContent = priceElement.dataset.count || "";
+          }
+
+          // Show and activate the selected plan
+          element.classList.remove("hidden");
+          element.classList.add("active");
+        });
+    };
+
+    // Attach event listeners to toggle buttons
+    priceToggleBtns.forEach((button) => {
+      button.addEventListener("click", () => {
+        const triggeredPlan = button.dataset.planBtn;
+        const currentPlan = document
+          .querySelector("[data-plan].active")
+          ?.getAttribute("data-plan");
+
+        // If the triggered plan is the same as the current plan, do nothing
+        if (!triggeredPlan || currentPlan === triggeredPlan) return;
+
+        resetPlans(triggeredPlan);
+        activatePlan(triggeredPlan);
+      });
+    });
+  });
+
+  function createDynamicHighlighter({
+    selector,
+    highlightElementSelector,
+    triggerEvent = "hover",
+    activeClass = "active",
+  }: HighlighterOptions): void {
+    const highlightElement = document.querySelector<HTMLElement>(
+      highlightElementSelector,
+    );
+    const elements = document.querySelectorAll<HTMLElement>(selector);
+    const container = highlightElement?.parentElement;
+
+    if (!highlightElement || !container) {
+      console.error(
+        `Highlight element or its container not found for selector: ${highlightElementSelector}`,
+      );
+      return;
+    }
+
+    let lastActiveElement: HTMLElement | null = null;
+
+    // Helper function to move the highlight element based on the container
+    const moveHighlight = (target: HTMLElement) => {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      // Calculate the position of the target relative to the container
+      const left = targetRect.left - containerRect.left;
+      const top = targetRect.top - containerRect.top;
+      const width = targetRect.width;
+      const height = targetRect.height;
+
+      // Apply the calculated styles to the highlight element
+      highlightElement.style.left = `${left}px`;
+      highlightElement.style.top = `${top}px`;
+      highlightElement.style.width = `${width}px`;
+      highlightElement.style.height = `${height}px`;
+      highlightElement.style.display = "block"; // Ensure it's visible
+
+      lastActiveElement = target; // Update the last active element
+    };
+
+    // Set initial active state (if any element has the active class)
+    const setInitialActive = () => {
+      const activeElement = document.querySelector<HTMLElement>(
+        `${selector}.${activeClass}`,
+      );
+      if (activeElement) {
+        moveHighlight(activeElement);
+        lastActiveElement = activeElement;
+      } else {
+        highlightElement.style.display = "none"; // Hide if no active element
+      }
+    };
+
+    // Clear active class from all elements and add to the clicked/hovered element
+    const toggleActiveClass = (el: HTMLElement) => {
+      elements.forEach((element) => {
+        element.classList.remove(activeClass);
+      });
+      el.classList.add(activeClass); // Add active class to the current element
+    };
+
+    // Handle hover or click events
+    const handleEvent = (el: HTMLElement) => {
+      if (triggerEvent === "hover") {
+        el.addEventListener("mouseenter", () => {
+          moveHighlight(el);
+          toggleActiveClass(el); // Toggle the active class on hover
+        });
+        el.addEventListener("mouseleave", () => {
+          if (lastActiveElement) moveHighlight(lastActiveElement); // Keep the last active element's highlight
+        });
+      } else if (triggerEvent === "click") {
+        el.addEventListener("click", () => {
+          moveHighlight(el);
+          toggleActiveClass(el); // Toggle the active class on click
+        });
+      }
+    };
+
+    // Set up event listeners for each element
+    elements.forEach(handleEvent);
+
+    // Set initial active state on page load
+    setInitialActive();
+
+    // Recalculate highlight position and size on window resize
+    const recalculateOnResize = () => {
+      if (lastActiveElement) {
+        moveHighlight(lastActiveElement); // Recalculate the position and size of the last active element
+      }
+    };
+
+    // Listen for window resize events and recalculate highlight
+    window.addEventListener("resize", recalculateOnResize);
+  }
+
+  createDynamicHighlighter({
+    selector: ".pricing-plan-btn",
+    highlightElementSelector: ".pricing-plan-highlighter",
+    triggerEvent: "click", // Change to 'click' for click functionality
+    activeClass: "active", // Specify the class for initially active box
+  });
+</script>

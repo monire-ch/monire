@@ -1,0 +1,19 @@
+---
+import type { TocHeading } from "@/types";
+const { toc } = Astro.props;
+---
+
+{
+  toc && (
+    <ol class="pl-6">
+      {toc.map((heading: TocHeading) => (
+        <li>
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+          {heading.subheadings && heading.subheadings.length > 0 && (
+            <Astro.self toc={heading.subheadings} />
+          )}
+        </li>
+      ))}
+    </ol>
+  )
+}

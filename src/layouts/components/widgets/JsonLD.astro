@@ -1,0 +1,61 @@
+---
+import { absoluteUrl } from "@/lib/utils/absoluteUrl";
+import JsonLdGenerator from "@/lib/utils/JsonLdGenerator";
+import { supportedLanguages } from "@/lib/utils/i18nUtils";
+import config from ".astro/config.generated.json" with { type: "json" };
+
+const { content } = Astro.props;
+
+let {
+  title = config.site.title,
+  metaTitle = title,
+  description = config.site.description,
+  metaDescription = description,
+  image = config.opengraph.image,
+  taglineSeparator = " - ",
+  disableTagline,
+  canonical,
+  lang,
+  author = config.seo.author,
+  structuredData,
+} = content;
+
+title =
+  !disableTagline && metaTitle ? metaTitle : title ? title : config.site.title;
+
+// Add tagline & separator to title
+// prettier-ignore
+const alternateLangs =  config.settings.multilingual.enable ? supportedLanguages : []
+title += config.site.tagline ? taglineSeparator + config.site.tagline : "";
+description = metaDescription ? metaDescription : description;
+canonical = canonical ? canonical : Astro.url.href;
+lang = Astro.currentLocale;
+image = absoluteUrl(image, Astro);
+
+// Generate JSON-LD dynamically
+const jsonLdData = JsonLdGenerator(
+  {
+    ...content,
+    ...structuredData,
+    title,
+    description,
+    image,
+    canonical,
+    config,
+    author,
+    lang,
+    alternateLangs,
+  },
+  Astro,
+);
+---
+
+<!-- JSON-LD -->{
+  content ? (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(jsonLdData, null, 2)}
+    />
+  ) : null
+}

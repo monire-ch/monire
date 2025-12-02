@@ -1,0 +1,133 @@
+---
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import Subtitle from "../widgets/Subtitle.astro";
+import type { FAQCategory, Section } from "@/types";
+import { markdownify } from "@/lib/utils/textConverter";
+import AccordionList from "@/layouts/components/widgets/AccordionList.astro";
+
+// Type for this section data
+type faqSectionType = Section & {
+  list?: FAQCategory[];
+  showCategories?: boolean;
+};
+type Props = {
+  content?: faqSectionType;
+};
+
+// Fetching the default content for the this section
+let defaultContent = (await getEntryCTM("faq", "-index", Astro.currentLocale))
+  ?.data as faqSectionType;
+
+// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
+// The 'content' prop should match the structure of 'defaultContent'.
+// Allows using this section with different content across multiple pages.
+// If 'content' is missing, 'defaultContent' will be used.
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as faqSectionType;
+
+// Extracting required values from 'content' object
+let {
+  enable = true,
+  title,
+  subtitle,
+  list,
+  limit,
+  showCategories,
+} = actualContent as faqSectionType;
+
+// Limit the number of items to be displayed
+list = limit && list ? list.slice(0, limit as number) : list;
+
+// IF services group is not enabled then only show first category faqs
+if (!showCategories) {
+  list = list?.slice(0, 1);
+}
+---
+
+{
+  enable && (
+    <section>
+      <div class="container">
+        <div class="space-y-12 md:space-y-16">
+          <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
+            <Subtitle content={subtitle} />
+            {title && (
+              <h2
+                class="has-italic-text text-white capitalize"
+                set:html={markdownify(title)}
+              />
+            )}
+          </div>
+          {list && list.length > 0 && (
+            <div
+              data-aos="fade-up-sm"
+              data-aos-delay="300"
+              class:list={[
+                "section-gradient relative",
+                !showCategories && "w-full",
+                {
+                  "mx-auto max-w-4xl": !showCategories,
+                },
+              ]}>
+              {
+                <div
+                  class:list={[
+                    "bg-primary/5 rounded-lg border p-6 lg:rounded-3xl lg:p-12",
+                    {
+                      "max-lg:space-y-6 lg:grid lg:grid-cols-8 lg:gap-16":
+                        showCategories,
+                    },
+                  ]}>
+                  {showCategories && (
+                    <nav
+                      role="tablist"
+                      aria-label="Tabs"
+                      aria-orientation="horizontal"
+                      class:list={["lg:col-span-3 xl:col-span-2"]}>
+                      {list.map((button: FAQCategory, index: number) => (
+                        <button
+                          role="tab"
+                          type="button"
+                          set:html={button.label}
+                          id={"tab-item-" + (index + 1)}
+                          data-hs-tab={"#tab-" + (index + 1)}
+                          aria-controls={"tab-" + (index + 1)}
+                          aria-selected={index === 0 ? "true" : "false"}
+                          class:list={[
+                            "px-6 py-2.5 text-start text-lg max-lg:min-w-full [&.active]:text-white [&.active]:max-lg:bg-white/5",
+                            { active: index === 0 },
+                          ]}
+                        />
+                      ))}
+                    </nav>
+                  )}
+                  {list.map((tab: FAQCategory, index: number) => (
+                    <AccordionList
+                      role="tabpanel"
+                      content={tab.list}
+                      class:list={[
+                        "col-span-5 space-y-5 xl:col-span-6",
+                        index === 0 ? "block" : "hidden",
+                      ]}
+                      id={"tab-" + (index + 1)}
+                      tabIndex={"group-1-" + (index + 1)}
+                      aria-labelledby={"tab-item-" + (index + 1)}
+                    />
+                  ))}
+                </div>
+              }
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import "@preline/tabs";
+  import "@preline/accordion";
+</script>

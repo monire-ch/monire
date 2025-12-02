@@ -1,0 +1,54 @@
+---
+import SEO from "@/components/seo/Seo.astro";
+import JsonLD from "../widgets/JsonLD.astro";
+import Favicons from "@/components/seo/Favicons.astro";
+import OpenGraph from "@/components/seo/OpenGraph.astro";
+import config from ".astro/config.generated.json" with { type: "json" };
+import fontsJson from "@/config/fonts.json";
+import { Font } from "astro:assets";
+
+const fontVariables = fontsJson.map((font) => font.cssVariable) as any[];
+---
+
+<head>
+  <!------------
+    General
+-------------->
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Language" content={Astro.currentLocale} />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=5"
+  />
+  <SEO {...Astro.props} />
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: light)"
+    content="#fff"
+  />
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: dark)"
+    content="#000"
+  />
+  <meta name="generator" content={Astro.generator} />
+  {
+    config.head?.content && (
+      // Injecting custom scripts such as Google Analytics, Google Tag Manager, etc. tracking code,
+      // which should be placed in <head> tag
+      <Fragment set:html={config.head?.content} />
+    )
+  }
+  <OpenGraph {...Astro.props} />
+  <Favicons />
+  <JsonLD
+    content={{
+      ...Astro.props,
+    }}
+  />
+
+  <!------------------
+    Google Fonts
+-------------------->
+  {fontVariables.map((font) => <Font cssVariable={font} />)}
+</head>

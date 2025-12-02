@@ -1,0 +1,72 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import "@/plugins/odometer/odometer.min.css";
+
+interface Props {
+  class?: string;
+  animateOn?: "click" | undefined;
+  transitionTime?: string;
+  childClass?: string;
+  enable?: boolean;
+  content: {
+    value?: string | number;
+    type?: string; // pricing tye (applicable for pricing page)
+    prependValue?: string;
+    appendValue?: string;
+  };
+}
+
+const {
+  enable = true,
+  animateOn,
+  transitionTime,
+  class: className,
+  childClass: childClassName,
+  content,
+} = Astro.props;
+
+// Check number char length and give that number of zero
+const addZero = (content: string) => {
+  return "0".repeat(Number(content.length));
+};
+---
+
+<div
+  class:list={[
+    "font-secondary inline-flex place-items-stretch leading-none",
+    { "has-animated-number": enable },
+    className,
+  ]}>
+  {
+    content.prependValue && (
+      <span
+        class:list={["prepend", childClassName]}
+        set:html={markdownify(content.prependValue)}
+      />
+    )
+  }
+
+  <span
+    {...{
+      "data-count": content.value || undefined,
+      "data-type": content.type && content.type.toLowerCase(),
+      style: { "--odometer-duration": transitionTime },
+    }}
+    class:list={[{ odometer: enable }, childClassName]}
+    set:html={enable && content.value && animateOn !== "click"
+      ? addZero(content.value as string)
+      : content.value}
+  />
+
+  {
+    content.appendValue && (
+      <span
+        class:list={["append", childClassName]}
+        set:html={markdownify(content.appendValue)}
+      />
+    )
+  }
+</div>
+<script>
+  import "@/plugins/odometer/odometer.min.js";
+</script>

@@ -1,0 +1,26 @@
+---
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+
+const { navigationButton, navigationbuttonLabel } = Astro.props;
+---
+
+<a
+  {...{
+    // Set `rel` attribute for external urls or use provided value
+    rel: navigationButton.url?.startsWith("http")
+      ? navigationButton.rel || "noopener noreferrer"
+      : navigationButton.rel || undefined,
+
+    // Set `target` to "_blank" for external urls unless otherwise specified
+    target: navigationButton.url?.startsWith("http")
+      ? navigationButton.target || "_blank"
+      : navigationButton.target || undefined,
+  }}
+  class="relative flex items-center"
+  href={getLocaleUrlCTM(navigationButton.url, Astro.currentLocale)}>
+  <span
+    class:list={["btn btn-primary has-text-flip-animation"]}
+    data-content={navigationbuttonLabel}>
+    {navigationbuttonLabel}
+  </span>
+</a>

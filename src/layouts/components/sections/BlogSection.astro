@@ -1,0 +1,94 @@
+---
+import type { Section } from "@/types";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import { getCollectionCTM } from "@/lib/contentParser.astro";
+import config from ".astro/config.generated.json" with { type: "json" };
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import Subtitle from "../widgets/Subtitle.astro";
+import Pagination from "../widgets/Pagination.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import BlogCard from "@/layouts/components/cards/BlogCard.astro";
+
+const { blogFolder } = config.settings;
+
+// Type for this section data
+type blogSectionType = Section;
+type Props = {
+  content?: blogSectionType;
+  pagination: {
+    enable: boolean;
+    currentPage: number;
+  };
+};
+
+// Fetching the default content for the this section
+let defaultContent = (
+  await getEntryCTM("sections", "blog-section", Astro.currentLocale)
+)?.data as blogSectionType;
+
+// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
+// The 'content' prop should match the structure of 'defaultContent'.
+// Allows using this section with different content across multiple pages.
+// If 'content' is missing, 'defaultContent' will be used.
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as blogSectionType;
+
+// Extracting required values from 'content' object
+let { enable = true, title, subtitle } = actualContent as blogSectionType;
+
+let posts = await getCollectionCTM(blogFolder as "blog", Astro.currentLocale);
+
+// Sort posts by date
+posts = sortByDate(posts);
+
+// Limit the number of items to be displayed
+let totalPages = Math.ceil(posts?.length / config.settings.pagination);
+
+if (Astro.props.pagination) {
+  const indexOfLastPost =
+    Astro.props.pagination?.currentPage * config.settings.pagination;
+  const indexOfFirstPost = indexOfLastPost - config.settings.pagination;
+  posts = posts.slice(indexOfFirstPost, indexOfLastPost);
+}
+---
+
+{
+  enable && (
+    <section class="relative overflow-hidden">
+      <div class="container">
+        <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
+          <Subtitle content={subtitle} />
+          {title && (
+            <h2
+              class="h2 has-italic-text capitalize"
+              set:html={markdownify(title)}
+            />
+          )}
+        </div>
+        <div
+          class="md:bg-primary/10 mt-12 space-y-16 rounded-lg md:mt-16 md:p-16"
+          data-aos="fade-up-sm"
+          data-aos-delay="200">
+          <div class="grid gap-x-6 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
+            {posts &&
+              posts.map((post, index) => (
+                <BlogCard
+                  content={{ ...post.data, ...post }}
+                  data-aos="fade-up-sm"
+                  data-aos-delay={((index % 3) + 1) * 100}
+                />
+              ))}
+          </div>
+          <Pagination
+            collection="blog"
+            currentPage={Astro.props.pagination?.currentPage || 1}
+            totalPages={totalPages}
+          />
+        </div>
+      </div>
+    </section>
+  )
+}

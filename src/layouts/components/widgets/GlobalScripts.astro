@@ -1,0 +1,93 @@
+---
+
+---
+
+<script>
+  // @ts-nocheck
+  import SmoothScroll from "smoothscroll-for-websites";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Dynamic Preline imports
+    await loadPrelineComponents();
+
+    // AOS - https://github.com/michalsnik/aos
+    const AOS = await import("aos");
+    AOS.init({
+      duration: 700,
+      easing: "ease-out",
+      disable: "mobile",
+      once: true,
+    });
+
+    // Smooth Scroll - https://github.com/gblazex/smoothscroll-for-websites/wiki
+    SmoothScroll({
+      animationTime: 600, // [ms]
+      stepSize: 60, // [px]
+      touchpadSupport: true,
+    });
+
+    // Fix: Support horizontal scrolling by using the mouse wheel + shift
+    initHorizontalScroll();
+  });
+
+  // Load Preline components dynamically based on DOM content
+  async function loadPrelineComponents() {
+    const imports = [];
+
+    if (
+      document.querySelector(".hs-select") ||
+      document.querySelector("[data-hs-select]")
+    ) {
+      imports.push(
+        import("@preline/select").then((module) => {
+          if (window.HSSelect) {
+            window.HSSelect.autoInit();
+          }
+        }),
+      );
+    }
+
+    if (document.querySelector("[data-hs-tab]")) {
+      imports.push(
+        import("@preline/tabs").then((module) => {
+          if (window.HSTabs) {
+            window.HSTabs.autoInit();
+          }
+        }),
+      );
+    }
+
+    if (document.querySelector(".hs-accordion")) {
+      imports.push(
+        import("@preline/accordion").then((module) => {
+          if (window.HSAccordion) {
+            window.HSAccordion.autoInit();
+          }
+        }),
+      );
+    }
+
+    await Promise.all(imports);
+  }
+
+  // Horizontal scroll with shift + wheel
+  function initHorizontalScroll() {
+    document.querySelectorAll("*").forEach((el) => {
+      if (el.scrollWidth > el.clientWidth) {
+        el.addEventListener(
+          "wheel",
+          function (event) {
+            if (event.shiftKey) {
+              event.preventDefault();
+              this.scrollBy({
+                left: event.deltaY * 3,
+                behavior: "smooth",
+              });
+            }
+          },
+          { passive: false },
+        );
+      }
+    });
+  }
+</script>

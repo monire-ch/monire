@@ -1,0 +1,29 @@
+{
+  "common": {
+    "readMore": "Read More",
+    "category": "Category",
+    "publishedOn": "Published On",
+    "learnMoreAbout": "Learn more about",
+    "emailPlaceholder": "Email Address",
+    "paginationNext": "Next",
+    "paginationPrevious": "Previous"
+  },
+  "navigation": {
+    "buttonLabel": "Sign Up"
+  },
+  "subscription": {
+    "label": "Subscribe to our newsletter"
+  },
+  "integration": {
+    "relatedIntegrationSectionTitle": "You might be **interested in**",
+    "backToIntegration": "Browse"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "resources": "Resources",
+    "description": "Upstart is a San Francisco-based design and technology company founded in 2016. Their mission is to democratize design by making professional branding tools accessible to everyone.",
+    "copyright": "Copyright {{ year }} / All Rights Reserved By Upstart / Built with love using [Astro Themes](https://getastrothemes.com/)",
+    "_comment": "We kindly appreciate it if you retain the theme copyright. Thank you for supporting Getastrothemes!"
+  }
+}

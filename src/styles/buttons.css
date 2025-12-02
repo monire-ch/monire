@@ -1,0 +1,137 @@
+/* Button Style */
+/* ========================================== */
+@utility btn {
+  @apply inline-block overflow-hidden rounded-full px-5 py-2 font-normal whitespace-nowrap duration-[.35s] disabled:cursor-not-allowed md:px-7;
+}
+
+@utility btn-has-icon {
+  @apply pe-2 md:pe-4;
+}
+
+@utility btn-md {
+  @apply px-6 py-3 md:text-lg;
+}
+
+@utility btn-primary {
+  @apply text-light bg-primary hover:ring-primary/35 ring-4 ring-transparent;
+}
+
+@utility btn-text {
+  @apply rounded-none border-b p-0 pb-1.5;
+}
+
+@utility btn-text-secondary {
+  @apply text-secondary border-b-secondary;
+}
+
+@utility btn-outline-white {
+  @apply text-light bg-neutral-800 ring-4 ring-transparent hover:bg-neutral-800 hover:ring-white/5;
+}
+
+@utility btn-outline-primary {
+  @apply text-light border-primary bg-body border;
+}
+
+.btn-outline {
+  & ~ .icon {
+    @apply bg-body text-dark flex h-12 w-12 items-center justify-center rounded-full;
+
+    svg path {
+      @apply fill-current!;
+    }
+  }
+
+  &.btn-md ~ .icon {
+    @apply h-14 w-14;
+  }
+}
+
+/* Button Animation */
+/* ========================================== */
+
+/* Button Animation */
+.has-text-flip-animation:not([disabled="true"]) {
+  /* Base styles */
+  @apply relative text-transparent;
+
+  /* Hover effect to swap text */
+  @apply hover:before:-top-1/3 hover:before:-translate-y-1/3 hover:before:opacity-0;
+  @apply hover:after:top-1/2 hover:after:-translate-y-1/2 hover:after:opacity-100;
+
+  /* Before & After common styles */
+  &::before,
+  &::after {
+    @apply pointer-events-none absolute inset-x-0 border-transparent! text-center transition-[translate,opacity,top] duration-[0.35s] ease-in-out content-[attr(data-content)];
+  }
+
+  /* Button Variants */
+  &[class*="btn-primary"]::before,
+  &[class*="btn-primary"]::after {
+    @apply btn;
+    @apply btn-primary;
+  }
+
+  /* Button Variants */
+  &[class*="btn-outline-primary"]::before,
+  &[class*="btn-outline-primary"]::after {
+    @apply btn;
+    @apply btn-outline-primary;
+  }
+
+  /* Button Variants */
+  &[class*="btn-outline-white"]::before,
+  &[class*="btn-outline-white"]::after {
+    @apply btn;
+    @apply btn-outline-white;
+    @apply bg-transparent;
+  }
+
+  /* Button Sizes */
+  &[class*="btn-md"]::before,
+  &[class*="btn-md"]::after {
+    @apply btn-md;
+  }
+
+  /* Initial state for before/after elements */
+  &::before {
+    @apply top-1/2 -translate-y-1/2 opacity-100;
+  }
+
+  &::after {
+    @apply top-1/2 opacity-0;
+  }
+}
+
+.has-icon-moving-animation {
+  /* @apply overflow-hidden; */
+  &:hover .icon {
+    &.icon-before {
+      @apply -top-full left-full;
+    }
+
+    &.icon-after {
+      @apply top-0 left-0;
+    }
+  }
+
+  .icons-wrapper {
+    @apply relative overflow-hidden;
+  }
+
+  .icon {
+    @apply transition-[top,left] duration-500 ease-in-out;
+
+    &.icon-before,
+    &.icon-after {
+      @apply absolute inset-0 size-full;
+    }
+
+    &.icon-before {
+      @apply top-0;
+    }
+
+    &.icon-after {
+      @apply top-full -left-full;
+    }
+  }
+}

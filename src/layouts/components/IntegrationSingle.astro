@@ -1,0 +1,155 @@
+---
+import Icons from "@/helpers/Icons.astro";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+import {
+  toSentenceCase,
+  markdownify,
+  plainify,
+} from "@/lib/utils/textConverter";
+import type { InferEntrySchema } from "astro:content";
+import OptimizedImage from "./utilities/OptimizedImage.astro";
+import ButtonLink from "./buttons/ButtonLink.astro";
+import getRelatedContent from "@/lib/utils/getRelatedContent";
+import { getCollectionCTM } from "@/lib/contentParser.astro";
+import IntegrationCard from "./cards/IntegrationCard.astro";
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+  content: { data: InferEntrySchema<"integration">; [key: string]: any };
+  translations?: any;
+};
+
+let {
+  translations: t,
+  content: {
+    data: { title, excerpt, image, ctaBtn, fields, categories },
+    render,
+    collection,
+  },
+} = Astro.props;
+
+const { Content } = await render();
+
+const integrationHref = getLocaleUrlCTM("/" + collection, Astro.currentLocale);
+
+const integrations = await getCollectionCTM(
+  collection as "integration",
+  Astro.currentLocale,
+);
+
+// Related Integration
+const relatedIntegrations = getRelatedContent(
+  integrations,
+  Astro.props.content,
+  ["title", "categories"],
+  [],
+  4,
+) as CollectionEntry<"integration">[];
+---
+
+<section>
+  <div class="container">
+    <div
+      data-aos="fade-up-sm"
+      class="has-video-modal border-primary/15 bg-primary/10 rounded-2xl border p-4 md:p-10">
+      <div class="grid grid-cols-1 gap-y-12 lg:grid-cols-7 lg:items-start">
+        <div class="col-span-2 space-y-8 lg:sticky lg:top-32 lg:max-w-52">
+          <div class="space-y-5">
+            <a
+              href={integrationHref}
+              class="flex items-center text-white opacity-70 transition hover:underline hover:opacity-100">
+              <Icons icon="ChevronLeft" class="me-1 w-5" />
+              {t("integration.backToIntegration")}
+            </a>
+
+            {
+              image && (
+                <div class="bg-accent flex h-36 w-full items-center justify-center rounded-xl py-4">
+                  <OptimizedImage
+                    src={image}
+                    width={125}
+                    height={125}
+                    alt={"About " + plainify(title).toLowerCase()}
+                    class="h-full w-full rounded-xl object-contain"
+                  />
+                </div>
+              )
+            }
+            {
+              ctaBtn && (
+                <ButtonLink
+                  content={ctaBtn}
+                  class="btn-primary has-text-flip-animation w-full rounded-md!"
+                  title={"Learn more about " + plainify(title).toLowerCase()}
+                />
+              )
+            }
+          </div>
+          {
+            fields && (
+              <div class="divide-primary/25 prose-a:hover:underline space-y-4 divide-y">
+                {fields.map((field) => (
+                  <div class="space-y-1.5 pb-4 first:pt-0">
+                    <div class="font-medium text-white" set:html={field.name} />
+                    <div set:html={markdownify(field.content)} />
+                  </div>
+                ))}
+                <div class="space-y-1.5 pb-4 first:pt-0">
+                  <div
+                    class="font-medium text-white"
+                    set:html={t("common.category")}
+                  />
+                  <div class="flex flex-wrap gap-2">
+                    {categories?.map((category) => (
+                      <a
+                        href={getLocaleUrlCTM(
+                          "/" + collection + "/#" + category,
+                          Astro.currentLocale,
+                        )}
+                        set:html={markdownify(toSentenceCase(category))}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          }
+        </div>
+        <div class="col-span-5 space-y-10">
+          <div>
+            {title && <h2 class="h4" set:html={markdownify(title)} />}
+            {excerpt && <p class="mt-4" set:html={markdownify(excerpt)} />}
+          </div>
+          <div class="prose-styles">
+            {Content && <Content />}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related Integrations -->
+<section>
+  <div class="container space-y-12 lg:space-y-16">
+    {
+      title && (
+        <div class="mx-auto text-center">
+          <h2
+            data-aos="fade-up-sm"
+            class="has-italic-text capitalize"
+            set:html={markdownify(
+              t("integration.relatedIntegrationSectionTitle"),
+            )}
+          />
+        </div>
+      )
+    }
+    <div
+      data-aos="fade-up-sm"
+      data-aos-delay="200"
+      class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+      {relatedIntegrations.map((item) => <IntegrationCard {...item} />)}
+    </div>
+  </div>
+</section>

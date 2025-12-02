@@ -1,0 +1,43 @@
+---
+/**
+ * Example Usage
+
+  <ListCheck>
+
+  - **Inconsistent Customer Interactions**: Customers experienced varying levels of service quality across different channels.
+  - **Lack of Personalization**: Limited data integration led to generic, one-size-fits-all communication.
+  - **Customer Retention**: Difficulty in retaining customers due to inadequate follow-up and engagement.
+
+  </ListCheck>
+ 
+ */
+import { markdownify } from "@/lib/utils/textConverter";
+
+interface Props {
+  content?: string[];
+  class?: string;
+  twoColumn?: boolean;
+}
+
+let { content: list, twoColumn, class: className = "", ...rest } = Astro.props;
+---
+
+<div
+  class:list={[
+    "has-list has-list-check styled-list prose-ul:grid prose-ul:gap-6 bg-white/5 p-6",
+    twoColumn ? "prose-ul:md:grid-cols-2" : "prose-ul:grid-cols-1",
+    className,
+  ]}
+  {...rest}>
+  {
+    list ? (
+      <ul>
+        {list.map((item: string) => (
+          <li set:html={markdownify(item)} />
+        ))}
+      </ul>
+    ) : (
+      <slot />
+    )
+  }
+</div>

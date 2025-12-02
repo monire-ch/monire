@@ -59,12 +59,6 @@
         },
         {
           "enable": true,
-          "name": "Fonctionnalit s",
-          "url": "/features/",
-          "weight": 1
-        },
-        {
-          "enable": true,
           "name": "Tarifs",
           "url": "/pricing/",
           "weight": 2
@@ -92,60 +86,6 @@
           "name": "Article unique",
           "url": "/blog/post-1/",
           "weight": 8
-        }
-      ]
-    },
-    {
-      "enable": true,
-      "name": "Atouts",
-      "weight": 2,
-      "hasMegaMenu": true,
-      "cta": {
-        "enable": true,
-        "image": "/images/menu-cta.png",
-        "title": "R cup rez des informations actionnables",
-        "description": "Upstart est auto-h berg , ce qui signifie que vos donn es de site web restent sur votre serveur.",
-        "ctaBtn": {
-          "enable": true,
-          "label": "Obtenez une version",
-          "url": "/contact/",
-          "rel": "",
-          "target": ""
-        }
-      },
-      "menus": [
-        {
-          "enable": true,
-          "children": [
-            {
-              "enable": true,
-              "icon": "/images/icons/svg/focus.svg",
-              "name": "Focus sur les choses importantes",
-              "description": "Upstart suit les m triques essentielles de votre site web.",
-              "url": "/features/"
-            },
-            {
-              "enable": true,
-              "icon": "/images/icons/svg/privacy.svg",
-              "name": "Mettez la vie priv e en premier",
-              "description": "Upstart ne suit pas les utilisateurs sur plusieurs sites web ou ne",
-              "url": "/features/"
-            },
-            {
-              "enable": true,
-              "icon": "/images/icons/svg/data.svg",
-              "name": "Poss dez vos donn es",
-              "description": "Upstart est auto-h berg , ce qui signifie que vos donn es de site web.",
-              "url": "/features/"
-            },
-            {
-              "enable": true,
-              "icon": "/images/icons/svg/time.svg",
-              "name": "Donn es imm diatement disponibles",
-              "description": "Les donn es collect es par Upstart sont imm diatement disponibles sur.",
-              "url": "/features/"
-            }
-          ]
         }
       ]
     },
@@ -203,12 +143,6 @@
       "enable": true,
       "name": "Changelog",
       "url": "/changelog/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Fonctionnalit s",
-      "url": "/features/",
       "weight": 0
     },
     {

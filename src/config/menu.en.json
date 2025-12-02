@@ -2,7 +2,7 @@
   "main": [
     {
       "enable": true,
-      "name": "Home",
+      "name": "Dome",
       "weight": 1,
       "url": ""
     },

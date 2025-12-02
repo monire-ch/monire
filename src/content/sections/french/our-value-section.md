@@ -16,4 +16,6 @@ list:
     description: Intelligent AI automations handle repetitive tasks around the clock, freeing you to focus on what really matters.
   - title: Easy Updates
     description: Once your site is live, you’ll have full control. Editing content is simple and intuitive.
+
+fineprint: "* For Webflow websites. Custom-coded projects may require light ongoing updates."
 ---

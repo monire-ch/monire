@@ -12,6 +12,7 @@ type ourValueSectionType = Section & {
     title: string;
     description: string;
   }[];
+  fineprint?: string;
 };
 type Props = {
   content?: ourValueSectionType;
@@ -32,7 +33,7 @@ let actualContent = overrideObjects(
 ) as ourValueSectionType;
 
 // Extracting required values from 'content' object
-let { title, subtitle, list } = actualContent as ourValueSectionType;
+let { title, subtitle, list, fineprint } = actualContent as ourValueSectionType;
 ---
 
 <section>
@@ -50,17 +51,18 @@ let { title, subtitle, list } = actualContent as ourValueSectionType;
         )
       }
       {
-      list && (
-        <div
-          data-aos="fade-up-sm"
-          data-aos-delay="200"
-          class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {list.map((item) => (
-            <ValueCard {...item} />
-          ))}
-        </div>
-      )
-    }
+        list && (
+          <div
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+            class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {list.map((item) => (
+              <ValueCard {...item} />
+            ))}
+            <p>{markdownify(fineprint)}</p>
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

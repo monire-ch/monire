@@ -54,7 +54,6 @@
   # - "src/[...lang]/pages" folder
   # - "src/content.config.ts" collections object
   blogFolder        = "blog" # Folder where blog posts are stored
-  integrationFolder = "integration" # Folder where services are stored
 
   pagination   = 6 # Number of posts displayed on each page blog list page
   stickyHeader = true # Enables or disable sticky feature of header

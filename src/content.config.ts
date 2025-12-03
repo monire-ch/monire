@@ -1,7 +1,5 @@
 import { defineCollection, z } from "astro:content";
-import config from "../.astro/config.generated.json" with { type: "json" };
 
-const { integrationFolder } = config.settings;
 
 // Universal Page Schema
 const page = z.object({
@@ -45,39 +43,9 @@ const blogCollection = defineCollection({
   ),
 });
 
-// Integration Collection
-const integrationCollection = defineCollection({
-  schema: page.merge(
-    z.object({
-      categories: z.array(z.string()).optional(),
-      excerpt: z.string().optional(),
-      ctaBtn: buttonSchema.optional(),
-      sections: z
-        .array(
-          z.object({
-            title: z.string(),
-            description: z.string(),
-            category: z.string(),
-          }),
-        )
-        .optional(),
-      fields: z
-        .array(
-          z.object({
-            name: z.string(),
-            content: z.string(),
-          }),
-        )
-        .optional(),
-    }),
-  ),
-});
-
 // Export collections
 export const collections = {
   blog: blogCollection,
-  integration: integrationCollection,
-  [integrationFolder]: integrationCollection,
 
   pages: pagesCollection,
   sections: defineCollection({}),

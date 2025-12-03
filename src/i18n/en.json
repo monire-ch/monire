@@ -14,10 +14,6 @@
   "subscription": {
     "label": "Subscribe to our newsletter"
   },
-  "integration": {
-    "relatedIntegrationSectionTitle": "You might be **interested in**",
-    "backToIntegration": "Browse"
-  },
   "footer": {
     "quickLinks": "Quick Links",
     "legal": "Legal",

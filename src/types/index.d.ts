@@ -7,12 +7,6 @@ export type MarqueeConfig = {
   duration: string;
 };
 
-// Type for this section data
-export type customersSectionType = Section & {
-  list: MarqueeListItem[];
-  marquee: MarqueeConfig;
-};
-
 // Type for the video configuration
 export type VideoConfig = {
   src: string; // youtube or vimeo video ID or path to video file

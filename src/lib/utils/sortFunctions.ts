@@ -16,7 +16,9 @@ type WeightedItem = {
   [key: string]: any;
 };
 
-export function sortByWeight(array: WeightedItem[]): WeightedItem[] {
+export function sortByWeight<
+  T extends { weight?: number; children?: T[]; menus?: T[] },
+>(array: T[]): T[] {
   return array
     .slice() // Create a shallow copy to avoid mutating the original array
     .sort((a, b) => {

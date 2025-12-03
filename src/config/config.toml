@@ -89,12 +89,6 @@
     disableLanguages     = [] # List of languages to disable (eg: ["fr", "es"])
     showDefaultLangInUrl = false # Show default language in URL (eg: https://getastrothemes.com/en/)
 
-  # Navigation Button In Header
-  [settings.navigationButton]
-    enable = true
-    label  = "" # Check src/i18n/en.json and src/i18n/fr.json for changing the navigation button label in different languages or directly add value here if you are not using internationalization feature
-    url    = "/contact/"
-
   [settings.markup.tableOfContents]
     enable     = true
     expanded   = true # whether to expand the table of contents by default

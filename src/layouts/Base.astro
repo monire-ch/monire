@@ -29,13 +29,10 @@ type Props = JSONLDProps & {
   sectionSpacing?: "md" | "lg";
 };
 
-// destructure frontmatter
 let { sectionSpacing = "lg", structuredData } = Astro.props;
 
-// Exclude empty key value weather it may empty string, object or array from Astro.props
 let props = removeEmptyKeys(Astro.props);
 
-// Section spacing class
 const sectionSpacingClass =
   sectionSpacing === "md" ? "has-section-spacing-md" : "has-section-spacing-lg";
 ---
@@ -53,6 +50,5 @@ const sectionSpacingClass =
 
     <GlobalScripts />
     <BreakpointIndicator />
-
   </body>
 </html>

@@ -1,0 +1,62 @@
+---
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { Section } from "@/types";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+import ValueCard from "@/components/cards/ValueCard.astro";
+
+type ourValueSectionType = Section & {
+  list: {
+    title: string;
+    description: string;
+    icon?: string,
+  }[];
+  fineprint?: string;
+};
+type Props = {
+  content?: ourValueSectionType;
+};
+
+let defaultContent = (
+  await getEntryCTM("sections", "our-value-section", Astro.currentLocale)
+)?.data as ourValueSectionType;
+
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as ourValueSectionType;
+
+let { title, subtitle, list, fineprint } = actualContent as ourValueSectionType;
+---
+
+<section>
+  <div class="section-gradient relative after:top-0">
+    <div class="container space-y-16 md:space-y-28">
+      {
+        title && (
+          <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
+            <Subtitle content={subtitle} />
+            <h2
+              class="has-italic-text capitalize"
+              set:html={markdownify(title)}
+            />
+          </div>
+        )
+      }
+      {
+        list && (
+          <div
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+            class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {list.map((item) => (
+              <ValueCard {...item} />
+            ))}
+            <p>{markdownify(fineprint)}</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

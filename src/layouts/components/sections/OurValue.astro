@@ -6,7 +6,6 @@ import type { Section } from "@/types";
 import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 import ValueCard from "@/components/cards/ValueCard.astro";
 
-// Type for this section data
 type ourValueSectionType = Section & {
   list: {
     title: string;
@@ -19,21 +18,15 @@ type Props = {
   content?: ourValueSectionType;
 };
 
-// Fetching the default content for the this section
 let defaultContent = (
   await getEntryCTM("sections", "our-value-section", Astro.currentLocale)
 )?.data as ourValueSectionType;
 
-// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
-// The 'content' prop should match the structure of 'defaultContent'.
-// Allows using this section with different content across multiple pages.
-// If 'content' is missing, 'defaultContent' will be used.
 let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
 ) as ourValueSectionType;
 
-// Extracting required values from 'content' object
 let { title, subtitle, list, fineprint } = actualContent as ourValueSectionType;
 ---
 

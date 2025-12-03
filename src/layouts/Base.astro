@@ -27,29 +27,20 @@ type Props = JSONLDProps & {
   disableTagline?: boolean;
   structuredData?: Props;
   sectionSpacing?: "md" | "lg";
-  heroBackground?: {
-    src?: string,
-  };
 };
 
-let { sectionSpacing = "lg", structuredData, heroBackground } = Astro.props;
+let { sectionSpacing = "lg", structuredData } = Astro.props;
 
 let props = removeEmptyKeys(Astro.props);
 
 const sectionSpacingClass =
   sectionSpacing === "md" ? "has-section-spacing-md" : "has-section-spacing-lg";
-
-const heroBgSrc = heroBackground ? heroBackground.src : '';
-const wrapperClass = heroBackground ? "bg-cover bg-center" : "";
-const wrapperStyle = heroBackground
-  ? `background-image: url("${heroBgSrc}");`
-  : undefined;
 ---
 
 <!doctype html>
 <html lang={config.settings.multilingual.defaultLanguage || "en"}>
   <Head {...props} structuredData={structuredData} />
-  <body class={wrapperClass} style={wrapperStyle}>
+  <body>
     {!Astro.props.homepage && <PageLoader />}
     <Header {...props} />
     <main class:list={[sectionSpacingClass, Astro.props.class]}>

@@ -25,9 +25,11 @@ let actualContent = overrideObjects(
 ) as homeBannerSectionType;
 
 let { title, description, button } = actualContent as homeBannerSectionType;
+
+const background = "/images/hero/background.jpg";
 ---
 
-<section>
+<section class="bg-cover bg-center" style={`background-image: url("${background}");`}>
   <div class="container">
     <div class="relative z-10 mx-auto max-w-4xl space-y-10">
       <div>

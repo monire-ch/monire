@@ -15,10 +15,9 @@ export function getStaticPaths() {
 }
 
 const homepage = await getEntryCTM("homepage", "-index", Astro.currentLocale);
-const background = '/images/hero/background.jpg';
 ---
 
-<Base {...homepage.data} heroBackground={{src: background}}>
+<Base {...homepage.data}>
   <HomeBanner />
   <OurValue />
   <WhyUs />

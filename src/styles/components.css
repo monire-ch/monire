@@ -479,16 +479,3 @@ footer {
     stroke: currentColor !important;
   }
 }
-
-.gold-text,
-.gold-text * {
-  @apply bg-clip-text text-transparent;
-  background-image: url("/images/hero/gold-fill.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent; /* Safari */
-}

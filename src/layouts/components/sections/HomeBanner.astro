@@ -24,7 +24,7 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as homeBannerSectionType;
 
-let { title, description, button } = actualContent as homeBannerSectionType;
+let { title, subtitle, description, button } = actualContent as homeBannerSectionType;
 
 const background = "/images/hero/background.jpg";
 ---
@@ -36,18 +36,18 @@ const background = "/images/hero/background.jpg";
         {
           title && (
             <AnimatedText
-              class="has-italic-text font-secondary mb-6 text-center text-5xl text-white capitalize md:text-7xl/tight"
+              class="font-secondary mb-6 text-center text-5xl capitalize md:text-7xl/tight gold-text"
               content={markdownify(title)}
             />
           )
         }
         {
-          description && (
+          subtitle && (
             <AnimatedText
               class="text-center text-lg/normal"
               stagger={0.03}
               delay={0.3}
-              content={markdownify(description)}
+              content={markdownify(subtitle)}
             />
           )
         }
@@ -69,15 +69,7 @@ const background = "/images/hero/background.jpg";
           button && (
             <ButtonLink
               content={button}
-              class="btn-md btn-primary btn-has-icon group relative z-0 flex items-center gap-4 [&>.label]:z-20">
-              <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-                <OptimizedImage
-                  alt="icon"
-                  class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                  src="/images/icons/svg/star.svg"
-                />
-              </span>
-            </ButtonLink>
+              class="btn-primary" />
           )
         }
       </div>

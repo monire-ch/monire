@@ -1,10 +1,11 @@
 ---
-title: Effortless analytics and real-time **insights**.
-description: Upstart makes it easy to collect, analyze, and understand your data — so you can focus on growth.
+title: MONIRÉ
+subtitle: WEB DEVELOPMENT & AI AUTOMATIONS 
+description: Switzerland-based high-end website development and AI automations for small to midsize businesses, built to drive measurable growth and eliminate repetitive manual work.
 image: "/images/product-demo.png"
 button:
   enable: true
-  label: "Get Started"
+  label: "WORK WITH US"
   url: "/contact"
   rel: ""
   target: ""

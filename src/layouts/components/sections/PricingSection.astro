@@ -10,7 +10,6 @@ import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
 import PricingCard from "@/layouts/components/cards/PricingCard.astro";
 import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
-import PricingComparisonSection from "@/components/sections/PricingComparison.astro";
 
 export type pricingSectionType = Section &
   PricingComparison & {
@@ -46,6 +45,8 @@ let {
   plans,
   comparison,
   list,
+  heading,
+  description,
 } = actualContent as pricingSectionType;
 
 const { class: className, layout = "regular" } = Astro.props;
@@ -54,67 +55,76 @@ const selectedPlanIndex = list.findIndex((item) => item.featured);
 ---
 
 {
-  enable &&
-    (layout === "regular" ? (
-      <section class:list={["relative", className]}>
-        <div class="container space-y-12 md:space-y-16">
-          <div
-            class="mx-auto max-w-2xl justify-start space-y-5 text-center"
-            data-aos="fade-up-sm">
-            {title && (
-              <div>
-                <Subtitle content={subtitle} />
-                <h2
-                  class="has-italic-text capitalize"
-                  set:html={markdownify(title)}
+  enable && (
+    <section id="pricing" class:list={["relative", className]}>
+      <div class="container space-y-12 md:space-y-16">
+        <div
+          class="mx-auto max-w-2xl justify-start space-y-5 text-center"
+          data-aos="fade-up-sm">
+          {title && (
+            <div>
+              <Subtitle content={subtitle} />
+              <h2
+                class="has-italic-text capitalize"
+                set:html={markdownify(title)}
+              />
+            </div>
+          )}
+          {plans && plans.enable && plans.list.length > 0 && (
+            <div class="bg-primary relative mx-auto flex w-fit flex-wrap rounded-full p-2">
+              <span
+                class="pricing-plan-highlighter absolute top-0 left-0 h-full w-1/2 rounded-full bg-white transition-all duration-300"
+                aria-hidden="true"
+              />
+              {plans.list.map((item) => (
+                <button
+                  data-plan-btn={item.label.toLowerCase()}
+                  class:list={[
+                    "pricing-plan-btn [&.active]:text-primary relative rounded-full px-4 py-1.5 text-sm font-medium tracking-wider text-white transition delay-100",
+                    {
+                      active: item.selected,
+                    },
+                  ]}
+                  set:html={markdownify(item.label)}
                 />
-              </div>
-            )}
-            {plans && plans.enable && plans.list.length > 0 && (
-              <div class="bg-primary relative mx-auto flex w-fit flex-wrap rounded-full p-2">
-                <span
-                  class="pricing-plan-highlighter absolute top-0 left-0 h-full w-1/2 rounded-full bg-white transition-all duration-300"
-                  aria-hidden="true"
-                />
-                {plans.list.map((item) => (
-                  <button
-                    data-plan-btn={item.label.toLowerCase()}
-                    class:list={[
-                      "pricing-plan-btn [&.active]:text-primary relative rounded-full px-4 py-1.5 text-sm font-medium tracking-wider text-white transition delay-100",
-                      {
-                        active: item.selected,
-                      },
-                    ]}
-                    set:html={markdownify(item.label)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-          {list && list.length > 0 && (
-            <div
-              class:list={[
-                "grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 xl:gap-x-12",
-              ]}
-              data-aos="fade-up-sm"
-              data-aos-delay="200">
-              {list.map((item, index) => (
-                <div class="bg-body min-h-full">
-                  <PricingCard
-                    index={index}
-                    content={{ ...item, plans, comparison }}
-                  />
-                </div>
               ))}
             </div>
           )}
         </div>
-      </section>
-    ) : (
-      <PricingComparisonSection
-        content={{ comparison, selectedPlanIndex, list }}
-      />
-    ))
+        {list && list.length > 0 && (
+          <div
+            class:list={[
+              "grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 xl:gap-x-12",
+            ]}
+            data-aos="fade-up-sm"
+            data-aos-delay="200">
+            {list.map((item, index) => (
+              <div class="bg-body min-h-full">
+                <PricingCard
+                  index={index}
+                  content={{ ...item, plans, comparison }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        {heading && (
+          <h4
+            class:list={[
+              "prose-strong:font-medium prose-strong:text-secondary mb-8",
+              {
+                "text-h5/relaxed": heading.titleSize === "sm",
+              },
+            ]}
+            set:html={markdownify(heading)}
+          />
+        )}
+        {description && (
+          <div class="prose-styles" set:html={markdownify(description, true)} />
+        )}
+      </div>
+    </section>
+  )
 }
 
 <script>

@@ -1,56 +1,48 @@
 ---
 enable: true # Control the visibility of this section across all pages where it is used
-title: Pricing That **Makes Sense**
+title: "Two services. One goal: helping your business grow."
+subtitle: Pricing
+
+heading: Need Something More Specific?
+description: "We know every project is different. If you need support beyond the packages above, we’re happy to tailor a custom scope. We also collaborate with trusted partners in photography, social media, and copywriting, so everything can be coordinated in one place."
 
 plans:
   enable: true
   list:
     # List of available plans. Ensure that these names are used consistently in other places where applicable.
     - selected: true
-      label: Monthly # Use this value exactly in all corresponding places below.
+      label: "WEB DESIGN & DEVELOPMENT" # Use this value exactly in all corresponding places below.
     - selected: false
-      label: Yearly # Use this value exactly in all corresponding places below.
+      label: AI AUTOMATIONS # Use this value exactly in all corresponding places below.
 
 list:
-  # Basic Plan
+  # STARTER Plan
   - enable: true
     featured: false
     badge:
       enable: false
       label: Most Popular
-    name: Basic # Name of the pricing tier.
-    description: Nostrud exercitation ullamco laboris nisi ut aliquip ex
+    name: Starter
+    description: "Ideal for: New businesses, coaches, freelancers, small consultancies."
 
     price:
       # Pricing details for each plan type.
-      - type: Monthly # Plan type (must match values in the 'plans' section above).
-        prependValue: $
-        value: 12
+      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 3500
         appendValue:
-      - type: Yearly # Plan type (must match values in the 'plans' section above).
-        prependValue: $
+      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
         value: 24
         appendValue:
 
     features:
-      - Basic tracking of page views, events, and user properties
-      - Real-time data visualization
-      - Limited data export options **CSV**
-      - 48-hour support response time
-
-    usages:
-      - type: Monthly # Plan type (must match values in the 'plans' section above).
-        list:
-          - label: Data Points
-            value: 536
-          - label: Traffic
-            value: 100
-      - type: Yearly # Plan type (must match values in the 'plans' section above).
-        list:
-          - label: Data Points
-            value: 1203
-          - label: Traffic
-            value: 1000
+      - Up to 5 pages
+      - Clean, professional visual style
+      - Mobile-ready + fast loading
+      - Contact form
+      - Basic CMS for easy text/image updates
+      - Essential on-page SEO (meta tags, sitemap, search-friendly structure)
 
     ctaBtn:
       enable: true
@@ -59,45 +51,34 @@ list:
       rel:
       target:
 
-  # Medium Plan
+  # Advanced Plan
   - enable: true
     featured: true
     badge:
       enable: true
       label: Most Popular
-    name: Starter # Name of the pricing tier.
-    description: Nostrud exercitation ullamco laboris nisi ut aliquip ex
+    name: Advanced
+    description: Best for SMEs, agencies, boutique firms, B2B services.
 
     price:
       # Pricing details for each plan type.
-      - type: Monthly # Plan type (must match values in the 'plans' section above).
-        prependValue: $
-        value: 20
+      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 6000
         appendValue:
-      - type: Yearly # Plan type (must match values in the 'plans' section above).
-        prependValue: $
+      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
         value: 40
         appendValue:
 
     features:
-      - In-Depth Brand Positioning Workshop
-      - Competitive Analysis Top 5 Competitors
-      - Comprehensive Market Analysis
-      - Customer Insights & Segmentation
-
-    usages:
-      - type: Monthly # Plan type (must match values in the 'plans' section above).
-        list:
-          - label: Data Points
-            value: 754
-          - label: Traffic
-            value: 850
-      - type: Yearly # Plan type (must match values in the 'plans' section above).
-        list:
-          - label: Data Points
-            value: 1467
-          - label: Traffic
-            value: 1600
+      - Up to 10 pages
+      - Custom visual design** + subtle animations
+      - More flexible CMS structures (blogs, case studies, product/service lists)
+      - SEO optimization focused on ranking (not just set-up)
+      - Google Analytics with event tracking
+      - Integration of 1-2 third-party tools (booking system, CRM form, etc.)
+      - Support for 2 languages
 
     ctaBtn:
       enable: true
@@ -106,45 +87,32 @@ list:
       rel:
       target:
 
-  # Pro Plan
+  # Premium Plan
   - enable: true
     featured: false
     badge:
       enable: false
       label: Most Popular
-    name: Pro # Name of the pricing tier.
-    description: Nostrud exercitation ullamco laboris nisi ut aliquip ex
+    name: Premium
+    description: "Best for: growing firms, established brands, companies needing workflows & integrations."
 
     price:
-      # Pricing details for each plan type.
-      - type: Monthly # Plan type (must match values in the 'plans' section above).
-        prependValue: $
-        value: 30
+      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 9000
         appendValue:
-      - type: Yearly # Plan type (must match values in the 'plans' section above).
-        prependValue: $
+      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
         value: 60
         appendValue:
 
     features:
-      - Comprehensive Brand Positioning Strategy
-      - Full Competitive Analysis
-      - Advanced Market Analysis
-      - In-Depth Customer Insights
-
-    usages:
-      - type: Monthly # Plan type (must match values in the 'plans' section above).
-        list:
-          - label: Data Points
-            value: 976
-          - label: Traffic
-            value: 1200
-      - type: Yearly # Plan type (must match values in the 'plans' section above).
-        list:
-          - label: Data Points
-            value: 2045
-          - label: Traffic
-            value: 2600
+      - Unlimited pages
+      - Full custom UX + UI layout planning
+      - Advanced CMS
+      - "Integrations with tools like: Newsletter, booking, calendar, live chat, client portal"
+      - Comprehensive SEO strategy
+      - Multi-language support
 
     ctaBtn:
       enable: true
@@ -152,75 +120,4 @@ list:
       url: /contact/
       rel:
       target:
-
-# Pricing Comparison
-comparison:
-  - label: Features
-    list:
-      - value: Integrations
-        included:
-          - true # Free Plan
-          - true # Starter Plan
-          - true # Pro Plan
-      - value: Shared links
-        included:
-          - true # Free Plan
-          - true # Starter Plan
-          - true # Pro Plan
-      - value: Importing and exporting
-        included:
-          - true # Free Plan
-          - true # Starter Plan
-          - true # Pro Plan
-      - value: Team members
-        included:
-          - false
-          - Up to 20 users
-          - Up to 50 users
-
-  - label: Reporting
-    list:
-      - value: Advanced analytics
-        included:
-          - true # Free Plan
-          - true # Starter Plan
-          - true # Pro Plan
-      - value: Basic reports
-        included:
-          - false # Free Plan
-          - true # Starter Plan
-          - true # Pro Plan
-      - value: Professional reports
-        included:
-          - false # Free Plan
-          - false # Starter Plan
-          - true # Pro Plan
-      - value: Custom report builder
-        included:
-          - false
-          - false
-          - true
-
-  - label: Support
-    list:
-      - value: 24/7 online support
-        included:
-          - true # Free Plan
-          - false # Starter Plan
-          - false # Pro Plan
-      - value: Quarterly product workshops
-        included:
-          - false # Free Plan
-          - false # Starter Plan
-          - true # Pro Plan
-      - value: Priority phone support
-        included:
-          - false # Free Plan
-          - false # Starter Plan
-          - true # Pro Plan
-      - value: 1:1 onboarding tour
-        included:
-          - false
-          - false
-          - true
 ---

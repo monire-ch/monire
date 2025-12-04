@@ -1,30 +1,23 @@
 ---
 import Logo from "@/components/global/Logo.astro";
 import config from ".astro/config.generated.json" with { type: "json" };
-import LanguageSwitcher from "@/layouts/components/global/header/LanguageSwitcher.astro";
-import NavigationButton from "@/layouts/components/global/header/NavigationButton.astro";
 import NavMenuItem from "@/layouts/components/global/header/MenuItem.astro";
 import NavToggleBtn from "@/layouts/components/global/header/NavToggleBtn.astro";
 import type { NavigationLink } from "@/types";
-import { useTranslations } from "@/lib/utils/i18nUtils";
 import { sortByWeight } from "@/lib/utils/sortFunctions";
 import { filteredEnabled } from "@/lib/utils/filteredEnabled";
 
-const t = await useTranslations(Astro.currentLocale as string);
-let main = t("main") as NavigationLink[];
+import menuFromJson from "@/config/menu.en.json" with { type: "json" };
+
+let main = menuFromJson.main as NavigationLink[];
 main = filteredEnabled(main);
+main = sortByWeight(main);
 
-// Sort menus by weight
-main = sortByWeight(main) as NavigationLink[];
-
-// Is Homepage
-const isHomepage =
-  Astro.url.pathname === "/" ||
-  Astro.url.pathname === `/${Astro.currentLocale}/`;
+const isHomepage = Astro.url.pathname === "/";
 
 const {
   site: { logoHoverAnimation },
-  settings: { stickyHeader, navigationButton },
+  settings: { stickyHeader },
 } = config;
 ---
 
@@ -53,43 +46,7 @@ const {
         id="nav-menu"
         class="navbar hs-dropdown-menu hs-dropdown-open:flex hs-dropdown-open:mt-2! has-customized-scrollbar max-lg:absolute max-lg:transform-none! lg:transform-none!">
         {main.map((menu) => <NavMenuItem menu={menu} />)}
-
-        {/* Language Switcher For Small Devices */}
-        {
-          config.settings.multilingual.enable && (
-            <li class="max-lg:px-4 max-lg:py-2 lg:hidden" role="menuitem">
-              <LanguageSwitcher />
-            </li>
-          )
-        }
-        {
-          navigationButton.enable && (
-            <li class="max-lg:px-4 max-lg:py-2 lg:hidden" role="menuitem">
-              {navigationButton.enable && (
-                <NavigationButton
-                  navigationButton={navigationButton}
-                  navigationbuttonLabel={t("navigation.buttonLabel")}
-                />
-              )}
-            </li>
-          )
-        }
       </ul>
-
-      {/* Navigation Button For Large Devices */}
-      {
-        (navigationButton.enable || config.settings.multilingual.enable) && (
-          <div class="hidden gap-3.5 max-lg:me-4 max-lg:ml-auto lg:flex lg:items-center">
-            {config.settings.multilingual.enable && <LanguageSwitcher />}
-            {navigationButton.enable && (
-              <NavigationButton
-                navigationButton={navigationButton}
-                navigationbuttonLabel={t("navigation.buttonLabel")}
-              />
-            )}
-          </div>
-        )
-      }
       <NavToggleBtn />
     </nav>
   </div>

@@ -310,6 +310,7 @@ export interface NavigationLink extends ChildNavigationLink {
   testimonial?: Testimonial;
   services?: Service;
   menus?: NavigationLink[];
+  action?: string;
 }
 
 // END MENU TYPE

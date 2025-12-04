@@ -5,7 +5,7 @@
   tagline            = "Saas & Startup Astro Js Theme"
   taglineSeparator   = "" # default is " - " 
   baseUrl            = "https://upstart-astro.netlify.app" # Base URL for the site and used in OpenGraph meta tags.
-  logo               = "/images/logo.svg" # Path to the site's logo
+  logo               = "/images/monire_logo.png" # Path to the site's logo
   logoHoverAnimation = true # Enable or disable logo hover animation
   logoText           = "Upstart" # Text displayed next to the logo
   logoWidth          = "32px" # Width of the logo
@@ -18,7 +18,7 @@
   # Add your site logo in image path below and open your terminal and run "npm run generate-favicons" to generate favicons for different devices and platform (https://realfavicongenerator.net/checker)
   [site.favicon]
     path  = "/images/favicons" # favicon images path (No need to change it)
-    image = "/images/logo.svg" # Add your site logo path here and follow upper instruction
+    image = "/images/monire_logo.png" # Add your site logo path here and follow upper instruction
 
 
 # SEO Metadata
@@ -88,12 +88,6 @@
     defaultLanguage      = "en"
     disableLanguages     = [] # List of languages to disable (eg: ["fr", "es"])
     showDefaultLangInUrl = false # Show default language in URL (eg: https://getastrothemes.com/en/)
-
-  # Navigation Button In Header
-  [settings.navigationButton]
-    enable = true
-    label  = "" # Check src/i18n/en.json and src/i18n/fr.json for changing the navigation button label in different languages or directly add value here if you are not using internationalization feature
-    url    = "/contact/"
 
   [settings.markup.tableOfContents]
     enable     = true

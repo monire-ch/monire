@@ -4,7 +4,6 @@ const { before, after, impact, client, date, category, tools, website } =
 ---
 
 <div class="max-w-xl space-y-8 text-sm">
-  <!-- Before -->
   {
     before && (
       <div>
@@ -13,7 +12,7 @@ const { before, after, impact, client, date, category, tools, website } =
       </div>
     )
   }
-  <!-- After -->
+
   {
     after && (
       <div>
@@ -23,7 +22,6 @@ const { before, after, impact, client, date, category, tools, website } =
     )
   }
 
-  <!-- Impact -->
   {
     impact && (
       <div>
@@ -35,25 +33,21 @@ const { before, after, impact, client, date, category, tools, website } =
 
   <hr class="my-6" />
 
-  <!-- Client -->
   <div class="flex justify-between border-b py-2">
     <span class="opacity-60">Client</span>
     <span>{client}</span>
   </div>
 
-  <!-- Date -->
   <div class="flex justify-between border-b py-2">
     <span class="opacity-60">Date</span>
     <span>{date}</span>
   </div>
 
-  <!-- Category -->
   <div class="flex justify-between border-b py-2">
     <span class="opacity-60">Category</span>
     <span class="rounded-full bg-gray-100 px-3 py-1 text-xs">{category}</span>
   </div>
 
-  <!-- Tools -->
   <div class="flex justify-between border-b py-2">
     <span class="opacity-60">Tools</span>
     <div class="flex flex-wrap justify-end gap-2">
@@ -65,7 +59,6 @@ const { before, after, impact, client, date, category, tools, website } =
     </div>
   </div>
 
-  <!-- Website -->
   {
     website && (
       <div class="flex justify-between py-2">

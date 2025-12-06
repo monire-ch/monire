@@ -44,8 +44,6 @@ const currentPlanFeatures = allFeatures
     if (item.included[index]) return item;
   })
   .filter(Boolean);
-
-console.log(badge);
 ---
 
 {
@@ -158,16 +156,9 @@ console.log(badge);
         {ctaBtn?.enable && (
           // CTA button
           <ButtonLink
-            class="btn-md btn-primary btn-has-icon group relative z-30 flex items-center justify-between gap-4"
-            content={ctaBtn}>
-            <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-              <OptimizedImage
-                alt="icon"
-                class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                src="/images/icons/svg/star.svg"
-              />
-            </span>
-          </ButtonLink>
+            class="btn-md btn-primary flex justify-center text-center"
+            content={ctaBtn}
+          />
         )}
       </div>
     </div>

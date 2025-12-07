@@ -5,7 +5,6 @@ import config from ".astro/config.generated.json" with { type: "json" };
 import { markdownify } from "@/lib/utils/textConverter";
 import { splitProtectedText } from "@/lib/utils/splitProtectedText";
 import SocialComponent from "@/components/social/Social.astro";
-import SubscriptionForm from "@/components/widgets/SubscriptionForm.astro";
 import { useTranslations, getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 
 const t = await useTranslations(Astro.currentLocale as string);
@@ -130,23 +129,6 @@ const copyrightParts = splitProtectedText(copyrightText);
                 </ul>
               </div>
             </div>
-            {
-              subscription && subscription.enable && (
-                <div class="mt-8 border-t pt-5">
-                  {(config.settings.subscription.title ||
-                    t("subscription.label")) && (
-                    <p
-                      class="mb-2.5"
-                      set:html={
-                        config.settings.subscription.title ||
-                        markdownify(t("subscription.label"))
-                      }
-                    />
-                  )}
-                  <SubscriptionForm {...subscription} />
-                </div>
-              )
-            }
           </div>
         </div>
       </div>

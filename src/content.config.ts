@@ -46,6 +46,7 @@ const caseStudies = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
+    type: z.string(),
     category: z.string(),
     date: z.string(),
     client: z.string(),
@@ -54,6 +55,9 @@ const caseStudies = defineCollection({
     before: z.string(),
     after: z.string(),
     impact: z.string(),
+    description: z.string().optional(),
+    backUrl: z.string().optional(),
+    backLabel: z.string().optional(),
   }),
 });
 

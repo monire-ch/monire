@@ -2,6 +2,10 @@
 title: "Expense Receipt Automation"
 category: "AI Automation"
 date: "August 2025"
+type: "automation"
+
+backUrl: "/pricing"
+backLabel: "Back to Pricing"
 
 client: "Brooksmiller & Partners AG"
 website: "https://brooksmillerpartners.com"

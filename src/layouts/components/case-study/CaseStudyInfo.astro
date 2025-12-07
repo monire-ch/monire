@@ -1,38 +1,16 @@
 ---
-const { before, after, impact, client, date, category, tools, website } =
-  Astro.props;
+interface Props {
+  client: string;
+  date: string;
+  category: string;
+  tools: string[];
+  website?: string;
+}
+
+const { client, date, category, tools = [], website } = Astro.props as Props;
 ---
 
-<div class="max-w-xl space-y-8 text-sm">
-  {
-    before && (
-      <div>
-        <h4 class="mb-1 font-semibold">Before:</h4>
-        <p class="whitespace-pre-line opacity-80">{before}</p>
-      </div>
-    )
-  }
-
-  {
-    after && (
-      <div>
-        <h4 class="mb-1 font-semibold">After:</h4>
-        <p class="whitespace-pre-line opacity-80">{after}</p>
-      </div>
-    )
-  }
-
-  {
-    impact && (
-      <div>
-        <h4 class="mb-1 font-semibold">Impact:</h4>
-        <p class="whitespace-pre-line opacity-80">{impact}</p>
-      </div>
-    )
-  }
-
-  <hr class="my-6" />
-
+<div class="max-w-xl space-y-2 text-sm">
   <div class="flex justify-between border-b py-2">
     <span class="opacity-60">Client</span>
     <span>{client}</span>

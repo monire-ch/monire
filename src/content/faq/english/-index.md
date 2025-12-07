@@ -1,6 +1,6 @@
 ---
 subtitle: "FAQ"
-title: "Frequently **Asked Questions**"
+title: "FAQs"
 metaDescription: This is a example description
 draft: false
 
@@ -10,121 +10,61 @@ list:
   - label: "General Information"
     list:
       - active: true
-        title: "What services do you offer?"
+        title: "What information do you need from me to start?"
         content: |
-          We offer a wide range of services including web development, branding, and digital marketing to help businesses grow and succeed.
-
-          - **Essentials**: Focused workshop to identify core values and USP.
-          - **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
-          - **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
+          We'll need to understand your business goals, target audience, key features or functionality you need, design preferences, timeline, and budget. If you have existing brand assets, content, or websites, those are helpful too. Please feel free to complete our <a href="/client-brief.docx" download>client brief form</a>, so we can better understand your needs and prepare for our first conversation.
       - active: false
-        title: "How can I request a quote or proposal?"
+        title: "Can you help with SEO?"
         content: |
-          You can request a quote by filling out the [contact form](#) on our site or emailing us directly at [info@upstart.com](#) with your project details.
+          While our primary focus is on development and AI automation, we build websites with SEO best practices in mind. We can also recommend trusted partners for ongoing SEO services.
+  - label: "Design and Development"
+    list:
+      - active: true
+        title: "Do you build custom websites or use templates?"
+        content: |
+          We primarily build custom websites tailored to your specific needs. However, we can also customize premium templates if you're working with a tighter budget or faster timeline.
       - active: false
-        title: "What is your turnaround time for projects?"
+        title: "Can you redesign my existing website?"
         content: |
-          Our turnaround time depends on the project's complexity, but we typically deliver within 2-4 weeks for standard projects.
+          Yes! We offer complete website redesigns, including modernizing outdated designs, improving user experience, and migrating to new platforms if needed.
       - active: false
-        title: "Do you offer custom solutions?"
+        title: "What platforms do you develop on?"
         content: |
-          Yes, we specialize in custom solutions tailored to meet the unique needs of your business or project.
+          We work with various technologies including React, Next.js, Webflow, and custom solutions. We'll recommend the best platform based on your specific requirements, budget, and long-term goals.
       - active: false
-        title: "What industries do you cater to?"
+        title: "Will I be able to edit my website myself?"
         content: |
-          We cater to a wide range of industries including technology, healthcare, education, and retail, among others.
+          We use user-friendly content management systems (CMS) so you can update text, images, and blog posts without technical skills. We provide training and documentation to ensure you're comfortable making changes.
       - active: false
-        title: "How can I contact support?"
+        title: "Who has the ownership of the website?"
         content: |
-          For support, please email us at [support@upstart.com](#) or use the live chat feature on our website for immediate assistance.
+          Once all invoices are paid, full ownership of the website and all designs we created is transferred to you.
+      - active: false
+        title: "I have the design - can you handle development only?"
+        content: |
+          If you already have the design, we can handle the development only. We’ll review your design together during our call and adjust the pricing based on the work needed.
+      - active: false
+        title: "How quickly can my website be completed?"
+        content: |
+          Timelines vary depending on the size and complexity of your site, so it’s hard to give an exact answer upfront. After our initial discussion, we’ll provide a clear estimate for both the design and development phases before we begin.
+      - active: false
+        title: "What is Webflow?"
+        content: |
+          Webflow is a modern website-building platform that lets us create fully custom, high-quality sites quickly, while giving you easy editing, great performance, and hassle-free hosting.
+  - label: "AI Automations"
+    list:
+      - active: true
+        title: "What is AI automation and how can it help my business?"
+        content: |
+          AI automation uses artificial intelligence to handle repetitive tasks, analyze data or streamline processes. Some examples of these include customer support chatbots, data entry, crafting email responses, content generation and more. The aim is to allow you to focus on high-value work and reduce errors.
+      - active: false
+        title: "Do I need technical knowledge to use AI automation tools?"
+        content: |
+          No! We design user-friendly solutions that integrate seamlessly into your existing workflows. We provide training and documentation so you can use the tools confidently.
   - label: "Maintenance"
     list:
       - active: true
-        title: "Do you provide ongoing maintenance services?"
+        title: "Do you offer long-term support?"
         content: |
-          Yes, we offer comprehensive maintenance packages to ensure your website or application stays updated and secure.
-
-          - **Essentials**: Focused workshop to identify core values and USP.
-          - **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
-          - **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
-      - active: false
-        title: "How do I report a technical issue?"
-        content: |
-          You can report technical issues via our [support form](#) or by emailing us at [tech@upstart.com](#) with a detailed description of the problem.
-      - active: false
-        title: "What is included in your maintenance plans?"
-        content: |
-          Our maintenance plans include regular updates, backups, performance checks, and security monitoring to keep your systems running smoothly.
-      - active: false
-        title: "How often do you perform updates?"
-        content: |
-          Updates are performed monthly or as needed, depending on the maintenance package you select.
-      - active: false
-        title: "Do you handle website hosting?"
-        content: |
-          Yes, we provide reliable hosting services as part of our maintenance plans or as a standalone service.
-      - active: false
-        title: "Can I upgrade my maintenance package?"
-        content: |
-          Absolutely, you can upgrade your maintenance package at any time by contacting our support team.
-  - label: "User Information"
-    list:
-      - active: true
-        title: "How do I create an account?"
-        content: |
-          Creating an account is easy. Simply click on the "Sign Up" button on our website and follow the instructions.
-
-          - **Essentials**: Focused workshop to identify core values and USP.
-          - **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
-          - **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
-      - active: false
-        title: "Can I update my personal details?"
-        content: |
-          Yes, you can update your personal details by logging into your account and navigating to the profile settings page.
-      - active: false
-        title: "How do I reset my password?"
-        content: |
-          To reset your password, click on the "Forgot Password" link on the login page and follow the prompts.
-      - active: false
-        title: "What should I do if I suspect unauthorized access?"
-        content: |
-          If you suspect unauthorized access, immediately change your password and contact our support team for further assistance.
-      - active: false
-        title: "Do you store user data securely?"
-        content: |
-          Yes, we prioritize data security and employ advanced encryption techniques to safeguard user information.
-      - active: false
-        title: "Can I delete my account?"
-        content: |
-          Yes, you can request account deletion by contacting our support team. Please note that this action is irreversible.
-  - label: "Financial Information"
-    list:
-      - active: true
-        title: "What payment methods do you accept?"
-        content: |
-          We accept various payment methods including credit cards, PayPal, and bank transfers for your convenience.
-
-          - **Essentials**: Focused workshop to identify core values and USP.
-          - **Growth**: In-depth workshop to establish a clear and differentiated brand identity.
-          - **Enterprise**: Comprehensive brand positioning strategy encompassing all aspects of your brand.
-      - active: false
-        title: "Do you offer refunds?"
-        content: |
-          Refunds are available under specific conditions as outlined in our refund policy. Please refer to our [terms and conditions](#) for details.
-      - active: false
-        title: "Is my payment information secure?"
-        content: |
-          Yes, all payment information is processed securely using industry-standard encryption and trusted payment gateways.
-      - active: false
-        title: "Do you provide invoices for transactions?"
-        content: |
-          Yes, we provide detailed invoices for every transaction, which are emailed to you upon successful payment.
-      - active: false
-        title: "Can I set up recurring payments?"
-        content: |
-          Yes, recurring payments can be set up for subscription-based services. Contact our billing team for assistance.
-      - active: false
-        title: "What currencies do you accept?"
-        content: |
-          We primarily accept payments in USD but also support other major currencies. Contact us for specific details.
+          We offer maintenance packages that include bug fixes, content updates, and technical support. We also offer one-time support for specific needs.
 ---

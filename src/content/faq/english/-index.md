@@ -1,6 +1,6 @@
 ---
 subtitle: "FAQ"
-title: "FAQs"
+title: "Frequently Asked Questions"
 metaDescription: This is a example description
 draft: false
 

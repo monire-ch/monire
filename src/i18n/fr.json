@@ -8,15 +8,11 @@
     "paginationNext": "Suivant",
     "paginationPrevious": "Pr c dent"
   },
-  "subscription": {
-    "label": "Abonnez-vous à notre newsletter pour obtenir les dernières mises"
-  },
   "footer": {
-    "quickLinks": "Liens",
-    "legal": "Juridique",
-    "resources": "Ressources",
+    "company": "Company",
+    "legal": "Legal",
+    "contact": "Contact",
     "description": "Custom website development and AI-powered workflow automation in Switzerland.",
-    "copyright": "Droits d'auteur {{ year }} / Tous droits réservés par Upstart / Construit avec amour [Astro Themes](https://getastrothemes.com/)",
-    "_comment": "We kindly appreciate it if you retain the theme copyright. Thank you for supporting Getastrothemes!"
+    "copyright": "© 2023 Moniré. All rights reserved."
   }
 }

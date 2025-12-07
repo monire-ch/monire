@@ -7,7 +7,4 @@ metaDescription: This is a example description
 faqSection:
   # subtitle: "FAQ"
   # title: "Frequently **Asked Questions**"
-
-  showCategories: false
-  minimalFaqLayout: true
 ---

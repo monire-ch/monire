@@ -4,8 +4,6 @@ title: "FAQs"
 metaDescription: This is a example description
 draft: false
 
-showCategories: true
-
 list:
   - label: "General Information"
     list:

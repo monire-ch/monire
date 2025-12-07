@@ -1,226 +1,135 @@
 ---
-enable: true # Contrôle la visibilité de cette section sur toutes les pages où elle est utilisée
-title: Tarifs qui **font sens**
+enable: true # Control the visibility of this section across all pages where it is used
+title: "Two services. One goal: helping your business grow."
+subtitle: Pricing
+
+heading: Need Something More Specific?
+description: "We know every project is different. If you need support beyond the packages above, we’re happy to tailor a custom scope. We also collaborate with trusted partners in photography, social media, and copywriting, so everything can be coordinated in one place."
 
 plans:
   enable: true
   list:
-    # Liste des plans disponibles. Assurez-vous de utiliser ces noms de manière cohérente dans les endroits où cela est applicable.
+    # List of available plans. Ensure that these names are used consistently in other places where applicable.
     - selected: true
-      label: Mensuel # Utilisez cette valeur exactement dans tous les endroits correspondants ci-dessous.
+      label: "WEB DESIGN & DEVELOPMENT" # Use this value exactly in all corresponding places below.
     - selected: false
-      label: Annuel # Utilisez cette valeur exactement dans tous les endroits correspondants ci-dessous.
+      label: AI AUTOMATIONS # Use this value exactly in all corresponding places below.
 
 list:
-  # Plan de base
+  # STARTER Plan
   - enable: true
     featured: false
     badge:
       enable: false
-      label: Le plus populaire
-    name: De base # Nom du plan de tarification.
-    description: Nostrud exercitation ullamco laboris nisi ut aliquip ex
+      label: Most Popular
+    name: Starter
+    description: "Ideal for: New businesses, coaches, freelancers, small consultancies."
 
     price:
-      # Détails des prix pour chaque type de plan.
-      - type: Mensuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        prependValue: $
-        value: 10
+      # Pricing details for each plan type.
+      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 3500
         appendValue:
-      - type: Annuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        prependValue: $
-        value: 20
+      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 24
         appendValue:
 
     features:
-      - Suivi de base des vues de pages, des événements et des propriétés utilisateur
-      - Visualisation des données en temps réel
-      - Options d'exportation de données limitées **CSV**
-      - Temps de réponse du support de 48 heures
-
-    usages:
-      - type: Mensuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        list:
-          - label: Points de données
-            value: 536
-          - label: Trafic
-            value: 100
-      - type: Annuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        list:
-          - label: Points de données
-            value: 1203
-          - label: Trafic
-            value: 1000
+      - Up to 5 pages
+      - Clean, professional visual style
+      - Mobile-ready + fast loading
+      - Contact form
+      - Basic CMS for easy text/image updates
+      - Essential on-page SEO (meta tags, sitemap, search-friendly structure)
 
     ctaBtn:
       enable: true
-      label: Commencer
+      label: Get Started
       url: /contact/
       rel:
       target:
 
-  # Plan Medium
+  # Advanced Plan
   - enable: true
     featured: true
     badge:
       enable: true
-      label: Le plus populaire
-    name: Démarrage # Nom du plan de tarification.
-    description: Nostrud exercitation ullamco laboris nisi ut aliquip ex
+      label: Most Popular
+    name: Advanced
+    description: Best for SMEs, agencies, boutique firms, B2B services.
 
     price:
-      # Détails des prix pour chaque type de plan.
-      - type: Mensuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        prependValue: $
-        value: 20
+      # Pricing details for each plan type.
+      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 6000
         appendValue:
-      - type: Annuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        prependValue: $
+      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
         value: 40
         appendValue:
 
     features:
-      - Atelier de positionnement de marque en profondeur
-      - Analyse de la concurrence (5 principaux concurrents)
-      - Analyse de marché complète
-      - Insights sur les clients et segmentation
-
-    usages:
-      - type: Mensuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        list:
-          - label: Points de données
-            value: 754
-          - label: Trafic
-            value: 850
-      - type: Annuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        list:
-          - label: Points de données
-            value: 1467
-          - label: Trafic
-            value: 1600
+      - Up to 10 pages
+      - Custom visual design** + subtle animations
+      - More flexible CMS structures (blogs, case studies, product/service lists)
+      - SEO optimization focused on ranking (not just set-up)
+      - Google Analytics with event tracking
+      - Integration of 1-2 third-party tools (booking system, CRM form, etc.)
+      - Support for 2 languages
 
     ctaBtn:
       enable: true
-      label: Commencer
+      label: Get Started
       url: /contact/
       rel:
       target:
 
-  # Plan Pro
+  # Premium Plan
   - enable: true
     featured: false
     badge:
       enable: false
-      label: Le plus populaire
-    name: Pro # Nom du plan de tarification.
-    description: Nostrud exercitation ullamco laboris nisi ut aliquip ex
+      label: Most Popular
+    name: Premium
+    description: "Best for: growing firms, established brands, companies needing workflows & integrations."
 
     price:
-      # Détails des prix pour chaque type de plan.
-      - type: Mensuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        prependValue: $
-        value: 30
+      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
+        value: 9000
         appendValue:
-      - type: Annuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        prependValue: $
+      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+        prependValue: CHF
         value: 60
         appendValue:
 
     features:
-      - Stratégie de positionnement de marque complète
-      - Analyse de la concurrence complète
-      - Analyse de marché avancée
-      - Insights sur les clients approfondis
-
-    usages:
-      - type: Mensuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        list:
-          - label: Points de données
-            value: 976
-          - label: Trafic
-            value: 1200
-      - type: Annuel # Type de plan (doit correspondre aux valeurs dans la section "plans" ci-dessus).
-        list:
-          - label: Points de données
-            value: 2045
-          - label: Trafic
-            value: 2600
+      - Unlimited pages
+      - Full custom UX + UI layout planning
+      - Advanced CMS
+      - "Integrations with tools like: Newsletter, booking, calendar, live chat, client portal"
+      - Comprehensive SEO strategy
+      - Multi-language support
 
     ctaBtn:
       enable: true
-      label: Commencer
+      label: Get Started
       url: /contact/
       rel:
       target:
 
-# Comparaison des tarifs
-comparison:
-  - label: Fonctionnalités
-    list:
-      - value: Intégrations
-        included:
-          - true # Plan gratuit
-          - true # Plan Démarrage
-          - true # Plan Pro
-      - value: Liens partagés
-        included:
-          - true # Plan gratuit
-          - true # Plan Démarrage
-          - true # Plan Pro
-      - value: Importation et exportation
-        included:
-          - true # Plan gratuit
-          - true # Plan Démarrage
-          - true # Plan Pro
-      - value: Membres de l'équipe
-        included:
-          - false
-          - Jusqu'à 20 utilisateurs
-          - Jusqu'à 50 utilisateurs
-
-  - label: Rapports
-    list:
-      - value: Analytiques avancées
-        included:
-          - true # Plan gratuit
-          - true # Plan Démarrage
-          - true # Plan Pro
-      - value: Rapports de base
-        included:
-          - false # Plan gratuit
-          - true # Plan Démarrage
-          - true # Plan Pro
-      - value: Rapports professionnels
-        included:
-          - false # Plan gratuit
-          - false # Plan Démarrage
-          - true # Plan Pro
-      - value: Générateur de rapports personnalisés
-        included:
-          - false
-          - false
-          - true
-
-  - label: Support
-    list:
-      - value: Support en ligne 24/7
-        included:
-          - true # Plan gratuit
-          - false # Plan Démarrage
-          - false # Plan Pro
-      - value: Ateliers de produits trimestriels
-        included:
-          - false # Plan gratuit
-          - false # Plan Démarrage
-          - true # Plan Pro
-      - value: Support téléphonique prioritaire
-        included:
-          - false # Plan gratuit
-          - false # Plan Démarrage
-          - true # Plan Pro
-      - value: Tour d'initiation 1:1
-        included:
-          - false
-          - false
-          - true
+# AI Automations Content block (NOT a pricing tier)
+ai_automations:
+  title: "AI Automations & Workflow Systems"
+  subtitle: "We build custom automation systems that reduce manual, repetitive work and seamlessly connect the tools you already use. Pricing is defined individually after a short discovery call."
+  ctas:
+    - label: "Get started"
+      style: "primary"
+      url: "/contact/"
+    - label: "Latest case study"
+      style: "outline"
+      url: "/case-studies/expense-receipt-automation/"
 ---

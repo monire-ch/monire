@@ -1,0 +1,105 @@
+---
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+const { testimonials = [] } = Astro.props;
+---
+
+<div class="swiper testimonial-swiper">
+  <div class="swiper-wrapper">
+    {
+      testimonials.map((t) => (
+        <div class="swiper-slide">
+          <div class="testimonial-slide-inner">
+            <p class="mb-6 text-lg text-slate-100 italic">"{t.content}"</p>
+            <div class="mt-4">
+              <div class="font-semibold text-slate-100">{t.customer?.name}</div>
+              <div class="text-sm text-slate-300">{t.customer?.role}</div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-pagination mt-4"></div>
+</div>
+
+<script>
+  import Swiper from "swiper";
+  import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+  if (typeof window !== "undefined") {
+    // Destroy previous instance if this component re-renders
+    if (window.__testimonialSwiper) {
+      window.__testimonialSwiper.destroy(true, true);
+    }
+
+    window.__testimonialSwiper = new Swiper(".testimonial-swiper", {
+      modules: [Navigation, Pagination, Autoplay],
+      slidesPerView: 1, // 👈 one testimonial at a time
+      spaceBetween: 0,
+      loop: true,
+      autoHeight: false,
+      autoplay: { delay: 6000 },
+      pagination: { el: ".swiper-pagination", clickable: true },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  }
+</script>
+
+<style>
+  .testimonial-swiper {
+    width: 100%;
+    max-width: 960px;
+    height: 300px; /* keeps layout stable */
+    padding: 2rem 0 3rem;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .swiper-wrapper {
+    align-items: center;
+  }
+
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    text-align: left;
+  }
+
+  .testimonial-slide-inner {
+    max-width: 860px;
+  }
+
+  /* Arrows */
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: #3b82f6;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+  }
+
+  .swiper-button-prev {
+    left: -60px; /* adjust if needed */
+  }
+
+  .swiper-button-next {
+    right: -60px;
+  }
+
+  /* Pagination */
+  .swiper-pagination-bullet-active {
+    background: #3b82f6;
+  }
+</style>

@@ -35,7 +35,7 @@ type SocialItem = {
 type SocialConfig = {
   enable: boolean;
   title: string;
-  list?: SocialItem[]; // Optional if the list is commented out
+  list?: SocialItem[];
 };
 
 type pricingSectionType = Section & {
@@ -48,21 +48,15 @@ type Props = {
   content?: pricingSectionType;
 };
 
-// Fetching the default content for the this section
 let defaultContent = (
   await getEntryCTM("sections", "contact-section", Astro.currentLocale)
 )?.data as pricingSectionType;
 
-// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
-// The 'content' prop should match the structure of 'defaultContent'.
-// Allows using this section with different content across multiple pages.
-// If 'content' is missing, 'defaultContent' will be used.
 let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
 ) as pricingSectionType;
 
-// Extracting required values from 'content' object
 let {
   enable = true,
   title,
@@ -73,10 +67,8 @@ let {
   contactList,
 } = actualContent as pricingSectionType;
 
-// Generate ID from label (Required for Input Radio and Checkbox)
 const genIdFromLabel = (label: string) => label.toLowerCase().replace(" ", "-");
 
-// Combine same group radio to show them together without space
 const combineRadio = (list: InputField[]) => {
   const groupMap: Record<
     string,
@@ -86,11 +78,10 @@ const combineRadio = (list: InputField[]) => {
 
   list.forEach((item, index) => {
     if (item.group) {
-      // Track the group items, their first position, and groupLabel
       if (!groupMap[item.group]) {
         groupMap[item.group] = {
           index,
-          groupLabel: item.groupLabel || "", // Capture groupLabel from the first occurrence
+          groupLabel: item.groupLabel || "",
           items: [],
         };
       }
@@ -98,13 +89,10 @@ const combineRadio = (list: InputField[]) => {
     }
   });
 
-  // Replace first occurrence of group with combined object and remove others
   Object.entries(groupMap).forEach(
     ([groupName, { index, groupLabel, items }]) => {
-      // Replace the first occurrence with the combined group object
       result[index] = { group: groupName, groupLabel, items };
 
-      // Remove other occurrences from the result array
       for (let i = result.length - 1; i > index; i--) {
         if (result[i].group === groupName) {
           result.splice(i, 1);
@@ -450,7 +438,6 @@ form = {
   )
 }
 
-<!-- https://preline.co/docs/select.html -->
 <script>
 import "@preline/select";
 import {

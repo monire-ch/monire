@@ -1,31 +1,19 @@
 ---
-enable: true # Control the visibility of this section across all pages where it is used
-title: "Contact Us for More **Information**"
-description: "Whether you're seeking expert assistance, our dedicated team is prepared to support you every step of the way."
+enable: true
+title: Let’s Work Together.
 subtitle: "Contact"
 
 contactList:
   enable: true
   list:
-    - icon: "/images/icons/svg/phone.svg"
-      label: "Call us now"
-      value: "+1-202-555-0190"
     - icon: "/images/icons/svg/email.svg"
       label: "Email us"
-      value: "example@gmail.com"
-    - icon: "/images/icons/svg/whatsapp.svg"
-      label: "Chat with us"
-      value: "@example"
+      # replace with email from config
+      value: "hello@monire.ch"
 
 social:
   enable: true
   title: "Follow us on social media"
-  # uncomment below list if you want to override `src/config/social.json` data
-  # list:
-  #   - enable: true
-  #     label: "facebook"
-  #     icon: "/images/icons/svg/facebook.svg"
-  #     url: "/"
 
 # Check config.toml file for form action related settings
 form:

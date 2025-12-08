@@ -8,8 +8,6 @@ contactList:
   list:
     - icon: "/images/icons/svg/email.svg"
       label: "Email us"
-      # replace with email from config
-      value: "hello@monire.ch"
 
 social:
   enable: true

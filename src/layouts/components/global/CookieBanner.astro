@@ -1,0 +1,53 @@
+---
+import { getLocaleUrlCTM, useTranslations } from "@/lib/utils/i18nUtils";
+
+const t = await useTranslations(Astro.currentLocale as string);
+---
+
+<div
+  id="cookie-banner"
+  class="fixed right-4 bottom-4 left-4 z-[9999] hidden max-w-sm rounded-xl border border-white/20 bg-white p-5 text-gray-900 shadow-xl backdrop-blur md:right-6 md:left-auto">
+  <p class="text-sm leading-relaxed">
+    {t("cookie.message")}&nbsp;
+    <a
+      href={getLocaleUrlCTM("/privacy-policy", Astro.currentLocale)}
+      class="text-primary hover:text-primary/80 underline">
+      {t("cookie.learnMore")}
+    </a>
+  </p>
+
+  <div class="mt-4 flex justify-end gap-3">
+    <button
+      class="rounded-md bg-gray-200 px-3 py-1.5 text-sm hover:bg-gray-300"
+      onclick="window.rejectCookies()">
+      {t("cookie.reject")}
+    </button>
+
+    <button
+      class="bg-primary hover:bg-primary/90 rounded-md px-3 py-1.5 text-sm text-white"
+      onclick="window.acceptCookies()">
+      {t("cookie.accept")}
+    </button>
+  </div>
+</div>
+
+<script>
+  // Decide if banner should be visible
+  const consentCookie = document.cookie.match(/cookieConsent=(\w+)/)?.[1];
+
+  if (!consentCookie) {
+    // No cookie → show banner
+    document.getElementById("cookie-banner")?.classList.remove("hidden");
+  }
+
+  window.acceptCookies = function () {
+    document.cookie = "cookieConsent=accepted; max-age=31536000; path=/";
+    document.getElementById("cookie-banner")?.remove();
+    location.reload();
+  };
+
+  window.rejectCookies = function () {
+    document.cookie = "cookieConsent=declined; max-age=31536000; path=/";
+    document.getElementById("cookie-banner")?.remove();
+  };
+</script>

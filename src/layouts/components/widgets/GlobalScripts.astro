@@ -91,3 +91,26 @@
     });
   }
 </script>
+
+<!-- Google Analytics (loads only if cookieConsent=accepted) -->
+<script>
+  // Check cookie first
+  if (document.cookie.includes("cookieConsent=accepted")) {
+    // Load GA script
+    const gtagScript = document.createElement("script");
+    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
+    gtagScript.async = true;
+    document.head.appendChild(gtagScript);
+
+    // Initialize GA when the script is ready
+    gtagScript.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+
+      gtag("js", new Date());
+      gtag("config", "G-XXXXXXXXXX");
+    };
+  }
+</script>

@@ -15,149 +15,145 @@ social:
   enable: true
   title: "Follow us on social media"
 
-# Check config.toml file for form action related settings
 form:
-  emailSubject: "New form submission from upstart website" # Customized email subject (applicable when anyone submit form, form submission may receive by email depend on provider)
+  emailSubject: "New form submission from Moniré website"
   submitButton:
-    label: "Submit"
+    label: "Let's Talk"
   # This note will show at the end of form
   # note: |
   #   Your data is safe with us. We respect your privacy and never share your information. <br /> Read our [Privacy Policy](/privacy-policy/).
   inputs:
-    - label: ""
+    - label: "Full Name"
       placeholder: "Full Name"
-      name: "Full Name" # This is crucial. Its indicate under which name you want to receive this field data
+      name: "Full Name"
       required: true
       halfWidth: true
       defaultValue: ""
-    - label: ""
+    - label: "Company Name"
+      placeholder: "Company Name"
+      name: "Company Name"
+      required: false
+      halfWidth: true
+      defaultValue: ""
+    - label: "Email Address"
       placeholder: "Email Address"
-      name: "Email Address" # This is crucial. Its indicate under which name you want to receive this field data
+      name: "Email Address"
       required: true
       type: "email"
       halfWidth: true
       defaultValue: ""
-    - label: ""
-      placeholder: "Phone Number"
-      name: "Phone Number" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      type: "text"
+    - label: "Current Website (if any)"
+      placeholder: "Current Website"
+      name: "Current Website"
+      required: false
       halfWidth: true
       defaultValue: ""
-    - label: ""
-      placeholder: "Company"
-      name: "Company" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "Design"
+      name: "Service"
       required: true
-      type: "text"
+      groupLabel: "How can we help you?"
+      group: "service"
+      type: "checkbox"
       halfWidth: true
       defaultValue: ""
-    - label: ""
-      placeholder: "Subject"
-      name: "Subject" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "Development"
+      name: "Service"
       required: true
+      groupLabel: ""
+      group: "service"
+      type: "checkbox"
       halfWidth: true
-      dropdown:
-        type: "" # select | search - default is select
-        search: # if type is search then it will work
-          placeholder: ""
-        items:
-          - label: "Example 01"
-            value: "Example 01"
-          - label: "Example 02"
-            value: "Example 02"
-          - label: "Example 03"
-            value: "Example 03"
-    - label: ""
-      placeholder: "Subject With Search"
-      name: "Subject With Search" # This is crucial. Its indicate under which name you want to receive this field data
+      defaultValue: ""
+    - label: "AI Automation"
+      name: "Service"
       required: true
+      groupLabel: ""
+      group: "service"
+      type: "checkbox"
       halfWidth: true
-      dropdown:
-        type: "search" # select | search - default is select
-        search: # if type is search then it will work
-          placeholder: "Subject With Search"
-        items:
-          - label: "Lowni Saiki"
-            value: "Lowni Saiki"
-          - label: "Sikow Pow"
-            value: "Sikow Pow"
-          - label: "Kenbi Shaktun"
-            value: "Kenbi Shaktun"
-          - label: "Aruyyo Kawn"
-            value: "Aruyyo Kawn"
-          - label: "Marong Lowbbi"
-            value: "Marong Lowbbi"
-    - label: ""
+      defaultValue: ""
+    - label: "Migrations"
+      name: "Service"
+      required: true
+      groupLabel: ""
+      group: "service"
+      type: "checkbox"
+      halfWidth: true
+      defaultValue: ""
+    - label: "SEO & Analytics"
+      name: "Service"
+      required: true
+      groupLabel: ""
+      group: "service"
+      type: "checkbox"
+      halfWidth: true
+      defaultValue: ""
+    - label: "Other"
+      name: "Service"
+      required: true
+      groupLabel: ""
+      group: "service"
+      type: "checkbox"
+      halfWidth: true
+      defaultValue: ""  
+    - label: "Tell us about your project:"
       tag: "textarea"
       defaultValue: ""
       rows: "4" # Only work if tag is textarea
-      placeholder: "Enter your message."
-      name: "Message" # This is crucial. Its indicate under which name you want to receive this field data
+      placeholder: "Tell us about your project:"
+      name: "Tell us about your project:"
       required: true
       halfWidth: false
-    - label: "Google Search" # only valid for type="checkbox" & type === "radio"
-      checked: false # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "How did you hear about us?"
+      placeholder: "How did you hear about us?"
+      name: "How did you hear about us?"
       required: true
-      groupLabel: "How did you hear about us?" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
       halfWidth: true
-      defaultValue: ""
-    - label: "Social Media" # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      groupLabel: "" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
+      dropdown:
+        type: ""
+        search: # if type is search then it will work
+          placeholder: ""
+        items:
+          - label: "Search Engine (Google)"
+            value: "Search Engine (Google)"
+          - label: "ChatGPT / AI assistant"
+            value: "ChatGPT / AI assistant"
+          - label: "Referral"
+            value: "Referral"
+          - label: "Social media"
+            value: "Social media"
+          - label: "Other"
+            value: "Other"
+    - label: "Your budget:"
+      placeholder: "Your budget:"
+      name: "Your budget:"
+      required: false
       halfWidth: true
-      defaultValue: ""
-    - label: "Referral" # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      groupLabel: "" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
-      halfWidth: true
-      defaultValue: ""
-    - label: "Other" # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      groupLabel: "" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
-      halfWidth: true
-      defaultValue: ""
-    - label: "I agree to the terms and conditions and [privacy policy](/contact/)." # only valid for type="checkbox" & type === "radio"
-      name: "Agreed Privacy" # This is crucial. Its indicate under which name you want to receive this field data
-      value: "Agreed" # Value that will be submit (applicable for type="checkbox" & type === "radio")
-      checked: false # only valid for type="checkbox" & type === "radio"
+      dropdown:
+        type: ""
+        search: # if type is search then it will work
+          placeholder: ""
+        items:
+        - label: "CHF 2’000 – 5’000"
+          value: "CHF 2’000 – 5’000"
+        - label: "CHF 5’000 – 10’000"
+          value: "CHF 5’000 – 10’000"
+        - label: "CHF 10’000 – 20’000"
+          value: "CHF 10’000 – 20’000"
+        - label: "CHF 20’000+"
+          value: "CHF 20’000+"
+    - label: "I agree to the terms and conditions and [privacy policy](/privacy-policy/)."
+      name: "Agreed Privacy"
+      value: "Agreed"
+      checked: false
       required: true
       type: "checkbox"
       halfWidth: false
       defaultValue: ""
-    - note: success # info | warning | success | deprecated | hint
+    - note: success
       parentClass: "hidden message success"
       content: We have received your message! We'll get back to you as soon as possible.
-    - note: warning # info | warning | success | deprecated | hint
+    - note: warning
       parentClass: "hidden message error"
-      content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: info # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message success"
-    #   content: We have received your message! We'll get back to you as soon as possible.
-    # - note: warning # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: success # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message success"
-    #   content: We have received your message! We'll get back to you as soon as possible.
-    # - note: deprecated # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: hint # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: we # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
+      content: Something went wrong! Please contact us for assistance at [hello@monire.ch](hello@monire.ch)
 ---

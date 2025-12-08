@@ -44,61 +44,27 @@
       "weight": 7
     }
   ],
-  "footerMenu": [
-    {
-      "enable": true,
-      "name": "Terms & Conditions",
-      "url": "/terms-conditions/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Privacy & Policy",
-      "url": "/privacy-policy/",
-      "weight": 0
-    }
-  ],
   "footerMenuQuickLink": [
     {
       "enable": true,
+      "name": "About",
+      "url": "/#about",
+      "weight": 0
+    },
+    {
+      "enable": true,
+      "name": "Services",
+      "url": "/#services",
+      "weight": 0
+    },
+    {
+      "enable": true,
       "name": "Pricing",
-      "url": "/pricing/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Changelog",
-      "url": "/changelog/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Faq",
-      "url": "/faq/",
-      "weight": 0
-    }
-  ],
-  "footerMenuResources": [
-    {
-      "enable": true,
-      "name": "Blog",
-      "url": "/blog/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Changelog",
-      "url": "/changelog/",
+      "url": "/#pricing",
       "weight": 0
     }
   ],
   "footerMenuLegal": [
-    {
-      "enable": true,
-      "name": "Terms of Conditions",
-      "url": "/terms-conditions/",
-      "weight": 0
-    },
     {
       "enable": true,
       "name": "Privacy Policy",

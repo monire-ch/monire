@@ -118,64 +118,30 @@
       }
     }
   ],
-  "footerMenu": [
-    {
-      "enable": true,
-      "name": "Conditions g n rales",
-      "url": "/terms-conditions/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Politique de confidentialit ",
-      "url": "/privacy-policy/",
-      "weight": 0
-    }
-  ],
   "footerMenuQuickLink": [
     {
       "enable": true,
-      "name": "Tarifs",
-      "url": "/pricing/",
+      "name": "About",
+      "url": "/#about",
       "weight": 0
     },
     {
       "enable": true,
-      "name": "Changelog",
-      "url": "/changelog/",
+      "name": "Services",
+      "url": "/#services",
       "weight": 0
     },
     {
       "enable": true,
-      "name": "FAQ",
-      "url": "/faq/",
-      "weight": 0
-    }
-  ],
-  "footerMenuResources": [
-    {
-      "enable": true,
-      "name": "Blog",
-      "url": "/blog/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Changelog",
-      "url": "/changelog/",
+      "name": "Pricing",
+      "url": "/#pricing",
       "weight": 0
     }
   ],
   "footerMenuLegal": [
     {
       "enable": true,
-      "name": "Conditions g n rales",
-      "url": "/terms-conditions/",
-      "weight": 0
-    },
-    {
-      "enable": true,
-      "name": "Politique de confidentialit ",
+      "name": "Privacy Policy",
       "url": "/privacy-policy/",
       "weight": 0
     }

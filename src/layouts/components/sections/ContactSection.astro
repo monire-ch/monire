@@ -247,13 +247,16 @@ form = {
                         </label>
                       )}
                     {input.dropdown ? (
-                      <div id="validation-target">
+                      <div
+                        id="validation-target"
+                        {...(input.required && { "data-required": "true" })}>
                         <select
                           {...(input.label && { "data-name": input.label })}
                           {...(input.id && { id: input.id })}
                           name={
                             input.name || input.label || "Please set name value"
                           }
+                          {...(input.required && { required: true })}
                           data-hs-select={`{
                           ${input.dropdown.type === "search" ? `\"hasSearch\": true,` : `\"hasSearch\": false,`}
                           \n\"searchPlaceholder\": \"${input.dropdown.type === "search" ? input.dropdown.search?.placeholder || "Please set placeholder" : ""}\",\n
@@ -276,7 +279,7 @@ form = {
                           ))}
                         </select>
                         <p class="hs-error:block mt-2 hidden text-sm text-red-600">
-                          Please select a valid state.
+                          Please select an option.
                         </p>
                         <p class="hs-success:flex mt-2 hidden text-sm text-white">
                           Perfect!
@@ -449,92 +452,159 @@ form = {
 
 <!-- https://preline.co/docs/select.html -->
 <script>
-  import "@preline/select";
-  import {
-    formspreeSubmit,
-    netlifySubmit,
-    formSubmit,
-    isFormFilled,
-    setMessage,
-    validateSelectTag,
-  } from "@/lib/utils/FormHandle";
+import "@preline/select";
+import {
+  formspreeSubmit,
+  netlifySubmit,
+  formSubmit,
+  setMessage,
+} from "@/lib/utils/FormHandle";
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById(
-      "contact-form",
-    ) as HTMLFormElement | null;
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById(
+    "contact-form",
+  ) as HTMLFormElement | null;
 
-    let selectTags = form?.querySelectorAll(
-      "[input-wrapper]:not(.hidden) select[data-hs-select]",
-    ) as NodeListOf<HTMLSelectElement>;
+  if (!form) return;
 
-    selectTags.forEach((tag) => {
-      tag.addEventListener("change", () => {
-        // Ensure only visible select tag value should submitted
-        selectTags.forEach((tag) => {
-          const name = tag.getAttribute("data-name");
-          tag.setAttribute("name", name || "");
-        });
+  const selectTags = form.querySelectorAll(
+    "select[data-hs-select]",
+  ) as NodeListOf<HTMLSelectElement>;
 
-        validateSelectTag(tag);
-      });
-    });
+  selectTags.forEach((select) => {
+    if (select.hasAttribute("required")) {
+      select.setAttribute("data-required", "true");
+      select.removeAttribute("required");
+    }
+  });
 
-    form?.addEventListener("submit", async (e: Event) => {
-      e.preventDefault();
+  const validatePrelineSelect = (select: HTMLSelectElement): boolean => {
+    const isRequired = select.getAttribute("data-required") === "true";
+    const value = select.value;
+    const isEmpty = !value || value === "" || value === "Choose";
 
-      const provider = form?.getAttribute("data-provider") || "";
-      const action = form?.getAttribute("data-action") || "";
+    let wrapper = select.parentElement;
+    while (wrapper && wrapper.tagName !== 'FORM') {
+      if (wrapper.id === 'validation-target') {
+        break;
+      }
+      wrapper = wrapper.parentElement;
+    }
+    
+    if (!wrapper) return true;
 
-      selectTags = form?.querySelectorAll(
-        "[input-wrapper]:not(.hidden) select[data-hs-select]",
-      ) as NodeListOf<HTMLSelectElement>;
-
-      // Validate all preline select tags
-      selectTags.forEach(validateSelectTag);
-
-      if (isFormFilled(form)) {
-        // Console.log form data for debugging
-        // const formData = Object.fromEntries(new FormData(form).entries());
-        // console.log(
-        //   Object.entries(formData)
-        //     .map(([key, value]) => `${key}: ${value}`)
-        //     .join("\n\n"),
-        // );
-
-        setMessage("Form Submitting!...", true, true, form);
-
-        try {
-          switch (provider) {
-            case "netlify":
-              await netlifySubmit(form, action);
-              break;
-            case "formsubmit.co":
-              await formSubmit({
-                form,
-                action,
-              });
-              break;
-            case "formspree":
-              await formspreeSubmit(
-                Object.fromEntries(new FormData(form).entries()),
-                5000,
-                form,
-              );
-              break;
-            default:
-              throw new Error("Unknown form provider.");
-          }
-        } catch (error) {
-          setMessage(
-            error +
-              "! Please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!",
-            false,
-            false,
-            form,
-          );
+    const errorMsg = wrapper.querySelector('p.text-red-600');
+    const successMsg = wrapper.querySelector('p.text-white');
+    
+    if (isRequired && isEmpty) {
+      wrapper.classList.add("hs-error");
+      wrapper.classList.remove("hs-success");
+      
+      if (errorMsg) {
+        errorMsg.classList.remove('hidden');
+      }
+      if (successMsg) {
+        successMsg.classList.add('hidden');
+      }
+      
+      return false;
+    } else {
+      wrapper.classList.remove("hs-error");
+      
+      if (errorMsg) {
+        errorMsg.classList.add('hidden');
+      }
+      
+      if (!isEmpty) {
+        wrapper.classList.add("hs-success");
+        if (successMsg) {
+          successMsg.classList.remove('hidden');
+        }
+      } else {
+        wrapper.classList.remove("hs-success");
+        if (successMsg) {
+          successMsg.classList.add('hidden');
         }
       }
+      
+      return true;
+    }
+  };
+
+  selectTags.forEach((select) => {
+    select.addEventListener("change", () => {
+      validatePrelineSelect(select);
     });
   });
+
+  form.addEventListener("submit", async (e: Event) => {
+    e.preventDefault();
+
+    const provider = form.getAttribute("data-provider") || "";
+    const action = form.getAttribute("data-action") || "";
+
+    let allSelectsValid = true;
+    selectTags.forEach((select) => {
+      const isValid = validatePrelineSelect(select);
+      if (!isValid) {
+        allSelectsValid = false;
+      }
+    });
+
+    if (!allSelectsValid) {
+      const firstInvalid = Array.from(selectTags).find(
+        (select) => !validatePrelineSelect(select)
+      );
+      if (firstInvalid) {
+        let wrapper = firstInvalid.parentElement;
+        while (wrapper && wrapper.tagName !== 'FORM') {
+          if (wrapper.id === 'validation-target') {
+            wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+            break;
+          }
+          wrapper = wrapper.parentElement;
+        }
+      }
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    setMessage("Form Submitting!...", true, true, form);
+
+    try {
+      switch (provider) {
+        case "netlify":
+          await netlifySubmit(form, action);
+          break;
+        case "formsubmit.co":
+          await formSubmit({
+            form,
+            action,
+          });
+          break;
+        case "formspree":
+          await formspreeSubmit(
+            Object.fromEntries(new FormData(form).entries()),
+            5000,
+            form,
+          );
+          break;
+        default:
+          throw new Error("Unknown form provider.");
+      }
+    } catch (error) {
+      setMessage(
+        error +
+          "! Please use this mail - [hello@monire.ch](mailto:hello@monire.ch) to submit a ticket!",
+        false,
+        false,
+        form,
+      );
+    }
+  });
+});
 </script>

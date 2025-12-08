@@ -4,15 +4,23 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const { testimonials = [] } = Astro.props;
+
+type Testimonial = {
+  content: string;
+  customer?: {
+    name: string;
+    role: string;
+  };
+};
 ---
 
 <div class="swiper testimonial-swiper">
   <div class="swiper-wrapper">
     {
-      testimonials.map((t) => (
+      testimonials.map((t: Testimonial) => (
         <div class="swiper-slide">
           <div class="testimonial-slide-inner">
-            <p class="mb-6 text-lg text-slate-100 italic">"{t.content}"</p>
+            <p class="mb-6 text-lg text-slate-100 italic">{t.content}</p>
             <div class="mt-4">
               <div class="font-semibold text-slate-100">{t.customer?.name}</div>
               <div class="text-sm text-slate-300">{t.customer?.role}</div>
@@ -33,18 +41,22 @@ const { testimonials = [] } = Astro.props;
   import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
   if (typeof window !== "undefined") {
-    // Destroy previous instance if this component re-renders
+    // @ts-ignore
     if (window.__testimonialSwiper) {
+      // @ts-ignore
       window.__testimonialSwiper.destroy(true, true);
     }
 
+    // @ts-ignore
     window.__testimonialSwiper = new Swiper(".testimonial-swiper", {
       modules: [Navigation, Pagination, Autoplay],
-      slidesPerView: 1, // 👈 one testimonial at a time
+      slidesPerView: 1,
       spaceBetween: 0,
       loop: true,
       autoHeight: false,
-      autoplay: { delay: 6000 },
+      autoplay: { delay: 8000 },
+      speed: 900,
+
       pagination: { el: ".swiper-pagination", clickable: true },
       navigation: {
         nextEl: ".swiper-button-next",
@@ -54,11 +66,11 @@ const { testimonials = [] } = Astro.props;
   }
 </script>
 
-<style>
+<style is:global>
   .testimonial-swiper {
     width: 100%;
     max-width: 960px;
-    height: 300px; /* keeps layout stable */
+    height: 300px;
     padding: 2rem 0 3rem;
     margin: 0 auto;
     position: relative;
@@ -72,7 +84,7 @@ const { testimonials = [] } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 2rem;
+    padding: 0 6rem;
     text-align: left;
   }
 
@@ -91,7 +103,7 @@ const { testimonials = [] } = Astro.props;
   }
 
   .swiper-button-prev {
-    left: -60px; /* adjust if needed */
+    left: -60px;
   }
 
   .swiper-button-next {

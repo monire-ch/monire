@@ -3,42 +3,37 @@ import Subtitle from "../widgets/Subtitle.astro";
 import TestimonialCarousel from "../widgets/TestimonialCarousel.astro";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
-import type { MarqueeConfig, Section } from "@/types";
 import { markdownify } from "@/lib/utils/textConverter";
 
-// Type for this section data
-export type testimonialSectionType = Section & {
-  marquee: MarqueeConfig;
-  list: {
-    enable: boolean;
-    content: string;
-    customer: {
-      image: string;
-      name: string;
-      role: string;
-    };
-  }[];
-};
+export interface Testimonial {
+  enable: boolean;
+  content: string;
+  customer: {
+    name: string;
+    role: string;
+    image?: string;
+  };
+}
 
-type Props = {
-  content?: testimonialSectionType;
-};
+export interface TestimonialSection {
+  enable: boolean;
+  subtitle?: string;
+  title?: string;
+  list: Testimonial[];
+}
 
-// Load default content
-let defaultContent = (
+const defaultContent = (
   await getEntryCTM("sections", "testimonial", Astro.currentLocale)
-)?.data as testimonialSectionType;
+)?.data as TestimonialSection;
 
-// Merge with overrides
-let actualContent = overrideObjects(
+const actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
-) as testimonialSectionType;
+) as TestimonialSection;
 
-// Extract values
-let { enable = true, title, subtitle, list } = actualContent;
+const { enable = true, subtitle, title, list = [] } = actualContent;
 
-const testimonials = list?.filter((t) => t.enable) || [];
+const testimonials = list.filter((t) => t.enable);
 ---
 
 {

@@ -28,7 +28,7 @@ list:
       - active: false
         title: "What platforms do you develop on?"
         content: |
-          We work with various technologies including React, Next.js, Webflow, and custom solutions. We'll recommend the best platform based on your specific requirements, budget, and long-term goals.
+          We work with various technologies including Webflow, Astro, React, Next.js, n8n and custom solutions. We'll recommend the best platform based on your specific requirements, budget, and long-term goals.
       - active: false
         title: "Will I be able to edit my website myself?"
         content: |
@@ -44,7 +44,7 @@ list:
       - active: false
         title: "How quickly can my website be completed?"
         content: |
-          Timelines vary depending on the size and complexity of your site, so it’s hard to give an exact answer upfront. After our initial discussion, we’ll provide a clear estimate for both the design and development phases before we begin.
+          Timelines vary depending on the size and complexity of your site. After our initial discussion, we’ll provide a clear estimate for both the design and development phases before we begin.
       - active: false
         title: "What is Webflow?"
         content: |

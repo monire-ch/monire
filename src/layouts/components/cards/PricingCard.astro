@@ -28,6 +28,7 @@ const {
     price,
     features,
     ctaBtn,
+    badge,
   },
   ...rest
 } = Astro.props;
@@ -55,6 +56,12 @@ const currentPlanFeatures = allFeatures
         { "bg-primary/2.5": !featured },
       ]}
       {...rest}>
+      {badge?.enable && (
+        <span class="bg-primary/10 text-primary inline-block rounded-full px-3 py-1 text-xs font-semibold">
+          {badge.label}
+        </span>
+      )}
+
       <div class="space-y-5">
         {name && (
           <h3 class="text-h4 text-inherit" set:html={markdownify(name)} />
@@ -80,6 +87,7 @@ const currentPlanFeatures = allFeatures
                   hidden: !plans.enable && usageIndex !== 0,
                 },
               ]}>
+              <span>from</span>
               <span class="text-h3/none font-secondary flex gap-0">
                 <AnimatedNumber
                   animateOn="click"
@@ -87,12 +95,6 @@ const currentPlanFeatures = allFeatures
                   content={item}
                 />
               </span>
-              {plans.enable && (
-                <span
-                  class="pricing-type pb-2 text-sm leading-none uppercase"
-                  set:html={"/ " + item.type}
-                />
-              )}
               {featured && (
                 <OptimizedImage
                   class="absolute -top-10 right-0 overflow-hidden opacity-20"
@@ -104,20 +106,6 @@ const currentPlanFeatures = allFeatures
             </div>
           ))}
 
-          {ctaBtn?.enable && (
-            // CTA button
-            <ButtonLink
-              class="btn-md btn-primary btn-has-icon group relative z-30 flex items-center justify-between gap-4"
-              content={ctaBtn}>
-              <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-                <OptimizedImage
-                  alt="icon"
-                  class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                  src="/images/icons/svg/star.svg"
-                />
-              </span>
-            </ButtonLink>
-          )}
           {usages?.map((item, i) => (
             <div
               data-plan={item.type.toLowerCase()}
@@ -164,6 +152,13 @@ const currentPlanFeatures = allFeatures
             )}
           </ul>
         </div>
+
+        {ctaBtn?.enable && (
+          <ButtonLink
+            class="btn-md btn-primary flex justify-center text-center"
+            content={ctaBtn}
+          />
+        )}
       </div>
     </div>
   )

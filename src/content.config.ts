@@ -1,6 +1,5 @@
 import { defineCollection, z } from "astro:content";
 
-
 // Universal Page Schema
 const page = z.object({
   title: z.string(),
@@ -43,10 +42,28 @@ const blogCollection = defineCollection({
   ),
 });
 
+const caseStudies = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    type: z.string(),
+    category: z.string(),
+    date: z.string(),
+    client: z.string(),
+    website: z.string().optional(),
+    tools: z.array(z.string()),
+    before: z.string(),
+    after: z.string(),
+    impact: z.string(),
+    description: z.string().optional(),
+    backUrl: z.string().optional(),
+    backLabel: z.string().optional(),
+  }),
+});
+
 // Export collections
 export const collections = {
   blog: blogCollection,
-
   pages: pagesCollection,
   sections: defineCollection({}),
   contact: defineCollection({}),
@@ -55,4 +72,5 @@ export const collections = {
   homepage: defineCollection({}),
   author: defineCollection({}),
   changelog: defineCollection({}),
+  "case-studies": caseStudies,
 };

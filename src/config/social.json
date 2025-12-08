@@ -4,13 +4,13 @@
       "enable": true,
       "label": "instagram",
       "icon": "/images/icons/svg/instagram.svg",
-      "url": "https://www.instagram.com/hello.monire/"
+      "url": "https://www.instagram.com/hello.monire"
     },
     {
       "enable": true,
       "label": "linkedin",
       "icon": "/images/icons/svg/linkedin.svg",
-      "url": "https://www.linkedin.com/upstart"
+      "url": "https://www.linkedin.com/monire"
     }
   ]
 }

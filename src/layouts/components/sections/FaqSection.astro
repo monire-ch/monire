@@ -6,45 +6,31 @@ import type { FAQCategory, Section } from "@/types";
 import { markdownify } from "@/lib/utils/textConverter";
 import AccordionList from "@/layouts/components/widgets/AccordionList.astro";
 
-// Type for this section data
 type faqSectionType = Section & {
   list?: FAQCategory[];
-  showCategories?: boolean;
 };
 type Props = {
   content?: faqSectionType;
 };
 
-// Fetching the default content for the this section
 let defaultContent = (await getEntryCTM("faq", "-index", Astro.currentLocale))
   ?.data as faqSectionType;
 
-// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
-// The 'content' prop should match the structure of 'defaultContent'.
-// Allows using this section with different content across multiple pages.
-// If 'content' is missing, 'defaultContent' will be used.
 let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
 ) as faqSectionType;
 
-// Extracting required values from 'content' object
 let {
   enable = true,
   title,
   subtitle,
   list,
   limit,
-  showCategories,
 } = actualContent as faqSectionType;
 
 // Limit the number of items to be displayed
 list = limit && list ? list.slice(0, limit as number) : list;
-
-// IF services group is not enabled then only show first category faqs
-if (!showCategories) {
-  list = list?.slice(0, 1);
-}
 ---
 
 {
@@ -65,45 +51,30 @@ if (!showCategories) {
             <div
               data-aos="fade-up-sm"
               data-aos-delay="300"
-              class:list={[
-                "section-gradient relative",
-                !showCategories && "w-full",
-                {
-                  "mx-auto max-w-4xl": !showCategories,
-                },
-              ]}>
+              class:list={["section-gradient relative"]}>
               {
-                <div
-                  class:list={[
-                    "bg-primary/5 rounded-lg border p-6 lg:rounded-3xl lg:p-12",
-                    {
-                      "max-lg:space-y-6 lg:grid lg:grid-cols-8 lg:gap-16":
-                        showCategories,
-                    },
-                  ]}>
-                  {showCategories && (
-                    <nav
-                      role="tablist"
-                      aria-label="Tabs"
-                      aria-orientation="horizontal"
-                      class:list={["lg:col-span-3 xl:col-span-2"]}>
-                      {list.map((button: FAQCategory, index: number) => (
-                        <button
-                          role="tab"
-                          type="button"
-                          set:html={button.label}
-                          id={"tab-item-" + (index + 1)}
-                          data-hs-tab={"#tab-" + (index + 1)}
-                          aria-controls={"tab-" + (index + 1)}
-                          aria-selected={index === 0 ? "true" : "false"}
-                          class:list={[
-                            "px-6 py-2.5 text-start text-lg max-lg:min-w-full [&.active]:text-white [&.active]:max-lg:bg-white/5",
-                            { active: index === 0 },
-                          ]}
-                        />
-                      ))}
-                    </nav>
-                  )}
+                <div class="bg-primary/5 rounded-lg border p-6 max-lg:space-y-6 lg:grid lg:grid-cols-8 lg:gap-16 lg:rounded-3xl lg:p-12">
+                  <nav
+                    role="tablist"
+                    aria-label="Tabs"
+                    aria-orientation="horizontal"
+                    class:list={["lg:col-span-3 xl:col-span-2"]}>
+                    {list.map((button: FAQCategory, index: number) => (
+                      <button
+                        role="tab"
+                        type="button"
+                        set:html={button.label}
+                        id={"tab-item-" + (index + 1)}
+                        data-hs-tab={"#tab-" + (index + 1)}
+                        aria-controls={"tab-" + (index + 1)}
+                        aria-selected={index === 0 ? "true" : "false"}
+                        class:list={[
+                          "px-6 py-2.5 text-start text-lg max-lg:min-w-full [&.active]:text-white [&.active]:max-lg:bg-white/5",
+                          { active: index === 0 },
+                        ]}
+                      />
+                    ))}
+                  </nav>
                   {list.map((tab: FAQCategory, index: number) => (
                     <AccordionList
                       role="tabpanel"

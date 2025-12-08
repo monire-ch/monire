@@ -1,0 +1,50 @@
+---
+interface Props {
+  client: string;
+  date: string;
+  category: string;
+  tools: string[];
+  website?: string;
+}
+
+const { client, date, category, tools = [], website } = Astro.props as Props;
+---
+
+<div class="max-w-xl space-y-2 text-sm">
+  <div class="flex justify-between border-b py-2">
+    <span class="opacity-60">Client</span>
+    <span>{client}</span>
+  </div>
+
+  <div class="flex justify-between border-b py-2">
+    <span class="opacity-60">Date</span>
+    <span>{date}</span>
+  </div>
+
+  <div class="flex justify-between border-b py-2">
+    <span class="opacity-60">Category</span>
+    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs">{category}</span>
+  </div>
+
+  <div class="flex justify-between border-b py-2">
+    <span class="opacity-60">Tools</span>
+    <div class="flex flex-wrap justify-end gap-2">
+      {
+        tools.map((tool) => (
+          <span class="rounded-full bg-gray-100 px-3 py-1 text-xs">{tool}</span>
+        ))
+      }
+    </div>
+  </div>
+
+  {
+    website && (
+      <div class="flex justify-between py-2">
+        <span class="opacity-60">Website</span>
+        <a href={website} class="text-blue-600 underline">
+          Visit Website
+        </a>
+      </div>
+    )
+  }
+</div>

@@ -5,8 +5,8 @@ import config from ".astro/config.generated.json" with { type: "json" };
 import { markdownify } from "@/lib/utils/textConverter";
 import { splitProtectedText } from "@/lib/utils/splitProtectedText";
 import SocialComponent from "@/components/social/Social.astro";
-import SubscriptionForm from "@/components/widgets/SubscriptionForm.astro";
 import { useTranslations, getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+import contact from "@/config/contact.json";
 
 const t = await useTranslations(Astro.currentLocale as string);
 
@@ -15,6 +15,15 @@ let { copyright, footerDescription, subscription } = config.settings;
 footerDescription = footerDescription || t("footer.description");
 const copyrightText = copyright.text || t("footer.copyright");
 const copyrightParts = splitProtectedText(copyrightText);
+
+function encodeEmail(email: string) {
+  return email
+    .split("")
+    .map((char) => `&#${char.charCodeAt(0)};`)
+    .join("");
+}
+
+const encodedEmail = encodeEmail(contact.email);
 ---
 
 <footer class="to-primary/20 lg:to-primary/5 bg-linear-to-b from-transparent">
@@ -22,7 +31,6 @@ const copyrightParts = splitProtectedText(copyrightText);
     class="lg:bg-[radial-gradient(55%_55%_at_50%_130%,var(--color-primary)_40%,transparent_120%)] xl:bg-[radial-gradient(55%_55%_at_50%_100%,var(--color-primary)_0%,transparent_100%)]">
     <div class="container space-y-16 lg:space-y-28">
       <div class="grid pt-16 lg:grid-cols-2 xl:grid-cols-3">
-        <!-- Logo, Description and Social -->
         <div class="flex flex-col gap-y-5 lg:pe-10">
           <Logo />
           {
@@ -38,17 +46,14 @@ const copyrightParts = splitProtectedText(copyrightText);
             list={social.main.filter((social) => social.enable)}
           />
         </div>
-
-        <!-- Quick Links, Resources, Legal and Subscription -->
         <div
           class="col-span-2 mt-10 grid gap-y-10 md:grid-cols-3 xl:mt-0 xl:ml-5">
-          <!-- Quick Links -->
-          <div class="md:border-l md:px-8 lg:px-8 xl:px-14">
+          <div class="md:px-8 lg:px-8 xl:px-14">
             {
-              t("footer.quickLinks") && (
+              t("footer.company") && (
                 <h3
                   class="text-h5 text-light mb-6"
-                  set:html={t("footer.quickLinks")}
+                  set:html={t("footer.company")}
                 />
               )
             }
@@ -69,39 +74,9 @@ const copyrightParts = splitProtectedText(copyrightText);
               }
             </ul>
           </div>
-
-          <!-- Resources, Legal and Subscription -->
-          <div class="col-span-2 md:border-l md:pl-8 lg:pl-8 xl:pl-14">
+          <div class="col-span-2 md:pl-8 lg:pl-8 xl:pl-14">
             <div class="grid gap-y-10 md:grid-cols-2">
               <div>
-                {
-                  t("footer.resources") && (
-                    <h3
-                      class="text-h5 text-light mb-6"
-                      set:html={t("footer.resources")}
-                    />
-                  )
-                }
-                <ul class="flex flex-col gap-2">
-                  {
-                    t("footerMenuResources").map(
-                      (menu: { name: string; url: string }) => (
-                        <li class="inline-block">
-                          <a
-                            class="inline-block py-px text-inherit opacity-90 duration-300 hover:text-white"
-                            href={getLocaleUrlCTM(
-                              menu.url,
-                              Astro.currentLocale,
-                            )}
-                            set:html={menu.name}
-                          />
-                        </li>
-                      ),
-                    )
-                  }
-                </ul>
-              </div>
-              <div class="md:border-l md:pl-8 lg:pl-8 xl:pl-14">
                 {
                   t("footer.legal") && (
                     <h3
@@ -129,45 +104,35 @@ const copyrightParts = splitProtectedText(copyrightText);
                   }
                 </ul>
               </div>
-            </div>
-            {
-              subscription && subscription.enable && (
-                <div class="mt-8 border-t pt-5">
-                  {(config.settings.subscription.title ||
-                    t("subscription.label")) && (
-                    <p
-                      class="mb-2.5"
-                      set:html={
-                        config.settings.subscription.title ||
-                        markdownify(t("subscription.label"))
-                      }
+              <div class="md:pl-8 lg:pl-8 xl:pl-14">
+                {
+                  t("footer.contact") && (
+                    <h3
+                      class="text-h5 text-light mb-6"
+                      set:html={t("footer.contact")}
                     />
-                  )}
-                  <SubscriptionForm {...subscription} />
+                  )
+                }
+                <div>
+                  <ul class="flex flex-col gap-2">
+                    <li class="inline-block">
+                      <a href={`mailto:${contact.email}`}>
+                        <span set:html={encodedEmail} />
+                      </a>
+                    </li>
+                    <li class="inline-block opacity-80">
+                      {contact.location}
+                    </li>
+                  </ul>
                 </div>
-              )
-            }
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Footer Menu & Copyright -->
-      <div class="py-7 text-sm md:text-base">
-        <div class="flex flex-wrap justify-between gap-x-8 gap-y-6">
-          <ul
-            class="has-list has-list-dot flex flex-wrap gap-y-2 md:flex-nowrap">
-            {
-              t("footerMenu").map((menu: { name: string; url: string }) => (
-                <li class="inline-block">
-                  <a
-                    class="inline-block py-px text-inherit opacity-90 duration-300 hover:text-white"
-                    href={getLocaleUrlCTM(menu.url, Astro.currentLocale)}
-                    set:html={menu.name}
-                  />
-                </li>
-              ))
-            }
-          </ul>
+      <div class="border-t border-white/10 py-7 text-sm md:text-base">
+        <div class="flex flex-wrap justify-center gap-x-8 gap-y-6">
           {
             config.settings.copyright && config.settings.copyright.enable && (
               <ul class="has-list has-list-slash prose-a:text-inherit flex flex-wrap gap-y-4 text-white">
@@ -184,15 +149,3 @@ const copyrightParts = splitProtectedText(copyrightText);
     </div>
   </div>
 </footer>
-
-<script>
-  // Detect if the page has a call to action section and add a class to the footer accordingly.
-  // This approach adds a section gap between the last section of main tag & footer.
-
-  const ctaSection = document.querySelector(".cta-section");
-  const footer = document.querySelector("footer") as HTMLElement;
-
-  if (!ctaSection) {
-    footer.classList.add("has-call-to-action");
-  }
-</script>

@@ -48,54 +48,28 @@ form:
       required: false
       halfWidth: true
       defaultValue: ""
-    - label: "Design"
-      name: "Service"
+    - label: "How can we help you?"
+      placeholder: "How can we help you?"
+      name: "How can we help you?"
       required: true
-      groupLabel: "How can we help you?"
-      group: "service"
-      type: "checkbox"
       halfWidth: true
-      defaultValue: ""
-    - label: "Development"
-      name: "Service"
-      required: true
-      groupLabel: ""
-      group: "service"
-      type: "checkbox"
-      halfWidth: true
-      defaultValue: ""
-    - label: "AI Automation"
-      name: "Service"
-      required: true
-      groupLabel: ""
-      group: "service"
-      type: "checkbox"
-      halfWidth: true
-      defaultValue: ""
-    - label: "Migrations"
-      name: "Service"
-      required: true
-      groupLabel: ""
-      group: "service"
-      type: "checkbox"
-      halfWidth: true
-      defaultValue: ""
-    - label: "SEO & Analytics"
-      name: "Service"
-      required: true
-      groupLabel: ""
-      group: "service"
-      type: "checkbox"
-      halfWidth: true
-      defaultValue: ""
-    - label: "Other"
-      name: "Service"
-      required: true
-      groupLabel: ""
-      group: "service"
-      type: "checkbox"
-      halfWidth: true
-      defaultValue: ""  
+      dropdown:
+        type: ""
+        search: # if type is search then it will work
+          placeholder: ""
+        items:
+          - label: "Web Design"
+            value: "Web Design"
+          - label: "Web Development"
+            value: "Web Development"
+          - label: "AI Automations"
+            value: "AI Automations"
+          - label: "Website Migration"
+            value: "Website Migration"
+          - label: "SEO & Analytics"
+            value: "SEO & Analytics"
+          - label: "Other"
+            value: "Other"
     - label: "Tell us about your project:"
       tag: "textarea"
       defaultValue: ""

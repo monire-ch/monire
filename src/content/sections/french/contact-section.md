@@ -1,175 +1,131 @@
 ---
-enable: true # Control the visibility of this section across all pages where it is used
-title: "Contactez-nous pour plus d'**informations**"
-description: "Si vous cherchez une assistance experte, notre équipe dédiée est prête à vous soutenir à chaque étape du processus."
+enable: true
+title: Let’s Work Together.
 subtitle: "Contact"
 
 contactList:
   enable: true
   list:
-    - icon: "/images/icons/svg/phone.svg"
-      label: "Appelez-nous maintenant"
-      value: "+1-202-555-0190"
     - icon: "/images/icons/svg/email.svg"
-      label: "Envoyez-nous un e-mail"
-      value: "example@gmail.com"
-    - icon: "/images/icons/svg/whatsapp.svg"
-      label: "Discutez avec nous"
-      value: "@example"
+      label: "Email us"
 
 social:
   enable: true
-  title: "Suivez-nous sur les réseaux sociaux"
-  # # uncomment below list if you want to override `src/config/social.json` data
-  # list:
-  #   - enable: true
-  #     label: "facebook"
-  #     icon: "/images/icons/svg/facebook.svg"
-  #     url: "/"
+  title: "Follow us on social media"
 
-# Check config.toml file for form action related settings
 form:
-  emailSubject: "Nouvelle soumission de formulaire depuis le site web Upstart" # Customized email subject (applicable when anyone submit form, form submission may receive by email depend on provider)
+  emailSubject: "New form submission from Moniré website"
   submitButton:
-    label: "Soumettre"
+    label: "Let's Talk"
   # This note will show at the end of form
   # note: |
-  #   Vos données sont en sécurité avec nous. Nous respectons votre vie privée et ne partageons jamais vos informations. <br /> Lisez notre [Politique de confidentialité](/privacy-policy/).
+  #   Your data is safe with us. We respect your privacy and never share your information. <br /> Read our [Privacy Policy](/privacy-policy/).
   inputs:
-    - label: ""
-      placeholder: "Nom complet"
-      name: "Nom complet" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "Full Name"
+      placeholder: "Full Name"
+      name: "Full Name"
       required: true
       halfWidth: true
       defaultValue: ""
-    - label: ""
-      placeholder: "Adresse e-mail"
-      name: "Adresse e-mail" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "Company Name"
+      placeholder: "Company Name"
+      name: "Company Name"
+      required: false
+      halfWidth: true
+      defaultValue: ""
+    - label: "Email Address"
+      placeholder: "Email Address"
+      name: "Email Address"
       required: true
       type: "email"
       halfWidth: true
       defaultValue: ""
-    - label: ""
-      placeholder: "Numéro de téléphone"
-      name: "Numéro de téléphone" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      type: "text"
+    - label: "Current Website (if any)"
+      placeholder: "Current Website"
+      name: "Current Website"
+      required: false
       halfWidth: true
       defaultValue: ""
-    - label: ""
-      placeholder: "Entreprise"
-      name: "Entreprise" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      type: "text"
-      halfWidth: true
-      defaultValue: ""
-    - label: ""
-      placeholder: "Objet"
-      name: "Objet" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "How can we help you?"
+      placeholder: "How can we help you?"
+      name: "How can we help you?"
       required: true
       halfWidth: true
       dropdown:
-        type: "" # select | search - default is select
+        type: ""
         search: # if type is search then it will work
           placeholder: ""
         items:
-          - label: "Exemple 01"
-            value: "Exemple 01"
-          - label: "Exemple 02"
-            value: "Exemple 02"
-          - label: "Exemple 03"
-            value: "Exemple 03"
-    - label: ""
-      placeholder: "Objet avec recherche"
-      name: "Objet avec recherche" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      halfWidth: true
-      dropdown:
-        type: "search" # select | search - default is select
-        search: # if type is search then it will work
-          placeholder: "Objet avec recherche"
-        items:
-          - label: "Lowni Saiki"
-            value: "Lowni Saiki"
-          - label: "Sikow Pow"
-            value: "Sikow Pow"
-          - label: "Kenbi Shaktun"
-            value: "Kenbi Shaktun"
-          - label: "Aruyyo Kawn"
-            value: "Aruyyo Kawn"
-          - label: "Marong Lowbbi"
-            value: "Marong Lowbbi"
-    - label: ""
+          - label: "Web Design"
+            value: "Web Design"
+          - label: "Web Development"
+            value: "Web Development"
+          - label: "AI Automations"
+            value: "AI Automations"
+          - label: "Website Migration"
+            value: "Website Migration"
+          - label: "SEO & Analytics"
+            value: "SEO & Analytics"
+          - label: "Other"
+            value: "Other"
+    - label: "Tell us about your project:"
       tag: "textarea"
       defaultValue: ""
       rows: "4" # Only work if tag is textarea
-      placeholder: "Entrez votre message."
-      name: "Message" # This is crucial. Its indicate under which name you want to receive this field data
+      placeholder: "Tell us about your project:"
+      name: "Tell us about your project:"
       required: true
       halfWidth: false
-    - label: "Google Search" # only valid for type="checkbox" & type === "radio"
-      checked: false # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
+    - label: "How did you hear about us?"
+      placeholder: "How did you hear about us?"
+      name: "How did you hear about us?"
       required: true
-      groupLabel: "Comment avez-vous entendu parler de nous?" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
       halfWidth: true
-      defaultValue: ""
-    - label: "Social Media" # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      groupLabel: "" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
+      dropdown:
+        type: ""
+        search: # if type is search then it will work
+          placeholder: ""
+        items:
+          - label: "Search Engine (Google)"
+            value: "Search Engine (Google)"
+          - label: "ChatGPT / AI assistant"
+            value: "ChatGPT / AI assistant"
+          - label: "Referral"
+            value: "Referral"
+          - label: "Social media"
+            value: "Social media"
+          - label: "Other"
+            value: "Other"
+    - label: "Your budget:"
+      placeholder: "Your budget:"
+      name: "Your budget:"
+      required: false
       halfWidth: true
-      defaultValue: ""
-    - label: "Referral" # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      groupLabel: "" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
-      halfWidth: true
-      defaultValue: ""
-    - label: "Autre" # only valid for type="checkbox" & type === "radio"
-      name: "User Source" # This is crucial. Its indicate under which name you want to receive this field data
-      required: true
-      groupLabel: "" # Radio Inputs Label
-      group: "source" # when you add group then it will omit space between the same group radio input
-      type: "radio"
-      halfWidth: true
-      defaultValue: ""
-    - label: "J'accepte les termes et conditions et la [politique de confidentialité](/contact/)." # only valid for type="checkbox" & type === "radio"
-      name: "Agreed Privacy" # This is crucial. Its indicate under which name you want to receive this field data
-      value: "Agreed" # Value that will be submit (applicable for type="checkbox" & type === "radio")
-      checked: false # only valid for type="checkbox" & type === "radio"
+      dropdown:
+        type: ""
+        search: # if type is search then it will work
+          placeholder: ""
+        items:
+        - label: "CHF 2’000 – 5’000"
+          value: "CHF 2’000 – 5’000"
+        - label: "CHF 5’000 – 10’000"
+          value: "CHF 5’000 – 10’000"
+        - label: "CHF 10’000 – 20’000"
+          value: "CHF 10’000 – 20’000"
+        - label: "CHF 20’000+"
+          value: "CHF 20’000+"
+    - label: "I agree to the terms and conditions and [privacy policy](/privacy-policy/)."
+      name: "Agreed Privacy"
+      value: "Agreed"
+      checked: false
       required: true
       type: "checkbox"
       halfWidth: false
       defaultValue: ""
-    - note: success # info | warning | success | deprecated | hint
+    - note: success
       parentClass: "hidden message success"
       content: We have received your message! We'll get back to you as soon as possible.
-    - note: warning # info | warning | success | deprecated | hint
+    - note: warning
       parentClass: "hidden message error"
-      content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: info # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message success"
-    #   content: We have received your message! We'll get back to you as soon as possible.
-    # - note: warning # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: success # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message success"
-    #   content: We have received your message! We'll get back to you as soon as possible.
-    # - note: deprecated # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: hint # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
-    # - note: we # info | warning | success | deprecated | hint
-    #   parentClass: "text-sm message error"
-    #   content: Something went wrong! please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!
+      content: Something went wrong! Please contact us for assistance at [hello@monire.ch](hello@monire.ch)
 ---

@@ -4,23 +4,7 @@ import TestimonialCarousel from "../widgets/TestimonialCarousel.astro";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
-
-export interface Testimonial {
-  enable: boolean;
-  content: string;
-  customer: {
-    name: string;
-    role: string;
-    image?: string;
-  };
-}
-
-export interface TestimonialSection {
-  enable: boolean;
-  subtitle?: string;
-  title?: string;
-  list: Testimonial[];
-}
+import type { TestimonialSection } from "@/types";
 
 const defaultContent = (
   await getEntryCTM("sections", "testimonial", Astro.currentLocale)

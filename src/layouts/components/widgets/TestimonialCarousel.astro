@@ -3,15 +3,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const { testimonials = [] } = Astro.props;
+import type { Testimonial } from "@/types";
 
-type Testimonial = {
-  content: string;
-  customer?: {
-    name: string;
-    role: string;
-  };
-};
+const { testimonials = [] as Testimonial[] } = Astro.props;
 ---
 
 <div class="swiper testimonial-swiper">
@@ -21,9 +15,10 @@ type Testimonial = {
         <div class="swiper-slide">
           <div class="testimonial-slide-inner">
             <p class="mb-6 text-lg text-slate-100 italic">{t.content}</p>
+
             <div class="mt-4">
-              <div class="font-semibold text-slate-100">{t.customer?.name}</div>
-              <div class="text-sm text-slate-300">{t.customer?.role}</div>
+              <div class="font-semibold text-slate-100">{t.customer.name}</div>
+              <div class="text-sm text-slate-300">{t.customer.role}</div>
             </div>
           </div>
         </div>
@@ -41,22 +36,20 @@ type Testimonial = {
   import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
   if (typeof window !== "undefined") {
-    // @ts-ignore
-    if (window.__testimonialSwiper) {
-      // @ts-ignore
-      window.__testimonialSwiper.destroy(true, true);
-    }
+    const w = window;
 
     // @ts-ignore
-    window.__testimonialSwiper = new Swiper(".testimonial-swiper", {
+    if (w.__testimonialSwiper) {
+      // @ts-ignore
+      w.__testimonialSwiper.destroy(true, true);
+    }
+    // @ts-ignore
+    w.__testimonialSwiper = new Swiper(".testimonial-swiper", {
       modules: [Navigation, Pagination, Autoplay],
       slidesPerView: 1,
-      spaceBetween: 0,
       loop: true,
-      autoHeight: false,
       autoplay: { delay: 8000 },
       speed: 900,
-
       pagination: { el: ".swiper-pagination", clickable: true },
       navigation: {
         nextEl: ".swiper-button-next",
@@ -76,10 +69,6 @@ type Testimonial = {
     position: relative;
   }
 
-  .swiper-wrapper {
-    align-items: center;
-  }
-
   .swiper-slide {
     display: flex;
     align-items: center;
@@ -88,11 +77,6 @@ type Testimonial = {
     text-align: left;
   }
 
-  .testimonial-slide-inner {
-    max-width: 860px;
-  }
-
-  /* Arrows */
   .swiper-button-prev,
   .swiper-button-next {
     color: #3b82f6;
@@ -102,15 +86,6 @@ type Testimonial = {
     height: 40px;
   }
 
-  .swiper-button-prev {
-    left: -60px;
-  }
-
-  .swiper-button-next {
-    right: -60px;
-  }
-
-  /* Pagination */
   .swiper-pagination-bullet-active {
     background: #3b82f6;
   }

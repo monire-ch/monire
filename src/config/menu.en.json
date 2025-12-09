@@ -68,7 +68,7 @@
     {
       "enable": true,
       "name": "Privacy Policy",
-      "url": "/privacy-policy/",
+      "url": "/privacy-policy",
       "weight": 0
     }
   ]

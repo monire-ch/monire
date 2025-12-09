@@ -1,15 +1,15 @@
 # Site Configuration
 [site]
-  title              = "Upstart" # Shared title for SEO and OpenGraph
-  description        = "A highly customizable saas & startup astro theme built with Tailwind CSS and Astro Js" # Shared description for SEO and OpenGraph
-  tagline            = "Saas & Startup Astro Js Theme"
+  title              = "Moniré"
+  description        = "Custom website development and AI-powered workflow automation in Switzerland."
+  tagline            = "WEB DEVELOPMENT & AI AUTOMATIONS"
   taglineSeparator   = "" # default is " - " 
-  baseUrl            = "https://upstart-astro.netlify.app" # Base URL for the site and used in OpenGraph meta tags.
-  logo               = "/images/monire_logo.png" # Path to the site's logo
-  logoHoverAnimation = true # Enable or disable logo hover animation
-  logoText           = "Upstart" # Text displayed next to the logo
-  logoWidth          = "32px" # Width of the logo
-  logoHeight         = "32px" # Height of the logo
+  baseUrl            = "https://monire.ch"
+  logo               = "/images/monire_logo.png"
+  logoHoverAnimation = true
+  logoText           = "Moniré"
+  logoWidth          = "32px"
+  logoHeight         = "32px"
 
   # Add a trailing slash at the end of URLs (e.g., https://example.com/, https://example.com/contact/)
   # Note: Manually restart your server when you change this value
@@ -25,59 +25,52 @@
 # Specific SEO configurations that complement the general site settings.
 # -----------------------------------------------------------------------------------------------------------------------------------
 [seo]
-  author = "Getastrothemes"
+  author = "Moniré"
   keywords = [
-    "saas astro theme",
-    "saas business astro theme",
-    "startup astro theme",
-  ] # SEO keywords
-  robots = "index, follow" # Instructs search engines on how to crawl and index the pages.
+    "web design switzerland",
+    "web development switzerland",
+    "web agency switzerland",
+    "webflow agency switzerland",
+    "webflow website development",
+    "webdesign schweiz",
+    "webagentur schweiz",
+    "webflow agentur schweiz",
+    "webdesign zürich",
+    "high-end business websites",
+    "swiss small business websites",
+    "ai workflow automation"
+  ] 
+  # SEO keywords
+  robots = "index, follow"
 
   [seo.robotsTxt]
-    enable = true # Enables or disables robots.txt file generation on site build
+    enable = true
     disallow = [
       "/cdn-cgi/",
-    ] # Disallow specific paths (e.g., "/_astro/", "/cdn-cgi/")
+    ]
 
   [seo.sitemap]
-    enable = true # Enables or disables sitemap generation on site build
-    exclude = [
-    ] # exclude all pages that include these folder names (e.g., "blog", "services")
+    enable = true
+    exclude = []
 
 
 # Different theme settings
 # -----------------------------------------------------------------------------------------------------------------------------------
 [settings]
-  # If you change value of the following content folder, make sure to change the folder name also from
-  # note: restart your server when you change this value
-  # - "src/content" folder
-  # - "src/[...lang]/pages" folder
-  # - "src/content.config.ts" collections object
-  blogFolder        = "blog" # Folder where blog posts are stored
+  blogFolder = "blog"
+  pagination = 6
+  stickyHeader = true
 
-  pagination   = 6 # Number of posts displayed on each page blog list page
-  stickyHeader = true # Enables or disable sticky feature of header
-
-  # documentation - https://formspree.io/ | https://formsubmit.co/ | https://docs.netlify.com/forms/setup/
-  # Form action URL for the contact form (For more settings related to form see "src/content/sections/contact-section.md")
-  contactFormAction = "https://formsubmit.co/your_form_submission_receive_email" # https://formspree.io/f/your_form_id | https://formsubmit.co/your_form_submission_receive_email | "/"
-
-  # formspree | formsubmit.co | netlify (default is formsubmit.co) 
+  # Contact form
+  contactFormAction   = "https://formsubmit.co/hello@monire.ch"
   contactFormProvider = "formsubmit.co"
 
   footerDescription = "" # Check src/i18n/en.json and src/i18n/fr.json for changing the footer description in different languages or directly add value here if you are not using internationalization feature
 
   # For changing footer description and footer copyright in different languages see src/i18n/en.json and src/i18n/fr.json
-  # We kindly appreciate it if you retain the theme copyright. Thank you for supporting Getastrothemes!
   [settings.copyright]
     enable = true
-    text   = "" # Check src/i18n/en.json and src/i18n/fr.json for changing the copyright text in different languages or directly add value here if you are not using internationalization feature
-
-  # Mailchimp Subscription Form located in footer
-  [settings.subscription]
-    enable     = true # Enables or disable the subscription form
-    title      = "" # Check src/i18n/en.json and src/i18n/fr.json for changing the title in different languages or directly add value here if you are not using internationalization feature
-    formAction = "https://gmail.us11.list-manage.com/subscribe/post?u=d870b06d86c16269e4b1f9b39&amp;id=12cf0c6ac2&amp;f_id=007e61e1f0"
+    text   = ""
 
   # Multilingual settings (check src/config/language.json for changing the languages)
   # NOTE: Manually restart your server when you change the following multilingual table values
@@ -86,12 +79,12 @@
     # Run `npm run remove-multilingual` for removing multilingual content files after disabling the feature.
     enable               = true
     defaultLanguage      = "en"
-    disableLanguages     = [] # List of languages to disable (eg: ["fr", "es"])
-    showDefaultLangInUrl = false # Show default language in URL (eg: https://getastrothemes.com/en/)
+    disableLanguages     = []
+    showDefaultLangInUrl = false
 
   [settings.markup.tableOfContents]
     enable     = true
-    expanded   = true # whether to expand the table of contents by default
+    expanded   = true
     endLevel   = 5
     ordered    = false
     startLevel = 1

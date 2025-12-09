@@ -7,7 +7,7 @@ items:
     languages: "Languages: English, German"
     linkedin: "https://www.linkedin.com/in/nicole-pyra"
   - name: "Monika Märki"
-    image: "/path/to/monika-image.jpg"
+    image: "/images/about/monika.jpg"
     role: "🇵🇱 Polish-born, based in Switzerland"
     languages: "Languages: Polish, English, German"
     linkedin: "https://www.linkedin.com/in/monika-malecka/"

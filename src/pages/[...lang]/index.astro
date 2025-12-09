@@ -1,6 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
-import WhyUs from "@/components/sections/WhyUs.astro";
+import About from "@/components/sections/About.astro";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import { generatePaths } from "@/lib/utils/i18nUtils";
 import FaqSection from "@/components/sections/FaqSection.astro";
@@ -20,7 +20,7 @@ const homepage = await getEntryCTM("homepage", "-index", Astro.currentLocale);
 <Base {...homepage.data}>
   <HomeBanner />
   <OurValue />
-  <WhyUs />
+  <About />
   <PricingSection />
   <TestimonialSection />
   <FaqSection content={homepage.data.faqSection} />

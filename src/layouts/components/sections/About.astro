@@ -6,10 +6,8 @@ import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import ButtonLink from "../buttons/ButtonLink.astro";
-import Icons from "@/helpers/Icons.astro";
 
-// Type for this section data
-type whyUsSectionType = Section & {
+type aboutSectionType = Section & {
   layoutType?: "modern" | "creative";
   list: {
     title: string;
@@ -18,46 +16,35 @@ type whyUsSectionType = Section & {
     descriptionFontSize?: "sm" | "lg";
     description: string;
     ctaBtn: Button;
-    bouncedContent?: {
-      enable: boolean;
-      bgImage: string;
-      list: string[];
-    };
   }[];
 };
 type Props = {
-  content?: whyUsSectionType;
+  content?: aboutSectionType;
 };
 
-// Fetching the default content for the this section
 let defaultContent = (
-  await getEntryCTM("sections", "why-us", Astro.currentLocale)
-)?.data as whyUsSectionType;
+  await getEntryCTM("sections", "about", Astro.currentLocale)
+)?.data as aboutSectionType;
 
-// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
-// The 'content' prop should match the structure of 'defaultContent'.
-// Allows using this section with different content across multiple pages.
-// If 'content' is missing, 'defaultContent' will be used.
 let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
-) as whyUsSectionType;
+) as aboutSectionType;
 
-// Extracting required values from 'content' object
 let {
   enable = true,
   title,
   subtitle,
   layoutType = "creative",
   list,
-} = actualContent as whyUsSectionType;
+} = actualContent as aboutSectionType;
 
 const isModernLayout = layoutType === "modern";
 ---
 
 {
   enable && (
-    <section class="relative">
+    <section class="relative" id="about">
       <div class="container space-y-12 md:space-y-16">
         <div
           class="mx-auto shrink-0 text-center lg:max-w-2xl"
@@ -130,19 +117,8 @@ const isModernLayout = layoutType === "modern";
                   {item.ctaBtn?.enable && (
                     <div class="mt-2">
                       <ButtonLink
-                        class="has-icon-moving-animation flex w-fit flex-row-reverse items-center gap-5 rounded-none p-0 text-white"
-                        content={item.ctaBtn}>
-                        <span class="bg-primary icons-wrapper icons-wrapper inline-flex h-12 w-12 items-center justify-center rounded-full">
-                          <span class="icon icon-before flex items-center justify-center">
-                            <Icons icon="ArrowUpRight" class="text-2xl" />
-                          </span>
-                          <span
-                            class="icon icon-after flex items-center justify-center"
-                            aria-hidden="true">
-                            <Icons icon="ArrowUpRight" class="text-2xl" />
-                          </span>
-                        </span>
-                      </ButtonLink>
+                        class="btn-primary text-center"
+                        content={{ ...item.ctaBtn }} />
                     </div>
                   )}
                 </div>
@@ -161,7 +137,7 @@ const isModernLayout = layoutType === "modern";
                       "max-lg:order-2": isFullWidth,
                     },
                   ]}>
-                  {item.image ? (
+                  {item.image && (
                     <OptimizedImage
                       src={item.image}
                       class:list={[
@@ -180,25 +156,6 @@ const isModernLayout = layoutType === "modern";
                         },
                       ]}
                     />
-                  ) : (
-                    item.bouncedContent?.bgImage && (
-                      <div class="relative min-h-full p-5">
-                        <OptimizedImage
-                          src={item.bouncedContent?.bgImage}
-                          class:list={[
-                            "pointer-events-none absolute inset-0 size-full min-h-full rounded-tl-3xl object-cover",
-                          ]}
-                        />
-                        <div class="draggable-wrapper relative h-full min-h-72 w-full overscroll-contain md:min-h-96">
-                          {item.bouncedContent?.list.map((item) => (
-                            <div
-                              class="draggable bg-primary/50 absolute w-fit cursor-grab rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap text-white select-none md:text-lg"
-                              set:html={markdownify(item)}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )
                   )}
                 </div>
               </div>
@@ -209,9 +166,3 @@ const isModernLayout = layoutType === "modern";
     </section>
   )
 }
-
-<script>
-  import draggable from "@/lib/utils/draggable";
-
-  draggable();
-</script>

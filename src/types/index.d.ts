@@ -172,38 +172,6 @@ export interface FontConfig {
 }
 
 // ----------------------------------------------------------------------------------------------------
-// Start Changelog TYPE
-export type ChangelogItem = {
-  label: string;
-  color: string; // e.g., "sky", "orange", "success"
-  content: string;
-};
-
-export type ChangelogCategory = {
-  active: boolean;
-  title: string;
-  list: ChangelogItem[];
-};
-
-export type TypeLabel = {
-  icon: string;
-  label: string;
-};
-
-export type ChangelogEntry = {
-  title: string;
-  version: string;
-  date: string;
-  content: string;
-  video?: Video;
-  types: TypeLabel[];
-  changes: ChangelogCategory[];
-};
-
-// End Changelog TYPE
-// ----------------------------------------------------------------------------------------------------
-
-// ----------------------------------------------------------------------------------------------------
 // START CONTACT FORM TYPE
 
 export type NoteType = "info" | "warning" | "success" | "deprecated" | "hint";

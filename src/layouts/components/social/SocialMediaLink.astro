@@ -1,0 +1,54 @@
+---
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+
+interface Props {
+  label: string;
+  url: string;
+  icon: string;
+  layout: "classic" | "minimal" | "modern";
+  size: "sm" | "md" | "lg";
+}
+
+const { label, url, icon, layout, size } = Astro.props as Props;
+---
+
+<a
+  aria-label={label}
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer nofollow"
+  class:list={[
+    "group relative flex items-center justify-center transition duration-300",
+    {
+      "bg-primary/15 hover:bg-primary rounded-full": layout === "classic",
+    },
+    { "text-dark hover:scale-110": layout === "minimal" },
+    {
+      "bg-primary/25 hover:bg-primary text-secondary hover:text-light rounded-full":
+        layout === "modern",
+    },
+    {
+      "h-12 w-12": size === "sm",
+      "h-14 w-14": size === "md",
+      "h-16 w-16": size === "lg",
+    },
+  ]}>
+  <span class="sr-only">{label}</span>
+  {
+    icon && (
+      <OptimizedImage
+        inlineSvg={true}
+        src={icon}
+        class:list={[
+          "group-hover:text-light relative z-10 text-inherit transition duration-300",
+          {
+            "h-4 w-4": size === "sm",
+            "h-5 w-5": size === "md",
+            "h-6 w-6": size === "lg",
+          },
+        ]}
+        alt={label}
+      />
+    )
+  }
+</a>

@@ -1,0 +1,14 @@
+---
+title: "Meet the Duo"
+items:
+  - name: "Nikky Pyra"
+    image: "/path/to/nikky-image.jpg"
+    role: "🇨🇦 Canadian-born, based in Switzerland"
+    languages: "Languages: English, German"
+    linkedin: "https://www.linkedin.com/in/nicole-pyra"
+  - name: "Monika Märki"
+    image: "/path/to/monika-image.jpg"
+    role: "🇵🇱 Polish-born, based in Switzerland"
+    languages: "Languages: Polish, English, German"
+    linkedin: "https://www.linkedin.com/in/monika-malecka/"
+---

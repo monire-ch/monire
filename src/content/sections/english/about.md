@@ -1,7 +1,7 @@
 ---
 enable: true
-subtitle: 2 Founders, 1 Vision
-title: About Us
+subtitle: About Us
+title: 2 Founders, 1 Vision
 layoutType: modern
 
 list:

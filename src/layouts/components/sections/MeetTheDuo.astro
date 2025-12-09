@@ -1,0 +1,109 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import type { Section } from "@/types";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import SocialMediaLink from "@/layouts/components/social/SocialMediaLink.astro";
+
+type meetTheDuoSectionType = Section & {
+  items: {
+    name: string;
+    title: string;
+    image: string;
+    role: string;
+    languages: string;
+    linkedin: string;
+  }[];
+};
+
+type Props = {
+  content?: meetTheDuoSectionType;
+};
+
+let defaultContent = (
+  await getEntryCTM("sections", "meet-the-duo", Astro.currentLocale)
+)?.data as meetTheDuoSectionType;
+
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as meetTheDuoSectionType;
+
+let { title, items } = actualContent as meetTheDuoSectionType;
+---
+
+<section class="meet-the-duo text-center">
+  <div class="container space-y-12 md:space-y-16">
+    {
+      title && (
+        <h2 class="has-italic-text capitalize" set:html={markdownify(title)} />
+      )
+    }
+
+    <div class="flex justify-center gap-16">
+      {
+        items.map((item) => (
+          <div class="person-card">
+            <div class="profile-img">
+              <img src={item.image} alt={item.name} />
+            </div>
+            <h3 class="name">{item.name}</h3>
+            <p class="role">{item.role}</p>
+            <p class="languages">{item.languages}</p>
+            <SocialMediaLink
+              size="sm"
+              layout="modern"
+              label="linkedin"
+              url={item.linkedin}
+              icon="/images/icons/svg/linkedin.svg"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .meet-the-duo {
+    font-family: Arial, sans-serif;
+    padding: 2rem 0;
+  }
+
+  .person-card {
+    text-align: center;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .profile-img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    margin: 0 auto 1rem;
+  }
+
+  .profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .name {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .role {
+    font-size: 1rem;
+    color: gray;
+  }
+
+  .languages {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: gray;
+  }
+</style>

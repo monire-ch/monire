@@ -8,6 +8,7 @@ import SocialComponent from "@/layouts/components/social/Social.astro";
 import SocialData from "@/config/social.json";
 import type { InputField } from "@/types";
 import config from ".astro/config.generated.json" with { type: "json" };
+import contact from "@/config/contact.json" with { type: "json" };
 import Subtitle from "../widgets/Subtitle.astro";
 
 const {
@@ -17,7 +18,7 @@ const {
 type ContactItem = {
   icon: string;
   label: string;
-  value: string;
+  value?: string;
 };
 
 type ContactList = {
@@ -35,7 +36,7 @@ type SocialItem = {
 type SocialConfig = {
   enable: boolean;
   title: string;
-  list?: SocialItem[]; // Optional if the list is commented out
+  list?: SocialItem[];
 };
 
 type pricingSectionType = Section & {
@@ -48,21 +49,15 @@ type Props = {
   content?: pricingSectionType;
 };
 
-// Fetching the default content for the this section
 let defaultContent = (
   await getEntryCTM("sections", "contact-section", Astro.currentLocale)
 )?.data as pricingSectionType;
 
-// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
-// The 'content' prop should match the structure of 'defaultContent'.
-// Allows using this section with different content across multiple pages.
-// If 'content' is missing, 'defaultContent' will be used.
 let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
 ) as pricingSectionType;
 
-// Extracting required values from 'content' object
 let {
   enable = true,
   title,
@@ -73,10 +68,8 @@ let {
   contactList,
 } = actualContent as pricingSectionType;
 
-// Generate ID from label (Required for Input Radio and Checkbox)
 const genIdFromLabel = (label: string) => label.toLowerCase().replace(" ", "-");
 
-// Combine same group radio to show them together without space
 const combineRadio = (list: InputField[]) => {
   const groupMap: Record<
     string,
@@ -86,11 +79,10 @@ const combineRadio = (list: InputField[]) => {
 
   list.forEach((item, index) => {
     if (item.group) {
-      // Track the group items, their first position, and groupLabel
       if (!groupMap[item.group]) {
         groupMap[item.group] = {
           index,
-          groupLabel: item.groupLabel || "", // Capture groupLabel from the first occurrence
+          groupLabel: item.groupLabel || "",
           items: [],
         };
       }
@@ -98,13 +90,10 @@ const combineRadio = (list: InputField[]) => {
     }
   });
 
-  // Replace first occurrence of group with combined object and remove others
   Object.entries(groupMap).forEach(
     ([groupName, { index, groupLabel, items }]) => {
-      // Replace the first occurrence with the combined group object
       result[index] = { group: groupName, groupLabel, items };
 
-      // Remove other occurrences from the result array
       for (let i = result.length - 1; i > index; i--) {
         if (result[i].group === groupName) {
           result.splice(i, 1);
@@ -143,25 +132,33 @@ form = {
             )}
             {contactList?.enable && (
               <div class="mt-8 space-y-3">
-                {contactList.list.map((item) => (
-                  <div class="flex items-center justify-start gap-x-4 py-1.5">
-                    {item.icon && (
-                      <div class="group-hover/item:bg-primary bg-primary/15 text-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-lg transition duration-300">
-                        <OptimizedImage
-                          inlineSvg={true}
-                          src={item.icon || ""}
-                          class="h-5 w-5 transition"
-                        />
-                      </div>
-                    )}
-                    <div class="prose-a:text-text-default space-y-px">
-                      {item.label && (
-                        <div class="text-sm text-white" set:html={item.label} />
+                {contactList.list.map((item) => {
+                  const value =
+                    item.value ??
+                    (item.label === "Email us" ? contact.email : "");
+                  return (
+                    <div class="flex items-center justify-start gap-x-4 py-1.5">
+                      {item.icon && (
+                        <div class="group-hover/item:bg-primary bg-primary/15 text-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-lg transition duration-300">
+                          <OptimizedImage
+                            inlineSvg={true}
+                            src={item.icon || ""}
+                            class="h-5 w-5 transition"
+                          />
+                        </div>
                       )}
-                      {item.value && <p set:html={markdownify(item.value)} />}
+                      <div class="prose-a:text-text-default space-y-px">
+                        {item.label && (
+                          <div
+                            class="text-sm text-white"
+                            set:html={item.label}
+                          />
+                        )}
+                        {value && <p set:html={markdownify(value)} />}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
             {social?.enable &&
@@ -247,13 +244,16 @@ form = {
                         </label>
                       )}
                     {input.dropdown ? (
-                      <div id="validation-target">
+                      <div
+                        id="validation-target"
+                        {...(input.required && { "data-required": "true" })}>
                         <select
                           {...(input.label && { "data-name": input.label })}
                           {...(input.id && { id: input.id })}
                           name={
                             input.name || input.label || "Please set name value"
                           }
+                          {...(input.required && { required: true })}
                           data-hs-select={`{
                           ${input.dropdown.type === "search" ? `\"hasSearch\": true,` : `\"hasSearch\": false,`}
                           \n\"searchPlaceholder\": \"${input.dropdown.type === "search" ? input.dropdown.search?.placeholder || "Please set placeholder" : ""}\",\n
@@ -276,10 +276,7 @@ form = {
                           ))}
                         </select>
                         <p class="hs-error:block mt-2 hidden text-sm text-red-600">
-                          Please select a valid state.
-                        </p>
-                        <p class="hs-success:flex mt-2 hidden text-sm text-white">
-                          Perfect!
+                          Please select an option.
                         </p>
                       </div>
                     ) : input.tag === "textarea" ? (
@@ -447,93 +444,160 @@ form = {
   )
 }
 
-<!-- https://preline.co/docs/select.html -->
 <script>
   import "@preline/select";
   import {
     formspreeSubmit,
     netlifySubmit,
     formSubmit,
-    isFormFilled,
     setMessage,
-    validateSelectTag,
   } from "@/lib/utils/FormHandle";
+  import contact from "@/config/contact.json" with { type: "json" };
 
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById(
       "contact-form",
     ) as HTMLFormElement | null;
 
-    let selectTags = form?.querySelectorAll(
-      "[input-wrapper]:not(.hidden) select[data-hs-select]",
+    if (!form) return;
+
+    const selectTags = form.querySelectorAll(
+      "select[data-hs-select]",
     ) as NodeListOf<HTMLSelectElement>;
 
-    selectTags.forEach((tag) => {
-      tag.addEventListener("change", () => {
-        // Ensure only visible select tag value should submitted
-        selectTags.forEach((tag) => {
-          const name = tag.getAttribute("data-name");
-          tag.setAttribute("name", name || "");
-        });
+    selectTags.forEach((select) => {
+      if (select.hasAttribute("required")) {
+        select.setAttribute("data-required", "true");
+        select.removeAttribute("required");
+      }
+    });
 
-        validateSelectTag(tag);
+    const validatePrelineSelect = (select: HTMLSelectElement): boolean => {
+      const isRequired = select.getAttribute("data-required") === "true";
+      const value = select.value;
+      const isEmpty = !value || value === "" || value === "Choose";
+
+      let wrapper = select.parentElement;
+      while (wrapper && wrapper.tagName !== "FORM") {
+        if (wrapper.id === "validation-target") {
+          break;
+        }
+        wrapper = wrapper.parentElement;
+      }
+
+      if (!wrapper) return true;
+
+      const errorMsg = wrapper.querySelector("p.text-red-600");
+      const successMsg = wrapper.querySelector("p.text-white");
+
+      if (isRequired && isEmpty) {
+        wrapper.classList.add("hs-error");
+        wrapper.classList.remove("hs-success");
+
+        if (errorMsg) {
+          errorMsg.classList.remove("hidden");
+        }
+        if (successMsg) {
+          successMsg.classList.add("hidden");
+        }
+
+        return false;
+      } else {
+        wrapper.classList.remove("hs-error");
+
+        if (errorMsg) {
+          errorMsg.classList.add("hidden");
+        }
+
+        if (!isEmpty) {
+          wrapper.classList.add("hs-success");
+          if (successMsg) {
+            successMsg.classList.remove("hidden");
+          }
+        } else {
+          wrapper.classList.remove("hs-success");
+          if (successMsg) {
+            successMsg.classList.add("hidden");
+          }
+        }
+
+        return true;
+      }
+    };
+
+    selectTags.forEach((select) => {
+      select.addEventListener("change", () => {
+        validatePrelineSelect(select);
       });
     });
 
-    form?.addEventListener("submit", async (e: Event) => {
+    form.addEventListener("submit", async (e: Event) => {
       e.preventDefault();
 
-      const provider = form?.getAttribute("data-provider") || "";
-      const action = form?.getAttribute("data-action") || "";
+      const provider = form.getAttribute("data-provider") || "";
+      const action = form.getAttribute("data-action") || "";
 
-      selectTags = form?.querySelectorAll(
-        "[input-wrapper]:not(.hidden) select[data-hs-select]",
-      ) as NodeListOf<HTMLSelectElement>;
-
-      // Validate all preline select tags
-      selectTags.forEach(validateSelectTag);
-
-      if (isFormFilled(form)) {
-        // Console.log form data for debugging
-        // const formData = Object.fromEntries(new FormData(form).entries());
-        // console.log(
-        //   Object.entries(formData)
-        //     .map(([key, value]) => `${key}: ${value}`)
-        //     .join("\n\n"),
-        // );
-
-        setMessage("Form Submitting!...", true, true, form);
-
-        try {
-          switch (provider) {
-            case "netlify":
-              await netlifySubmit(form, action);
-              break;
-            case "formsubmit.co":
-              await formSubmit({
-                form,
-                action,
-              });
-              break;
-            case "formspree":
-              await formspreeSubmit(
-                Object.fromEntries(new FormData(form).entries()),
-                5000,
-                form,
-              );
-              break;
-            default:
-              throw new Error("Unknown form provider.");
-          }
-        } catch (error) {
-          setMessage(
-            error +
-              "! Please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!",
-            false,
-            false,
-            form,
-          );
+      let allSelectsValid = true;
+      selectTags.forEach((select) => {
+        const isValid = validatePrelineSelect(select);
+        if (!isValid) {
+          allSelectsValid = false;
         }
+      });
+
+      if (!allSelectsValid) {
+        const firstInvalid = Array.from(selectTags).find(
+          (select) => !validatePrelineSelect(select),
+        );
+        if (firstInvalid) {
+          let wrapper = firstInvalid.parentElement;
+          while (wrapper && wrapper.tagName !== "FORM") {
+            if (wrapper.id === "validation-target") {
+              wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+              break;
+            }
+            wrapper = wrapper.parentElement;
+          }
+        }
+        return;
+      }
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      setMessage("Form Submitting!...", true, true, form);
+
+      try {
+        switch (provider) {
+          case "netlify":
+            await netlifySubmit(form, action);
+            break;
+          case "formsubmit.co":
+            await formSubmit({
+              form,
+              action,
+            });
+            break;
+          case "formspree":
+            await formspreeSubmit(
+              Object.fromEntries(new FormData(form).entries()),
+              5000,
+              form,
+            );
+            break;
+          default:
+            throw new Error("Unknown form provider.");
+        }
+      } catch (error) {
+        setMessage(
+          error +
+            `! Please contact us for assitance at [${contact.email}](mailto:${contact.email})`,
+          false,
+          false,
+          form,
+        );
       }
     });
   });

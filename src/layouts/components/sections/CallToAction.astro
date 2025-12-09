@@ -2,40 +2,27 @@
 import type { Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
-import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
 
-// Type for this section data
-type ctaSectionType = Section & {
-  ratingContent: string;
-  features: string[];
-};
+type ctaSectionType = Section
 
 type Props = {
   content?: ctaSectionType;
 };
 
-// Fetching the default content for the this section
 let defaultContent = (
   await getEntryCTM("sections", "call-to-action", Astro.currentLocale)
 )?.data as ctaSectionType;
 
-// Enables content customization (e.g., title, description) with a fallback to 'defaultContent' if not provided.
-// The 'content' prop should match the structure of 'defaultContent'.
-// Allows using this section with different content across multiple pages.
-// If 'content' is missing, 'defaultContent' will be used.
 let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
 ) as ctaSectionType;
 
-// Extracting required values from 'content' object
 let {
   enable = true,
   title,
-  features,
-  ratingContent,
   ctaBtn,
 } = actualContent as ctaSectionType;
 ---
@@ -55,25 +42,6 @@ let {
                 set:html={markdownify(title)}
               />
             )}
-
-            {features && (
-              <div class="flex flex-wrap gap-4">
-                {features.map((feature) => (
-                  <div
-                    class:list={[
-                      "from-primary/20 to-primary/5 inline-flex items-center gap-4 rounded-full bg-linear-to-r to-90% py-1 pe-5 pl-2 text-white",
-                    ]}>
-                    <OptimizedImage
-                      inlineSvg={true}
-                      class="text-primary"
-                      src="/images/icons/svg/check-rounded.svg"
-                      alt="icon"
-                    />
-                    {markdownify(feature)}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
           <div class="flex flex-wrap-reverse items-center gap-x-20 gap-y-6 md:flex-nowrap lg:justify-end">
             {ctaBtn && ctaBtn.enable && (
@@ -81,49 +49,8 @@ let {
                 class="after:sm:bg-primary/35 relative after:sm:absolute after:sm:top-0 after:sm:left-[120%] after:sm:h-full after:sm:w-px after:sm:rotate-18 after:sm:content-['']"
                 data-aos="fade-right-sm">
                 <ButtonLink
-                  class="btn-md btn-primary btn-has-icon group relative z-30 flex items-center gap-4"
-                  content={ctaBtn}>
-                  <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-                    <OptimizedImage
-                      alt="icon"
-                      class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                      src="/images/icons/svg/star.svg"
-                    />
-                  </span>
-                </ButtonLink>
-              </div>
-            )}
-
-            {ratingContent && (
-              <div
-                class="flex items-center gap-5 text-sm/relaxed"
-                data-aos="fade-right-sm"
-                data-aos-delay="100">
-                <svg
-                  class="text-primary"
-                  width="35"
-                  height="34"
-                  viewBox="0 0 35 34"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7.36763 33.625L10.1437 21.3312L0.833252 13.0625L13.1333 11.9687L17.9166 0.375L22.6999 11.9687L34.9999 13.0625L25.6895 21.3312L28.4655 33.625L17.9166 27.1062L7.36763 33.625Z"
-                    fill="url(#paint0_linear_254_3061)"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="paint0_linear_254_3061"
-                      x1="4.19107"
-                      y1="-4.53094"
-                      x2="14.7907"
-                      y2="41.9626"
-                      gradientUnits="userSpaceOnUse">
-                      <stop stop-color="currentColor" stop-opacity="0" />
-                      <stop offset="1" stop-color="currentColor" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <div set:html={ratingContent} />
+                  class="btn-md btn-primary group relative z-30 flex items-center gap-4"
+                  content={ctaBtn} />
               </div>
             )}
           </div>

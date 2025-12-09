@@ -1,0 +1,92 @@
+---
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+import type { Testimonial } from "@/types";
+
+const { testimonials = [] as Testimonial[] } = Astro.props;
+---
+
+<div class="swiper testimonial-swiper">
+  <div class="swiper-wrapper">
+    {
+      testimonials.map((t: Testimonial) => (
+        <div class="swiper-slide">
+          <div class="testimonial-slide-inner">
+            <p class="mb-6 text-lg text-slate-100 italic">{t.content}</p>
+
+            <div class="mt-4">
+              <div class="font-semibold text-slate-100">{t.customer.name}</div>
+              <div class="text-sm text-slate-300">{t.customer.role}</div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-pagination mt-4"></div>
+</div>
+
+<script>
+  import Swiper from "swiper";
+  import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+  if (typeof window !== "undefined") {
+    const w = window;
+
+    // @ts-ignore
+    if (w.__testimonialSwiper) {
+      // @ts-ignore
+      w.__testimonialSwiper.destroy(true, true);
+    }
+    // @ts-ignore
+    w.__testimonialSwiper = new Swiper(".testimonial-swiper", {
+      modules: [Navigation, Pagination, Autoplay],
+      slidesPerView: 1,
+      loop: true,
+      autoplay: { delay: 8000 },
+      speed: 900,
+      pagination: { el: ".swiper-pagination", clickable: true },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  }
+</script>
+
+<style is:global>
+  .testimonial-swiper {
+    width: 100%;
+    max-width: 960px;
+    height: 300px;
+    padding: 2rem 0 3rem;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6rem;
+    text-align: left;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: #3b82f6;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #3b82f6;
+  }
+</style>

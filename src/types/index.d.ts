@@ -271,8 +271,19 @@ export interface Badge {
 
 export interface Testimonial {
   enable: boolean;
-  image: string;
   content: string;
+  customer: {
+    name: string;
+    role: string;
+    image?: string;
+  };
+}
+
+export interface TestimonialSection {
+  enable: boolean;
+  subtitle?: string;
+  title?: string;
+  list: Testimonial[];
 }
 
 export interface Service {

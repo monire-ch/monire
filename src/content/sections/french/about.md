@@ -2,7 +2,7 @@
 enable: true
 subtitle: 2 Founders, 1 Vision
 title: About Us
-layoutType: creative
+layoutType: modern
 
 list:
   - title: Why Choose A Duo?
@@ -32,6 +32,12 @@ list:
     ctaBtn:
       enable: true
       label: "Apply here"
+      url: ""
+      rel: ""
+      target: ""
+    ctaBtn2:
+      enable: true
+      label: "2025 Recipient"
       url: ""
       rel: ""
       target: ""

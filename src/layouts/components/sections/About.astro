@@ -16,6 +16,7 @@ type aboutSectionType = Section & {
     descriptionFontSize?: "sm" | "lg";
     description: string;
     ctaBtn: Button;
+    ctaBtn2?: Button;
   }[];
 };
 type Props = {
@@ -114,13 +115,24 @@ const isModernLayout = layoutType === "modern";
                       set:html={markdownify(item.description, true)}
                     />
                   )}
-                  {item.ctaBtn?.enable && (
+                  <div class="flex space-x-4">
+                    {item.ctaBtn?.enable && (
                     <div class="mt-2">
                       <ButtonLink
                         class="btn-primary text-center"
-                        content={{ ...item.ctaBtn }} />
+                        content={{ ...item.ctaBtn }}
+                      />
                     </div>
                   )}
+                  {item.ctaBtn2?.enable && (
+                    <div class="mt-2">
+                      <ButtonLink
+                        class="btn-secondary text-center"
+                        content={{ ...item.ctaBtn2 }}
+                      />
+                    </div>
+                  )}
+                  </div>
                 </div>
 
                 {/* Images */}

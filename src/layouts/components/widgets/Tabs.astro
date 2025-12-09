@@ -1,27 +1,8 @@
 ---
-/**
- * Example Usage
-
-  <Tabs>
-    <Tab name="Overview">
-      #### How Can We Assist You?
-
-      We offer personalized consultations to help you achieve your personal and professional goals. Choose a tab below to explore our services.
-
-      - Personal Coaching
-      - Career Counseling
-      - Conflict Resolution
-      - Life Advice
-    </Tab>
-  </Tabs>
-
- */
 import { parseHTML } from "linkedom";
 
-// Render all the slot content
 const slotContent = await Astro.slots.render("default");
 
-// Parse the rendered content
 const { document } = parseHTML(slotContent);
 const tabElements = Array.from(document.children) as Element[];
 ---

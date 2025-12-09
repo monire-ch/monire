@@ -44,8 +44,6 @@ export default defineConfig({
         "@/shortcodes/Button.astro",
         "@/shortcodes/Accordion.astro",
         "@/shortcodes/Notice.astro",
-        "@/shortcodes/Tabs.astro",
-        "@/shortcodes/Tab.astro",
         "@/shortcodes/ListCheck.astro",
         "@/shortcodes/CardGrid.astro",
         "@/shortcodes/ImageList.astro",

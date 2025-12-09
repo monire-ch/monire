@@ -1,0 +1,107 @@
+---
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import Subtitle from "../widgets/Subtitle.astro";
+import type { Section } from "@/types";
+import { markdownify } from "@/lib/utils/textConverter";
+import Tabs from "../widgets/Tabs.astro";
+import Tab from "../widgets/Tab.astro";
+
+type ServiceCTA = {
+  label: string;
+  style?: "primary" | "outline";
+  url: string;
+};
+
+type ServicesTab = {
+  label: string;
+  content: string;
+  cta?: ServiceCTA[];
+};
+
+type ServicesSectionType = Section & {
+  tabs?: ServicesTab[];
+};
+
+type Props = {
+  content?: ServicesSectionType;
+};
+
+let defaultContent = (
+  await getEntryCTM("sections", "services", Astro.currentLocale)
+)?.data as ServicesSectionType;
+
+let actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as ServicesSectionType;
+
+let {
+  enable = true,
+  title,
+  subtitle,
+  tabs = [],
+} = actualContent;
+---
+
+{
+  enable && (
+    <section id="services">
+      <div class="container">
+        <div class="space-y-12 md:space-y-16">
+          <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
+            <Subtitle content={subtitle} />
+            {title && (
+              <h2
+                class="has-italic-text text-white"
+                set:html={markdownify(title)}
+              />
+            )}
+          </div>
+
+          {tabs.length > 0 && (
+            <div
+              data-aos="fade-up-sm"
+              data-aos-delay="300"
+              class="section-gradient relative"
+            >
+              <div class="bg-primary/5 rounded-lg border p-6 max-lg:space-y-6 lg:rounded-3xl lg:p-12">
+                <Tabs>
+                  {tabs.map((tab) => (
+                    <Tab name={tab.label}>
+                      {tab.content && (
+                        <div
+                          class="space-y-6 max-w-3xl text-left mx-auto"
+                        >
+                          <div set:html={markdownify(tab.content)} />
+
+                          {tab.cta && tab.cta.length > 0 && (
+                            <div class="flex flex-wrap gap-4 pt-4">
+                              {tab.cta.map((cta) => (
+                                <a
+                                  href={cta.url}
+                                  class:list={[
+                                    "inline-flex items-center rounded-full px-6 py-3 text-sm font-medium transition",
+                                    cta.style === "outline"
+                                      ? "border border-white/30 text-white hover:bg-white/10"
+                                      : "bg-white text-black hover:bg-white/90",
+                                  ]}
+                                >
+                                  {cta.label}
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </Tab>
+                  ))}
+                </Tabs>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

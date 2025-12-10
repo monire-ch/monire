@@ -71,6 +71,5 @@ export const collections = {
   pricing: defineCollection({}),
   homepage: defineCollection({}),
   author: defineCollection({}),
-  changelog: defineCollection({}),
   "case-studies": caseStudies,
 };

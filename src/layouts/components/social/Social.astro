@@ -1,8 +1,8 @@
 ---
-import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 import { slugifyyy } from "@/lib/utils/textConverter";
 import type { SocialLink } from "@/types";
+import SocialMediaLink from "./SocialMediaLink.astro";
 
 const baseURL = import.meta.env.SITE;
 
@@ -29,7 +29,6 @@ interface FollowProps extends BaseProps {
 
 type Props = ShareProps | FollowProps;
 
-// Correctly define Astro.props to match Props
 let {
   list,
   size = "md",
@@ -56,8 +55,6 @@ const shareLinks: { [key: string]: string } = {
 if (disabled) {
   list = list.filter((social) => !disabled.includes(social.label));
 }
-
-// This component is used in Contact Page, Footer
 ---
 
 {
@@ -65,45 +62,13 @@ if (disabled) {
     <ul class:list={["flex flex-wrap items-center gap-4", className]} {...rest}>
       {list.map((social) => (
         <li>
-          <a
-            aria-label={social.label}
-            href={linkType === "share" ? shareLinks[social.label] : social.url}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            class:list={[
-              "group relative flex items-center justify-center transition duration-300",
-              {
-                "bg-primary/15 hover:bg-primary rounded-full":
-                  layout === "classic",
-              },
-              { "text-dark hover:scale-110": layout === "minimal" },
-              {
-                "bg-primary/25 hover:bg-primary text-secondary hover:text-light rounded-full":
-                  layout === "modern",
-              },
-              {
-                "h-12 w-12": size === "sm",
-                "h-14 w-14": size === "md",
-                "h-16 w-16": size === "lg",
-              },
-            ]}>
-            <span class="sr-only">{social.label}</span>
-            {social.icon && (
-              <OptimizedImage
-                inlineSvg={true}
-                src={social.icon}
-                class:list={[
-                  "group-hover:text-light relative z-10 text-inherit transition duration-300",
-                  {
-                    "h-4 w-4": size === "sm",
-                    "h-5 w-5": size === "md",
-                    "h-6 w-6": size === "lg",
-                  },
-                ]}
-                alt={social.label}
-              />
-            )}
-          </a>
+          <SocialMediaLink
+            label={social.label}
+            url={linkType === "share" ? shareLinks[social.label] : social.url}
+            icon={social.icon}
+            layout={layout}
+            size={size}
+          />
         </li>
       ))}
     </ul>

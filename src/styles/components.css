@@ -267,29 +267,6 @@ footer {
   }
 }
 
-/* Changelog Page Changes Badge */
-.changelog-badge {
-  &.changelog-badge-emerald {
-    @apply bg-green-400;
-  }
-
-  &.changelog-badge-indigo {
-    @apply bg-indigo-500;
-  }
-
-  &.changelog-badge-slate {
-    @apply bg-stone-300;
-  }
-
-  &.changelog-badge-crimson {
-    @apply bg-rose-500;
-  }
-
-  &.changelog-badge-amber {
-    @apply bg-orange-400;
-  }
-}
-
 .has-italic-text strong {
   @apply font-tertiary font-normal text-inherit italic;
 }

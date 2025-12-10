@@ -1,121 +1,47 @@
 {
   "main": [
     {
-      "name": "Pages",
       "enable": true,
-      "weight": 3,
-      "hasChildren": true,
-      "children": [
-        {
-          "enable": true,
-          "name": "Menu imbriqu ",
-          "hasChildren": true,
-          "weight": 2,
-          "children": [
-            {
-              "enable": true,
-              "name": "Menu 01",
-              "weight": 1
-            },
-            {
-              "enable": true,
-              "name": "Menu imbriqu ",
-              "hasChildren": true,
-              "weight": 4,
-              "children": [
-                {
-                  "enable": true,
-                  "name": " lement de menu imbriqu ",
-                  "weight": 1
-                },
-                {
-                  "enable": true,
-                  "name": " lement de menu imbriqu ",
-                  "weight": 2
-                },
-                {
-                  "enable": true,
-                  "name": " lement de menu imbriqu ",
-                  "weight": 3
-                },
-                {
-                  "enable": true,
-                  "name": " lement de menu imbriqu ",
-                  "weight": 4
-                }
-              ]
-            },
-            {
-              "enable": true,
-              "name": "Menu 02",
-              "weight": 2
-            },
-            {
-              "enable": true,
-              "name": "Menu 03",
-              "weight": 3
-            }
-          ]
-        },
-        {
-          "enable": true,
-          "name": "Tarifs",
-          "url": "/pricing/",
-          "weight": 2
-        },
-        {
-          "enable": true,
-          "name": "FAQ",
-          "url": "/faq/",
-          "weight": 3
-        },
-        {
-          "enable": true,
-          "name": "Changelog",
-          "url": "/changelog/",
-          "weight": 4
-        },
-        {
-          "enable": true,
-          "name": "Blog",
-          "url": "/blog/",
-          "weight": 7
-        },
-        {
-          "enable": true,
-          "name": "Article unique",
-          "url": "/blog/post-1/",
-          "weight": 8
-        }
-      ]
+      "name": "Home",
+      "weight": 1,
+      "url": "#"
     },
     {
       "enable": true,
-      "name": "Éléments",
-      "url": "/elements/",
-      "weight": 4,
-      "badge": {
-        "enable": true,
-        "label": "NOUVEAU",
-        "color": "primary",
-        "_color_comment": "color expected value - primary, info, success, danger",
-        "type": "text",
-        "_type_comment": "type expected value - text, dot"
-      }
+      "name": "Services",
+      "url": "/#services",
+      "weight": 2
+    },
+    {
+      "enable": false,
+      "name": "Portfolio",
+      "url": "/#portfolio",
+      "weight": 3
+    },
+    {
+      "enable": true,
+      "name": "About",
+      "url": "/#about",
+      "weight": 4
+    },
+    {
+      "enable": true,
+      "name": "Pricing",
+      "url": "/#pricing",
+      "weight": 5
+    },
+    {
+      "enable": false,
+      "name": "Blog",
+      "url": "/#blog",
+      "weight": 6
     },
     {
       "enable": true,
       "name": "Contact",
-      "url": "/contact/",
-      "weight": 5,
-      "badge": {
-        "enable": true,
-        "label": "NOUVEAU",
-        "color": "danger",
-        "_color_comment": "color expected value - primary, info, success, danger",
-        "type": "dot",
-        "_type_comment": "type expected value - text, dot"
-      }
+      "action": "openContactModal",
+      "url": "/#contact-modal",
+      "weight": 7
     }
   ],
   "footerMenuQuickLink": [

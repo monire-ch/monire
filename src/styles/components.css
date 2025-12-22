@@ -216,14 +216,11 @@
   @apply mx-auto px-4;
 }
 
-/* Override container padding for mobile nav menu - must stretch edge-to-edge */
 @media (max-width: 1023px) {
-  /* Remove container padding only for the header when mobile nav is used */
   header.header > .container {
     padding-inline: 0 !important;
   }
 
-  /* Ensure nav UL itself also ignores container padding */
   #nav-menu.navbar,
   .navbar#nav-menu {
     padding-inline: 0 !important;

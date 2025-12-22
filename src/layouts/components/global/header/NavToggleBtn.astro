@@ -1,11 +1,6 @@
----
-// Navigation toggle button for mobile (No Preline)
----
-
-<!-- Mobile menu backdrop -->
 <div
   id="nav-backdrop"
-  class="pointer-events-none fixed top-0 left-0 right-0 bottom-0 w-full h-full z-[9998] bg-black/50 opacity-0 transition-opacity duration-300 lg:hidden"
+  class="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-[9998] h-full w-full bg-black/50 opacity-0 transition-opacity duration-300 lg:hidden"
   aria-hidden="true">
 </div>
 
@@ -57,18 +52,10 @@
     const closeIcon = document.getElementById("close-icon");
 
     if (!toggleBtn || !navMenu || !backdrop) {
-      console.error("Mobile menu elements not found", {
-        toggleBtn: !!toggleBtn,
-        navMenu: !!navMenu,
-        backdrop: !!backdrop,
-      });
       return;
     }
 
-    console.log("Mobile menu initialized successfully");
-
     const openMenu = () => {
-      console.log("Opening menu - adding classes");
       try {
         navMenu.classList.add("open");
         navMenu.style.right = "0"; // Force inline style as backup
@@ -83,20 +70,12 @@
         document.body.style.overflow = "hidden";
         document.body.style.position = "fixed";
         document.body.style.width = "100%";
-
-        // Debug log
-        console.log("Menu classes after open:", navMenu.className);
-        console.log(
-          "Menu computed style right:",
-          window.getComputedStyle(navMenu).right,
-        );
       } catch (error) {
-        console.error("Error opening menu:", error);
+        // Silently handle errors
       }
     };
 
     const closeMenu = () => {
-      console.log("Closing menu");
       try {
         navMenu.classList.remove("open");
         navMenu.style.right = ""; // Remove inline style
@@ -112,7 +91,7 @@
         document.body.style.position = "";
         document.body.style.width = "";
       } catch (error) {
-        console.error("Error closing menu:", error);
+        // Silently handle errors
       }
     };
 
@@ -121,7 +100,6 @@
       e.preventDefault();
       e.stopPropagation();
       const isOpen = navMenu.classList.contains("open");
-      console.log("Toggle clicked, currently open:", isOpen);
       if (isOpen) {
         closeMenu();
       } else {
@@ -139,7 +117,6 @@
     // Close menu when clicking nav links
     navMenu.querySelectorAll(".nav-link").forEach((link) => {
       link.addEventListener("click", () => {
-        console.log("Nav link clicked, closing menu");
         closeMenu();
       });
     });

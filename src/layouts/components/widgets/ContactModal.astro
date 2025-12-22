@@ -1,5 +1,4 @@
 ---
-// Contact Modal Component
 import ContactSection from "@/layouts/components/sections/ContactSection.astro";
 ---
 
@@ -19,13 +18,11 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     transition: transform 0.35s ease;
   }
 
-  /* Prevent scroll when modal is open */
   :global(body.modal-open) {
     overflow: hidden;
     padding-right: var(--scrollbar-width, 0);
   }
 
-  /* Fix for iOS Safari scroll lock */
   :global(body.modal-open) {
     position: fixed;
     width: 100%;
@@ -34,12 +31,12 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
 
 <div
   id="contactOverlay"
-  class="modal-overlay pointer-events-none fixed inset-0 z-[999] bg-black/50 opacity-0">
+  class="modal-overlay pointer-events-none fixed inset-0 z-999 bg-black/50 opacity-0">
 </div>
 
 <div
   id="contactPanel"
-  class="modal-panel fixed top-0 right-0 z-[1000] flex h-full w-full translate-x-full flex-col overflow-y-auto bg-white p-8 shadow-2xl sm:w-[480px] dark:bg-gray-900">
+  class="modal-panel fixed top-0 right-0 z-1000 flex h-full w-full translate-x-full flex-col overflow-y-auto bg-white p-8 shadow-2xl sm:w-[480px] dark:bg-gray-900">
   <button
     id="closeModalBtn"
     class="absolute top-4 right-4 flex h-8 w-8 items-center justify-center text-2xl text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-white"
@@ -59,7 +56,6 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     const panel = document.getElementById("contactPanel");
     const closeBtn = document.getElementById("closeModalBtn");
 
-    // Calculate scrollbar width to prevent layout shift
     const getScrollbarWidth = () => {
       const outer = document.createElement("div");
       outer.style.visibility = "hidden";
@@ -77,37 +73,30 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
 
     const open = () => {
       if (panel && overlay) {
-        // Store scroll position for iOS
         const scrollY = window.scrollY;
 
-        // Calculate and set scrollbar width
         const scrollbarWidth = getScrollbarWidth();
         document.documentElement.style.setProperty(
           "--scrollbar-width",
           `${scrollbarWidth}px`,
         );
 
-        // Add modal classes
         document.body.classList.add("modal-open");
         document.body.style.top = `-${scrollY}px`;
 
-        // Open modal
         panel.classList.remove("translate-x-full");
         overlay.classList.remove("opacity-0", "pointer-events-none");
         overlay.classList.add("opacity-100", "pointer-events-auto", "active");
 
-        // Store scroll position as data attribute
         document.body.setAttribute("data-scroll-y", scrollY.toString());
       }
     };
 
     const close = () => {
       if (panel && overlay) {
-        // Get stored scroll position
         const scrollY = document.body.getAttribute("data-scroll-y");
         const scrollPosition = scrollY ? parseInt(scrollY) : null;
 
-        // Close modal
         panel.classList.add("translate-x-full");
         overlay.classList.remove(
           "opacity-100",
@@ -116,28 +105,22 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
         );
         overlay.classList.add("opacity-0", "pointer-events-none");
 
-        // Temporarily disable smooth scrolling globally
         const html = document.documentElement;
         const originalScrollBehavior = html.style.scrollBehavior;
         html.style.scrollBehavior = "auto";
 
-        // Restore scroll position BEFORE removing fixed positioning
         if (scrollPosition !== null) {
-          // Remove fixed positioning first
           document.body.classList.remove("modal-open");
           document.body.style.top = "";
           document.documentElement.style.removeProperty("--scrollbar-width");
 
-          // Immediately restore scroll position without animation
           window.scrollTo(0, scrollPosition);
 
-          // Restore original scroll behavior on next frame
           requestAnimationFrame(() => {
             html.style.scrollBehavior = originalScrollBehavior;
             document.body.removeAttribute("data-scroll-y");
           });
         } else {
-          // Remove modal classes if no scroll position stored
           document.body.classList.remove("modal-open");
           document.body.style.top = "";
           document.documentElement.style.removeProperty("--scrollbar-width");
@@ -145,7 +128,6 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
       }
     };
 
-    // Buttons with data-open-contact attribute
     document.querySelectorAll("[data-open-contact]").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -153,16 +135,12 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
       });
     });
 
-    // Global event from menu items
     window.addEventListener("open-contact-modal", open);
 
-    // Close on overlay click
     overlay?.addEventListener("click", close);
 
-    // Close button
     closeBtn?.addEventListener("click", close);
 
-    // Close on ESC key
     document.addEventListener("keydown", (e) => {
       if (
         e.key === "Escape" &&
@@ -173,7 +151,6 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     });
   }
 
-  // Run on DOM ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initContactModal);
   } else {

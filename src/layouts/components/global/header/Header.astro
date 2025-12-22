@@ -141,23 +141,27 @@ const {
     #nav-menu {
       padding-top: 2rem !important;
       padding-bottom: 2rem !important;
-      padding-left: 2rem !important;
-      padding-right: 2rem !important;
+      padding-left: calc(var(--spacing) * 2) !important;
+      padding-right: calc(var(--spacing) * 2) !important;
+      align-items: flex-start !important;
     }
 
     #nav-menu .mobile-logo-wrapper {
       display: flex !important;
-      justify-content: center !important;
+      justify-content: flex-start !important;
       align-items: center !important;
       width: 100% !important;
       margin-bottom: 2rem !important;
-      padding: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      padding-top: calc(var(--spacing) * 2.5) !important;
+      padding-bottom: calc(var(--spacing) * 2.5) !important;
       list-style: none !important;
     }
 
     #nav-menu .mobile-logo-wrapper .logo-wrapper {
       display: flex !important;
-      justify-content: center !important;
+      justify-content: flex-start !important;
       align-items: center !important;
     }
 

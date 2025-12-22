@@ -240,6 +240,7 @@
   .logo {
     @apply w-10!;
     @apply flex w-10 items-center gap-x-4;
+    width: calc(var(--spacing) * 40) !important;
   }
 
   &.has-hover-animation {

@@ -114,7 +114,7 @@ form = {
 {
   enable && (
     <section class="relative">
-      <div class:list={["container"]}>
+      {/*  <div class:list={["container"]}>
         <div
           class:list={[
             "flex flex-wrap items-start justify-between gap-x-20 gap-y-6 lg:flex-nowrap",
@@ -181,80 +181,72 @@ form = {
                   />
                 </div>
               )}
-          </div>
-          {form && (
-            <div
-              data-aos="fade-up-sm"
-              data-aos-delay="200"
-              class="mt-10 w-full lg:mt-0 lg:max-w-2xl lg:p-10">
-              <form
-                id="contact-form"
-                {...{
-                  "data-netlify":
-                    contactFormProvider === "netlify" ? "true" : undefined,
-                  "data-action": contactFormAction,
-                  action:
-                    contactFormProvider === "netlify"
-                      ? contactFormAction
-                      : undefined,
-                  "data-provider": contactFormProvider,
-                }}
-                method="post"
-                class="grid grid-cols-2 gap-4">
-                {/* Some Hidden Inputs For provider */}
-                {form.emailSubject &&
-                  (contactFormProvider === "formsubmit.co" ||
-                  contactFormProvider === "formspree" ? (
-                    <input
-                      type="hidden"
-                      name="_subject"
-                      value={form.emailSubject}
-                    />
-                  ) : (
-                    <input
-                      type="hidden"
-                      name="subject"
-                      value={form.emailSubject}
-                    />
-                  ))}
+          </div> */}
+      {form && (
+        <div
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+          class="mt-10 w-full lg:mt-0 lg:max-w-2xl lg:p-10">
+          <form
+            id="contact-form"
+            {...{
+              "data-netlify":
+                contactFormProvider === "netlify" ? "true" : undefined,
+              "data-action": contactFormAction,
+              action:
+                contactFormProvider === "netlify"
+                  ? contactFormAction
+                  : undefined,
+              "data-provider": contactFormProvider,
+            }}
+            method="post"
+            class="grid grid-cols-1 gap-4">
+            {/* Some Hidden Inputs For provider */}
+            {form.emailSubject &&
+              (contactFormProvider === "formsubmit.co" ||
+              contactFormProvider === "formspree" ? (
+                <input
+                  type="hidden"
+                  name="_subject"
+                  value={form.emailSubject}
+                />
+              ) : (
+                <input type="hidden" name="subject" value={form.emailSubject} />
+              ))}
 
-                {contactFormProvider === "formsubmit.co" && (
-                  <input type="hidden" name="_template" value="table" />
-                )}
+            {contactFormProvider === "formsubmit.co" && (
+              <input type="hidden" name="_template" value="table" />
+            )}
 
-                {form.inputs.map((input) => (
+            {form.inputs.map((input) => (
+              <div
+                input-wrapper
+                class:list={[
+                  "flex flex-col",
+                  !input.halfWidth ? "col-span-2" : "max-sm:col-span-2",
+                  input.parentClass,
+                ]}>
+                {!input.note &&
+                  input.type !== "checkbox" &&
+                  input.type !== "radio" &&
+                  (input.groupLabel || input.label) && (
+                    <label for="name" class="form-label">
+                      {input.groupLabel || input.label || "Please set label"}
+                      {input.required && <span class="text-primary">*</span>}
+                    </label>
+                  )}
+                {input.dropdown ? (
                   <div
-                    input-wrapper
-                    class:list={[
-                      "flex flex-col",
-                      !input.halfWidth ? "col-span-2" : "max-sm:col-span-2",
-                      input.parentClass,
-                    ]}>
-                    {!input.note &&
-                      input.type !== "checkbox" &&
-                      input.type !== "radio" &&
-                      (input.groupLabel || input.label) && (
-                        <label for="name" class="form-label">
-                          {input.groupLabel ||
-                            input.label ||
-                            "Please set label"}
-                          {input.required && (
-                            <span class="text-primary">*</span>
-                          )}
-                        </label>
-                      )}
-                    {input.dropdown ? (
-                      <div
-                        id="validation-target"
-                        {...(input.required && { "data-required": "true" })}>
-                        <select
-                          {...(input.label && { "data-name": input.label })}
-                          {...(input.id && { id: input.id })}
-                          name={
-                            input.name || input.label || "Please set name value"
-                          }
-                          {...(input.required && { required: true })}
-                          data-hs-select={`{
+                    id="validation-target"
+                    {...(input.required && { "data-required": "true" })}>
+                    <select
+                      {...(input.label && { "data-name": input.label })}
+                      {...(input.id && { id: input.id })}
+                      name={
+                        input.name || input.label || "Please set name value"
+                      }
+                      {...(input.required && { required: true })}
+                      data-hs-select={`{
                           ${input.dropdown.type === "search" ? `\"hasSearch\": true,` : `\"hasSearch\": false,`}
                           \n\"searchPlaceholder\": \"${input.dropdown.type === "search" ? input.dropdown.search?.placeholder || "Please set placeholder" : ""}\",\n
                           \"searchClasses\": \"form-input hs-dropdown-search-input\",
@@ -265,79 +257,32 @@ form = {
                           \"optionTemplate\": \"<div class=\\\"text-inherit flex justify-between items-center w-full\\\"><span data-title><\/span><span class=\\\"hidden hs-selected:block\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/span><\/div>\",
                           \"extraMarkup\": [\n      \"<div class=\\\"hidden hs-error:block absolute top-1/2 end-8 -translate-y-1/2\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"\/><line x1=\\\"12\\\" x2=\\\"12\\\" y1=\\\"8\\\" y2=\\\"12\\\"\/><line x1=\\\"12\\\" x2=\\\"12.01\\\" y1=\\\"16\\\" y2=\\\"16\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"hidden hs-success:flex absolute inset-y-0 end-8 items-center pointer-events-none\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"absolute top-1\/2 end-3 -translate-y-1\/2\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"m7 15 5 5 5-5\\\"\/><path d=\\\"m7 9 5-5 5 5\\\"\/><\/svg><\/div>\"\n    ]
                           }`}
-                          class="hidden">
-                          <option value="">Choose</option>
-                          {input.dropdown?.items?.map((option) => (
-                            <option
-                              {...(option.selected && { selected: true })}
-                              value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        <p class="hs-error:block mt-2 hidden text-sm text-red-600">
-                          Please select an option.
-                        </p>
-                      </div>
-                    ) : input.tag === "textarea" ? (
-                      <textarea
-                        rows={input.rows || "6"}
-                        name={
-                          input.name || input.label || "Please set name value"
-                        }
-                        placeholder={
-                          input.placeholder || "Please set placeholder"
-                        }
-                        class="form-input"
-                        {...(input.required && { required: true })}
-                        set:html={input.defaultValue || ""}
-                      />
-                    ) : input.group || input.items ? (
-                      <div class="form-check-wrapper">
-                        {input.items?.map((input) => (
-                          <div class="form-check">
-                            <input
-                              {...{
-                                value:
-                                  typeof input.value === "boolean"
-                                    ? String(input.value)
-                                    : input.value || input.label,
-                                checked: input.checked ? true : undefined,
-                              }}
-                              type={input.type || "text"}
-                              name={
-                                input.name ||
-                                input.groupLabel ||
-                                "Please set name value"
-                              }
-                              id={
-                                input.id ||
-                                genIdFromLabel(input.label || "example-id")
-                              }
-                              placeholder={
-                                input.placeholder || "Please set placeholder"
-                              }
-                              class:list={[
-                                input.type === "radio"
-                                  ? "form-radio"
-                                  : "form-checkbox",
-                              ]}
-                              {...(input.required && { required: true })}
-                            />
-                            <label
-                              for={
-                                input.id ||
-                                genIdFromLabel(input.label || "example-id")
-                              }
-                              class="form-check-label"
-                              set:html={
-                                markdownify(input.label) || "Example Label"
-                              }
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    ) : input.type === "checkbox" || input.type === "radio" ? (
+                      class="hidden">
+                      <option value="">Choose</option>
+                      {input.dropdown?.items?.map((option) => (
+                        <option
+                          {...(option.selected && { selected: true })}
+                          value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <p class="hs-error:block mt-2 hidden text-sm text-red-600">
+                      Please select an option.
+                    </p>
+                  </div>
+                ) : input.tag === "textarea" ? (
+                  <textarea
+                    rows={input.rows || "6"}
+                    name={input.name || input.label || "Please set name value"}
+                    placeholder={input.placeholder || "Please set placeholder"}
+                    class="form-input"
+                    {...(input.required && { required: true })}
+                    set:html={input.defaultValue || ""}
+                  />
+                ) : input.group || input.items ? (
+                  <div class="form-check-wrapper">
+                    {input.items?.map((input) => (
                       <div class="form-check">
                         <input
                           {...{
@@ -348,7 +293,11 @@ form = {
                             checked: input.checked ? true : undefined,
                           }}
                           type={input.type || "text"}
-                          name={input.name || "Please set name value"}
+                          name={
+                            input.name ||
+                            input.groupLabel ||
+                            "Please set name value"
+                          }
                           id={
                             input.id ||
                             genIdFromLabel(input.label || "example-id")
@@ -372,74 +321,101 @@ form = {
                           set:html={markdownify(input.label) || "Example Label"}
                         />
                       </div>
-                    ) : input.note ? (
-                      <div
-                        {...{ "data-default": input.content }}
-                        class:list={[
-                          "prose-styles border p-4 text-sm",
-                          input.note === "info"
-                            ? "prose-p:text-slate-400 border-blue-400/25 bg-slate-600/10"
-                            : input.note === "warning"
-                              ? "prose-p:text-orange-400 border-amber-400/25 bg-orange-600/10"
-                              : input.note === "success"
-                                ? "prose-p:text-green-400 border-green-400/25 bg-green-600/10"
-                                : input.note === "deprecated"
-                                  ? "prose-p:text-stone-400 border-green-400/25 bg-stone-600/10"
-                                  : input.note === "hint"
-                                    ? "prose-p:text-purple-400 border-purple-400/25 bg-purple-600/10"
-                                    : "prose-p:text-gray-400 border-gray-400/25 bg-gray-600/10",
-                        ]}
-                        set:html={markdownify(input.content || "", true)}
-                      />
-                    ) : (
-                      <input
-                        {...(input.defaultValue && {
-                          value: input.defaultValue,
-                        })}
-                        type={input.type || "text"}
-                        name={
-                          input.name || input.label || "Please set name value"
-                        }
-                        placeholder={
-                          input.placeholder || "Please set placeholder"
-                        }
-                        class="form-input"
-                        {...(input.required && { required: true })}
-                      />
-                    )}
+                    ))}
                   </div>
-                ))}
-
-                {form.submitButton && (
-                  <div class="col-span-2 mt-4 flex flex-col">
-                    <button
-                      type="submit"
+                ) : input.type === "checkbox" || input.type === "radio" ? (
+                  <div class="form-check">
+                    <input
+                      {...{
+                        value:
+                          typeof input.value === "boolean"
+                            ? String(input.value)
+                            : input.value || input.label,
+                        checked: input.checked ? true : undefined,
+                      }}
+                      type={input.type || "text"}
+                      name={input.name || "Please set name value"}
+                      id={
+                        input.id || genIdFromLabel(input.label || "example-id")
+                      }
+                      placeholder={
+                        input.placeholder || "Please set placeholder"
+                      }
                       class:list={[
-                        "btn btn-md btn-primary btn-has-icon group relative inline-flex w-fit overflow-hidden",
-                        "relative z-0 flex items-center gap-4",
-                      ]}>
-                      {form.submitButton.label}
-                      <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-                        <OptimizedImage
-                          alt="icon"
-                          class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                          src="/images/icons/svg/star.svg"
-                        />
-                      </span>
-                    </button>
+                        input.type === "radio" ? "form-radio" : "form-checkbox",
+                      ]}
+                      {...(input.required && { required: true })}
+                    />
+                    <label
+                      for={
+                        input.id || genIdFromLabel(input.label || "example-id")
+                      }
+                      class="form-check-label"
+                      set:html={markdownify(input.label) || "Example Label"}
+                    />
                   </div>
-                )}
-                {form.note && (
+                ) : input.note ? (
                   <div
-                    class="prose-a:text-primary prose-a:underline prose-a:underline-offset-2 col-span-2 flex flex-col text-sm/normal"
-                    set:html={markdownify(form.note, true)}
+                    {...{ "data-default": input.content }}
+                    class:list={[
+                      "prose-styles border p-4 text-sm",
+                      input.note === "info"
+                        ? "prose-p:text-slate-400 border-blue-400/25 bg-slate-600/10"
+                        : input.note === "warning"
+                          ? "prose-p:text-orange-400 border-amber-400/25 bg-orange-600/10"
+                          : input.note === "success"
+                            ? "prose-p:text-green-400 border-green-400/25 bg-green-600/10"
+                            : input.note === "deprecated"
+                              ? "prose-p:text-stone-400 border-green-400/25 bg-stone-600/10"
+                              : input.note === "hint"
+                                ? "prose-p:text-purple-400 border-purple-400/25 bg-purple-600/10"
+                                : "prose-p:text-gray-400 border-gray-400/25 bg-gray-600/10",
+                    ]}
+                    set:html={markdownify(input.content || "", true)}
+                  />
+                ) : (
+                  <input
+                    {...(input.defaultValue && {
+                      value: input.defaultValue,
+                    })}
+                    type={input.type || "text"}
+                    name={input.name || input.label || "Please set name value"}
+                    placeholder={input.placeholder || "Please set placeholder"}
+                    class="form-input"
+                    {...(input.required && { required: true })}
                   />
                 )}
-              </form>
-            </div>
-          )}
+              </div>
+            ))}
+
+            {form.submitButton && (
+              <div class="col-span-2 mt-4 flex flex-col">
+                <button
+                  type="submit"
+                  class:list={[
+                    "btn btn-md btn-primary btn-has-icon group relative inline-flex w-fit overflow-hidden",
+                    "relative z-0 flex items-center gap-4",
+                  ]}>
+                  {form.submitButton.label}
+                  <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
+                    <OptimizedImage
+                      alt="icon"
+                      class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
+                      src="/images/icons/svg/star.svg"
+                    />
+                  </span>
+                </button>
+              </div>
+            )}
+            {form.note && (
+              <div
+                class="prose-a:text-primary prose-a:underline prose-a:underline-offset-2 col-span-2 flex flex-col text-sm/normal"
+                set:html={markdownify(form.note, true)}
+              />
+            )}
+          </form>
         </div>
-      </div>
+      )}
     </section>
   )
 }

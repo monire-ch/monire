@@ -3,76 +3,38 @@
 ---
 
 <script>
-  // @ts-nocheck
   import SmoothScroll from "smoothscroll-for-websites";
 
   document.addEventListener("DOMContentLoaded", async () => {
-    // Dynamic Preline imports
-    await loadPrelineComponents();
+    try {
+      // AOS
+      const AOS = await import("aos");
+      AOS.init({
+        duration: 700,
+        easing: "ease-out",
+        disable: "mobile",
+        once: true,
+      });
 
-    // AOS - https://github.com/michalsnik/aos
-    const AOS = await import("aos");
-    AOS.init({
-      duration: 700,
-      easing: "ease-out",
-      disable: "mobile",
-      once: true,
-    });
+      SmoothScroll({
+        animationTime: 600,
+        stepSize: 60,
+        touchpadSupport: true,
+      });
 
-    // Smooth Scroll - https://github.com/gblazex/smoothscroll-for-websites/wiki
-    SmoothScroll({
-      animationTime: 600, // [ms]
-      stepSize: 60, // [px]
-      touchpadSupport: true,
-    });
-
-    // Fix: Support horizontal scrolling by using the mouse wheel + shift
-    initHorizontalScroll();
+      initHorizontalScroll();
+    } catch (error) {
+      console.error("Error initializing scripts:", error);
+    }
   });
 
-  // Load Preline components dynamically based on DOM content
-  async function loadPrelineComponents() {
-    const imports = [];
-
-    if (
-      document.querySelector(".hs-select") ||
-      document.querySelector("[data-hs-select]")
-    ) {
-      imports.push(
-        import("@preline/select").then((module) => {
-          if (window.HSSelect) {
-            window.HSSelect.autoInit();
-          }
-        }),
-      );
-    }
-
-    if (document.querySelector("[data-hs-tab]")) {
-      imports.push(
-        import("@preline/tabs").then((module) => {
-          if (window.HSTabs) {
-            window.HSTabs.autoInit();
-          }
-        }),
-      );
-    }
-
-    if (document.querySelector(".hs-accordion")) {
-      imports.push(
-        import("@preline/accordion").then((module) => {
-          if (window.HSAccordion) {
-            window.HSAccordion.autoInit();
-          }
-        }),
-      );
-    }
-
-    await Promise.all(imports);
-  }
-
-  // Horizontal scroll with shift + wheel
   function initHorizontalScroll() {
-    document.querySelectorAll("*").forEach((el) => {
+    // Only target elements with specific class or attribute
+    const scrollableElements = document.querySelectorAll(
+      ".horizontal-scroll, [data-horizontal-scroll]",
+    );
+
+    scrollableElements.forEach((el) => {
       if (el.scrollWidth > el.clientWidth) {
         el.addEventListener(
           "wheel",
@@ -98,7 +60,7 @@
   if (document.cookie.includes("cookieConsent=accepted")) {
     // Load GA script
     const gtagScript = document.createElement("script");
-    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
+    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-SV3QLRHSK6";
     gtagScript.async = true;
     document.head.appendChild(gtagScript);
 
@@ -110,7 +72,7 @@
       }
 
       gtag("js", new Date());
-      gtag("config", "G-XXXXXXXXXX");
+      gtag("config", "G-SV3QLRHSK6");
     };
   }
 </script>

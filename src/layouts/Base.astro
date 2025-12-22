@@ -12,6 +12,7 @@ import GlobalScripts from "./components/widgets/GlobalScripts.astro";
 import PageLoader from "./components/utilities/PageLoader.astro";
 import config from ".astro/config.generated.json" with { type: "json" };
 import CookieBanner from "@/components/global/CookieBanner.astro";
+import ContactModal from "@/components/widgets/ContactModal.astro";
 
 type Props = JSONLDProps & {
   className?: string;
@@ -49,7 +50,7 @@ const sectionSpacingClass =
       <CookieBanner />
     </main>
     <Footer />
-
+    <ContactModal />
     <GlobalScripts />
     <BreakpointIndicator />
   </body>

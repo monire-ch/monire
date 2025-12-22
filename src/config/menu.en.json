@@ -40,7 +40,7 @@
       "enable": true,
       "name": "Contact",
       "action": "openContactModal",
-      "url": "/#contact-modal",
+      "url": "",
       "weight": 7
     }
   ],

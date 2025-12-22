@@ -30,7 +30,6 @@
     "@lucide/astro": "^0.548.0",
     "@preline/accordion": "^3.2.3",
     "@preline/collapse": "^3.2.3",
-    "@preline/dropdown": "^3.2.3",
     "@preline/overlay": "^3.2.3",
     "@preline/select": "^3.2.3",
     "@preline/tabs": "^3.2.3",

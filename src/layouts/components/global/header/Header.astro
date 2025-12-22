@@ -1,7 +1,7 @@
 ---
 import Logo from "@/components/global/Logo.astro";
 import config from ".astro/config.generated.json" with { type: "json" };
-import NavMenuItem from "@/layouts/components/global/header/MenuItem.astro";
+import MenuItem from "@/layouts/components/global/header/MenuItem.astro";
 import NavToggleBtn from "@/layouts/components/global/header/NavToggleBtn.astro";
 import type { NavigationLink } from "@/types";
 import { sortByWeight } from "@/lib/utils/sortFunctions";
@@ -34,59 +34,179 @@ const {
 
 <header
   class:list={[
-    "header group/header transform",
-    { "sticky-header": stickyHeader },
+    "header group/header relative z-50 sticky-header",
   ]}>
-  <div class="absolute container">
-    <nav
-      class="hs-dropdown relative flex items-center justify-between px-2 py-2.5 [--auto-close:inside] [--gpu-acceleration:false] [--strategy:absolute] lg:[--strategy:static]">
+  <div class="container">
+    <nav class="relative flex items-center justify-between px-2 py-2.5">
       <Logo class={logoHoverAnimation ? "has-hover-animation" : ""} />
 
       <ul
         id="nav-menu"
-        class="navbar hs-dropdown-menu hs-dropdown-open:flex hs-dropdown-open:mt-2! has-customized-scrollbar max-lg:absolute max-lg:transform-none! lg:transform-none!">
-        {main.map((menu) => <NavMenuItem menu={menu} />)}
+        class="navbar lg:flex lg:flex-row lg:items-center lg:gap-6">
+        {/* Mobile logo - only visible in mobile menu */}
+        <li class="mobile-logo-wrapper lg:hidden">
+          <Logo class={logoHoverAnimation ? "has-hover-animation" : ""} />
+        </li>
+        {main.map((menu) => <MenuItem menu={menu} />)}
       </ul>
+
       <NavToggleBtn />
     </nav>
   </div>
 </header>
-<script>
-  import "@/plugins/preline/dropdown";
 
-  function stickyHeader(): void {
-    const header = document.querySelector(
-      ".sticky-header",
-    ) as HTMLElement | null;
-    if (!header) return; // Early exit if no header is found
-
-    let prevScrollPos = window.scrollY;
-
-    if (prevScrollPos > 0) {
-      header.classList.add("scroll-up");
-    }
-
-    window.addEventListener("scroll", () => {
-      const currentScrollPos = window.scrollY;
-
-      if (prevScrollPos > currentScrollPos) {
-        // Scrolling up
-        header.classList.remove("scroll-down");
-        header.classList.add("scroll-up");
-      } else if (prevScrollPos < currentScrollPos) {
-        // Scrolling down
-        header.classList.remove("scroll-up");
-        header.classList.add("scroll-down");
-      }
-
-      if (currentScrollPos === 0) {
-        header.classList.remove("scroll-up");
-        header.classList.remove("scroll-down");
-      }
-
-      prevScrollPos = currentScrollPos;
-    });
+<style>
+  /* Ensure header is sticky but transparent */
+  .header.sticky-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background: transparent !important;
   }
 
-  stickyHeader();
-</script>
+  /* Ensure header container and all children are transparent */
+  .header.sticky-header > .container {
+    background: transparent !important;
+  }
+
+  /* On homepage, ensure header overlays hero section */
+  body:has(.hero-bg) .header.sticky-header {
+    background: transparent !important;
+  }
+
+  /* On mobile, ensure header doesn't block mobile menu */
+  @media (max-width: 1023px) {
+    .header.sticky-header {
+      z-index: 9998 !important; /* Below mobile menu but above content */
+    }
+  }
+
+  /* Desktop navigation - always visible */
+  @media (min-width: 1024px) {
+    #nav-menu {
+      display: flex !important;
+      position: static !important;
+      height: auto !important;
+      width: auto !important;
+      background: transparent !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+  }
+
+  /* Mobile menu styles */
+  @media (max-width: 1023px) {
+    /* Ensure header logo is visible on mobile */
+    .header nav > .logo-wrapper {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      z-index: 10000 !important;
+    }
+    /* Override ALL global navbar styles - must be full-screen overlay */
+    #nav-menu.navbar,
+    .navbar#nav-menu,
+    nav .navbar {
+      /* Override global navigation.css styles */
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: -100% !important; /* off-canvas by default */
+      bottom: 0 !important;
+      height: 100vh !important;
+      width: 100vw !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+      padding: 0 !important; /* No padding on navbar - background must cover all edges */
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: #000000 !important;
+      opacity: 0;
+      pointer-events: none;
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      z-index: 9999 !important;
+      transition: right 0.3s ease, opacity 0.3s ease;
+      box-sizing: border-box;
+      /* Override any conflicting Tailwind classes */
+      transform: none !important;
+    }
+
+    .navbar.open,
+    #nav-menu.navbar.open,
+    .navbar#nav-menu.open {
+      right: 0 !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    #nav-menu {
+      /* Add padding only to content area, not edges - background covers full viewport */
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
+    }
+
+    /* Mobile logo styling - centered at top */
+    #nav-menu .mobile-logo-wrapper {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+      margin-bottom: 2rem !important;
+      padding: 0 !important;
+      list-style: none !important;
+    }
+
+    #nav-menu .mobile-logo-wrapper .logo-wrapper {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+    }
+
+    #nav-menu .mobile-logo-wrapper .logo {
+      width: auto !important;
+      height: 3rem !important;
+      max-width: 200px !important;
+    }
+
+    :global(.dark) #nav-menu {
+      background: #111827;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #nav-menu :global(.nav-item) {
+      margin: 0;
+      width: 100%;
+    }
+
+    #nav-menu :global(.nav-link) {
+      display: block;
+      padding: 0.875rem 1rem;
+      font-size: 1.125rem;
+      width: 100%;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    #nav-menu :global(.nav-link:hover) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    :global(.dark) #nav-menu :global(.nav-link:hover) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Extra spacing at the top so content doesn't hide behind header */
+    #nav-menu > :first-child {
+      margin-top: 0.5rem;
+    }
+  }
+</style>
+

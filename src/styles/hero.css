@@ -3,6 +3,14 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  position: relative;
+  z-index: 0;
+  /* Ensure hero extends to top of viewport behind sticky header */
+  margin-top: -80px;
+  padding-top: 80px;
+  min-height: calc(100vh + 80px);
+  display: flex;
+  align-items: center;
 }
 
 /* Browsers that support WebP will use this instead */

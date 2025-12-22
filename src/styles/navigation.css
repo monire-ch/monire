@@ -1,9 +1,13 @@
 /* Header */
 .header {
-  @apply relative z-30 w-full;
+  @apply z-30 w-full;
 
   &.sticky-header {
-    @apply sticky top-5 z-50 transition-[transform,opacity,0.3s_background] duration-500;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background: transparent !important;
+    transition: transform 0.3s, opacity 0.3s;
   }
 
   &.scroll-up {

@@ -19,7 +19,6 @@ const { pathname } = Astro.url;
 }
 
 <script>
-  // Handle menu item clicks
   function initMenuActions() {
     const menuLinks = document.querySelectorAll("[data-menu-action]");
 
@@ -42,14 +41,12 @@ const { pathname } = Astro.url;
     });
   }
 
-  // Run on DOM ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initMenuActions);
   } else {
     initMenuActions();
   }
 
-  // Update active links based on current path and hash
   if (typeof window !== "undefined") {
     const updateActiveLinks = () => {
       const { pathname, hash } = window.location;

@@ -1,0 +1,159 @@
+---
+import ContactSection from "@/layouts/components/sections/ContactSection.astro";
+---
+
+<style>
+  .modal-overlay {
+    transition:
+      opacity 0.3s ease,
+      backdrop-filter 0.3s ease;
+    backdrop-filter: blur(0px);
+  }
+
+  .modal-overlay.active {
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-panel {
+    transition: transform 0.35s ease;
+  }
+
+  :global(body.modal-open) {
+    overflow: hidden;
+    padding-right: var(--scrollbar-width, 0);
+  }
+
+  :global(body.modal-open) {
+    position: fixed;
+    width: 100%;
+  }
+</style>
+
+<div
+  id="contactOverlay"
+  class="modal-overlay pointer-events-none fixed inset-0 z-999 bg-black/50 opacity-0">
+</div>
+
+<div
+  id="contactPanel"
+  class="modal-panel fixed top-0 right-0 z-1000 flex h-full w-full translate-x-full flex-col overflow-y-auto bg-white p-8 shadow-2xl sm:w-[480px] dark:bg-gray-900">
+  <button
+    id="closeModalBtn"
+    class="absolute top-4 right-4 flex h-8 w-8 items-center justify-center text-2xl text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-white"
+    aria-label="Close modal">
+    ✕
+  </button>
+
+  <h2 class="mb-6 text-3xl font-semibold">Let's Work Together</h2>
+
+  <ContactSection />
+  <slot />
+</div>
+
+<script>
+  function initContactModal() {
+    const overlay = document.getElementById("contactOverlay");
+    const panel = document.getElementById("contactPanel");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    const getScrollbarWidth = () => {
+      const outer = document.createElement("div");
+      outer.style.visibility = "hidden";
+      outer.style.overflow = "scroll";
+      document.body.appendChild(outer);
+
+      const inner = document.createElement("div");
+      outer.appendChild(inner);
+
+      const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+      outer.parentNode?.removeChild(outer);
+
+      return scrollbarWidth;
+    };
+
+    const open = () => {
+      if (panel && overlay) {
+        const scrollY = window.scrollY;
+
+        const scrollbarWidth = getScrollbarWidth();
+        document.documentElement.style.setProperty(
+          "--scrollbar-width",
+          `${scrollbarWidth}px`,
+        );
+
+        document.body.classList.add("modal-open");
+        document.body.style.top = `-${scrollY}px`;
+
+        panel.classList.remove("translate-x-full");
+        overlay.classList.remove("opacity-0", "pointer-events-none");
+        overlay.classList.add("opacity-100", "pointer-events-auto", "active");
+
+        document.body.setAttribute("data-scroll-y", scrollY.toString());
+      }
+    };
+
+    const close = () => {
+      if (panel && overlay) {
+        const scrollY = document.body.getAttribute("data-scroll-y");
+        const scrollPosition = scrollY ? parseInt(scrollY) : null;
+
+        panel.classList.add("translate-x-full");
+        overlay.classList.remove(
+          "opacity-100",
+          "pointer-events-auto",
+          "active",
+        );
+        overlay.classList.add("opacity-0", "pointer-events-none");
+
+        const html = document.documentElement;
+        const originalScrollBehavior = html.style.scrollBehavior;
+        html.style.scrollBehavior = "auto";
+
+        if (scrollPosition !== null) {
+          document.body.classList.remove("modal-open");
+          document.body.style.top = "";
+          document.documentElement.style.removeProperty("--scrollbar-width");
+
+          window.scrollTo(0, scrollPosition);
+
+          requestAnimationFrame(() => {
+            html.style.scrollBehavior = originalScrollBehavior;
+            document.body.removeAttribute("data-scroll-y");
+          });
+        } else {
+          document.body.classList.remove("modal-open");
+          document.body.style.top = "";
+          document.documentElement.style.removeProperty("--scrollbar-width");
+        }
+      }
+    };
+
+    document.querySelectorAll("[data-open-contact]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        open();
+      });
+    });
+
+    window.addEventListener("open-contact-modal", open);
+
+    overlay?.addEventListener("click", close);
+
+    closeBtn?.addEventListener("click", close);
+
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "Escape" &&
+        document.body.classList.contains("modal-open")
+      ) {
+        close();
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initContactModal);
+  } else {
+    initContactModal();
+  }
+</script>

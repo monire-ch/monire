@@ -1,66 +1,145 @@
----
-const { isDarkHeader } = Astro.props;
----
+<div
+  id="nav-backdrop"
+  class="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-[9998] h-full w-full bg-black/50 opacity-0 transition-opacity duration-300 lg:hidden"
+  aria-hidden="true">
+</div>
 
 <button
+  type="button"
+  id="nav-toggle"
+  class="relative z-[10001] inline-flex items-center justify-center gap-2 rounded-md p-2 text-gray-700 hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+  aria-controls="nav-menu"
   aria-label="Toggle navigation"
-  class:list={[
-    "nav-toggler hs-dropdown-toggle group relative lg:hidden",
-    isDarkHeader && "nav-toggler-dark",
-  ]}>
-  <div
-    class:list={[
-      "hs-dropdown-open:ring-4 ring-opacity-30 relative flex h-12 w-12 transform flex-col items-center justify-center overflow-hidden rounded-full ring-1 duration-200 hover:ring-4",
-      isDarkHeader ? "bg-white ring-white/25" : "ring-primary/25 bg-primary",
-    ]}>
-    <div
-      class="hs-dropdown-open:translate-y-2 hs-dropdown-open:rotate-0 -translate-y-[105%] rotate-45 transform overflow-hidden transition-transform duration-300">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        class="group-[&.nav-toggler-dark]:text-dark group-[&:not(.nav-toggler-dark)]:text-white"
-        width="24px"
-        height="24px"
-        viewBox="0 0 24 24"
-        version="1.1"
-        xml:space="preserve"
-        fill="currentColor">
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g
-          id="SVGRepo_tracerCarrier"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-        </g>
-        <g id="SVGRepo_iconCarrier">
-          <style type="text/css">
-            .st0 {
-              opacity: 0.2;
-              fill: none;
-              stroke-width: 5e-2;
-              stroke-miterlimit: 10;
-            }
-          </style>
-          <g id="grid_system"></g>
-          <g id="_icons">
-            <path
-              d="M5.3,18.7C5.5,18.9,5.7,19,6,19s0.5-0.1,0.7-0.3l5.3-5.3l5.3,5.3c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3 c0.4-0.4,0.4-1,0-1.4L13.4,12l5.3-5.3c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L12,10.6L6.7,5.3c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4 l5.3,5.3l-5.3,5.3C4.9,17.7,4.9,18.3,5.3,18.7z">
-            </path>
-          </g>
-        </g>
-      </svg>
-    </div>
-
-    <div
-      class="flex h-4.5 w-4.5 origin-center -translate-y-3 transform flex-col justify-between overflow-hidden transition-transform duration-300">
-      <div
-        class="group-[&.nav-toggler-dark]:bg-theme-dark hs-dropdown-open:translate-y-6 mb-1.5 h-px w-7 origin-left transform transition-transform duration-300 group-[&:not(.nav-toggler-dark)]:bg-white">
-      </div>
-      <div
-        class="group-[&.nav-toggler-dark]:bg-theme-dark hs-dropdown-open:translate-y-6 mb-1.5 h-px w-7 transform rounded transition-transform delay-75 duration-300 group-[&:not(.nav-toggler-dark)]:bg-white">
-      </div>
-      <div
-        class="group-[&.nav-toggler-dark]:bg-theme-dark hs-dropdown-open:translate-y-6 h-px w-7 origin-left transform transition-transform delay-100 duration-300 group-[&:not(.nav-toggler-dark)]:bg-white">
-      </div>
-    </div>
-  </div>
+  aria-expanded="false"
+  style="position: relative; z-index: 10001;">
+  <svg
+    id="hamburger-icon"
+    class="h-6 w-6"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round">
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+  <svg
+    id="close-icon"
+    class="hidden h-6 w-6"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round">
+    <path d="M18 6 6 18"></path>
+    <path d="m6 6 12 12"></path>
+  </svg>
 </button>
+
+<script>
+  function initMobileMenu() {
+    const toggleBtn = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+    const backdrop = document.getElementById("nav-backdrop");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+
+    if (!toggleBtn || !navMenu || !backdrop) {
+      return;
+    }
+
+    const openMenu = () => {
+      try {
+        navMenu.classList.add("open");
+        navMenu.style.right = "0"; // Force inline style as backup
+        navMenu.style.opacity = "1"; // Force opacity
+        navMenu.style.pointerEvents = "auto"; // Force pointer events
+        backdrop.classList.remove("opacity-0", "pointer-events-none");
+        backdrop.classList.add("opacity-100", "pointer-events-auto");
+        hamburgerIcon?.classList.add("hidden");
+        closeIcon?.classList.remove("hidden");
+        toggleBtn.setAttribute("aria-expanded", "true");
+        // Only prevent body scroll, not html
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+      } catch (error) {
+        // Silently handle errors
+      }
+    };
+
+    const closeMenu = () => {
+      try {
+        navMenu.classList.remove("open");
+        navMenu.style.right = ""; // Remove inline style
+        navMenu.style.opacity = ""; // Remove inline opacity
+        navMenu.style.pointerEvents = ""; // Remove inline pointer events
+        backdrop.classList.remove("opacity-100", "pointer-events-auto");
+        backdrop.classList.add("opacity-0", "pointer-events-none");
+        hamburgerIcon?.classList.remove("hidden");
+        closeIcon?.classList.add("hidden");
+        toggleBtn.setAttribute("aria-expanded", "false");
+        // Restore body scroll
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
+      } catch (error) {
+        // Silently handle errors
+      }
+    };
+
+    // Toggle button click
+    toggleBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = navMenu.classList.contains("open");
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Backdrop click to close menu
+    backdrop.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeMenu();
+    });
+
+    // Close menu when clicking nav links
+    navMenu.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        closeMenu();
+      });
+    });
+
+    // Close menu on window resize to desktop
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1024) {
+        closeMenu();
+      }
+    });
+
+    // Close on ESC key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navMenu.classList.contains("open")) {
+        closeMenu();
+      }
+    });
+  }
+
+  // Initialize on DOM ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+</script>

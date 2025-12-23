@@ -1,35 +1,52 @@
 ---
 import type { NavigationLink } from "@/types";
-import NavDropdownMenu from "@/layouts/components/global/header/DropdownMenu.astro";
 
 const menu = Astro.props.menu as NavigationLink;
 const { pathname } = Astro.url;
 ---
 
 {
-  (menu.hasChildren || menu.hasMegaMenu) && menu.name ? (
-    <NavDropdownMenu menu={menu} />
-  ) : (
-    menu.name && (
-      <li class="nav-item" role="menuitem">
-        <a
-          href={menu.url || "/"}
-          on:click={(e: MouseEvent) => {
-            if (window.location.pathname !== "/") {
-              window.location.href = "/";
-            }
-          }}
-          class:list={[
-            "nav-link",
-            { "nav-link-active": pathname === menu.url },
-          ]}>
-          {menu.name}
-        </a>
-      </li>
-    )
+  menu.name && (
+    <li class="nav-item" role="menuitem">
+      <a
+        href={menu.action ? "#" : menu.url || "#"}
+        class:list={["nav-link", { "nav-link-active": pathname === menu.url }]}
+        data-menu-action={menu.action || null}>
+        {menu.name}
+      </a>
+    </li>
   )
 }
+
 <script>
+  function initMenuActions() {
+    const menuLinks = document.querySelectorAll("[data-menu-action]");
+
+    menuLinks.forEach((link) => {
+      const action = link.getAttribute("data-menu-action");
+
+      link.addEventListener("click", (e) => {
+        if (action === "openContactModal") {
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent("open-contact-modal"));
+
+          // Close mobile menu if open
+          const navMenu = document.getElementById("nav-menu");
+          if (navMenu?.classList.contains("open")) {
+            navMenu.classList.remove("open");
+            document.body.classList.remove("overflow-hidden");
+          }
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMenuActions);
+  } else {
+    initMenuActions();
+  }
+
   if (typeof window !== "undefined") {
     const updateActiveLinks = () => {
       const { pathname, hash } = window.location;
@@ -58,6 +75,13 @@ const { pathname } = Astro.url;
             link.classList.remove("nav-link-active");
           }
           return;
+        }
+
+        // CASE 3 — Regular page links
+        if (pathname === linkPath) {
+          link.classList.add("nav-link-active");
+        } else {
+          link.classList.remove("nav-link-active");
         }
       });
     };

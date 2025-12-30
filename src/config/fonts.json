@@ -1,34 +1,16 @@
 [
   {
-    "name": "Satoshi",
+    "name": "Playfair Display",
     "variants": [
       {
         "weight": "400",
-        "src": ["./src/assets/fonts/satoshi-400.woff2"]
-      },
-      {
-        "weight": "500",
-        "src": ["./src/assets/fonts/satoshi-500.woff2"]
+        "src": ["./src/assets/fonts/PlayfairDisplay.woff2"]
       }
     ],
     "provider": "local",
     "preload": false,
-    "cssVariable": "--font-primary",
-    "fallback": "sans-serif"
-  },
-  {
-    "name": "Syne",
-    "variants": [
-      {
-        "style": "normal",
-        "weight": "500"
-      }
-    ],
-    "preload": true,
-    "provider": "google",
-    "subsets": ["latin"],
     "cssVariable": "--font-secondary",
-    "fallback": "sans-serif"
+    "fallback": "serif"
   },
   {
     "name": "Instrument Serif",
@@ -42,6 +24,32 @@
     "provider": "google",
     "subsets": ["latin"],
     "cssVariable": "--font-tertiary",
+    "fallback": "sans-serif"
+  },
+  {
+    "name": "Abel",
+    "variants": [
+      {
+        "weight": "400",
+        "src": ["./src/assets/fonts/abel.woff2"]
+      }
+    ],
+    "provider": "local",
+    "preload": false,
+    "cssVariable": "--font-hero",
+    "fallback": "sans-serif"
+  },
+  {
+    "name": "Degular Demo",
+    "variants": [
+      {
+        "weight": "400",
+        "src": ["./src/assets/fonts/DegularDemo.woff2"]
+      }
+    ],
+    "provider": "local",
+    "preload": false,
+    "cssVariable": "--font-primary",
     "fallback": "sans-serif"
   }
 ]

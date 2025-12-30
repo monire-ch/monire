@@ -11,6 +11,10 @@ body {
   @apply bg-body font-primary text-text-default leading-normal font-normal;
 }
 
+.font-hero {
+  font-family: var(--font-hero);
+}
+
 /* Custom Scrollbar */
 * {
   @apply [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-thumb]:bg-white/5 [&::-webkit-scrollbar-track]:bg-white/5;

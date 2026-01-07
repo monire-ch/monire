@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "moduleResolution": "node10",
-    "verbatimModuleSyntax": false,
-    "resolveJsonModule": true,
-  }
-}

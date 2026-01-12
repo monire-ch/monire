@@ -1,5 +1,4 @@
 import mdx from "@astrojs/mdx";
-import remarkToc from "remark-toc";
 import sitemap from "@astrojs/sitemap";
 import AutoImport from "astro-auto-import";
 import { defineConfig } from "astro/config";
@@ -43,7 +42,6 @@ export default defineConfig({
       imports: [
         "@/shortcodes/Button.astro",
         "@/shortcodes/Accordion.astro",
-        "@/shortcodes/Notice.astro",
         "@/shortcodes/ListCheck.astro",
         "@/shortcodes/CardGrid.astro",
         "@/shortcodes/Card.astro",
@@ -63,7 +61,6 @@ export default defineConfig({
     ],
     remarkPlugins: [
       remarkParseContent, // Parse markdown content and add classes in heading and loading="lazy" to images
-      remarkToc,
     ],
 
     // Code Highlighter https://github.com/shikijs/shiki

@@ -27,13 +27,6 @@ export type Button = {
   [x: string]: any;
 };
 
-export type TocHeading = {
-  depth: number;
-  slug: string;
-  text: string;
-  subheadings?: TocHeading[];
-};
-
 export type PricingPlans = {
   enable: boolean;
   list: {

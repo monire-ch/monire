@@ -1,6 +1,6 @@
 {
   "name": "monire-website",
-  "description": "Monire website built with Astro and Tailwind CSS",
+  "description": "Moniré website for web development and AI automation services, built with Astro and Tailwind CSS",
   "type": "module",
   "version": "1.2.0",
   "author": "getastrothemes",

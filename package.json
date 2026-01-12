@@ -67,7 +67,6 @@
     "slugify": "^1.6.6",
     "tailwindcss": "^4.1.16",
     "toml": "^3.0.0",
-    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "unist-util-visit": "^5.0.0",

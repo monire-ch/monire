@@ -57,8 +57,6 @@
 # Different theme settings
 # -----------------------------------------------------------------------------------------------------------------------------------
 [settings]
-  blogFolder = "blog"
-  pagination = 6
   stickyHeader = true
 
   # Contact form

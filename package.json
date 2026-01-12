@@ -1,6 +1,6 @@
 {
-  "name": "upstart-astro",
-  "description": "A highly customizable saas & startup astro theme built with Tailwind CSS and Astro Js",
+  "name": "monire-website",
+  "description": "Monire website built with Astro and Tailwind CSS",
   "type": "module",
   "version": "1.2.0",
   "author": "getastrothemes",

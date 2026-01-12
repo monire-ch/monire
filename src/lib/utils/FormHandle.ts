@@ -245,7 +245,7 @@ export const formspreeSubmit = async (
   } catch (error) {
     setMessage(
       error +
-        "! Please use this mail - [upstart-astro-theme@gmail.com](mailto:upstart-astro-theme@gmail.com) to submit a ticket!",
+        "! Please contact us for assistance at [hello@monire.ch](mailto:hello@monire.ch).",
       true,
       false,
       form,

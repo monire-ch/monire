@@ -57,8 +57,6 @@
 # Different theme settings
 # -----------------------------------------------------------------------------------------------------------------------------------
 [settings]
-  blogFolder = "blog"
-  pagination = 6
   stickyHeader = true
 
   # Contact form
@@ -104,9 +102,6 @@
 # -----------------------------------------------------------------------------------------------------------------------------------
 [head]
 content = """
-<!-- You can easily add this type of tracking code by updating the `config.toml` file -->
-<script defer src="/umami.is.js" data-website-id=""></script>
-
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SV3QLRHSK6"></script>
 <script>

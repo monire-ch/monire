@@ -1,0 +1,17 @@
+<div class="w-full max-w-4xl">
+  <div
+    class="bg-card group relative overflow-hidden rounded-[2rem] p-8 shadow-2xl md:p-16">
+    <!-- glows -->
+    <div
+      class="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-emerald-500/40 blur-3xl transition-transform duration-1000 group-hover:scale-110">
+    </div>
+    <div
+      class="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-teal-400/30 blur-3xl transition-transform duration-1000 group-hover:scale-125">
+    </div>
+
+    <!-- content -->
+    <div class="relative z-10 min-h-[300px]">
+      <slot />
+    </div>
+  </div>
+</div>

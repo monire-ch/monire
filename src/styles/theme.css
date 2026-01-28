@@ -5,7 +5,7 @@
   --leading-inherit: inherit;
 
   /* Colors */
-  --color-primary: #4F1AD6;
+  --color-primary: #011B22;
   --color-secondary: #B2A6F1;
   --color-accent: #1A122E;
   --color-body: #0e0c0c;
@@ -15,6 +15,15 @@
   --color-text-default: #C8C1C1;
   --color-dark: #000E30;
   --color-light: #fff6f6;
+
+  /* Colours: Backgrounds */
+  --color-bg-page: #F8F5F1;           /* main light background */
+  --color-bg-dark: #011B23;           /* dark sections */
+  --color-bg-dark-soft: #082F3A;      /* softer dark blocks */
+
+  /* Cards */
+  --color-card: #082F3A;           /* or tweak darker */
+  --color-card-foreground: #F8F5F1;
 
   /* Screen */
   --breakpoint-*: initial;

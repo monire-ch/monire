@@ -5,6 +5,8 @@ import type { Button, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import ButtonLink from "../buttons/ButtonLink.astro";
 import AnimatedText from "../widgets/AnimatedText.astro";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import HeroBlobs from "@/components/hero/HeroBlobs.astro";
 
 type homeBannerSectionType = Section & {
   button: Button;
@@ -30,6 +32,35 @@ const background = "/images/hero/background.jpg";
 ---
 
 <section class="hero-bg">
+  <!--   <svg class="sr-only absolute h-0 w-0" aria-hidden="true">
+    <defs>
+      <filter
+        id="hero-blur-1"
+        x="-50%"
+        y="-50%"
+        width="200%"
+        height="200%"
+        color-interpolation-filters="linearRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="110"></feGaussianBlur>
+      </filter>
+      <filter id="hero-blur-2" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="130"></feGaussianBlur>
+      </filter>
+      <filter id="hero-blur-3" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="95"></feGaussianBlur>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob-overlay"></div>
+  </div> -->
+  <HeroBlobs />
+
   <div class="container">
     <div class="relative z-10 mx-auto max-w-4xl space-y-10">
       <div>
@@ -70,3 +101,25 @@ const background = "/images/hero/background.jpg";
     </div>
   </div>
 </section>
+
+<style is:global>
+  .container {
+    position: relative;
+    z-index: 10;
+  }
+
+  .gold-text,
+  .gold-text * {
+    @apply bg-clip-text text-transparent;
+    background-image: url("/images/hero/gold-fill.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    color: var(--color-primary);
+  }
+</style>

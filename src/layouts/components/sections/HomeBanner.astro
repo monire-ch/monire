@@ -32,42 +32,14 @@ const background = "/images/hero/background.jpg";
 ---
 
 <section class="hero-bg">
-  <!--   <svg class="sr-only absolute h-0 w-0" aria-hidden="true">
-    <defs>
-      <filter
-        id="hero-blur-1"
-        x="-50%"
-        y="-50%"
-        width="200%"
-        height="200%"
-        color-interpolation-filters="linearRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="110"></feGaussianBlur>
-      </filter>
-      <filter id="hero-blur-2" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="130"></feGaussianBlur>
-      </filter>
-      <filter id="hero-blur-3" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="95"></feGaussianBlur>
-      </filter>
-    </defs>
-  </svg>
-
-  <div class="blob-container">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="blob blob-4"></div>
-    <div class="blob-overlay"></div>
-  </div> -->
   <HeroBlobs />
-
   <div class="container">
     <div class="relative z-10 mx-auto max-w-4xl space-y-10">
       <div>
         {
           title && (
             <AnimatedText
-              class="font-hero gold-text mb-6 text-center text-5xl tracking-[0.17em] capitalize md:text-7xl/tight"
+              class="font-hero gold-text mb-6 text-center tracking-wider capitalize md:text-5xl"
               content={markdownify(title)}
             />
           )
@@ -85,7 +57,7 @@ const background = "/images/hero/background.jpg";
         {
           description && (
             <p
-              class="shrink-0 text-center text-xs tracking-wider opacity-80"
+              class="my-10 shrink-0 text-center text-2xl tracking-wider opacity-80"
               set:html={markdownify(description)}
             />
           )
@@ -96,7 +68,7 @@ const background = "/images/hero/background.jpg";
         data-aos-delay="400"
         data-aos-duration="900"
         class="flex flex-wrap items-center justify-center gap-5">
-        {button && <ButtonLink content={button} class="btn-primary" />}
+        {button && <ButtonLink content={button} class="btn-hero" />}
       </div>
     </div>
   </div>

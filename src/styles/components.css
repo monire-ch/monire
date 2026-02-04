@@ -245,10 +245,6 @@
 
   &.has-hover-animation {
     @apply prose-img:duration-300 prose-img:transform prose-img:transition prose-img:ease-in;
-
-    &:hover img {
-      @apply animate-spin;
-    }
   }
 
   .logo-text {

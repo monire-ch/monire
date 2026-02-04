@@ -31,7 +31,7 @@
     "variants": [
       {
         "weight": "400",
-        "src": ["./src/assets/fonts/abel.woff2"]
+        "src": ["./src/assets/fonts/FoundersGroteskLight.woff2"]
       }
     ],
     "provider": "local",
@@ -40,11 +40,11 @@
     "fallback": "sans-serif"
   },
   {
-    "name": "Degular Demo",
+    "name": "Degular",
     "variants": [
       {
         "weight": "400",
-        "src": ["./src/assets/fonts/DegularDemo.woff2"]
+        "src": ["./src/assets/fonts/Degular.woff2"]
       }
     ],
     "provider": "local",

@@ -1,0 +1,40 @@
+---
+import Experience from "@/icons/experience.svg";
+import Gear from "@/icons/gear.svg";
+import Handshake from "@/icons/handshake.svg";
+import Clock from "@/icons/clock.svg";
+import Bolt from "@/icons/bolt.svg";
+import Cycle from "@/icons/cycle.svg";
+
+type IconName =
+  | "experience"
+  | "gear"
+  | "handshake"
+  | "clock"
+  | "bolt"
+  | "cycle";
+
+const {
+  name,
+  class: className = "h-12 w-12",
+  title,
+} = Astro.props as {
+  name: IconName;
+  class?: string;
+  title?: string;
+};
+
+const ICONS: Record<IconName, any> = {
+  experience: Experience,
+  gear: Gear,
+  handshake: Handshake,
+  clock: Clock,
+  bolt: Bolt,
+  cycle: Cycle,
+};
+
+const Svg = ICONS[name];
+---
+
+{Svg && <Svg class={className} aria-hidden={!title} role="img" />}
+{title && <span class="sr-only">{title}</span>}

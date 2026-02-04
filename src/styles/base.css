@@ -44,11 +44,11 @@ body {
 
 /* Global Section Spacing */
 main.has-section-spacing-md section {
-  @apply pt-16;
+  @apply pt-16 pb-16;
 }
 
 main.has-section-spacing-lg > section {
-  @apply pt-16 md:pt-32;
+  @apply pt-16 pb-16 md:pt-32 md:pb-32;
 }
 
 h1,

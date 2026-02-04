@@ -212,6 +212,40 @@
   @apply bg-[radial-gradient(50%_50%_at_50%_50%,--theme(--color-primary/30%)_0%,--theme(--color-primary/0%)_100%)] pointer-events-none absolute bottom-72 left-1/2 h-[540px] w-4/5 -translate-x-1/2 content-[''] md:rotate-[-20deg];
 }
 
+.section-light {
+  background-color: #f8f5f1;
+  color: #011b23;
+}
+
+.section-light h1,
+.section-light h2,
+.section-light h3,
+.section-light h4,
+.section-light h5,
+.section-light h6,
+.section-light p,
+.section-light li,
+.section-light a {
+  color: #011b23;
+}
+
+.value-card:hover {
+  transform: translateY(-0.25rem);
+  border-color: rgba(207, 169, 71, 0.5);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+
+.value-card:hover {
+  transform: translateY(-0.25rem);
+  border-color: rgba(207, 169, 71, 0.5);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
 *[class*="container"] {
   @apply mx-auto px-4;
 }

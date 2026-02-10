@@ -57,18 +57,12 @@ const cofounderLine = items.map((item) => item.name).join(" & ");
       </p>
     </div>
 
-    <div class="space-y-8">
+    <div class="grid gap-8 lg:grid-cols-2">
       {
-        items.map((item, index) => (
-          <article
-            class="grid gap-6 border-t pt-6 text-left md:grid-cols-12 md:items-center md:gap-8"
-            style="border-color: var(--color-duo-profile-divider);">
+        items.map((item) => (
+          <article class="text-left">
             <div
-              class:list={[
-                "w-full max-w-[340px] overflow-hidden rounded-3xl border md:col-span-5",
-                index % 2 === 1 ? "md:order-2" : "md:order-1",
-                index % 2 === 1 ? "md:justify-self-end" : "md:justify-self-start",
-              ]}
+              class="w-full max-w-[340px] overflow-hidden rounded-3xl border"
               style="border-color: var(--color-duo-collage-border); background: var(--color-duo-collage-surface);">
               <OptimizedImage
                 src={item.image}
@@ -79,11 +73,7 @@ const cofounderLine = items.map((item) => item.name).join(" & ");
               />
             </div>
 
-            <div
-              class:list={[
-                "space-y-3 md:col-span-7",
-                index % 2 === 1 ? "md:order-1" : "md:order-2",
-              ]}>
+            <div class="space-y-3 pt-5">
               <h3 class="text-3xl leading-tight font-semibold text-white">
                 {item.name}
               </h3>

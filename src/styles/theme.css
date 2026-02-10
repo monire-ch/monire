@@ -35,6 +35,34 @@
     var(--color-bg-light-start) 0%,
     var(--color-bg-light-end) 100%
   );
+  --gradient-vibe-dark: linear-gradient(rgb(5 40 50) 50%, rgb(3 38 48) 100%);
+  --color-vibe-orb-strong: rgba(46, 212, 199, 0.34);
+  --color-vibe-orb-soft: rgba(120, 200, 255, 0.18);
+  --color-vibe-orb-strong-soft: rgba(46, 212, 199, 0.26);
+  --color-vibe-orb-soft-soft: rgba(120, 200, 255, 0.16);
+
+  --color-about-card-border-light: rgba(255, 255, 255, 0.12);
+  --color-about-card-border-dark: rgba(166, 231, 245, 0.2);
+  --color-about-card-border-soft: #d5cec2;
+  --gradient-about-card-light: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  --gradient-about-card-dark: linear-gradient(
+    145deg,
+    rgba(5, 62, 80, 0.85) 0%,
+    rgba(3, 44, 57, 0.92) 100%
+  );
+  --gradient-about-card-soft: var(--gradient-bg-light);
+  --color-about-card-glow-light: rgba(186, 239, 255, 0.2);
+  --color-about-card-glow-dark: rgba(94, 234, 212, 0.2);
+  --color-about-card-glow-soft: rgba(15, 75, 90, 0.16);
+
+  --gradient-value-card-featured: linear-gradient(145deg, #2f6f83 0%, #0f4b5a 100%);
+  --color-value-card-neutral-bg: #F6F3EE;
+  --color-value-card-neutral-border: #d5cec2;
+  --shadow-value-card-featured: 0 14px 34px rgba(15, 75, 90, 0.28);
 
   /* Cards */
   --color-card: #082F3A;           /* or tweak darker */

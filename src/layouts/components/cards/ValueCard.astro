@@ -14,6 +14,9 @@ const firstToken = title?.trim().split(/\s+/)[0] ?? "";
 const hasMetricToken = /\d/.test(firstToken);
 const displayTitle =
   hasMetricToken && featured ? title.replace(/^\S+\s*/, "") : title;
+const cardStyle = featured
+  ? "background-image: var(--gradient-value-card-featured); box-shadow: var(--shadow-value-card-featured);"
+  : "background-color: var(--color-value-card-neutral-bg); border-color: var(--color-value-card-neutral-border);";
 ---
 
 <div
@@ -21,9 +24,10 @@ const displayTitle =
     "value-card relative h-full rounded-[18px] p-8 transition-all duration-300",
     "hover:-translate-y-0.5",
     featured
-      ? "border border-transparent bg-[linear-gradient(145deg,#2f6f83_0%,#0f4b5a_100%)] text-[#F8F5F1] shadow-[0_14px_34px_rgba(15,75,90,0.28)]"
-      : "border border-[#d5cec2] bg-[#F6F3EE] text-monire-deep-teal",
-  ]}>
+      ? "border border-transparent text-white"
+      : "text-monire-deep-teal border",
+  ]}
+  style={cardStyle}>
   {
     hasMetricToken && featured && (
       <div class="mb-2 text-7xl leading-none font-semibold tracking-tight md:text-8xl">
@@ -32,35 +36,41 @@ const displayTitle =
     )
   }
   <div class="mb-5 flex items-start gap-3">
-    {icon && !(hasMetricToken && featured) && (
-      <Icon
-        name={icon}
-        class:list={[
-          "h-10 w-10",
-          featured ? "text-[#F8F5F1]" : "text-monire-deep-teal",
-        ]}
-        title={title}
-      />
-    )}
+    {
+      icon && !(hasMetricToken && featured) && (
+        <Icon
+          name={icon}
+          class:list={[
+            "h-10 w-10",
+            featured ? "text-white" : "text-monire-deep-teal",
+          ]}
+          title={title}
+        />
+      )
+    }
 
-    {title && (
-      <h3
-        class:list={[
-          "leading-snug font-semibold tracking-tight",
-          featured ? "text-[#F8F5F1]" : "text-monire-deep-teal",
-        ]}
-        style="font-size: var(--text-card-title);"
-        set:html={markdownify(displayTitle)}
-      />
-    )}
+    {
+      title && (
+        <h3
+          class:list={[
+            "leading-snug font-semibold tracking-tight",
+            featured ? "text-white" : "text-monire-deep-teal",
+          ]}
+          style="font-size: var(--text-card-title);"
+          set:html={markdownify(displayTitle)}
+        />
+      )
+    }
   </div>
-  {description && (
-    <p
-      class:list={[
-        "text-[1.05rem] leading-relaxed",
-        featured ? "text-[#F8F5F1]/90" : "text-monire-deep-teal/90",
-      ]}
-      set:html={markdownify(description)}
-    />
-  )}
+  {
+    description && (
+      <p
+        class:list={[
+          "text-[1.05rem] leading-relaxed",
+          featured ? "text-white/90" : "text-monire-deep-teal/90",
+        ]}
+        set:html={markdownify(description)}
+      />
+    )
+  }
 </div>

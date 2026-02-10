@@ -79,7 +79,7 @@ const { testimonials = [] as Testimonial[] } = Astro.props;
 
   .swiper-button-prev,
   .swiper-button-next {
-    color: #3b82f6;
+    color: var(--color-link-light-bg);
     top: 50%;
     transform: translateY(-50%);
     width: 40px;
@@ -87,6 +87,6 @@ const { testimonials = [] as Testimonial[] } = Astro.props;
   }
 
   .swiper-pagination-bullet-active {
-    background: #3b82f6;
+    background: var(--color-link-light-bg);
   }
 </style>

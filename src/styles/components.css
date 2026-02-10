@@ -193,8 +193,8 @@
 }
 
 .section-light {
-  background-color: #f8f5f1;
-  color: #011b23;
+  background-color: var(--color-bg-page);
+  color: var(--color-monire-ink);
 }
 
 .section-light h1,
@@ -206,13 +206,13 @@
 .section-light p,
 .section-light li,
 .section-light a {
-  color: #011b23;
+  color: var(--color-monire-ink);
 }
 
 .prose-styles a {
   color: var(--color-link-light-bg);
   text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: var(--color-link-underline-thickness);
   text-underline-offset: 0.15em;
   transition:
     color 180ms ease,
@@ -253,27 +253,28 @@
 
 .pricing-badge {
   position: absolute;
-  top: -0.9rem;
+  top: -1rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #cfa947 !important;
-  color: #011b23 !important;
+  line-height: 1;
+  background-color: var(--color-mustard) !important;
+  color: var(--color-monire-ink) !important;
 }
 
 .pricing-card-light .pricing-price {
-  color: #cfa947;
+  color: var(--color-mustard);
 }
 
 .pricing-card-dark .pricing-price {
-  color: #cfa947;
+  color: var(--color-mustard);
 }
 
 .pricing-tabs {
   display: inline-flex;
   justify-content: center;
   gap: 0.5rem;
-  background: #011b22;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: var(--color-monire-ink-alt);
+  border: 1px solid var(--color-pricing-tab-border);
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
@@ -286,15 +287,15 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: capitalize;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-pricing-tab-text);
   background: transparent;
   transition: all 0.25s ease;
 }
 
 .pricing-tab[data-active="true"] {
-  background: #f8f5f1;
-  color: #011b22;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background: var(--color-bg-page);
+  color: var(--color-monire-ink-alt);
+  box-shadow: var(--shadow-elevation-soft);
 }
 
 .pricing-card-dark {
@@ -312,7 +313,7 @@
 }
 
 .pricing-vibe {
-  background: linear-gradient(rgb(5 40 50) 50%, rgb(3 38 48) 100%);
+  background: var(--gradient-vibe-dark);
 }
 
 .pricing-orb {
@@ -340,15 +341,7 @@
 
 .value-card:hover {
   transform: translateY(-0.25rem);
-  border-color: rgba(207, 169, 71, 0.5);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-
-.value-card:hover {
-  transform: translateY(-0.25rem);
-  border-color: rgba(207, 169, 71, 0.5);
+  border-color: var(--color-mustard-50);
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -4px rgba(0, 0, 0, 0.1);

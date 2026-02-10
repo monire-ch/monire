@@ -38,7 +38,7 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
     <div class="space-y-4 text-left">
       {
         title && (
-          <h2 class="inline-flex w-fit items-center rounded-full border border-[rgba(207,169,71,0.45)] bg-white/5 px-4 py-1.5 text-sm font-medium tracking-[0.18em] text-[#F1D69A] uppercase">
+          <h2 class="inline-flex w-fit items-center rounded-full border border-[var(--color-mustard-50)] bg-white/5 px-4 py-1.5 text-sm font-medium tracking-[0.18em] text-[var(--color-link-dark-bg)] uppercase">
             {markdownify(title)}
           </h2>
         )
@@ -94,30 +94,30 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
 
 <style>
   .meet-duo-link :global(a) {
-    color: #f1d69a !important;
-    width: 2.45rem !important;
-    height: 2.45rem !important;
-    background: rgba(1, 27, 34, 0.84) !important;
-    border: 1px solid rgba(241, 214, 154, 0.72) !important;
-    box-shadow: 0 8px 20px rgba(1, 27, 34, 0.35);
+    color: var(--color-link-dark-bg);
+    width: 2.45rem;
+    height: 2.45rem;
+    background: var(--color-duo-link-bg);
+    border: 1px solid var(--color-duo-link-border);
+    box-shadow: var(--shadow-duo-link);
     backdrop-filter: blur(3px);
   }
 
   .meet-duo-link :global(a:hover) {
-    background: rgba(1, 27, 34, 0.96) !important;
-    border-color: rgba(241, 214, 154, 0.95) !important;
+    background: var(--color-duo-link-bg-hover);
+    border-color: var(--color-duo-link-border-hover);
   }
 
   .meet-duo-link :global(svg[data-icon="true"] rect) {
-    fill: transparent !important;
+    fill: transparent;
   }
 
   .meet-duo-link :global(svg[data-icon="true"]) {
-    width: 1rem !important;
-    height: 1rem !important;
+    width: 1rem;
+    height: 1rem;
   }
 
   .meet-duo-link :global(svg[data-icon="true"] path) {
-    fill: currentColor !important;
+    fill: currentColor;
   }
 </style>

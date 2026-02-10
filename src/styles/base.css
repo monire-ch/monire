@@ -121,7 +121,7 @@ a {
 .text-link {
   color: var(--color-link-light-bg);
   text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: var(--color-link-underline-thickness);
   text-underline-offset: 0.15em;
   transition:
     color 180ms ease,
@@ -142,7 +142,7 @@ a {
 .text-link-dark {
   color: var(--color-link-dark-bg);
   text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: var(--color-link-underline-thickness);
   text-underline-offset: 0.15em;
   transition:
     color 180ms ease,

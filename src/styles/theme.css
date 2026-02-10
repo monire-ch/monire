@@ -14,13 +14,18 @@
   --color-monire-teal: 0 59 75;
   --color-monire-nav: 26 54 60;
   --color-monire-deep-teal: #0F4B5A;
+  --color-monire-deep-teal-soft: #136175;
+  --color-monire-deep-teal-focus: #2A7E94;
+  --color-monire-ink: #011B23;
+  --color-monire-ink-alt: #011B22;
   --color-light: #F8F5F1;
   --color-mustard: #CFA947;
+  --color-mustard-70: rgba(207, 169, 71, 0.7);
+  --color-mustard-50: rgba(207, 169, 71, 0.5);
 
   
   --color-text-default: #C8C1C1;
   --color-dark: #000E30;
-  --color-light: #fff6f6;
 
   --color-blob: 0.61 0.06 205.6;
 
@@ -41,11 +46,12 @@
   --color-vibe-orb-strong-soft: rgba(46, 212, 199, 0.26);
   --color-vibe-orb-soft-soft: rgba(120, 200, 255, 0.16);
   --color-link-light-bg: #0F4B5A;
-  --color-link-light-bg-hover: #136175;
-  --color-link-light-bg-focus: #2A7E94;
+  --color-link-light-bg-hover: var(--color-monire-deep-teal-soft);
+  --color-link-light-bg-focus: var(--color-monire-deep-teal-focus);
   --color-link-dark-bg: #F1D69A;
   --color-link-dark-bg-hover: #FAE7BE;
   --color-link-dark-bg-focus: #FFECC2;
+  --color-link-underline-thickness: 1px;
 
   --color-about-card-border-light: rgba(255, 255, 255, 0.12);
   --color-about-card-border-dark: rgba(166, 231, 245, 0.2);
@@ -74,6 +80,15 @@
   --color-value-card-neutral-bg: #F6F3EE;
   --color-value-card-neutral-border: #d5cec2;
   --shadow-value-card-featured: 0 14px 34px rgba(15, 75, 90, 0.28);
+  --color-pricing-from-featured: #3B6A78;
+  --color-pricing-tab-border: rgba(255, 255, 255, 0.25);
+  --color-pricing-tab-text: rgba(255, 255, 255, 0.85);
+  --shadow-elevation-soft: 0 10px 20px rgba(0, 0, 0, 0.2);
+  --color-duo-link-bg: rgba(1, 27, 34, 0.84);
+  --color-duo-link-bg-hover: rgba(1, 27, 34, 0.96);
+  --color-duo-link-border: rgba(241, 214, 154, 0.72);
+  --color-duo-link-border-hover: rgba(241, 214, 154, 0.95);
+  --shadow-duo-link: 0 8px 20px rgba(1, 27, 34, 0.35);
 
   /* Cards */
   --color-card: #082F3A;           /* or tweak darker */

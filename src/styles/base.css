@@ -7,8 +7,31 @@ html {
   /* Lining and tabular numbers */
 }
 
+@font-face {
+  font-family: "Degular";
+  src: local("Degular");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 92%;
+  descent-override: 8%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Craftwork Grotesk";
+  src: url("../assets/fonts/CraftworkGrotesk.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   @apply bg-body font-primary text-text-default leading-normal font-normal;
+}
+
+.font-hero {
+  font-family: var(--font-hero);
 }
 
 /* Custom Scrollbar */
@@ -21,11 +44,11 @@ body {
 
 /* Global Section Spacing */
 main.has-section-spacing-md section {
-  @apply pt-16;
+  @apply pt-16 pb-16;
 }
 
 main.has-section-spacing-lg > section {
-  @apply pt-16 md:pt-32;
+  @apply pt-16 pb-16 md:pt-32 md:pb-32;
 }
 
 h1,
@@ -39,6 +62,12 @@ h6 {
   br {
     @apply max-md:hidden;
   }
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Craftwork Grotesk", var(--font-secondary), serif;
 }
 
 h1,

@@ -36,12 +36,7 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as ServicesSectionType;
 
-let {
-  enable = true,
-  title,
-  subtitle,
-  tabs = [],
-} = actualContent;
+let { enable = true, title, subtitle, tabs = [] } = actualContent;
 ---
 
 {
@@ -63,16 +58,13 @@ let {
             <div
               data-aos="fade-up-sm"
               data-aos-delay="300"
-              class="section-gradient relative"
-            >
+              class="section-gradient relative">
               <div class="bg-primary/5 rounded-lg border p-6 max-lg:space-y-6 lg:rounded-3xl lg:p-12">
                 <Tabs>
                   {tabs.map((tab) => (
                     <Tab name={tab.label}>
                       {tab.content && (
-                        <div
-                          class="space-y-6 max-w-3xl text-left mx-auto"
-                        >
+                        <div class="mx-auto max-w-3xl space-y-6 text-left">
                           <div set:html={markdownify(tab.content)} />
 
                           {tab.cta && tab.cta.length > 0 && (
@@ -85,8 +77,7 @@ let {
                                     cta.style === "outline"
                                       ? "border border-white/30 text-white hover:bg-white/10"
                                       : "bg-white text-black hover:bg-white/90",
-                                  ]}
-                                >
+                                  ]}>
                                   {cta.label}
                                 </a>
                               ))}

@@ -5,16 +5,32 @@
   --leading-inherit: inherit;
 
   /* Colors */
-  --color-primary: #4F1AD6;
+  --color-primary: #011B22;
   --color-secondary: #B2A6F1;
   --color-accent: #1A122E;
   --color-body: #0e0c0c;
   --color-border-light: #242222;
   --color-theme-dark: #1A191C;
+  --color-monire-teal: 0 59 75;
+  --color-monire-nav: 26 54 60;
+  --color-light: #F8F5F1;
+  --color-mustard: #CFA947;
+
   
   --color-text-default: #C8C1C1;
   --color-dark: #000E30;
   --color-light: #fff6f6;
+
+  --color-blob: 0.61 0.06 205.6;
+
+  /* Colours: Backgrounds */
+  --color-bg-page: #F8F5F1;           /* main light background */
+  --color-bg-dark: #011B23;           /* dark sections */
+  --color-bg-dark-soft: #082F3A;      /* softer dark blocks */
+
+  /* Cards */
+  --color-card: #082F3A;           /* or tweak darker */
+  --color-card-foreground: #F8F5F1;
 
   /* Screen */
   --breakpoint-*: initial;

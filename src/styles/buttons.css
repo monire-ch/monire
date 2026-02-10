@@ -32,6 +32,41 @@
   @apply text-light border-primary bg-body border;
 }
 
+@utility btn-pricing-dark {
+  @apply text-[#F8F5F1] border border-[#CFA947]/70 bg-transparent uppercase tracking-[0.22em];
+}
+
+.btn-pricing-dark:hover {
+  border-color: rgba(207, 169, 71, 1);
+  color: #f8f5f1;
+  background-color: rgba(7, 47, 59, 0.65);
+}
+
+@utility btn-pricing-light {
+  @apply text-[#F8F5F1] bg-[#0b3d4a] uppercase tracking-[0.22em];
+}
+
+.btn-pricing-light:hover {
+  background-color: #0f4b5a;
+  color: #f8f5f1;
+}
+
+@utility btn-hero {
+  @apply text-light rounded-[10px] tracking-[0.22em] uppercase;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#011B23, #011B23) padding-box,
+    url("/images/hero/gold-fill.webp") border-box;
+  background-size: cover;
+  background-position: center;
+}
+
+.btn-hero:hover {
+  background:
+    linear-gradient(#0a2a35, #0a2a35) padding-box,
+    url("/images/hero/gold-fill.webp") border-box;
+}
+
 .btn-outline {
   & ~ .icon {
     @apply bg-body text-dark flex h-12 w-12 items-center justify-center rounded-full;

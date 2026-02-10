@@ -1,4 +1,5 @@
 /* Header */
+
 .header {
   @apply z-30 w-full;
 
@@ -7,7 +8,9 @@
     top: 0 !important;
     z-index: 50 !important;
     background: transparent !important;
-    transition: transform 0.3s, opacity 0.3s;
+    transition:
+      transform 0.3s,
+      opacity 0.3s;
   }
 
   &.scroll-up {
@@ -34,7 +37,12 @@
     @apply mx-auto transition-all duration-300 ease-[cubic-bezier(0.617,1.5,0.68,1)];
 
     > nav {
-      @apply bg-theme-dark/70 rounded-full backdrop-blur-md;
+      background-color: color-mix(
+        in oklab,
+        rgb(var(--color-monire-nav)) 70%,
+        transparent
+      );
+      @apply rounded-full backdrop-blur-md;
     }
   }
 }
@@ -78,12 +86,38 @@
 
   .nav-item {
     > .nav-link {
-      @apply relative flex items-center rounded-full px-4 py-1.5 text-white transition-all duration-300 lg:py-2 lg:hover:bg-white/5 xl:px-6;
+      @apply relative flex items-center rounded-[10px] px-4 py-1.5 tracking-wider text-white transition-all duration-300 lg:py-2 xl:px-6;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+
+      &:hover {
+        color: #e9e6df;
+      }
 
       /* Active Menu Style */
       &.nav-link-active,
       .hs-dropdown-toggle.active {
         @apply bg-white/5 text-white;
+      }
+
+      &.nav-link-active:hover {
+        color: #e9e6df;
+      }
+
+      &:hover::after,
+      &.nav-link-active:hover::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: url("/images/hero/gold-fill.webp") center/100% 100%
+          no-repeat;
+        pointer-events: none;
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
       }
     }
   }

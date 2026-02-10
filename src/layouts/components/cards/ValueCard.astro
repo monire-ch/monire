@@ -1,6 +1,6 @@
 ---
 import { markdownify } from "@/lib/utils/textConverter";
-import OptimizedImage from "../utilities/OptimizedImage.astro";
+import Icon from "@/components/icons/Icon.astro";
 
 interface Props {
   title: string;
@@ -12,20 +12,22 @@ const { title, description, icon } = Astro.props;
 ---
 
 <div
-  class="border-primary/30 hover:bg-accent relative space-y-8 rounded-lg border p-5 transition-colors duration-300">
-  <div class="flex items-center gap-4">
+  class="value-card border-primary/30 relative space-y-4 rounded-lg border bg-[#FCFAF8] p-6 transition-all duration-500">
+  <div class="flex items-center gap-3">
     {
       icon && (
-        <OptimizedImage
-          width={48}
-          height={48}
-          class="bg-primary/10 h-12 w-12 rounded-sm"
-          src={icon}
-          alt={`Related to ${title}`}
-        />
+        <Icon name={icon} class="h-8 w-8 text-[#CFA947]" title={title} />
       )
     }
-    {title && <h3 class="h6" set:html={markdownify(title)} />}
+
+    {title && (
+      <h3 class="text-lg font-medium leading-snug" set:html={markdownify(title)} />
+    )}
   </div>
-  {description && <p set:html={markdownify(description)} />}
+  {description && (
+    <p
+      class="text-sm leading-relaxed text-[#011B23]/80"
+      set:html={markdownify(description)}
+    />
+  )}
 </div>

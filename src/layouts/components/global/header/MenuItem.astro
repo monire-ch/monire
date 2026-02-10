@@ -10,7 +10,10 @@ const { pathname } = Astro.url;
     <li class="nav-item" role="menuitem">
       <a
         href={menu.action ? "#" : menu.url || "#"}
-        class:list={["nav-link", { "nav-link-active": pathname === menu.url }]}
+        class:list={[
+          "nav-link btn text-text-default font-bold uppercase",
+          { "nav-link-active": pathname === menu.url },
+        ]}
         data-menu-action={menu.action || null}>
         {menu.name}
       </a>
@@ -21,6 +24,7 @@ const { pathname } = Astro.url;
 <script>
   function initMenuActions() {
     const menuLinks = document.querySelectorAll("[data-menu-action]");
+    const navLinks = document.querySelectorAll(".nav-link");
 
     menuLinks.forEach((link) => {
       const action = link.getAttribute("data-menu-action");
@@ -39,6 +43,16 @@ const { pathname } = Astro.url;
         }
       });
     });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const a = link as HTMLAnchorElement;
+        if (a.getAttribute("href") === "/" && window.location.pathname === "/") {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    });
   }
 
   if (document.readyState === "loading") {
@@ -54,6 +68,10 @@ const { pathname } = Astro.url;
 
       links.forEach((link) => {
         const a = link as HTMLAnchorElement;
+        if (a.dataset.menuAction) {
+          link.classList.remove("nav-link-active");
+          return;
+        }
         const linkPath = a.pathname;
         const linkHash = a.hash;
 

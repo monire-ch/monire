@@ -4,13 +4,13 @@ import "@/plugins/odometer/odometer.min.css";
 
 interface Props {
   class?: string;
-  animateOn?: "click" | undefined;
+  animateOn?: "click";
   transitionTime?: string;
   childClass?: string;
   enable?: boolean;
   content: {
-    value?: string | number;
-    type?: string; // pricing tye (applicable for pricing page)
+    value?: number;
+    type?: string;
     prependValue?: string;
     appendValue?: string;
   };
@@ -25,10 +25,17 @@ const {
   content,
 } = Astro.props;
 
-// Check number char length and give that number of zero
-const addZero = (content: string) => {
-  return "0".repeat(Number(content.length));
-};
+// Swiss formatter
+const formatCH = (value: number) =>
+  new Intl.NumberFormat("de-CH", {
+    maximumFractionDigits: 0,
+  }).format(value);
+
+// Zero placeholder for animation
+const addZero = (value: number) => "0".repeat(String(value).length);
+
+const formattedValue =
+  typeof content.value === "number" ? formatCH(content.value) : undefined;
 ---
 
 <div
@@ -48,14 +55,15 @@ const addZero = (content: string) => {
 
   <span
     {...{
-      "data-count": content.value || undefined,
-      "data-type": content.type && content.type.toLowerCase(),
+      "data-count": formattedValue,
+      "data-type": content.type?.toLowerCase(),
+      "data-format": "(ddd)", // no grouping, we already formatted
       style: { "--odometer-duration": transitionTime },
     }}
     class:list={[{ odometer: enable }, childClassName]}
     set:html={enable && content.value && animateOn !== "click"
-      ? addZero(content.value as string)
-      : content.value}
+      ? addZero(content.value)
+      : formattedValue}
   />
 
   {
@@ -67,6 +75,7 @@ const addZero = (content: string) => {
     )
   }
 </div>
-<script>
-  import "@/plugins/odometer/odometer.min.js";
+
+<script type="module">
+  await import("@/plugins/odometer/odometer.min.js");
 </script>

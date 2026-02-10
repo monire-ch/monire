@@ -42,9 +42,7 @@ let {
 
 {
   enable && (
-    <section class="about-vibe relative overflow-hidden" id="about">
-      <div class="about-orb about-orb-1" aria-hidden="true" />
-      <div class="about-orb about-orb-2" aria-hidden="true" />
+    <section class="relative py-16 md:py-24" id="about">
       <div class="container space-y-12 md:space-y-16">
         <div
           class="mx-auto shrink-0 text-center lg:max-w-2xl"
@@ -157,32 +155,3 @@ let {
     </section>
   )
 }
-
-<style>
-  .about-vibe {
-    background: var(--gradient-vibe-dark);
-  }
-
-  .about-orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(64px);
-    pointer-events: none;
-  }
-
-  .about-orb-1 {
-    top: -5rem;
-    right: -5rem;
-    width: 20rem;
-    height: 20rem;
-    background: var(--color-vibe-orb-strong);
-  }
-
-  .about-orb-2 {
-    bottom: 0;
-    left: 0;
-    width: 16rem;
-    height: 16rem;
-    background: var(--color-vibe-orb-soft);
-  }
-</style>

@@ -58,6 +58,11 @@
   --color-about-card-glow-light: rgba(186, 239, 255, 0.2);
   --color-about-card-glow-dark: rgba(94, 234, 212, 0.2);
   --color-about-card-glow-soft: rgba(15, 75, 90, 0.16);
+  --color-duo-collage-glow-a: rgba(255, 255, 255, 0.1);
+  --color-duo-collage-glow-b: rgba(103, 232, 249, 0.2);
+  --color-duo-collage-border: rgba(255, 255, 255, 0.18);
+  --color-duo-collage-surface: rgba(255, 255, 255, 0.05);
+  --color-duo-profile-divider: rgba(255, 255, 255, 0.18);
 
   --gradient-value-card-featured: linear-gradient(145deg, #2f6f83 0%, #0f4b5a 100%);
   --color-value-card-neutral-bg: #F6F3EE;

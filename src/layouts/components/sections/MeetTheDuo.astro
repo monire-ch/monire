@@ -31,105 +31,77 @@ let actualContent = overrideObjects(
 ) as meetTheDuoSectionType;
 
 let { title, items } = actualContent as meetTheDuoSectionType;
+const cofounderLine = items.map((item) => item.name).join(" & ");
 ---
 
-<section
-  class="meet-duo-vibe relative overflow-hidden py-16 text-center md:py-24">
-  <div class="meet-duo-orb meet-duo-orb-1" aria-hidden="true"></div>
-  <div class="meet-duo-orb meet-duo-orb-2" aria-hidden="true"></div>
+<section class="relative py-16 md:py-24">
   <div class="container mx-auto space-y-12 md:space-y-16">
-    {
-      title && (
-        <h2 class="section-title font-semibold text-white capitalize">
-          {markdownify(title)}
-        </h2>
-      )
-    }
-
-    <div class="grid gap-6 md:grid-cols-2">
+    <div class="space-y-4 text-left">
       {
-        items.map((item, index) =>
-          (() => {
-            const isLight = index % 2 === 0;
-            const surface = isLight
-              ? "var(--gradient-about-card-light)"
-              : "var(--gradient-about-card-dark)";
-            const border = isLight
-              ? "var(--color-about-card-border-light)"
-              : "var(--color-about-card-border-dark)";
-            const glow = isLight
-              ? "var(--color-about-card-glow-light)"
-              : "var(--color-about-card-glow-dark)";
-
-            return (
-              <div
-                class="relative overflow-hidden rounded-3xl border p-6 text-left md:p-8"
-                style={`background-image: ${surface}; border-color: ${border};`}>
-                <div
-                  class="pointer-events-none absolute -right-10 -bottom-10 h-32 w-32 rounded-full blur-2xl"
-                  style={`background: ${glow};`}
-                />
-                <div class="relative z-10 flex h-full flex-col gap-5">
-                  {item.image && (
-                    <div class="h-28 w-28 overflow-hidden rounded-2xl border border-white/20">
-                      <OptimizedImage
-                        src={item.image}
-                        width={112}
-                        height={112}
-                        alt={item.name}
-                        class="h-full w-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <div class="space-y-1">
-                    <h3 class="text-2xl leading-tight font-semibold text-white">
-                      {item.name}
-                    </h3>
-                    <p class="text-base text-white/82">{item.role}</p>
-                  </div>
-                  <p class="text-sm text-white/70">{item.languages}</p>
-                  <SocialMediaLink
-                    size="sm"
-                    layout="modern"
-                    label="linkedin"
-                    url={item.linkedin}
-                    icon="/images/icons/svg/linkedin.svg"
-                  />
-                </div>
-              </div>
-            );
-          })(),
+        title && (
+          <h2 class="section-title font-semibold text-white capitalize">
+            {markdownify(title)}
+          </h2>
         )
+      }
+      {
+        cofounderLine && (
+          <p class="text-xs tracking-[0.16em] text-white/60 uppercase">
+            {`Co-Founders: ${cofounderLine}`}
+          </p>
+        )
+      }
+      <p class="max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
+        Two senior developers, two complementary perspectives, one shared
+        standard for quality.
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      {
+        items.map((item, index) => (
+          <article
+            class="grid gap-6 border-t pt-6 text-left md:grid-cols-12 md:items-center md:gap-8"
+            style="border-color: var(--color-duo-profile-divider);">
+            <div
+              class:list={[
+                "w-full max-w-[340px] overflow-hidden rounded-3xl border md:col-span-5",
+                index % 2 === 1 ? "md:order-2" : "md:order-1",
+                index % 2 === 1 ? "md:justify-self-end" : "md:justify-self-start",
+              ]}
+              style="border-color: var(--color-duo-collage-border); background: var(--color-duo-collage-surface);">
+              <OptimizedImage
+                src={item.image}
+                width={640}
+                height={700}
+                alt={item.name}
+                class="aspect-[4/5] w-full object-cover object-center"
+              />
+            </div>
+
+            <div
+              class:list={[
+                "space-y-3 md:col-span-7",
+                index % 2 === 1 ? "md:order-1" : "md:order-2",
+              ]}>
+              <h3 class="text-3xl leading-tight font-semibold text-white">
+                {item.name}
+              </h3>
+              <p class="text-base text-white/84">{item.role}</p>
+              <p class="text-sm text-white/65">{item.languages}</p>
+              <div class="pt-2">
+                <SocialMediaLink
+                  size="sm"
+                  layout="modern"
+                  label="linkedin"
+                  url={item.linkedin}
+                  icon="/images/icons/svg/linkedin.svg"
+                />
+              </div>
+            </div>
+          </article>
+        ))
       }
     </div>
   </div>
 </section>
-
-<style>
-  .meet-duo-vibe {
-    background: var(--gradient-vibe-dark);
-  }
-
-  .meet-duo-orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(64px);
-    pointer-events: none;
-  }
-
-  .meet-duo-orb-1 {
-    top: -3rem;
-    left: -4rem;
-    width: 18rem;
-    height: 18rem;
-    background: var(--color-vibe-orb-strong-soft);
-  }
-
-  .meet-duo-orb-2 {
-    right: -5rem;
-    bottom: -3rem;
-    width: 16rem;
-    height: 16rem;
-    background: var(--color-vibe-orb-soft-soft);
-  }
-</style>

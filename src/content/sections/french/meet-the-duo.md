@@ -1,5 +1,6 @@
 ---
 title: "Meet the Duo"
+description: "The Faces Behind The Work"
 items:
   - name: "Monika Märki"
     image: "/images/about/monika.jpg"

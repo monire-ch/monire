@@ -184,26 +184,6 @@
     }
   }
 }
-/* Table of Contents style */
-.toc {
-  --active-offset: 3.1875rem;
-
-  &.scroll-menu > ul {
-    @apply before:bg-primary [&>a]:text-primary text-[0.8125rem] before:absolute before:top-0 before:-left-px before:mt-(--active-offset) before:h-4 before:w-px before:transition-all before:duration-300 before:ease-in;
-
-    a {
-      @apply text-text-default;
-    }
-  }
-
-  ul li:not(:last-child) {
-    @apply mb-1.5 pb-1.5;
-  }
-
-  &.scroll-menu a.active {
-    @apply text-primary;
-  }
-}
 
 .banner-gradient::after {
   @apply via-primary/15 from-body/0 to-primary/80 pointer-events-none absolute bottom-0 left-0 -z-10 size-full bg-linear-to-b via-35% to-70% content-[''];

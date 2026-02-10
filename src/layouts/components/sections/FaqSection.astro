@@ -64,9 +64,9 @@ list = limit && list ? list.slice(0, limit as number) : list;
                         role="tab"
                         type="button"
                         set:html={button.label}
-                        id={"tab-item-" + (index + 1)}
-                        data-hs-tab={"#tab-" + (index + 1)}
-                        aria-controls={"tab-" + (index + 1)}
+                        id={"faq-tab-item-" + (index + 1)}
+                        data-hs-tab={"#faq-tab-" + (index + 1)}
+                        aria-controls={"faq-tab-" + (index + 1)}
                         aria-selected={index === 0 ? "true" : "false"}
                         class:list={[
                           "px-6 py-2.5 text-start text-lg max-lg:min-w-full [&.active]:text-white [&.active]:max-lg:bg-white/5",
@@ -83,9 +83,9 @@ list = limit && list ? list.slice(0, limit as number) : list;
                         "col-span-5 space-y-5 xl:col-span-6",
                         index === 0 ? "block" : "hidden",
                       ]}
-                      id={"tab-" + (index + 1)}
-                      tabIndex={"group-1-" + (index + 1)}
-                      aria-labelledby={"tab-item-" + (index + 1)}
+                      id={"faq-tab-" + (index + 1)}
+                      tabIndex={"faq-group-1-" + (index + 1)}
+                      aria-labelledby={"faq-tab-item-" + (index + 1)}
                     />
                   ))}
                 </div>

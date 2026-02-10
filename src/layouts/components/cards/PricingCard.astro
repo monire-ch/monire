@@ -1,6 +1,7 @@
 ---
 import type { ComparisonCategory, PricingPlans, PricingTier } from "@/types";
 import ButtonLink from "../buttons/ButtonLink.astro";
+import OptimizedImage from "../utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import AnimatedNumber from "@/components/widgets/AnimatedNumber.astro";
 
@@ -53,7 +54,7 @@ const cardTextClass = featured ? "text-primary" : "text-white/80";
     <div
       class:list={[
         // Base
-        "pricing-card max-lg:box-shadow-primary hover:lg:box-shadow-primary mt-10 flex flex-col justify-between gap-8 rounded-3xl border px-9 py-11 transition duration-500",
+        "pricing-card max-lg:box-shadow-primary hover:lg:box-shadow-primary mt-20 flex flex-col justify-between gap-8 rounded-3xl border px-9 py-11 transition duration-500",
 
         // Make the featured (middle) card taller + more prominent on desktop
         // - move it up a bit

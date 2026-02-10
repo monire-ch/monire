@@ -21,7 +21,19 @@
 }
 
 @utility btn-text-secondary {
-  @apply text-secondary border-b-secondary;
+  color: var(--color-link-light-bg);
+  border-bottom-color: var(--color-link-light-bg);
+}
+
+@utility btn-secondary {
+  color: var(--color-link-dark-bg);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1.5px;
+}
+
+.btn-secondary:hover {
+  color: var(--color-link-dark-bg-hover);
 }
 
 @utility btn-outline-white {
@@ -33,7 +45,7 @@
 }
 
 @utility btn-pricing-dark {
-  @apply text-[#F8F5F1] border border-[#CFA947]/70 bg-transparent uppercase tracking-[0.22em];
+  @apply border border-[#CFA947]/70 bg-transparent tracking-[0.22em] text-[#F8F5F1] uppercase;
 }
 
 .btn-pricing-dark:hover {
@@ -43,7 +55,7 @@
 }
 
 @utility btn-pricing-light {
-  @apply text-[#F8F5F1] bg-[#0b3d4a] uppercase tracking-[0.22em];
+  @apply bg-[#0b3d4a] tracking-[0.22em] text-[#F8F5F1] uppercase;
 }
 
 .btn-pricing-light:hover {
@@ -55,7 +67,7 @@
   @apply text-light rounded-[10px] tracking-[0.22em] uppercase;
   border: 1px solid transparent;
   background:
-    linear-gradient(#011B23, #011B23) padding-box,
+    linear-gradient(#011b23, #011b23) padding-box,
     url("/images/hero/gold-fill.webp") border-box;
   background-size: cover;
   background-position: center;

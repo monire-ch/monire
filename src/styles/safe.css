@@ -46,7 +46,24 @@ form,
       @apply cursor-pointer leading-relaxed;
 
       a {
-        @apply text-secondary underline;
+        color: var(--color-link-light-bg);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.15em;
+        transition:
+          color 180ms ease,
+          text-decoration-color 180ms ease,
+          outline-color 180ms ease;
+      }
+
+      a:hover {
+        color: var(--color-link-light-bg-hover);
+      }
+
+      a:focus-visible {
+        outline: 2px solid var(--color-link-light-bg-focus);
+        outline-offset: 2px;
+        border-radius: 4px;
       }
     }
 

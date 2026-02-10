@@ -40,6 +40,12 @@
   --color-vibe-orb-soft: rgba(120, 200, 255, 0.18);
   --color-vibe-orb-strong-soft: rgba(46, 212, 199, 0.26);
   --color-vibe-orb-soft-soft: rgba(120, 200, 255, 0.16);
+  --color-link-light-bg: #0F4B5A;
+  --color-link-light-bg-hover: #136175;
+  --color-link-light-bg-focus: #2A7E94;
+  --color-link-dark-bg: #F1D69A;
+  --color-link-dark-bg-hover: #FAE7BE;
+  --color-link-dark-bg-focus: #FFECC2;
 
   --color-about-card-border-light: rgba(255, 255, 255, 0.12);
   --color-about-card-border-dark: rgba(166, 231, 245, 0.2);

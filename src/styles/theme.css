@@ -89,6 +89,30 @@
   --color-duo-link-border: rgba(241, 214, 154, 0.72);
   --color-duo-link-border-hover: rgba(241, 214, 154, 0.95);
   --shadow-duo-link: 0 8px 20px rgba(1, 27, 34, 0.35);
+  --color-services-shell-bg: rgba(255, 255, 255, 0.55);
+  --color-services-shell-border: #d5cec2;
+  --color-services-tab-text: #5a6a70;
+  --color-services-tab-active: var(--color-monire-deep-teal);
+  --gradient-services-shell: var(--gradient-value-card-featured);
+  --color-services-shell-border-dark: rgba(255, 255, 255, 0.14);
+  --color-services-shell-divider: rgba(248, 245, 241, 0.24);
+  --color-services-shell-divider-soft: rgba(248, 245, 241, 0.14);
+  --color-services-tab-text-on-dark: rgba(248, 245, 241, 0.72);
+  --color-services-tab-active-on-dark: #ffffff;
+  --shadow-services-shell: 0 18px 34px rgba(15, 75, 90, 0.18);
+  --color-services-card-bg: #ffffff;
+  --color-services-card-border: #d7cec0;
+  --gradient-services-card-featured: var(--gradient-value-card-featured);
+  --color-services-card-featured-border: rgba(255, 255, 255, 0.14);
+  --color-services-card-neutral-heading: #123c4a;
+  --color-services-card-neutral-text: #2f4f5a;
+  --color-services-card-featured-heading: #f8f5f1;
+  --color-services-card-featured-text: rgba(248, 245, 241, 0.9);
+  --color-services-card-index-neutral: rgba(15, 75, 90, 0.24);
+  --color-services-card-index-featured: rgba(248, 245, 241, 0.3);
+  --shadow-services-card-featured: 0 18px 34px rgba(15, 75, 90, 0.22);
+  --shadow-services-card: 0 16px 34px rgba(15, 75, 90, 0.08);
+  --color-services-cta-outline-hover: rgba(15, 75, 90, 0.08);
 
   /* Cards */
   --color-card: #082F3A;           /* or tweak darker */

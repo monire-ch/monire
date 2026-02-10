@@ -6,27 +6,88 @@ interface Props {
   title: string;
   description: string;
   icon?: string;
+  note?: string;
+  featured?: boolean;
 }
 
-const { title, description, icon } = Astro.props;
+const { title, description, icon, note, featured = false } = Astro.props;
+const firstToken = title?.trim().split(/\s+/)[0] ?? "";
+const hasMetricToken = /\d/.test(firstToken);
 ---
 
 <div
-  class="value-card border-primary/30 relative space-y-4 rounded-lg border bg-[#FCFAF8] p-6 transition-all duration-500">
-  <div class="flex items-center gap-3">
-    {
-      icon && (
-        <Icon name={icon} class="h-8 w-8 text-[#CFA947]" title={title} />
-      )
-    }
+  class:list={[
+    "value-card relative h-full rounded-2xl border p-7 transition-all duration-500",
+    "hover:-translate-y-1",
+    featured
+      ? "border-transparent bg-[linear-gradient(145deg,#2f6f83_0%,#0f4b5a_100%)] text-[#F8F5F1] shadow-[0_14px_34px_rgba(15,75,90,0.28)]"
+      : "border-[#d5cec2] bg-[#F6F3EE] text-monire-deep-teal",
+  ]}>
+  {
+    hasMetricToken && featured && (
+      <div class="mb-1 text-6xl leading-none font-semibold tracking-tight md:text-7xl">
+        {firstToken}
+      </div>
+    )
+  }
+  <div class="mb-4 flex items-start gap-3">
+    {icon && (
+      <Icon
+        name={icon}
+        class:list={[
+          "h-8 w-8",
+          featured ? "text-[#F8F5F1]" : "text-monire-deep-teal",
+        ]}
+        title={title}
+      />
+    )}
 
     {title && (
-      <h3 class="text-lg font-medium leading-snug" set:html={markdownify(title)} />
+      <div class="flex items-center gap-2">
+        <h3
+          class:list={[
+            "text-xl leading-snug font-medium",
+            featured ? "text-[#F8F5F1]" : "text-monire-deep-teal",
+          ]}
+          set:html={markdownify(title)}
+        />
+        {
+          note && (
+            <div class="group/tooltip relative">
+              <button
+                type="button"
+                class:list={[
+                  "inline-flex h-5 w-5 items-center justify-center rounded-full border text-[11px] font-semibold leading-none transition-colors",
+                  featured
+                    ? "border-[#F8F5F1]/40 text-[#F8F5F1]/80 hover:bg-[#F8F5F1]/15"
+                    : "border-monire-deep-teal/35 text-monire-deep-teal/70 hover:bg-monire-deep-teal/10",
+                ]}
+                aria-label="Show maintenance note">
+                i
+              </button>
+              <div
+                role="tooltip"
+                class:list={[
+                  "pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 rounded-md px-3 py-2 text-left text-xs leading-relaxed opacity-0 shadow-md transition-opacity duration-200",
+                  "group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100",
+                  featured
+                    ? "bg-[#F8F5F1] text-monire-deep-teal"
+                    : "bg-monire-deep-teal text-[#F8F5F1]",
+                ]}
+                set:html={markdownify(note)}
+              />
+            </div>
+          )
+        }
+      </div>
     )}
   </div>
   {description && (
     <p
-      class="text-sm leading-relaxed text-[#011B23]/80"
+      class:list={[
+        "text-base leading-relaxed",
+        featured ? "text-[#F8F5F1]/90" : "text-monire-deep-teal/90",
+      ]}
       set:html={markdownify(description)}
     />
   )}

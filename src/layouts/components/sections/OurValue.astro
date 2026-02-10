@@ -11,8 +11,8 @@ type ourValueSectionType = Section & {
     title: string;
     description: string;
     icon?: string;
+    note?: string;
   }[];
-  fineprint?: string;
 };
 
 type Props = {
@@ -28,7 +28,7 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as ourValueSectionType;
 
-let { title, subtitle, list, fineprint } = actualContent as ourValueSectionType;
+let { title, subtitle, list } = actualContent as ourValueSectionType;
 ---
 
 <section class="section-light">
@@ -39,7 +39,7 @@ let { title, subtitle, list, fineprint } = actualContent as ourValueSectionType;
           <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
             <Subtitle content={subtitle} />
             <h2
-              class="has-italic-text capitalize"
+              class="has-italic-text capitalize text-monire-deep-teal"
               set:html={markdownify(title)}
             />
           </div>
@@ -47,19 +47,17 @@ let { title, subtitle, list, fineprint } = actualContent as ourValueSectionType;
       }
       {
         list && (
-          <>
-            <div
-              data-aos="fade-up-sm"
-              data-aos-delay="200"
-              class="grid gap-3 md:grid-cols-2 lg:grid-cols-2">
-              {list.map((item) => (
-                <ValueCard {...item} />
-              ))}
-            </div>
-            {fineprint && (
-              <p class="mt-3 text-sm opacity-80">{markdownify(fineprint)}</p>
-            )}
-          </>
+          <div
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+            class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {list.map((item, index) => (
+              <ValueCard
+                {...item}
+                featured={[1, 3, 5].includes(index)}
+              />
+            ))}
+          </div>
         )
       }
     </div>

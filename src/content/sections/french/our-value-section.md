@@ -10,9 +10,10 @@ list:
   - title: AI, Google & Speed Optimized
     description: Built for accessibility, reliability, and visibility across search engines and AI platforms so your business gets found everywhere clients look.
     icon: "/images/icons/svg/bolt.svg"
-  - title: 0 Hours of Maintenance *
+  - title: 0 Hours of Maintenance
     description: Your website runs smoothly with automatic updates and no plugins to manage, so you can focus on your business.
     icon: "/images/icons/svg/gear.svg"
+    note: "For Webflow sites. Custom-coded projects may need light ongoing updates."
   - title: Direct Collaboration
     description: Work directly with the founders for clear communication and consistent quality.
     icon: "/images/icons/svg/handshake.svg"
@@ -23,5 +24,4 @@ list:
     description: Once your site is live, you’ll have full control. Editing content is simple and intuitive.
     icon: "/images/icons/svg/cycle.svg"
 
-fineprint: "* For Webflow websites. Custom-coded projects may require light ongoing updates."
 ---

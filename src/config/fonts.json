@@ -31,7 +31,7 @@
     "variants": [
       {
         "weight": "400",
-        "src": ["./src/assets/fonts/FoundersGroteskLight.woff2"]
+        "src": ["./src/assets/fonts/FoundersGrotesk.woff2"]
       }
     ],
     "provider": "local",

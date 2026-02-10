@@ -24,6 +24,7 @@ const { pathname } = Astro.url;
 <script>
   function initMenuActions() {
     const menuLinks = document.querySelectorAll("[data-menu-action]");
+    const navLinks = document.querySelectorAll(".nav-link");
 
     menuLinks.forEach((link) => {
       const action = link.getAttribute("data-menu-action");
@@ -39,6 +40,16 @@ const { pathname } = Astro.url;
             navMenu.classList.remove("open");
             document.body.classList.remove("overflow-hidden");
           }
+        }
+      });
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const a = link as HTMLAnchorElement;
+        if (a.getAttribute("href") === "/" && window.location.pathname === "/") {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });
     });

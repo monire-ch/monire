@@ -13,11 +13,15 @@
   --color-theme-dark: #1A191C;
   --color-monire-teal: 0 59 75;
   --color-monire-nav: 26 54 60;
+  --color-light: #F8F5F1;
+  --color-mustard: #CFA947;
 
   
   --color-text-default: #C8C1C1;
   --color-dark: #000E30;
   --color-light: #fff6f6;
+
+  --color-blob: 0.61 0.06 205.6;
 
   /* Colours: Backgrounds */
   --color-bg-page: #F8F5F1;           /* main light background */

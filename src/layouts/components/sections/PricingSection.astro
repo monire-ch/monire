@@ -16,11 +16,13 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
   content;
 ---
 
-<section id="pricing" class="relative">
+<section id="pricing" class="pricing-vibe relative overflow-hidden">
+  <div class="pricing-orb pricing-orb-1" aria-hidden="true"></div>
+  <div class="pricing-orb pricing-orb-2" aria-hidden="true"></div>
   <!-- background glows -->
   <div aria-hidden class="pointer-events-none absolute inset-0">
     <div
-      class="absolute -top-40 left-1/2 h-[600px] w-[800px] -translate-x-1/2 rounded-full bg-emerald-500/20 blur-[120px]">
+      class="absolute -top-40 left-1/2 h-[600px] w-[800px] -translate-x-1/2 rounded-full bg-[color-mix(in_oklab,oklch(0.61_0.06_205.6)_20%,transparent)] blur-[120px]">
     </div>
 
     <div
@@ -43,24 +45,26 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     </div>
 
     <!-- Tab Buttons -->
-    <div class="flex justify-center gap-4">
-      {
-        plans?.list?.map((item) => (
-          <button
-            class="pricing-tab rounded-lg border border-white/20 px-6 py-2 text-sm font-medium tracking-wide transition data-[active=true]:border-white data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:shadow-lg"
-            data-tab={item.label}
-            data-active={item.selected ? "true" : "false"}>
-            {item.label}
-          </button>
-        ))
-      }
+    <div class="flex justify-center">
+      <div class="pricing-tabs">
+        {
+          plans?.list?.map((item) => (
+            <button
+              class="pricing-tab"
+              data-tab={item.label}
+              data-active={item.selected ? "true" : "false"}>
+              {item.label}
+            </button>
+          ))
+        }
+      </div>
     </div>
 
     <!-- WEB DESIGN CONTENT -->
     <div
       id="web-design-content"
       class:list={[plans.list[0].selected ? "block" : "hidden"]}>
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start">
         {
           list?.map((item, index) => (
             <PricingCard index={index} content={{ ...item, plans }} />
@@ -71,7 +75,7 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
       {
         heading && (
           <h4
-            class="mt-10 text-center font-medium"
+            class="mt-20 text-center font-medium"
             set:html={markdownify(heading)}
           />
         )
@@ -79,8 +83,8 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
 
       {
         description && (
-          <p
-            class="mx-auto max-w-2xl text-center"
+          <div
+            class="mx-auto p-6 text-center"
             set:html={markdownify(description, true)}
           />
         )
@@ -109,7 +113,7 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
                 label: btn.label,
                 url: btn.url,
               }}
-              class="btn-md btn-primary flex justify-center text-center"
+              class="btn-md btn-pricing-dark flex justify-center text-center"
             />
           ))
         }

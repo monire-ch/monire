@@ -44,20 +44,41 @@ const currentPlanFeatures = allFeatures
     if (item.included[index]) return item;
   })
   .filter(Boolean);
+
+// Theme-aware text color for each card
+const cardTextClass = featured ? "text-primary" : "text-white/80";
 ---
 
 {
   enable && (
     <div
       class:list={[
-        "max-lg:box-shadow-primary hover:lg:box-shadow-primary flex min-h-full flex-col justify-between gap-8 rounded-3xl border px-9 py-11 text-white transition duration-500",
+        // Base
+        "pricing-card max-lg:box-shadow-primary hover:lg:box-shadow-primary mt-10 flex flex-col justify-between gap-8 rounded-3xl border px-9 py-11 transition duration-500",
+
+        // Make the featured (middle) card taller + more prominent on desktop
+        // - move it up a bit
+        // - give it a larger min-height so it is physically taller
+        { "lg:min-h-[720px] lg:-translate-y-6": featured },
+        { "lg:min-h-[660px]": !featured },
+
         className,
-        { "bg-primary/15 border-primary": featured },
-        { "bg-primary/2.5": !featured },
+
+        // Backgrounds
+        { "bg-card-foreground": featured },
+        { "bg-primary": !featured },
+
+        // Base text for the whole card
+        cardTextClass,
       ]}
       {...rest}>
       {badge?.enable && (
-        <span class="bg-primary/10 text-primary inline-block rounded-full px-3 py-1 text-xs font-semibold">
+        <span
+          class:list={[
+            "pricing-badge inline-block rounded-full px-4 py-1 text-xs font-semibold",
+            { "bg-primary/10 text-primary": featured },
+            { "bg-white/10 text-white": !featured },
+          ]}>
           {badge.label}
         </span>
       )}
@@ -67,78 +88,78 @@ const currentPlanFeatures = allFeatures
           <h3 class="text-h4 text-inherit" set:html={markdownify(name)} />
         )}
 
+        {price?.map((item, usageIndex) => (
+          <div
+            data-plan={item.type.toLowerCase()}
+            class:list={[
+              "price-wrapper relative flex flex-wrap items-end gap-1.5 transition-all duration-300",
+              { active: selectedPlan?.label === item.type },
+              { hidden: selectedPlan?.label !== item.type && plans.enable },
+              { hidden: !plans.enable && usageIndex !== 0 },
+            ]}>
+            <span
+              class:list={[
+                "pricing-from",
+                { "text-[#3B6A78]": featured },
+                { "text-current/80": !featured },
+              ]}>
+              from
+            </span>
+
+            <span class="pricing-price text-h3/none font-secondary text-mustard flex gap-0">
+              <AnimatedNumber
+                animateOn="click"
+                transitionTime="1.2s"
+                content={item}
+              />
+            </span>
+
+            {featured && (
+              <OptimizedImage
+                class="absolute -top-10 right-0 overflow-hidden opacity-20"
+                width={180}
+                src="/images/pricing-card-highlighter.png"
+                alt="shape"
+              />
+            )}
+          </div>
+        ))}
+
         <div class="space-y-5">
           {description && (
-            <p class="text-text-default" set:html={markdownify(description)} />
+            <p class="text-current/80" set:html={markdownify(description)} />
           )}
-
-          {price?.map((item, usageIndex) => (
-            <div
-              data-plan={item.type.toLowerCase()}
-              class:list={[
-                "price-wrapper relative flex flex-wrap items-end gap-1.5 transition-all duration-300",
-                {
-                  active: selectedPlan?.label === item.type,
-                },
-                {
-                  hidden: selectedPlan?.label !== item.type && plans.enable,
-                },
-                {
-                  hidden: !plans.enable && usageIndex !== 0,
-                },
-              ]}>
-              <span>from</span>
-              <span class="text-h3/none font-secondary flex gap-0">
-                <AnimatedNumber
-                  animateOn="click"
-                  transitionTime="1.2s"
-                  content={item}
-                />
-              </span>
-              {featured && (
-                <OptimizedImage
-                  class="absolute -top-10 right-0 overflow-hidden opacity-20"
-                  width={180}
-                  src="/images/pricing-card-highlighter.png"
-                  alt="shape"
-                />
-              )}
-            </div>
-          ))}
 
           {usages?.map((item, i) => (
             <div
               data-plan={item.type.toLowerCase()}
               class:list={[
                 "rounded-lg px-5 py-2.5 text-sm transition-all duration-300",
-                {
-                  hidden: selectedPlan?.label !== item.type && plans.enable,
-                },
-                {
-                  hidden: !plans.enable && i !== 0,
-                },
-                {
-                  "bg-primary/15": featured,
-                },
-                {
-                  "bg-primary/5": !featured,
-                },
+                { hidden: selectedPlan?.label !== item.type && plans.enable },
+                { hidden: !plans.enable && i !== 0 },
+                { "bg-primary/15": featured },
+                { "bg-white/10": !featured },
               ]}>
-              {item.list.map((item: { label: string; value: string }) => (
+              {item.list.map((row: { label: string; value: string }) => (
                 <div class="flex flex-wrap-reverse items-center justify-between gap-5 border-b py-2 first:pt-0 last:border-b-transparent last:pb-0">
-                  <span set:html={item.value} />
-                  <span set:html={item.label} />
+                  <span set:html={row.value} />
+                  <span set:html={row.label} />
                 </div>
               ))}
             </div>
           ))}
         </div>
 
-        <div class="prose-styles has-list has-list-check prose-strong:whitespace-nowrap prose-strong:text-white prose-strong:bg-white/5 prose-strong:px-2.5 prose-strong:py-1 prose-strong:font-medium prose-strong:text-xs prose-strong:ml-2 prose-strong:rounded-full">
-          <ul class="list-check list-unstyled space-y-3 py-4 text-sm">
+        <div class="prose-styles has-list has-list-check prose-li:text-current prose-p:text-current prose-strong:text-current text-current">
+          <ul
+            class:list={[
+              "list-check list-unstyled space-y-3 py-4 text-sm text-current",
+              "[&>li:before]:text-mustard",
+            ]}>
             {features.map((feature) => (
               <li set:html={markdownify(feature)} />
             ))}
+
             {currentPlanFeatures?.map(
               (item) =>
                 item?.included[index] && (
@@ -155,7 +176,11 @@ const currentPlanFeatures = allFeatures
 
         {ctaBtn?.enable && (
           <ButtonLink
-            class="btn-md btn-primary flex justify-center text-center"
+            class:list={[
+              "btn-md flex justify-center text-center",
+              { "btn-pricing-light": featured },
+              { "btn-pricing-dark": !featured },
+            ]}
             content={ctaBtn}
           />
         )}

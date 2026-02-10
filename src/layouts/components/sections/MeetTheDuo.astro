@@ -58,7 +58,7 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
         items.map((item) => (
           <article class="text-left">
             <div
-              class="w-full max-w-[340px] overflow-hidden rounded-3xl border"
+              class="relative w-full max-w-[340px] overflow-hidden rounded-3xl border"
               style="border-color: var(--color-duo-collage-border); background: var(--color-duo-collage-surface);">
               <OptimizedImage
                 src={item.image}
@@ -67,6 +67,15 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
                 alt={item.name}
                 class="aspect-[4/5] w-full object-cover object-center"
               />
+              <div class="meet-duo-link absolute right-3 bottom-3">
+                <SocialMediaLink
+                  size="sm"
+                  layout="classic"
+                  label="linkedin"
+                  url={item.linkedin}
+                  icon="/images/icons/svg/linkedin.svg"
+                />
+              </div>
             </div>
 
             <div class="space-y-3 pt-5">
@@ -75,15 +84,6 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
               </h3>
               <p class="text-base text-white/84">{item.role}</p>
               <p class="text-sm text-white/65">{item.languages}</p>
-              <div class="pt-2">
-                <SocialMediaLink
-                  size="sm"
-                  layout="modern"
-                  label="linkedin"
-                  url={item.linkedin}
-                  icon="/images/icons/svg/linkedin.svg"
-                />
-              </div>
             </div>
           </article>
         ))
@@ -91,3 +91,33 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
     </div>
   </div>
 </section>
+
+<style>
+  .meet-duo-link :global(a) {
+    color: #f1d69a !important;
+    width: 2.45rem !important;
+    height: 2.45rem !important;
+    background: rgba(1, 27, 34, 0.84) !important;
+    border: 1px solid rgba(241, 214, 154, 0.72) !important;
+    box-shadow: 0 8px 20px rgba(1, 27, 34, 0.35);
+    backdrop-filter: blur(3px);
+  }
+
+  .meet-duo-link :global(a:hover) {
+    background: rgba(1, 27, 34, 0.96) !important;
+    border-color: rgba(241, 214, 154, 0.95) !important;
+  }
+
+  .meet-duo-link :global(svg[data-icon="true"] rect) {
+    fill: transparent !important;
+  }
+
+  .meet-duo-link :global(svg[data-icon="true"]) {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+
+  .meet-duo-link :global(svg[data-icon="true"] path) {
+    fill: currentColor !important;
+  }
+</style>

@@ -63,68 +63,70 @@ const tabsWithIds = tabs.map((tab, index) => ({
           {tabsWithIds.length > 0 && (
             <div data-aos="fade-up-sm" data-aos-delay="300" class="relative">
               <div class="services-shell mx-auto w-full max-w-[1020px] rounded-3xl border p-5 md:p-8 lg:p-10">
-                <nav
-                  class="services-nav border-b pb-3 md:pb-4"
-                  aria-label="Services Tabs"
-                  role="tablist"
-                  aria-orientation="horizontal">
-                  {tabsWithIds.map((tab, index) => (
-                    <button
-                      type="button"
-                      class:list={[
-                        "services-tab-button",
-                        index === 0 && "active",
-                      ]}
-                      id={tab.tabId}
-                      aria-controls={tab.panelId}
-                      role="tab"
-                      aria-selected={index === 0 ? "true" : "false"}
-                      data-hs-tab={`#${tab.panelId}`}>
-                      {tab.label}
-                    </button>
-                  ))}
-                </nav>
+                <div class="services-two-col grid gap-6 md:grid-cols-[minmax(210px,0.85fr)_minmax(0,1.55fr)] md:gap-8">
+                  <nav
+                    class="services-nav md:sticky md:top-28 md:self-start"
+                    aria-label="Services Tabs"
+                    role="tablist"
+                    aria-orientation="vertical">
+                    {tabsWithIds.map((tab, index) => (
+                      <button
+                        type="button"
+                        class:list={[
+                          "services-tab-button",
+                          index === 0 && "active",
+                        ]}
+                        id={tab.tabId}
+                        aria-controls={tab.panelId}
+                        role="tab"
+                        aria-selected={index === 0 ? "true" : "false"}
+                        data-hs-tab={`#${tab.panelId}`}>
+                        {tab.label}
+                      </button>
+                    ))}
+                  </nav>
 
-                <div class="pt-6 md:pt-8">
-                  {tabsWithIds.map((tab, index) => (
-                    <div
-                      id={tab.panelId}
-                      class:list={[
-                        "services-panel",
-                        index !== 0 && "hidden",
-                      ]}
-                      role="tabpanel"
-                      aria-labelledby={tab.tabId}>
-                      <div class="services-copy mx-auto max-w-4xl text-left">
-                        <h3 class="services-card-title mt-0! mb-4! text-[var(--text-card-title)]">
-                          {tab.label}
-                        </h3>
-                        <div
-                          class:list={[
-                            "services-prose prose-styles max-w-none",
-                          ]}
-                          set:html={markdownify(tab.content)}
-                        />
+                  <div class="services-panels border-l-0 pl-0 md:border-l md:pl-8">
+                    {tabsWithIds.map((tab, index) => (
+                      <div
+                        id={tab.panelId}
+                        class:list={[
+                          "services-panel",
+                          index !== 0 && "hidden",
+                        ]}
+                        role="tabpanel"
+                        aria-labelledby={tab.tabId}>
+                        <div class="services-copy text-left">
+                          <h3 class="services-card-title mt-0! mb-4! text-[var(--text-card-title)]">
+                            {tab.label}
+                          </h3>
+                          <div
+                            class:list={[
+                              "services-prose prose-styles max-w-none",
+                            ]}
+                            set:html={markdownify(tab.content)}
+                          />
 
-                        {tab.cta && tab.cta.length > 0 && (
-                          <div class="services-cta-group flex flex-wrap gap-4 pt-5">
-                            {tab.cta.map((cta) => (
-                              <a
-                                href={cta.url}
-                                class:list={[
-                                  "btn text-sm",
-                                  cta.style === "outline"
-                                    ? "services-cta-outline"
-                                    : "services-cta-solid",
-                                ]}>
-                                {cta.label}
-                              </a>
-                            ))}
-                          </div>
-                        )}
+                          {tab.cta && tab.cta.length > 0 && (
+                            <div class="services-cta-group flex flex-wrap gap-4 pt-5">
+                              {tab.cta.map((cta) => (
+                                <a
+                                  href={cta.url}
+                                  class:list={[
+                                    "btn text-sm",
+                                    cta.style === "outline"
+                                      ? "services-cta-outline"
+                                      : "services-cta-solid",
+                                  ]}>
+                                  {cta.label}
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,24 +150,25 @@ const tabsWithIds = tabs.map((tab, index) => ({
 
   .services-nav {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.35rem 1rem;
+    gap: 0.35rem;
     border-color: var(--color-services-shell-divider);
     border-width: 1px;
     border-style: solid;
-    border-radius: 999px;
+    border-radius: 1rem;
     padding: 0.45rem;
-    max-width: max-content;
-    margin-inline: auto;
+    width: 100%;
     background: var(--color-duo-collage-surface);
   }
 
   .services-tab-button {
-    position: relative;
-    border-radius: 999px;
-    padding: 0.5rem 0.9rem;
-    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 0.7rem;
+    padding: 0.58rem 0.75rem;
+    font-size: 0.92rem;
+    line-height: 1.25;
     font-weight: 500;
     color: var(--color-services-tab-text-on-dark);
     transition:
@@ -191,7 +194,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
   }
 
   .services-copy {
-    padding-top: 0.8rem;
+    padding-top: 0.15rem;
   }
 
   .services-card-title {
@@ -243,5 +246,24 @@ const tabsWithIds = tabs.map((tab, index) => ({
 
   .services-cta-outline:hover {
     background: var(--color-duo-collage-glow-a);
+  }
+
+  .services-panels {
+    border-color: var(--color-services-shell-divider);
+  }
+
+  @media (min-width: 768px) {
+    .services-nav {
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .services-tab-button {
+      text-align: left;
+    }
+
+    .services-panels {
+      padding-top: 0.65rem;
+    }
   }
 </style>

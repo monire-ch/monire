@@ -28,6 +28,13 @@
   --color-bg-page: #F8F5F1;           /* main light background */
   --color-bg-dark: #011B23;           /* dark sections */
   --color-bg-dark-soft: #082F3A;      /* softer dark blocks */
+  --color-bg-light-start: #F4F1EB;    /* light section gradient start */
+  --color-bg-light-end: #ECEAE6;      /* light section gradient end */
+  --gradient-bg-light: linear-gradient(
+    160deg,
+    var(--color-bg-light-start) 0%,
+    var(--color-bg-light-end) 100%
+  );
 
   /* Cards */
   --color-card: #082F3A;           /* or tweak darker */

@@ -33,8 +33,8 @@ let actualContent = overrideObjects(
 let { title, description, items } = actualContent as meetTheDuoSectionType;
 ---
 
-<section class="relative py-16 md:py-24">
-  <div class="container mx-auto space-y-12 md:space-y-16">
+<section class="relative py-12 md:py-16">
+  <div class="container mx-auto space-y-8 md:space-y-10">
     <div class="space-y-4 text-left">
       {
         title && (
@@ -53,12 +53,12 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
       }
     </div>
 
-    <div class="grid gap-8 lg:grid-cols-2">
+    <div class="grid gap-y-10 gap-x-6 lg:grid-cols-2 lg:gap-y-6">
       {
         items.map((item) => (
-          <article class="text-left">
+          <article class="text-left md:grid md:grid-cols-[300px_1fr] md:items-center md:gap-6">
             <div
-              class="relative w-full max-w-[340px] overflow-hidden rounded-3xl border"
+              class="relative w-full max-w-[300px] overflow-hidden rounded-3xl border"
               style="border-color: var(--color-duo-collage-border); background: var(--color-duo-collage-surface);">
               <OptimizedImage
                 src={item.image}
@@ -78,8 +78,8 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
               </div>
             </div>
 
-            <div class="space-y-3 pt-5">
-              <h3 class="text-3xl leading-tight font-semibold text-white">
+            <div class="space-y-2 pt-4 md:pt-0">
+              <h3 class="text-[2.15rem] leading-tight font-semibold text-white">
                 {item.name}
               </h3>
               <p class="text-base text-white/84">{item.role}</p>

@@ -42,7 +42,7 @@ list = limit && list ? list.slice(0, limit as number) : list;
             <Subtitle content={subtitle} />
             {title && (
               <h2
-                class="has-italic-text text-white capitalize"
+                class="section-title has-italic-text text-white capitalize"
                 set:html={markdownify(title)}
               />
             )}

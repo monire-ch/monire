@@ -48,7 +48,7 @@ let { enable = true, title, subtitle, tabs = [] } = actualContent;
             <Subtitle content={subtitle} />
             {title && (
               <h2
-                class="has-italic-text text-white"
+                class="section-title has-italic-text text-white"
                 set:html={markdownify(title)}
               />
             )}

@@ -13,29 +13,31 @@ interface Props {
 const { title, description, icon, note, featured = false } = Astro.props;
 const firstToken = title?.trim().split(/\s+/)[0] ?? "";
 const hasMetricToken = /\d/.test(firstToken);
+const displayTitle =
+  hasMetricToken && featured ? title.replace(/^\S+\s*/, "") : title;
 ---
 
 <div
   class:list={[
-    "value-card relative h-full rounded-2xl border p-7 transition-all duration-500",
-    "hover:-translate-y-1",
+    "value-card relative h-full rounded-[18px] p-8 transition-all duration-300",
+    "hover:-translate-y-0.5",
     featured
-      ? "border-transparent bg-[linear-gradient(145deg,#2f6f83_0%,#0f4b5a_100%)] text-[#F8F5F1] shadow-[0_14px_34px_rgba(15,75,90,0.28)]"
-      : "border-[#d5cec2] bg-[#F6F3EE] text-monire-deep-teal",
+      ? "border border-transparent bg-[linear-gradient(145deg,#2f6f83_0%,#0f4b5a_100%)] text-[#F8F5F1] shadow-[0_14px_34px_rgba(15,75,90,0.28)]"
+      : "border border-[#d5cec2] bg-[#F6F3EE] text-monire-deep-teal",
   ]}>
   {
     hasMetricToken && featured && (
-      <div class="mb-1 text-6xl leading-none font-semibold tracking-tight md:text-7xl">
+      <div class="mb-2 text-7xl leading-none font-semibold tracking-tight md:text-8xl">
         {firstToken}
       </div>
     )
   }
-  <div class="mb-4 flex items-start gap-3">
-    {icon && (
+  <div class="mb-5 flex items-start gap-3">
+    {icon && !(hasMetricToken && featured) && (
       <Icon
         name={icon}
         class:list={[
-          "h-8 w-8",
+          "h-10 w-10",
           featured ? "text-[#F8F5F1]" : "text-monire-deep-teal",
         ]}
         title={title}
@@ -46,10 +48,10 @@ const hasMetricToken = /\d/.test(firstToken);
       <div class="flex items-center gap-2">
         <h3
           class:list={[
-            "text-xl leading-snug font-medium",
+            "text-2xl leading-snug font-semibold tracking-tight md:text-[1.95rem]",
             featured ? "text-[#F8F5F1]" : "text-monire-deep-teal",
           ]}
-          set:html={markdownify(title)}
+          set:html={markdownify(displayTitle)}
         />
         {
           note && (
@@ -85,7 +87,7 @@ const hasMetricToken = /\d/.test(firstToken);
   {description && (
     <p
       class:list={[
-        "text-base leading-relaxed",
+        "text-[1.05rem] leading-relaxed",
         featured ? "text-[#F8F5F1]/90" : "text-monire-deep-teal/90",
       ]}
       set:html={markdownify(description)}

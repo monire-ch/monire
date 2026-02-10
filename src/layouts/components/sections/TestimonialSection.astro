@@ -28,7 +28,7 @@ const testimonials = list.filter((t) => t.enable);
           {subtitle && <Subtitle content={subtitle} />}
           {title && (
             <h2
-              class="has-italic-text capitalize"
+              class="section-title has-italic-text capitalize"
               set:html={markdownify(title)}
             />
           )}

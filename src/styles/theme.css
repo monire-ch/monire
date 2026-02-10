@@ -54,6 +54,7 @@
 
   --text-display-1: calc(var(--text-base) * pow(var(--text-base-scale), 8.8)); /* 115px  */
   --text-section-title: clamp(1.875rem, 1.35rem + 1.6vw, 2.6rem);
+  --text-card-title: clamp(1.4rem, 1.05rem + 0.9vw, 1.95rem);
 
   --text-h1: calc(var(--text-base) * pow(var(--text-base-scale), 6));
   --text-h2: calc(var(--text-base) * pow(var(--text-base-scale), 5));

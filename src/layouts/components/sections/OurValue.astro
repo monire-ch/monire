@@ -5,6 +5,7 @@ import { markdownify } from "@/lib/utils/textConverter";
 import type { Section } from "@/types";
 import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 import ValueCard from "@/components/cards/ValueCard.astro";
+import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 type ourValueSectionType = Section & {
   list: {
@@ -32,8 +33,19 @@ let { title, subtitle, list } = actualContent as ourValueSectionType;
 ---
 
 <section
-  class="section-light"
-  style="background-image: var(--gradient-bg-light);">
+  class="section-light section-wave-light"
+  style="background-color: var(--color-bg-page);">
+  <SectionWave
+    class="section-wave section-wave-top"
+    aria-hidden="true"
+    preserveAspectRatio="none"
+  />
+  <SectionWave
+    class="section-wave section-wave-bottom"
+    aria-hidden="true"
+    preserveAspectRatio="none"
+  />
+
   <div class="relative after:top-0">
     <div class="container space-y-12 md:space-y-16">
       {
@@ -65,3 +77,40 @@ let { title, subtitle, list } = actualContent as ourValueSectionType;
     </div>
   </div>
 </section>
+
+<style>
+  .section-wave-light {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+  }
+
+  .section-wave {
+    position: absolute;
+    left: 50%;
+    width: 100vw;
+    min-width: 100vw;
+    max-width: none;
+    height: clamp(52px, 7vw, 110px);
+    transform: translateX(-50%);
+    z-index: 1;
+    pointer-events: none;
+    color: var(--color-bg-page);
+    fill: currentColor;
+  }
+
+  .section-wave-top {
+    top: 0;
+    transform: translateX(-50%) translateY(-99%);
+  }
+
+  .section-wave-bottom {
+    bottom: 0;
+    transform: translateX(-50%) translateY(99%) scaleY(-1);
+  }
+
+  .section-wave-light > .relative {
+    position: relative;
+    z-index: 2;
+  }
+</style>

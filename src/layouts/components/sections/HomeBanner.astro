@@ -39,7 +39,7 @@ const background = "/images/hero/background.jpg";
         {
           title && (
             <AnimatedText
-              class="font-hero gold-text mb-6 text-center tracking-wider capitalize md:text-5xl"
+              class="font-hero gold-text hero-title mb-6 text-center tracking-wider capitalize"
               content={markdownify(title)}
             />
           )
@@ -47,7 +47,7 @@ const background = "/images/hero/background.jpg";
         {
           subtitle && (
             <AnimatedText
-              class="text-center text-lg/normal"
+              class="hero-subtitle text-center"
               stagger={0.03}
               delay={0.3}
               content={markdownify(subtitle)}
@@ -57,7 +57,7 @@ const background = "/images/hero/background.jpg";
         {
           description && (
             <p
-              class="my-10 shrink-0 text-center text-2xl tracking-wider opacity-80"
+              class="hero-description my-10 shrink-0 text-center tracking-wider opacity-80"
               set:html={markdownify(description)}
             />
           )
@@ -93,5 +93,21 @@ const background = "/images/hero/background.jpg";
     -webkit-text-fill-color: transparent;
 
     color: var(--color-primary);
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 4.6vw, 4.2rem);
+    line-height: 1.06;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    line-height: 1.45;
+  }
+
+  .hero-description {
+    font-size: clamp(1rem, 1.35vw, 1.35rem);
+    line-height: 1.5;
   }
 </style>

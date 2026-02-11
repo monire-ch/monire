@@ -1,4 +1,5 @@
 .hero-bg {
+  --hero-header-offset: clamp(68px, 7.5vw, 92px);
   position: relative;
   background-color: #011b22;
   background-size: cover;
@@ -6,12 +7,33 @@
   background-repeat: no-repeat;
   position: relative;
   z-index: 0;
-  margin-top: -80px;
-  padding-top: 80px;
-  min-height: calc(100vh + 80px);
+  margin-top: calc(-1 * var(--hero-header-offset));
+  padding-top: var(--hero-header-offset);
+  min-height: calc(100svh + var(--hero-header-offset));
   display: flex;
   align-items: center;
   overflow: hidden;
+}
+
+/* Hero uses its own vertical rhythm; don't apply global section spacing offsets. */
+main.has-section-spacing-lg > section.hero-bg,
+main.has-section-spacing-md > section.hero-bg {
+  padding-top: var(--hero-header-offset);
+  padding-bottom: 0;
+}
+
+@media (max-width: 1023px) {
+  .hero-bg {
+    --hero-header-offset: 64px;
+    min-height: calc(100svh + var(--hero-header-offset));
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-bg {
+    --hero-header-offset: 56px;
+    min-height: calc(100svh + var(--hero-header-offset));
+  }
 }
 
 /* Browsers that support WebP will use this instead */

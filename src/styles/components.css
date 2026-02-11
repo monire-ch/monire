@@ -270,8 +270,8 @@
   display: inline-flex;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--color-monire-ink-alt);
-  border: 1px solid var(--color-pricing-tab-border);
+  background: color-mix(in srgb, var(--color-about-card-glow-soft) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-about-card-border-dark) 85%, transparent);
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
@@ -284,25 +284,23 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: capitalize;
-  color: var(--color-pricing-tab-text);
+  color: color-mix(in srgb, white 84%, transparent);
   background: transparent;
   transition: all 0.25s ease;
 }
 
 .pricing-tab[data-active="true"] {
-  background: var(--color-bg-page);
-  color: var(--color-monire-ink-alt);
-  box-shadow: var(--shadow-elevation-soft);
+  background: color-mix(in srgb, white 18%, transparent);
+  color: white;
+  border: 1px solid var(--color-mustard-70);
+  box-shadow: none;
 }
 
-.pricing-card-dark {
-  height: 44rem;
-}
-
+.pricing-card-dark,
 .pricing-card-light {
-  height: calc(44rem + 60px);
-  transform: translateY(0);
-  padding-bottom: calc(var(--spacing) * 14);
+  height: auto;
+  transform: none;
+  padding-bottom: 0;
 }
 
 .pricing-card .list-check li::before {
@@ -310,7 +308,11 @@
 }
 
 .pricing-vibe {
-  background: var(--gradient-vibe-dark);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--color-monire-deep-teal) 76%, var(--color-bg-dark-soft)) 0%,
+    color-mix(in srgb, var(--color-monire-deep-teal) 90%, var(--color-bg-dark)) 100%
+  );
 }
 
 .pricing-orb {
@@ -325,7 +327,7 @@
   right: -5rem;
   width: 20rem;
   height: 20rem;
-  background: rgba(46, 212, 199, 0.45);
+  background: var(--color-about-card-glow-dark);
 }
 
 .pricing-orb-2 {
@@ -333,7 +335,7 @@
   left: 0;
   width: 16rem;
   height: 16rem;
-  background: rgba(120, 200, 255, 0.2);
+  background: var(--color-about-card-glow-light);
 }
 
 .value-card:hover {

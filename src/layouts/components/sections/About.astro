@@ -62,7 +62,7 @@ let {
                 "border-b border-white/12",
               ]}>
               <div class="space-y-4">
-                <p class="text-xs font-medium tracking-[0.2em] text-white/62 uppercase">
+                <p class="text-xs font-medium tracking-[0.2em] text-white/74 uppercase">
                   {`CHAPTER ${String(index + 1).padStart(2, "0")}`}
                 </p>
                 {item.title && (
@@ -76,7 +76,7 @@ let {
               <div class="space-y-6">
                 {item.description && (
                   <div
-                    class="prose prose-p:leading-relaxed max-w-none md:max-w-[56ch] prose-p:text-white/85"
+                    class="prose prose-p:leading-relaxed max-w-none md:max-w-[56ch] prose-p:text-white/90"
                     set:html={markdownify(item.description, true)}
                   />
                 )}

@@ -46,7 +46,10 @@ const currentPlanFeatures = allFeatures
   .filter(Boolean);
 
 // Theme-aware text color for each card
-const cardTextClass = featured ? "text-primary" : "text-white/80";
+const cardTextClass = featured ? "text-monire-deep-teal" : "text-white/88";
+const cardSurfaceStyle = featured
+  ? "background-image: var(--gradient-about-card-soft); border-color: var(--color-about-card-border-soft);"
+  : "background-image: var(--gradient-about-card-dark); border-color: var(--color-about-card-border-dark);";
 ---
 
 {
@@ -54,23 +57,21 @@ const cardTextClass = featured ? "text-primary" : "text-white/80";
     <div
       class:list={[
         // Base
-        "pricing-card max-lg:box-shadow-primary hover:lg:box-shadow-primary mt-20 flex flex-col justify-between gap-8 rounded-3xl border px-9 py-11 transition duration-500",
+        "pricing-card relative max-lg:box-shadow-primary hover:lg:box-shadow-primary mt-8 md:mt-10 flex flex-col gap-8 rounded-3xl border px-9 py-9 transition duration-500",
 
         // Make the featured (middle) card taller + more prominent on desktop
         // - move it up a bit
         // - give it a larger min-height so it is physically taller
-        { "lg:min-h-[720px] lg:-translate-y-6": featured },
-        { "lg:min-h-[660px]": !featured },
+        { "lg:min-h-[650px] lg:-translate-y-2": featured },
+        { "lg:min-h-[620px]": !featured },
 
         className,
 
         // Backgrounds
-        { "bg-card-foreground": featured },
-        { "bg-primary": !featured },
-
         // Base text for the whole card
         cardTextClass,
       ]}
+      style={cardSurfaceStyle}
       {...rest}>
       {badge?.enable && (
         <span
@@ -101,7 +102,7 @@ const cardTextClass = featured ? "text-primary" : "text-white/80";
               class:list={[
                 "pricing-from",
                 { "text-[var(--color-pricing-from-featured)]": featured },
-                { "text-current/80": !featured },
+                { "text-current/84": !featured },
               ]}>
               from
             </span>
@@ -127,7 +128,7 @@ const cardTextClass = featured ? "text-primary" : "text-white/80";
 
         <div class="space-y-5">
           {description && (
-            <p class="text-current/80" set:html={markdownify(description)} />
+            <p class="text-current/88" set:html={markdownify(description)} />
           )}
 
           {usages?.map((item, i) => (
@@ -137,8 +138,8 @@ const cardTextClass = featured ? "text-primary" : "text-white/80";
                 "rounded-lg px-5 py-2.5 text-sm transition-all duration-300",
                 { hidden: selectedPlan?.label !== item.type && plans.enable },
                 { hidden: !plans.enable && i !== 0 },
-                { "bg-primary/15": featured },
-                { "bg-white/10": !featured },
+                { "bg-monire-deep-teal/8": featured },
+                { "bg-white/7": !featured },
               ]}>
               {item.list.map((row: { label: string; value: string }) => (
                 <div class="flex flex-wrap-reverse items-center justify-between gap-5 border-b py-2 first:pt-0 last:border-b-transparent last:pb-0">

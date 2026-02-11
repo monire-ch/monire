@@ -15,7 +15,7 @@ const displayTitle =
   hasMetricToken && featured ? title.replace(/^\S+\s*/, "") : title;
 const cardStyle = featured
   ? "background-image: var(--gradient-about-card-dark); border-color: var(--color-about-card-border-dark);"
-  : "background-image: var(--gradient-about-card-light); border-color: var(--color-about-card-border-soft);";
+  : "background-image: var(--gradient-about-card-light); border-color: color-mix(in srgb, var(--color-about-card-border-soft) 35%, transparent);";
 const glowStyle = featured
   ? "background: var(--color-about-card-glow-dark);"
   : "background: var(--color-about-card-glow-light);";
@@ -23,7 +23,7 @@ const glowStyle = featured
 
 <div
   class:list={[
-    "value-card relative h-full w-full max-w-[25rem] overflow-hidden rounded-[18px] border p-6 transition-all duration-300 md:p-7",
+    "value-card relative h-full w-full max-w-[25rem] overflow-hidden rounded-[22px] border px-6 py-8 transition-all duration-300 md:px-7 md:py-9",
     "hover:-translate-y-0.5",
     featured ? "text-white" : "text-monire-deep-teal",
   ]}

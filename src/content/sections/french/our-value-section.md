@@ -6,21 +6,15 @@ title: "**Intentional Websites and Systems** Built for Today’s Goals and Tomor
 list:
   - title: 10+ Years of Experience
     description: Together, we bring over a decade of hands-on experience as software developers at top Swiss companies — combining technical expertise with design clarity.
-    icon: "/images/icons/svg/experience.svg"
   - title: AI, Google & Speed Optimized
     description: Built for accessibility, reliability, and visibility across search engines and AI platforms so your business gets found everywhere clients look.
-    icon: "/images/icons/svg/bolt.svg"
   - title: 0 Hours of Maintenance
     description: Your Webflow website runs smoothly with automatic updates and no plugins to manage, so you can focus on your business.
-    icon: "/images/icons/svg/gear.svg"
   - title: Direct Collaboration
     description: Work directly with the founders for clear communication and consistent quality.
-    icon: "/images/icons/svg/handshake.svg"
   - title: 24/7 Time Savings
     description: Intelligent AI automations handle repetitive tasks around the clock, freeing you to focus on what really matters.
-    icon: "/images/icons/svg/clock.svg"
   - title: Easy Updates
     description: Once your site is live, you’ll have full control. Editing content is simple and intuitive.
-    icon: "/images/icons/svg/cycle.svg"
 
 ---

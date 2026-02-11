@@ -146,20 +146,20 @@
       rgb(var(--color-monire-nav-active)) 86%,
       white
     );
-    color: white;
-    border-color: color-mix(in srgb, white 34%, transparent);
+    color: var(--color-light);
+    border-color: var(--color-mustard-70);
     font-weight: 600;
     box-shadow: 0 0.375rem 0.875rem rgba(3, 56, 68, 0.3);
   }
 
   .nav-link.nav-link-cta:hover {
-    color: white;
+    color: var(--color-light);
     background: color-mix(
       in srgb,
       rgb(var(--color-monire-nav-active)) 94%,
       white
     );
-    border-color: color-mix(in srgb, white 46%, transparent);
+    border-color: var(--color-mustard);
   }
 
   .nav-link.nav-link-cta.nav-link-active {
@@ -168,8 +168,8 @@
       rgb(var(--color-monire-nav-active)) 94%,
       white
     );
-    color: white;
-    border-color: color-mix(in srgb, white 46%, transparent);
+    color: var(--color-light);
+    border-color: var(--color-mustard);
   }
 
   /* Regular Dropdown */

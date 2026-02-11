@@ -10,16 +10,16 @@ const data = entry.data;
 ---
 
 <Layout title={data.title}>
-  <section class="section-light relative z-10 pt-24">
+  <section class="section-light case-study-top relative z-10">
     <div class="container">
-    <ButtonLink
-      content={{
-        enable: true,
-        label: data.backLabel || "Back",
-        url: data.backUrl || "/",
-      }}
-      class="btn-primary"
-    />
+      <ButtonLink
+        content={{
+          enable: true,
+          label: data.backLabel || "Back",
+          url: data.backUrl || "/",
+        }}
+        class="btn-md btn-pricing-light"
+      />
     </div>
   </section>
 
@@ -49,3 +49,10 @@ const data = entry.data;
     </div>
   </section>
 </Layout>
+
+<style>
+  .case-study-top {
+    padding-top: clamp(0.5rem, 1.2vw, 1rem) !important;
+    padding-bottom: clamp(0.35rem, 1vw, 0.75rem) !important;
+  }
+</style>

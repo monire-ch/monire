@@ -157,6 +157,11 @@ list = limit && list ? list.slice(0, limit as number) : list;
 
   .faq-vibe :global(.hs-accordion-toggle) {
     color: white;
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-overlay) 85%,
+      transparent
+    ) !important;
   }
 
   .faq-vibe :global(.hs-accordion-toggle .title),
@@ -167,5 +172,12 @@ list = limit && list ? list.slice(0, limit as number) : list;
 
   .faq-vibe :global(.hs-accordion.active .hs-accordion-toggle .title) {
     color: white;
+  }
+
+  .faq-vibe :global(.hs-accordion) {
+    background: color-mix(in srgb, var(--color-bg-dark-soft) 70%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--color-border-overlay) 88%, transparent);
+    opacity: 1;
   }
 </style>

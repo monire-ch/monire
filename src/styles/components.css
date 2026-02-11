@@ -214,6 +214,34 @@
   color: var(--color-monire-ink);
 }
 
+.section-light .prose-styles ul:not(.list-unstyled) li::after {
+  background: color-mix(in srgb, var(--color-monire-ink) 16%, transparent);
+}
+
+.section-light .prose-styles ul:not(.list-unstyled) li::before {
+  background: color-mix(in srgb, var(--color-monire-ink) 78%, transparent);
+}
+
+.policy-page-prose ul:not(.list-unstyled) {
+  list-style: disc;
+  list-style-position: outside;
+  padding-left: 1.25rem;
+}
+
+.policy-page-prose ul:not(.list-unstyled) li {
+  padding-left: 0;
+}
+
+.policy-page-prose ul:not(.list-unstyled) li::before,
+.policy-page-prose ul:not(.list-unstyled) li::after {
+  content: none !important;
+  display: none !important;
+}
+
+.policy-page-prose ul:not(.list-unstyled) li::marker {
+  color: currentColor;
+}
+
 .prose-styles a {
   color: var(--color-link-light-bg);
   text-decoration: underline;

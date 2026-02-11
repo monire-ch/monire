@@ -4,6 +4,7 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
 import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 type ctaSectionType = Section
 
@@ -30,8 +31,13 @@ let {
 {
   enable && (
     <section
-      class="cta-section section-light mt-auto"
-      style="background-image: var(--gradient-bg-light);">
+      class="cta-section section-light cta-wave-light relative mt-auto"
+      style="background-color: var(--color-bg-page);">
+      <SectionWave
+        class="cta-wave-top"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+      />
       <div class="py-14 md:py-28">
         <div class="container grid grid-cols-1 place-content-between gap-y-16 lg:grid-cols-2 lg:gap-x-10">
           <div
@@ -61,3 +67,29 @@ let {
     </section>
   )
 }
+
+<style>
+  .cta-wave-light {
+    isolation: isolate;
+  }
+
+  .cta-wave-top {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+    height: clamp(52px, 7vw, 110px);
+    transform: translateY(-99%);
+    color: var(--color-bg-page);
+    fill: currentColor;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .cta-wave-light > div {
+    position: relative;
+    z-index: 2;
+  }
+</style>

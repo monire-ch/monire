@@ -3,7 +3,6 @@ import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 import type { Button, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
-import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import ButtonLink from "../buttons/ButtonLink.astro";
 
@@ -55,101 +54,51 @@ let {
             />
           )}
         </div>
-        <div
-          class="grid gap-6 lg:grid-cols-12"
-          data-aos="fade-up-sm"
-          data-aos-delay="200">
-          {list.map((item, index) => {
-            const cardVariant = index % 3;
-            const isSoft = cardVariant === 1;
-            const variantStyles = [
-              {
-                surface: "var(--gradient-about-card-light)",
-                border: "var(--color-about-card-border-light)",
-                glow: "var(--color-about-card-glow-light)",
-              },
-              {
-                surface: "var(--gradient-about-card-soft)",
-                border: "var(--color-about-card-border-soft)",
-                glow: "var(--color-about-card-glow-soft)",
-              },
-              {
-                surface: "var(--gradient-about-card-dark)",
-                border: "var(--color-about-card-border-dark)",
-                glow: "var(--color-about-card-glow-dark)",
-              },
-            ][cardVariant];
-
-            return (
-              <div
-                class="relative overflow-hidden rounded-3xl border p-7 lg:col-span-4 lg:p-9"
-                style={`background-image: ${variantStyles.surface}; border-color: ${variantStyles.border};`}>
-                <div
-                  class="pointer-events-none absolute -right-14 -bottom-14 h-44 w-44 rounded-full blur-3xl"
-                  style={`background: ${variantStyles.glow};`}
-                />
-                <div class:list={["relative z-10 flex h-full flex-col gap-5"]}>
-                  <span
-                    class:list={[
-                      "inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-medium tracking-[0.16em] uppercase",
-                      isSoft
-                        ? "border-monire-deep-teal/35 text-monire-deep-teal/75"
-                        : "border-white/20 text-white/70",
-                    ]}>
-                    {`0${index + 1}`}
-                  </span>
-
-                  {item.title && (
-                    <h3
-                      class:list={[
-                        "text-[1.7rem] leading-tight font-semibold tracking-tight md:text-[2rem]",
-                        isSoft ? "text-monire-deep-teal" : "text-white",
-                      ]}
-                      set:html={markdownify(item.title)}
-                    />
-                  )}
-
-                  {item.description && (
-                    <div
-                      class:list={[
-                        "prose prose-p:leading-relaxed max-w-none",
-                        isSoft
-                          ? "prose-p:text-monire-deep-teal/85"
-                          : "prose-p:text-white/82",
-                      ]}
-                      set:html={markdownify(item.description, true)}
-                    />
-                  )}
-
-                  {(item.ctaBtn?.enable || item.ctaBtn2?.enable) && (
-                    <div class="mt-auto flex flex-wrap items-center gap-4 pt-2">
-                      {item.ctaBtn?.enable && (
-                        <ButtonLink
-                          class="btn-md btn-pricing-dark text-center"
-                          content={{ ...item.ctaBtn }}
-                        />
-                      )}
-                      {item.ctaBtn2?.enable && (
-                        <ButtonLink
-                          class="btn-md btn-secondary text-center"
-                          content={{ ...item.ctaBtn2 }}
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  {item.image && (
-                    <div class="pt-2">
-                      <OptimizedImage
-                        src={item.image}
-                        class="h-56 w-full rounded-2xl object-cover"
-                      />
-                    </div>
-                  )}
-                </div>
+        <div data-aos="fade-up-sm" data-aos-delay="200">
+          {list.map((item, index) => (
+            <article
+              class:list={[
+                "grid gap-8 py-9 md:py-11 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.7fr)] lg:gap-14",
+                "border-b border-white/12",
+              ]}>
+              <div class="space-y-4">
+                <p class="text-xs font-medium tracking-[0.2em] text-white/62 uppercase">
+                  {`CHAPTER ${String(index + 1).padStart(2, "0")}`}
+                </p>
+                {item.title && (
+                  <h3
+                    class="text-4xl leading-[1.04] font-semibold tracking-tight text-white md:text-5xl"
+                    set:html={markdownify(item.title)}
+                  />
+                )}
               </div>
-            );
-          })}
+
+              <div class="space-y-6">
+                {item.description && (
+                  <div
+                    class="prose prose-p:leading-relaxed max-w-none md:max-w-[56ch] prose-p:text-white/85"
+                    set:html={markdownify(item.description, true)}
+                  />
+                )}
+                {(item.ctaBtn?.enable || item.ctaBtn2?.enable) && (
+                  <div class="flex flex-wrap items-center gap-4 pt-2">
+                    {item.ctaBtn?.enable && (
+                      <ButtonLink
+                        class="btn-md btn-pricing-dark text-center"
+                        content={{ ...item.ctaBtn }}
+                      />
+                    )}
+                    {item.ctaBtn2?.enable && (
+                      <ButtonLink
+                        class="btn-md btn-secondary text-center"
+                        content={{ ...item.ctaBtn2 }}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

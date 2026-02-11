@@ -48,7 +48,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
     <section
       id="services"
       class="section-light"
-      style="background-image: var(--gradient-bg-light);">
+      style="background-color: var(--color-bg-page);">
       <div class="container">
         <div class="space-y-12 md:space-y-16">
           <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
@@ -63,12 +63,11 @@ const tabsWithIds = tabs.map((tab, index) => ({
 
           {tabsWithIds.length > 0 && (
             <div data-aos="fade-up-sm" data-aos-delay="300" class="relative">
-              <div class="services-shell mx-auto w-full max-w-[1020px] rounded-3xl border p-5 md:p-8 lg:p-10">
+              <div class="services-shell mx-auto w-full max-w-[1160px] rounded-[1.55rem] border p-5 md:p-8 lg:p-9">
                 <div class="services-mobile-accordion md:hidden">
                   {tabsWithIds.map((tab, index) => (
                     <details class="services-mobile-item" open={index === 0}>
                       <summary class="services-mobile-summary">
-                        <span class="services-mobile-step">{tab.step}</span>
                         <span class="services-mobile-label">{tab.label}</span>
                         <span class="services-mobile-icon" aria-hidden="true"></span>
                       </summary>
@@ -102,7 +101,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
                   ))}
                 </div>
 
-                <div class="hidden services-timeline gap-6 md:grid md:grid-cols-[minmax(220px,0.95fr)_minmax(0,1.6fr)] md:gap-9">
+                <div class="hidden services-timeline gap-6 md:grid md:grid-cols-[minmax(320px,0.95fr)_minmax(0,1.6fr)] md:gap-8">
                   <nav
                     class="services-timeline-nav"
                     aria-label="Services Timeline"
@@ -127,7 +126,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
                     ))}
                   </nav>
 
-                  <div class="services-panels border-l-0 pl-0 md:border-l md:pl-8">
+                  <div class="services-panels border-l-0 pl-0 md:border-l md:pt-2 md:pl-7 lg:pt-3">
                     {tabsWithIds.map((tab, index) => (
                       <div
                         id={tab.panelId}
@@ -184,26 +183,31 @@ const tabsWithIds = tabs.map((tab, index) => ({
 
 <style>
   .services-shell {
-    background: var(--gradient-services-shell);
-    border-color: var(--color-services-shell-border-dark);
-    box-shadow: var(--shadow-services-shell);
+    background: linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--color-monire-deep-teal-soft) 78%, white) 0%,
+      color-mix(in srgb, var(--color-monire-deep-teal) 88%, var(--color-bg-dark-soft))
+        100%
+    );
+    border-color: color-mix(in srgb, white 18%, transparent);
+    box-shadow: 0 18px 34px rgba(3, 42, 52, 0.18);
   }
 
   .services-mobile-item {
-    border-bottom: 1px solid var(--color-services-shell-divider);
+    border-bottom: 1px solid color-mix(in srgb, white 20%, transparent);
   }
 
   .services-mobile-item:first-child {
-    border-top: 1px solid var(--color-services-shell-divider);
+    border-top: 1px solid color-mix(in srgb, white 20%, transparent);
   }
 
   .services-mobile-summary {
     list-style: none;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    gap: 0.7rem;
-    padding: 0.95rem 0.1rem;
+    gap: 0.8rem;
+    padding: 1rem 0.15rem;
     cursor: pointer;
   }
 
@@ -211,16 +215,9 @@ const tabsWithIds = tabs.map((tab, index) => ({
     display: none;
   }
 
-  .services-mobile-step {
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    font-weight: 500;
-    color: var(--color-link-dark-bg);
-  }
-
   .services-mobile-label {
-    color: var(--color-services-tab-active-on-dark);
-    font-size: 0.98rem;
+    color: white;
+    font-size: 1rem;
     line-height: 1.3;
     font-weight: 500;
   }
@@ -240,7 +237,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
     width: 100%;
     height: 1.5px;
     border-radius: 999px;
-    background: var(--color-link-dark-bg);
+    background: color-mix(in srgb, white 72%, transparent);
     transform: translateY(-50%);
     transition: transform 180ms ease;
   }
@@ -254,100 +251,86 @@ const tabsWithIds = tabs.map((tab, index) => ({
   }
 
   .services-timeline-nav {
-    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .services-timeline-nav::before {
-    content: "";
-    position: absolute;
-    left: 2.45rem;
-    top: 0.8rem;
-    bottom: 0.8rem;
-    width: 1px;
-    background: var(--color-services-shell-divider);
+    gap: 0.3rem;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in srgb, white 22%, transparent);
+    background: color-mix(in srgb, white 6%, transparent);
+    padding: 0.5rem;
   }
 
   .services-timeline-item {
-    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0;
     text-align: left;
-    border-radius: 0.8rem;
-    padding: 0.72rem 0.65rem;
-    color: var(--color-services-tab-text-on-dark);
+    border-radius: 0.78rem;
+    padding: 0.7rem 0.9rem;
+    color: color-mix(in srgb, white 84%, transparent);
     transition:
       color 180ms ease,
       background-color 180ms ease;
   }
 
   .services-timeline-item:hover {
-    background: var(--color-duo-collage-surface);
+    background: color-mix(in srgb, white 10%, transparent);
   }
 
   .services-timeline-step {
-    width: 1.9rem;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-link-dark-bg);
-    flex-shrink: 0;
+    display: none;
   }
 
   .services-timeline-dot {
-    width: 0.62rem;
-    height: 0.62rem;
-    border-radius: 999px;
-    background: var(--color-duo-collage-surface);
-    border: 1px solid var(--color-services-shell-divider);
-    flex-shrink: 0;
+    display: none;
   }
 
   .services-timeline-label {
-    font-size: 0.97rem;
-    line-height: 1.35;
+    font-size: 1.02rem;
+    line-height: 1.34;
+    font-weight: 500;
   }
 
   .services-timeline-item.active {
-    color: var(--color-services-tab-active-on-dark);
-    background: var(--color-duo-collage-border);
-  }
-
-  .services-timeline-item.active .services-timeline-dot {
-    background: var(--color-link-dark-bg);
-    border-color: var(--color-link-dark-bg);
+    color: white;
+    background: color-mix(in srgb, white 22%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, white 26%, transparent);
   }
 
   .services-timeline-item:focus-visible {
-    outline: 2px solid var(--color-link-dark-bg);
+    outline: 2px solid color-mix(in srgb, white 65%, transparent);
     outline-offset: 2px;
     border-radius: 0.5rem;
   }
 
   .services-panels {
-    border-color: var(--color-services-shell-divider);
+    border-color: color-mix(in srgb, white 24%, transparent);
   }
 
   .services-content {
-    padding: 0.3rem 0.1rem 0.2rem;
+    padding: 0.1rem 0.2rem 0.2rem;
   }
 
   .services-card-title {
-    line-height: 1.08;
-    color: var(--color-services-tab-active-on-dark);
+    line-height: 1.06;
+    color: white;
+    font-size: clamp(2.4rem, 2rem + 1.2vw, 4rem);
+    letter-spacing: -0.014em;
+    margin-bottom: 1.05rem !important;
   }
 
   .services-content .prose-styles a {
-    color: var(--color-link-dark-bg);
+    color: color-mix(in srgb, white 90%, transparent);
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
   }
 
   .services-prose.prose-styles p,
   .services-prose.prose-styles li {
-    color: var(--color-services-tab-text-on-dark);
+    color: color-mix(in srgb, white 82%, transparent);
+    max-width: 54ch;
+    font-size: clamp(1.08rem, 1.02rem + 0.16vw, 1.22rem);
+    line-height: 1.7;
   }
 
   .services-prose.prose-styles h1,
@@ -356,43 +339,47 @@ const tabsWithIds = tabs.map((tab, index) => ({
   .services-prose.prose-styles h4,
   .services-prose.prose-styles h5,
   .services-prose.prose-styles h6 {
-    color: var(--color-services-tab-active-on-dark);
+    color: white;
   }
 
   .services-content .prose-styles a:hover {
-    color: var(--color-link-dark-bg-hover);
+    color: white;
   }
 
   .services-cta-solid,
   .services-cta-outline {
-    border: 1px solid transparent;
+    border: 1px solid color-mix(in srgb, white 28%, transparent);
   }
 
   .services-cta-solid {
-    background: var(--color-mustard);
-    color: var(--color-monire-ink);
+    background: color-mix(in srgb, white 18%, transparent);
+    color: white;
   }
 
   .services-cta-solid:hover {
-    background: var(--color-link-dark-bg-hover);
+    background: color-mix(in srgb, white 26%, transparent);
   }
 
   .services-cta-outline {
-    border-color: var(--color-services-shell-divider);
-    color: var(--color-light);
+    border-color: color-mix(in srgb, white 32%, transparent);
+    color: white;
     background: transparent;
   }
 
   .services-cta-outline:hover {
-    background: var(--color-duo-collage-glow-a);
+    background: color-mix(in srgb, white 10%, transparent);
   }
 
   @media (max-width: 767px) {
+    .services-shell {
+      border-radius: 1.2rem;
+    }
+
     .services-content {
       padding-left: 0;
       padding-right: 0;
       padding-top: 0.2rem;
-      padding-bottom: 1rem;
+      padding-bottom: 1.1rem;
     }
   }
 </style>

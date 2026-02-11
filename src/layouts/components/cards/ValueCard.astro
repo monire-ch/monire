@@ -10,36 +10,57 @@ interface Props {
 }
 
 const { title, description, icon, featured = false } = Astro.props;
+const iconToken = icon?.includes("/")
+  ? icon.split("/").pop()?.replace(".svg", "")
+  : icon;
+const allowedIcons = [
+  "experience",
+  "gear",
+  "handshake",
+  "clock",
+  "bolt",
+  "cycle",
+] as const;
+const isAllowedIcon = (
+  value: string | undefined,
+): value is (typeof allowedIcons)[number] =>
+  !!value && (allowedIcons as readonly string[]).includes(value);
+const normalizedIcon = isAllowedIcon(iconToken) ? iconToken : undefined;
 const firstToken = title?.trim().split(/\s+/)[0] ?? "";
 const hasMetricToken = /\d/.test(firstToken);
 const displayTitle =
   hasMetricToken && featured ? title.replace(/^\S+\s*/, "") : title;
 const cardStyle = featured
-  ? "background-image: var(--gradient-value-card-featured); box-shadow: var(--shadow-value-card-featured);"
-  : "background-color: var(--color-value-card-neutral-bg); border-color: var(--color-value-card-neutral-border);";
+  ? "background-image: var(--gradient-about-card-dark); border-color: var(--color-about-card-border-dark);"
+  : "background-image: var(--gradient-about-card-light); border-color: var(--color-about-card-border-soft);";
+const glowStyle = featured
+  ? "background: var(--color-about-card-glow-dark);"
+  : "background: var(--color-about-card-glow-light);";
 ---
 
 <div
   class:list={[
-    "value-card relative h-full rounded-[18px] p-8 transition-all duration-300",
+    "value-card relative h-full overflow-hidden rounded-[18px] border p-8 transition-all duration-300",
     "hover:-translate-y-0.5",
-    featured
-      ? "border border-transparent text-white"
-      : "text-monire-deep-teal border",
+    featured ? "text-white" : "text-monire-deep-teal",
   ]}
   style={cardStyle}>
+  <div
+    class="pointer-events-none absolute -right-14 -bottom-14 h-44 w-44 rounded-full blur-3xl"
+    style={glowStyle}
+  />
   {
     hasMetricToken && featured && (
-      <div class="mb-2 text-7xl leading-none font-semibold tracking-tight md:text-8xl">
+      <div class="relative mb-2 text-7xl leading-none font-semibold tracking-tight md:text-8xl">
         {firstToken}
       </div>
     )
   }
-  <div class="mb-5 flex items-start gap-3">
+  <div class="relative mb-5 flex items-start gap-3">
     {
-      icon && !(hasMetricToken && featured) && (
+      normalizedIcon && !(hasMetricToken && featured) && (
         <Icon
-          name={icon}
+          name={normalizedIcon}
           class:list={[
             "h-10 w-10",
             featured ? "text-white" : "text-monire-deep-teal",
@@ -66,7 +87,7 @@ const cardStyle = featured
     description && (
       <p
         class:list={[
-          "text-[1.05rem] leading-relaxed",
+          "relative text-[1.05rem] leading-relaxed",
           featured ? "text-white/90" : "text-monire-deep-teal/90",
         ]}
         set:html={markdownify(description)}

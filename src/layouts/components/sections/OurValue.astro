@@ -87,12 +87,11 @@ let { title, subtitle, list } = actualContent as ourValueSectionType;
 
   .section-wave {
     position: absolute;
-    left: 50%;
-    width: 100vw;
-    min-width: 100vw;
-    max-width: none;
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: 0;
     height: clamp(52px, 7vw, 110px);
-    transform: translateX(-50%);
     z-index: 1;
     pointer-events: none;
     color: var(--color-bg-page);
@@ -101,12 +100,12 @@ let { title, subtitle, list } = actualContent as ourValueSectionType;
 
   .section-wave-top {
     top: 0;
-    transform: translateX(-50%) translateY(-99%);
+    transform: translateY(-99%);
   }
 
   .section-wave-bottom {
     bottom: 0;
-    transform: translateX(-50%) translateY(99%) scaleY(-1);
+    transform: translateY(99%) scaleY(-1);
   }
 
   .section-wave-light > .relative {

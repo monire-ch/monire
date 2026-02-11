@@ -5,6 +5,7 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
 import type { TestimonialSection } from "@/types";
+import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 const defaultContent = (
   await getEntryCTM("sections", "testimonial", Astro.currentLocale)
@@ -24,7 +25,13 @@ const testimonials = list.filter((t) => t.enable);
   enable && (
     <section
       class="section-light testimonial-light relative space-y-12 md:space-y-16"
-      style="background-image: var(--gradient-bg-light);">
+      style="background-color: var(--color-bg-page);">
+      <SectionWave
+        class="testimonial-wave-top"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+      />
+
       <div class="container">
         <div data-aos="fade-up-sm" class="mx-auto text-center lg:max-w-2xl">
           {subtitle && <Subtitle content={subtitle} />}
@@ -41,3 +48,29 @@ const testimonials = list.filter((t) => t.enable);
     </section>
   )
 }
+
+<style>
+  .testimonial-light {
+    isolation: isolate;
+  }
+
+  .testimonial-wave-top {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+    height: clamp(52px, 7vw, 110px);
+    transform: translateY(-99%);
+    color: var(--color-bg-page);
+    fill: currentColor;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .testimonial-light > .container {
+    position: relative;
+    z-index: 2;
+  }
+</style>

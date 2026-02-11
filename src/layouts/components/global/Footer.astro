@@ -28,42 +28,41 @@ const encodedEmail = encodeEmail(contact.email);
 
 <footer class="footer-vibe">
   <div class="footer-vibe-inner">
-    <div class="container space-y-16 lg:space-y-28">
-      <div class="grid pt-16 lg:grid-cols-2 xl:grid-cols-3">
-        <div class="flex flex-col gap-y-5 lg:pe-10">
+    <div class="container space-y-14 lg:space-y-20">
+      <div class="grid gap-12 pt-14 md:pt-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,2fr)] lg:items-start lg:gap-14">
+        <div class="flex flex-col items-start gap-y-5 text-left lg:pe-8">
           <Logo />
           {
             footerDescription && (
-              <p class="opacity-90" set:html={markdownify(footerDescription)} />
+              <p class="max-w-[36ch] text-white/90" set:html={markdownify(footerDescription)} />
             )
           }
           <SocialComponent
             layout="classic"
             linkType="follow"
-            class="mt-5 gap-1"
+            class="footer-social mt-1 gap-2"
             size="sm"
             list={social.main.filter((social) => social.enable)}
           />
         </div>
-        <div
-          class="col-span-2 mt-10 grid gap-y-10 md:grid-cols-3 xl:mt-0 xl:ml-5">
-          <div class="md:px-8 lg:px-8 xl:px-14">
+        <div class="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div>
             {
               t("footer.company") && (
                 <h3
-                  class="text-h5 text-light mb-6"
+                  class="text-h5 mb-6 text-light"
                   set:html={t("footer.company")}
                 />
               )
             }
-            <ul class="flex flex-col gap-y-1.5">
+            <ul class="flex flex-col gap-y-2">
               {
                 t("footerMenuQuickLink") &&
                   t("footerMenuQuickLink").map(
                     (menu: { name: string; url: string }) => (
                       <li class="inline-block">
                         <a
-                          class="text-link-dark inline-block py-px opacity-90 duration-300"
+                          class="footer-link"
                           href={getLocaleUrlCTM(menu.url, Astro.currentLocale)}>
                           {menu.name}
                         </a>
@@ -73,72 +72,66 @@ const encodedEmail = encodeEmail(contact.email);
               }
             </ul>
           </div>
-          <div class="col-span-2 md:pl-8 lg:pl-8 xl:pl-14">
-            <div class="grid gap-y-10 md:grid-cols-2">
-              <div>
-                {
-                  t("footer.legal") && (
-                    <h3
-                      class="text-h5 text-light mb-6"
-                      set:html={t("footer.legal")}
-                    />
-                  )
-                }
-                <ul class="flex flex-col gap-2">
-                  {
-                    t("footerMenuLegal").map(
-                      (menu: { name: string; url: string }) => (
-                        <li class="inline-block">
-                          <a
-                            class="text-link-dark inline-block py-px opacity-90 duration-300"
-                            href={getLocaleUrlCTM(
-                              menu.url,
-                              Astro.currentLocale,
-                            )}
-                            set:html={menu.name}
-                          />
-                        </li>
-                      ),
-                    )
-                  }
-                </ul>
-              </div>
-              <div class="md:pl-8 lg:pl-8 xl:pl-14">
-                {
-                  t("footer.contact") && (
-                    <h3
-                      class="text-h5 text-light mb-6"
-                      set:html={t("footer.contact")}
-                    />
-                  )
-                }
-                <div>
-                  <ul class="flex flex-col gap-2">
+          <div>
+            {
+              t("footer.legal") && (
+                <h3
+                  class="text-h5 mb-6 text-light"
+                  set:html={t("footer.legal")}
+                />
+              )
+            }
+            <ul class="flex flex-col gap-2">
+              {
+                t("footerMenuLegal").map(
+                  (menu: { name: string; url: string }) => (
                     <li class="inline-block">
                       <a
-                        class="text-link-dark"
-                        href={`mailto:${contact.email}`}>
-                        <span set:html={encodedEmail} />
-                      </a>
+                        class="footer-link"
+                        href={getLocaleUrlCTM(
+                          menu.url,
+                          Astro.currentLocale,
+                        )}
+                        set:html={menu.name}
+                      />
                     </li>
-                    <li class="inline-block opacity-80">
-                      {contact.location}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+                  ),
+                )
+              }
+            </ul>
+          </div>
+          <div>
+            {
+              t("footer.contact") && (
+                <h3
+                  class="text-h5 mb-6 text-light"
+                  set:html={t("footer.contact")}
+                />
+              )
+            }
+            <ul class="flex flex-col gap-2">
+              <li class="inline-block">
+                <a
+                  class="footer-link"
+                  href={`mailto:${contact.email}`}>
+                  <span set:html={encodedEmail} />
+                </a>
+              </li>
+              <li class="inline-block text-white/82">
+                {contact.location}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <div class="border-t border-white/10 py-7 text-sm md:text-base">
-        <div class="flex flex-wrap justify-center gap-x-8 gap-y-6">
+      <div class="border-t border-white/12 py-7 text-sm md:text-base">
+        <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {
             config.settings.copyright && config.settings.copyright.enable && (
               <ul class="has-list has-list-slash prose-a:text-inherit flex flex-wrap gap-y-4 text-white">
                 {copyrightParts.map((value: string) => (
-                  <li class="inline-block opacity-90 [&_a]:text-[var(--color-link-dark-bg)] [&_a]:underline [&_a]:decoration-[1px] [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-[var(--color-link-dark-bg-hover)]">
+                  <li class="inline-block opacity-90 [&_a]:text-[var(--color-link-dark-bg)] [&_a]:no-underline [&_a]:decoration-[1px] [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-[var(--color-link-dark-bg-hover)] [&_a:hover]:underline [&_a:focus-visible]:underline">
                     <span set:html={markdownify(value)} />
                   </li>
                 ))}
@@ -168,5 +161,57 @@ const encodedEmail = encodeEmail(contact.email);
         var(--color-vibe-orb-strong-soft) 0%,
         transparent 85%
       );
+  }
+
+  .footer-link {
+    display: inline-block;
+    color: var(--color-link-dark-bg);
+    text-decoration: none;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+    transition:
+      color 180ms ease,
+      text-decoration-color 180ms ease;
+  }
+
+  .footer-link:hover {
+    color: var(--color-link-dark-bg-hover);
+    text-decoration: underline;
+  }
+
+  .footer-link:focus-visible {
+    color: var(--color-link-dark-bg-hover);
+    text-decoration: underline;
+    outline: 2px solid var(--color-link-dark-bg-focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .footer-social :global(a) {
+    color: var(--color-link-dark-bg);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--color-link-dark-bg) 55%, transparent);
+  }
+
+  .footer-social :global(a:hover) {
+    color: var(--color-link-dark-bg-hover);
+    background: transparent;
+    border-color: color-mix(in srgb, var(--color-link-dark-bg-hover) 72%, transparent);
+  }
+
+  .footer-social :global(a:focus-visible) {
+    outline: 2px solid var(--color-link-dark-bg-focus);
+    outline-offset: 2px;
+  }
+
+  .footer-vibe :global(.logo-wrapper) {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .footer-vibe :global(.logo-wrapper .logo) {
+    margin-left: 0 !important;
+    transform: translateX(-1.9rem);
+    max-width: calc(100% + 1.9rem);
   }
 </style>

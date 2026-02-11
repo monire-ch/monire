@@ -10,11 +10,16 @@ import contact from "@/config/contact.json";
 
 const t = await useTranslations(Astro.currentLocale as string);
 
-let { copyright, footerDescription, subscription } = config.settings;
+let { copyright, footerDescription } = config.settings;
 
 footerDescription = footerDescription || t("footer.description");
 const copyrightText = copyright.text || t("footer.copyright");
 const copyrightParts = splitProtectedText(copyrightText);
+const privacyPolicyLabel = t("footer.privacyPolicy") as string;
+const privacyPolicyUrl = getLocaleUrlCTM(
+  "/privacy-policy",
+  Astro.currentLocale,
+);
 
 function encodeEmail(email: string) {
   return email
@@ -29,12 +34,16 @@ const encodedEmail = encodeEmail(contact.email);
 <footer class="footer-vibe">
   <div class="footer-vibe-inner">
     <div class="container space-y-14 lg:space-y-20">
-      <div class="grid gap-12 pt-14 md:pt-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,2fr)] lg:items-start lg:gap-14">
+      <div
+        class="grid gap-12 pt-14 md:pt-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,2fr)] lg:items-start lg:gap-14">
         <div class="flex flex-col items-start gap-y-5 text-left lg:pe-8">
           <Logo />
           {
             footerDescription && (
-              <p class="max-w-[36ch] text-white/90" set:html={markdownify(footerDescription)} />
+              <p
+                class="max-w-[36ch] text-white/90"
+                set:html={markdownify(footerDescription)}
+              />
             )
           }
           <SocialComponent
@@ -45,12 +54,12 @@ const encodedEmail = encodeEmail(contact.email);
             list={social.main.filter((social) => social.enable)}
           />
         </div>
-        <div class="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-2">
           <div>
             {
               t("footer.company") && (
                 <h3
-                  class="text-h5 mb-6 text-light"
+                  class="text-h5 text-light mb-6"
                   set:html={t("footer.company")}
                 />
               )
@@ -74,46 +83,16 @@ const encodedEmail = encodeEmail(contact.email);
           </div>
           <div>
             {
-              t("footer.legal") && (
-                <h3
-                  class="text-h5 mb-6 text-light"
-                  set:html={t("footer.legal")}
-                />
-              )
-            }
-            <ul class="flex flex-col gap-2">
-              {
-                t("footerMenuLegal").map(
-                  (menu: { name: string; url: string }) => (
-                    <li class="inline-block">
-                      <a
-                        class="footer-link"
-                        href={getLocaleUrlCTM(
-                          menu.url,
-                          Astro.currentLocale,
-                        )}
-                        set:html={menu.name}
-                      />
-                    </li>
-                  ),
-                )
-              }
-            </ul>
-          </div>
-          <div>
-            {
               t("footer.contact") && (
                 <h3
-                  class="text-h5 mb-6 text-light"
+                  class="text-h5 text-light mb-6"
                   set:html={t("footer.contact")}
                 />
               )
             }
             <ul class="flex flex-col gap-2">
               <li class="inline-block">
-                <a
-                  class="footer-link"
-                  href={`mailto:${contact.email}`}>
+                <a class="footer-link" href={`mailto:${contact.email}`}>
                   <span set:html={encodedEmail} />
                 </a>
               </li>
@@ -131,10 +110,17 @@ const encodedEmail = encodeEmail(contact.email);
             config.settings.copyright && config.settings.copyright.enable && (
               <ul class="has-list has-list-slash prose-a:text-inherit flex flex-wrap gap-y-4 text-white">
                 {copyrightParts.map((value: string) => (
-                  <li class="inline-block opacity-90 [&_a]:text-[var(--color-link-dark-bg)] [&_a]:no-underline [&_a]:decoration-[1px] [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-300 [&_a:hover]:text-[var(--color-link-dark-bg-hover)] [&_a:hover]:underline [&_a:focus-visible]:underline">
+                  <li class="inline-block opacity-90 [&_a]:text-[var(--color-link-dark-bg)] [&_a]:no-underline [&_a]:decoration-[1px] [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-300 [&_a:focus-visible]:underline [&_a:hover]:text-[var(--color-link-dark-bg-hover)] [&_a:hover]:underline">
                     <span set:html={markdownify(value)} />
                   </li>
                 ))}
+                <li class="inline-block opacity-90">
+                  <a
+                    class="footer-link"
+                    href={privacyPolicyUrl}
+                    set:html={privacyPolicyLabel}
+                  />
+                </li>
               </ul>
             )
           }
@@ -190,13 +176,18 @@ const encodedEmail = encodeEmail(contact.email);
   .footer-social :global(a) {
     color: var(--color-link-dark-bg);
     background: transparent;
-    border: 1px solid color-mix(in srgb, var(--color-link-dark-bg) 55%, transparent);
+    border: 1px solid
+      color-mix(in srgb, var(--color-link-dark-bg) 55%, transparent);
   }
 
   .footer-social :global(a:hover) {
     color: var(--color-link-dark-bg-hover);
     background: transparent;
-    border-color: color-mix(in srgb, var(--color-link-dark-bg-hover) 72%, transparent);
+    border-color: color-mix(
+      in srgb,
+      var(--color-link-dark-bg-hover) 72%,
+      transparent
+    );
   }
 
   .footer-social :global(a:focus-visible) {

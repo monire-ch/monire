@@ -56,13 +56,11 @@
       "name": "Pricing",
       "url": "/#pricing",
       "weight": 0
-    }
-  ],
-  "footerMenuLegal": [
+    },
     {
       "enable": true,
-      "name": "Privacy Policy",
-      "url": "/privacy-policy",
+      "name": "FAQ",
+      "url": "/#faq",
       "weight": 0
     }
   ]

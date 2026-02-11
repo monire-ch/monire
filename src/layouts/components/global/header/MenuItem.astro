@@ -11,7 +11,7 @@ const { pathname } = Astro.url;
       <a
         href={menu.action ? "#" : menu.url || "#"}
         class:list={[
-          "nav-link btn text-text-default font-bold uppercase",
+          "nav-link text-text-default font-bold uppercase",
           { "nav-link-active": pathname === menu.url },
         ]}
         data-menu-action={menu.action || null}>

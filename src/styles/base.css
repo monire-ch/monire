@@ -5,6 +5,7 @@ html {
     "lnum" 1,
     "tnum" 1;
   /* Lining and tabular numbers */
+  overflow-x: clip;
 }
 
 @font-face {
@@ -28,6 +29,7 @@ html {
 
 body {
   @apply bg-body font-primary text-text-default leading-normal font-normal;
+  overflow-x: clip;
 }
 
 .font-hero {

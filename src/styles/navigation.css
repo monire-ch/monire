@@ -5,7 +5,7 @@
 
   &.sticky-header {
     position: sticky !important;
-    top: 0 !important;
+    top: clamp(0.45rem, 1.2vw, 0.9rem) !important;
     z-index: 50 !important;
     background: transparent !important;
     transition:
@@ -42,8 +42,15 @@
         rgb(var(--color-monire-nav)) 70%,
         transparent
       );
+      min-height: clamp(4rem, 5.4vw, 4.7rem);
       @apply rounded-full backdrop-blur-md;
     }
+  }
+}
+
+@media (max-width: 1023px) {
+  .header.sticky-header {
+    top: 0 !important;
   }
 }
 
@@ -83,12 +90,17 @@
   @apply lg:flex!;
   @apply flex max-h-[80vh] max-lg:left-0 max-lg:overflow-auto max-lg:rounded-3xl lg:relative lg:ml-auto lg:bg-transparent;
   @apply max-lg:bg-theme-dark max-lg:hs-dropdown-open:opacity-100 mx-auto max-lg:top-full max-lg:z-40 max-lg:hidden max-lg:w-full max-lg:flex-col max-lg:space-y-1 max-lg:border max-lg:p-2 max-lg:opacity-0 max-lg:transition-[opacity,margin] lg:items-center;
+  @apply lg:h-full;
 
   .nav-item {
+    @apply flex items-center lg:h-full;
+
     > .nav-link {
-      @apply relative flex items-center rounded-[10px] px-4 py-1.5 tracking-wider text-white transition-all duration-300 lg:py-2 xl:px-6;
+      @apply relative inline-flex items-center justify-center rounded-full px-4 py-1.5 tracking-wider text-white transition-all duration-300 lg:py-2 xl:px-6;
       border: 1px solid transparent;
       box-sizing: border-box;
+      height: 2.65rem;
+      line-height: 1;
 
       &:hover {
         color: #e9e6df;
@@ -97,7 +109,8 @@
       /* Active Menu Style */
       &.nav-link-active,
       .hs-dropdown-toggle.active {
-        @apply bg-white/5 text-white;
+        background-color: rgb(var(--color-monire-nav-active) / 0.92);
+        color: #fff;
       }
 
       &.nav-link-active:hover {

@@ -54,48 +54,75 @@
   --color-link-dark-bg-focus: #FFECC2;
   --color-link-underline-thickness: 1px;
 
-  --color-about-card-border-light: rgba(255, 255, 255, 0.12);
-  --color-about-card-border-dark: rgba(166, 231, 245, 0.2);
-  --color-about-card-border-soft: #d5cec2;
-  --gradient-about-card-light: linear-gradient(
+  /* Shared surface tokens (used across About, Services, Pricing, Value cards) */
+  --color-border-surface-light: rgba(255, 255, 255, 0.12);
+  --color-border-surface-dark: rgba(166, 231, 245, 0.2);
+  --color-border-surface-soft: #d5cec2;
+  --gradient-surface-light: linear-gradient(
     150deg,
     rgba(255, 255, 255, 0.1) 0%,
     rgba(255, 255, 255, 0.04) 100%
   );
-  --gradient-about-card-dark: linear-gradient(
+  --gradient-surface-dark: linear-gradient(
     145deg,
     rgba(5, 62, 80, 0.85) 0%,
     rgba(3, 44, 57, 0.92) 100%
   );
-  --gradient-about-card-soft: var(--gradient-bg-light);
-  --color-about-card-glow-light: rgba(186, 239, 255, 0.2);
-  --color-about-card-glow-dark: rgba(94, 234, 212, 0.2);
-  --color-about-card-glow-soft: rgba(15, 75, 90, 0.16);
-  --color-duo-collage-glow-a: rgba(255, 255, 255, 0.1);
-  --color-duo-collage-glow-b: rgba(103, 232, 249, 0.2);
-  --color-duo-collage-border: rgba(255, 255, 255, 0.18);
-  --color-duo-collage-surface: rgba(255, 255, 255, 0.05);
-  --color-duo-profile-divider: rgba(255, 255, 255, 0.18);
+  --gradient-surface-soft: var(--gradient-bg-light);
+  --color-glow-surface-light: rgba(186, 239, 255, 0.2);
+  --color-glow-surface-dark: rgba(94, 234, 212, 0.2);
+  --color-glow-surface-soft: rgba(15, 75, 90, 0.16);
+
+  /* Shared overlay tokens */
+  --color-glow-overlay-a: rgba(255, 255, 255, 0.1);
+  --color-glow-overlay-b: rgba(103, 232, 249, 0.2);
+  --color-border-overlay: rgba(255, 255, 255, 0.18);
+  --color-surface-overlay: rgba(255, 255, 255, 0.05);
+  --color-divider-overlay: rgba(255, 255, 255, 0.18);
 
   --gradient-value-card-featured: linear-gradient(145deg, #2f6f83 0%, #0f4b5a 100%);
   --color-value-card-neutral-bg: #F6F3EE;
   --color-value-card-neutral-border: #d5cec2;
   --shadow-value-card-featured: 0 14px 34px rgba(15, 75, 90, 0.28);
   --color-pricing-from-featured: #3B6A78;
-  --color-pricing-tab-border: rgba(255, 255, 255, 0.25);
-  --color-pricing-tab-text: rgba(255, 255, 255, 0.85);
+  --color-border-control-on-dark: rgba(255, 255, 255, 0.25);
+  --color-text-control-on-dark: rgba(255, 255, 255, 0.85);
   --shadow-elevation-soft: 0 10px 20px rgba(0, 0, 0, 0.2);
   --color-duo-link-bg: rgba(1, 27, 34, 0.84);
   --color-duo-link-bg-hover: rgba(1, 27, 34, 0.96);
   --color-duo-link-border: rgba(241, 214, 154, 0.72);
   --color-duo-link-border-hover: rgba(241, 214, 154, 0.95);
   --shadow-duo-link: 0 8px 20px rgba(1, 27, 34, 0.35);
-  --gradient-services-shell: var(--gradient-value-card-featured);
-  --color-services-shell-border-dark: rgba(255, 255, 255, 0.14);
-  --color-services-shell-divider: rgba(248, 245, 241, 0.24);
-  --color-services-tab-text-on-dark: rgba(248, 245, 241, 0.9);
-  --color-services-tab-active-on-dark: #ffffff;
-  --shadow-services-shell: 0 18px 34px rgba(15, 75, 90, 0.18);
+  --gradient-shell-dark: var(--gradient-value-card-featured);
+  --color-border-shell-dark: rgba(255, 255, 255, 0.14);
+  --color-divider-shell: rgba(248, 245, 241, 0.24);
+  --color-text-shell-muted: rgba(248, 245, 241, 0.9);
+  --color-text-shell-strong: #ffffff;
+  --shadow-shell-soft: 0 18px 34px rgba(15, 75, 90, 0.18);
+
+  /* Backward aliases (to remove after full migration) */
+  --color-about-card-border-light: var(--color-border-surface-light);
+  --color-about-card-border-dark: var(--color-border-surface-dark);
+  --color-about-card-border-soft: var(--color-border-surface-soft);
+  --gradient-about-card-light: var(--gradient-surface-light);
+  --gradient-about-card-dark: var(--gradient-surface-dark);
+  --gradient-about-card-soft: var(--gradient-surface-soft);
+  --color-about-card-glow-light: var(--color-glow-surface-light);
+  --color-about-card-glow-dark: var(--color-glow-surface-dark);
+  --color-about-card-glow-soft: var(--color-glow-surface-soft);
+  --color-duo-collage-glow-a: var(--color-glow-overlay-a);
+  --color-duo-collage-glow-b: var(--color-glow-overlay-b);
+  --color-duo-collage-border: var(--color-border-overlay);
+  --color-duo-collage-surface: var(--color-surface-overlay);
+  --color-duo-profile-divider: var(--color-divider-overlay);
+  --color-pricing-tab-border: var(--color-border-control-on-dark);
+  --color-pricing-tab-text: var(--color-text-control-on-dark);
+  --gradient-services-shell: var(--gradient-shell-dark);
+  --color-services-shell-border-dark: var(--color-border-shell-dark);
+  --color-services-shell-divider: var(--color-divider-shell);
+  --color-services-tab-text-on-dark: var(--color-text-shell-muted);
+  --color-services-tab-active-on-dark: var(--color-text-shell-strong);
+  --shadow-services-shell: var(--shadow-shell-soft);
 
   /* Cards */
   --color-card: #082F3A;           /* or tweak darker */

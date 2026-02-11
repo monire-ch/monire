@@ -13,11 +13,11 @@ const hasMetricToken = /\d/.test(firstToken);
 const displayTitle =
   hasMetricToken && featured ? title.replace(/^\S+\s*/, "") : title;
 const cardStyle = featured
-  ? "background-image: var(--gradient-about-card-dark); border-color: var(--color-about-card-border-dark);"
-  : "background-image: var(--gradient-about-card-light); border-color: color-mix(in srgb, var(--color-about-card-border-soft) 35%, transparent);";
+  ? "background-image: var(--gradient-surface-dark); border-color: var(--color-border-surface-dark);"
+  : "background-image: var(--gradient-surface-light); border-color: color-mix(in srgb, var(--color-border-surface-soft) 35%, transparent);";
 const glowStyle = featured
-  ? "background: var(--color-about-card-glow-dark);"
-  : "background: var(--color-about-card-glow-light);";
+  ? "background: var(--color-glow-surface-dark);"
+  : "background: var(--color-glow-surface-light);";
 ---
 
 <div

@@ -270,8 +270,8 @@
   display: inline-flex;
   justify-content: center;
   gap: 0.5rem;
-  background: color-mix(in srgb, var(--color-about-card-glow-soft) 55%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-about-card-border-dark) 85%, transparent);
+  background: color-mix(in srgb, var(--color-glow-surface-soft) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border-surface-dark) 85%, transparent);
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
@@ -327,7 +327,7 @@
   right: -5rem;
   width: 20rem;
   height: 20rem;
-  background: var(--color-about-card-glow-dark);
+  background: var(--color-glow-surface-dark);
 }
 
 .pricing-orb-2 {
@@ -335,7 +335,7 @@
   left: 0;
   width: 16rem;
   height: 16rem;
-  background: var(--color-about-card-glow-light);
+  background: var(--color-glow-surface-light);
 }
 
 .value-card:hover {

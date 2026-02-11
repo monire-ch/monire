@@ -2,26 +2,26 @@
   "main": [
     {
       "enable": true,
-      "name": "Services",
-      "url": "/#services",
+      "name": "About",
+      "url": "/#about",
       "weight": 2
     },
     {
-      "enable": false,
-      "name": "Portfolio",
-      "url": "/#portfolio",
-      "weight": 3
-    },
-    {
       "enable": true,
-      "name": "About",
-      "url": "/#about",
-      "weight": 4
+      "name": "Services",
+      "url": "/#services",
+      "weight": 3
     },
     {
       "enable": true,
       "name": "Pricing",
       "url": "/#pricing",
+      "weight": 4
+    },
+    {
+      "enable": true,
+      "name": "FAQ",
+      "url": "/#faq",
       "weight": 5
     },
     {
@@ -35,7 +35,7 @@
       "name": "Contact",
       "action": "openContactModal",
       "url": "",
-      "weight": 7
+      "weight": 8
     }
   ],
   "footerMenuQuickLink": [

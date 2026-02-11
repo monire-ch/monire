@@ -38,6 +38,49 @@ const {
   </div>
 </header>
 
+<script>
+  function initHeaderScrollState() {
+    const header = document.querySelector(
+      "header.header.sticky-header",
+    ) as HTMLElement | null;
+
+    if (!header) return;
+
+    let lastScrollY = window.scrollY;
+    const threshold = 20;
+
+    const updateState = () => {
+      const currentY = window.scrollY;
+      const isScrolled = currentY > threshold;
+
+      if (!isScrolled) {
+        header.classList.remove("scroll-down", "scroll-up");
+        lastScrollY = currentY;
+        return;
+      }
+
+      header.classList.add("scroll-down");
+
+      if (currentY < lastScrollY - 2) {
+        header.classList.add("scroll-up");
+      } else {
+        header.classList.remove("scroll-up");
+      }
+
+      lastScrollY = currentY;
+    };
+
+    updateState();
+    window.addEventListener("scroll", updateState, { passive: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeaderScrollState);
+  } else {
+    initHeaderScrollState();
+  }
+</script>
+
 <style>
   .header.sticky-header {
     position: fixed !important;

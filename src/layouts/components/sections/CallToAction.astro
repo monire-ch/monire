@@ -6,7 +6,7 @@ import { markdownify } from "@/lib/utils/textConverter";
 import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
 import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
-type ctaSectionType = Section
+type ctaSectionType = Section;
 
 type Props = {
   content?: ctaSectionType;
@@ -21,18 +21,12 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as ctaSectionType;
 
-let {
-  enable = true,
-  title,
-  ctaBtn,
-} = actualContent as ctaSectionType;
+let { enable = true, title, ctaBtn } = actualContent as ctaSectionType;
 ---
 
 {
   enable && (
-    <section
-      class="cta-section section-light cta-wave-light relative mt-auto"
-      style="background-color: var(--color-bg-page);">
+    <section class="cta-section section-light cta-wave-light has-wave-padding relative mt-auto">
       <SectionWave
         class="cta-wave-top"
         aria-hidden="true"
@@ -53,12 +47,11 @@ let {
           </div>
           <div class="flex flex-wrap-reverse items-center gap-x-20 gap-y-6 md:flex-nowrap lg:justify-end">
             {ctaBtn && ctaBtn.enable && (
-              <div
-                class="relative"
-                data-aos="fade-right-sm">
+              <div class="relative" data-aos="fade-right-sm">
                 <ButtonLink
                   class="btn-md btn-pricing-light group relative z-30 flex items-center gap-4"
-                  content={ctaBtn} />
+                  content={ctaBtn}
+                />
               </div>
             )}
           </div>
@@ -80,7 +73,7 @@ let {
     top: 0;
     width: 100%;
     min-width: 0;
-    height: clamp(52px, 7vw, 110px);
+    height: clamp(3.25rem, 7vw, 6.875rem);
     transform: translateY(-99%);
     color: var(--color-bg-page);
     fill: currentColor;

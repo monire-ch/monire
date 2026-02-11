@@ -53,6 +53,14 @@ main.has-section-spacing-lg > section {
   @apply pt-16 pb-16 md:pt-32 md:pb-32;
 }
 
+main.has-section-spacing-md section.has-wave-padding {
+  @apply pt-12 pb-12;
+}
+
+main.has-section-spacing-lg > section.has-wave-padding {
+  @apply pt-12 pb-12 md:pt-24 md:pb-24;
+}
+
 h1,
 h2,
 h3,

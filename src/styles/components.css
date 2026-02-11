@@ -209,6 +209,11 @@
   color: var(--color-monire-ink);
 }
 
+.section-light .prose-styles strong,
+.section-light .prose-styles b {
+  color: var(--color-monire-ink);
+}
+
 .prose-styles a {
   color: var(--color-link-light-bg);
   text-decoration: underline;
@@ -270,8 +275,13 @@
   display: inline-flex;
   justify-content: center;
   gap: 0.5rem;
-  background: color-mix(in srgb, var(--color-glow-surface-soft) 55%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-border-surface-dark) 85%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--color-glow-surface-soft) 55%,
+    transparent
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--color-border-surface-dark) 85%, transparent);
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
@@ -310,8 +320,14 @@
 .pricing-vibe {
   background: linear-gradient(
     155deg,
-    color-mix(in srgb, var(--color-monire-deep-teal) 76%, var(--color-bg-dark-soft)) 0%,
-    color-mix(in srgb, var(--color-monire-deep-teal) 90%, var(--color-bg-dark)) 100%
+    color-mix(
+        in srgb,
+        var(--color-monire-deep-teal) 76%,
+        var(--color-bg-dark-soft)
+      )
+      0%,
+    color-mix(in srgb, var(--color-monire-deep-teal) 90%, var(--color-bg-dark))
+      100%
   );
 }
 

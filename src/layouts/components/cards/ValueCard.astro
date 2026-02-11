@@ -1,6 +1,5 @@
 ---
 import { markdownify } from "@/lib/utils/textConverter";
-import Icon from "@/components/icons/Icon.astro";
 
 interface Props {
   title: string;
@@ -9,23 +8,7 @@ interface Props {
   featured?: boolean;
 }
 
-const { title, description, icon, featured = false } = Astro.props;
-const iconToken = icon?.includes("/")
-  ? icon.split("/").pop()?.replace(".svg", "")
-  : icon;
-const allowedIcons = [
-  "experience",
-  "gear",
-  "handshake",
-  "clock",
-  "bolt",
-  "cycle",
-] as const;
-const isAllowedIcon = (
-  value: string | undefined,
-): value is (typeof allowedIcons)[number] =>
-  !!value && (allowedIcons as readonly string[]).includes(value);
-const normalizedIcon = isAllowedIcon(iconToken) ? iconToken : undefined;
+const { title, description, featured = false } = Astro.props;
 const firstToken = title?.trim().split(/\s+/)[0] ?? "";
 const hasMetricToken = /\d/.test(firstToken);
 const displayTitle =
@@ -40,7 +23,7 @@ const glowStyle = featured
 
 <div
   class:list={[
-    "value-card relative h-full overflow-hidden rounded-[18px] border p-8 transition-all duration-300",
+    "value-card relative h-full w-full max-w-[25rem] overflow-hidden rounded-[18px] border p-6 transition-all duration-300 md:p-7",
     "hover:-translate-y-0.5",
     featured ? "text-white" : "text-monire-deep-teal",
   ]}
@@ -51,25 +34,12 @@ const glowStyle = featured
   />
   {
     hasMetricToken && featured && (
-      <div class="relative mb-2 text-7xl leading-none font-semibold tracking-tight md:text-8xl">
+      <div class="relative mb-1 text-6xl leading-none font-semibold tracking-tight md:text-7xl">
         {firstToken}
       </div>
     )
   }
-  <div class="relative mb-5 flex items-start gap-3">
-    {
-      normalizedIcon && !(hasMetricToken && featured) && (
-        <Icon
-          name={normalizedIcon}
-          class:list={[
-            "h-10 w-10",
-            featured ? "text-white" : "text-monire-deep-teal",
-          ]}
-          title={title}
-        />
-      )
-    }
-
+  <div class="relative mb-4">
     {
       title && (
         <h3
@@ -87,7 +57,7 @@ const glowStyle = featured
     description && (
       <p
         class:list={[
-          "relative text-[1.05rem] leading-relaxed",
+          "relative text-[1rem] leading-relaxed",
           featured ? "text-white/90" : "text-monire-deep-teal/90",
         ]}
         set:html={markdownify(description)}

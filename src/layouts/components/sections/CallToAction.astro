@@ -4,6 +4,7 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
 import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 type ctaSectionType = Section
 
@@ -29,8 +30,15 @@ let {
 
 {
   enable && (
-    <section class="cta-section mt-auto">
-      <div class="bg-accent py-14 md:py-28">
+    <section
+      class="cta-section section-light cta-wave-light relative mt-auto"
+      style="background-color: var(--color-bg-page);">
+      <SectionWave
+        class="cta-wave-top"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+      />
+      <div class="py-14 md:py-28">
         <div class="container grid grid-cols-1 place-content-between gap-y-16 lg:grid-cols-2 lg:gap-x-10">
           <div
             class="space-y-7 lg:max-w-2xl"
@@ -38,7 +46,7 @@ let {
             data-aos-offset="0">
             {title && (
               <h2
-                class="has-italic-text capitalize"
+                class="section-title has-italic-text text-monire-deep-teal capitalize"
                 set:html={markdownify(title)}
               />
             )}
@@ -46,10 +54,10 @@ let {
           <div class="flex flex-wrap-reverse items-center gap-x-20 gap-y-6 md:flex-nowrap lg:justify-end">
             {ctaBtn && ctaBtn.enable && (
               <div
-                class="after:sm:bg-primary/35 relative after:sm:absolute after:sm:top-0 after:sm:left-[120%] after:sm:h-full after:sm:w-px after:sm:rotate-18 after:sm:content-['']"
+                class="after:sm:bg-monire-deep-teal/25 relative after:sm:absolute after:sm:top-0 after:sm:left-[120%] after:sm:h-full after:sm:w-px after:sm:rotate-18 after:sm:content-['']"
                 data-aos="fade-right-sm">
                 <ButtonLink
-                  class="btn-md btn-primary group relative z-30 flex items-center gap-4"
+                  class="btn-md btn-pricing-light group relative z-30 flex items-center gap-4"
                   content={ctaBtn} />
               </div>
             )}
@@ -59,3 +67,29 @@ let {
     </section>
   )
 }
+
+<style>
+  .cta-wave-light {
+    isolation: isolate;
+  }
+
+  .cta-wave-top {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+    height: clamp(52px, 7vw, 110px);
+    transform: translateY(-99%);
+    color: var(--color-bg-page);
+    fill: currentColor;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .cta-wave-light > div {
+    position: relative;
+    z-index: 2;
+  }
+</style>

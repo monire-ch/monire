@@ -4,8 +4,6 @@ import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import Subtitle from "../widgets/Subtitle.astro";
 import type { Section } from "@/types";
 import { markdownify } from "@/lib/utils/textConverter";
-import Tabs from "../widgets/Tabs.astro";
-import Tab from "../widgets/Tab.astro";
 
 type ServiceCTA = {
   label: string;
@@ -37,46 +35,129 @@ let actualContent = overrideObjects(
 ) as ServicesSectionType;
 
 let { enable = true, title, subtitle, tabs = [] } = actualContent;
+const tabsWithIds = tabs.map((tab, index) => ({
+  ...tab,
+  tabId: `services-tab-${index}`,
+  panelId: `services-panel-${index}`,
+  step: String(index + 1).padStart(2, "0"),
+}));
 ---
 
 {
   enable && (
-    <section id="services">
+    <section
+      id="services"
+      class="section-light"
+      style="background-image: var(--gradient-bg-light);">
       <div class="container">
         <div class="space-y-12 md:space-y-16">
           <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
             <Subtitle content={subtitle} />
             {title && (
               <h2
-                class="has-italic-text text-white"
+                class="section-title has-italic-text text-monire-deep-teal"
                 set:html={markdownify(title)}
               />
             )}
           </div>
 
-          {tabs.length > 0 && (
-            <div
-              data-aos="fade-up-sm"
-              data-aos-delay="300"
-              class="section-gradient relative">
-              <div class="bg-primary/5 rounded-lg border p-6 max-lg:space-y-6 lg:rounded-3xl lg:p-12">
-                <Tabs>
-                  {tabs.map((tab) => (
-                    <Tab name={tab.label}>
-                      {tab.content && (
-                        <div class="mx-auto max-w-3xl space-y-6 text-left">
-                          <div set:html={markdownify(tab.content)} />
+          {tabsWithIds.length > 0 && (
+            <div data-aos="fade-up-sm" data-aos-delay="300" class="relative">
+              <div class="services-shell mx-auto w-full max-w-[1020px] rounded-3xl border p-5 md:p-8 lg:p-10">
+                <div class="services-mobile-accordion md:hidden">
+                  {tabsWithIds.map((tab, index) => (
+                    <details class="services-mobile-item" open={index === 0}>
+                      <summary class="services-mobile-summary">
+                        <span class="services-mobile-step">{tab.step}</span>
+                        <span class="services-mobile-label">{tab.label}</span>
+                        <span class="services-mobile-icon" aria-hidden="true"></span>
+                      </summary>
+
+                      <div class="services-content text-left">
+                        <div
+                          class:list={[
+                            "services-prose prose-styles max-w-none",
+                          ]}
+                          set:html={markdownify(tab.content)}
+                        />
+
+                        {tab.cta && tab.cta.length > 0 && (
+                          <div class="services-cta-group flex flex-wrap gap-4 pt-5">
+                            {tab.cta.map((cta) => (
+                              <a
+                                href={cta.url}
+                                class:list={[
+                                  "btn text-sm",
+                                  cta.style === "outline"
+                                    ? "services-cta-outline"
+                                    : "services-cta-solid",
+                                ]}>
+                                {cta.label}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+
+                <div class="hidden services-timeline gap-6 md:grid md:grid-cols-[minmax(220px,0.95fr)_minmax(0,1.6fr)] md:gap-9">
+                  <nav
+                    class="services-timeline-nav"
+                    aria-label="Services Timeline"
+                    role="tablist"
+                    aria-orientation="vertical">
+                    {tabsWithIds.map((tab, index) => (
+                      <button
+                        type="button"
+                        class:list={[
+                          "services-timeline-item",
+                          index === 0 && "active",
+                        ]}
+                        id={tab.tabId}
+                        aria-controls={tab.panelId}
+                        role="tab"
+                        aria-selected={index === 0 ? "true" : "false"}
+                        data-hs-tab={`#${tab.panelId}`}>
+                        <span class="services-timeline-step">{tab.step}</span>
+                        <span class="services-timeline-dot" aria-hidden="true"></span>
+                        <span class="services-timeline-label">{tab.label}</span>
+                      </button>
+                    ))}
+                  </nav>
+
+                  <div class="services-panels border-l-0 pl-0 md:border-l md:pl-8">
+                    {tabsWithIds.map((tab, index) => (
+                      <div
+                        id={tab.panelId}
+                        class:list={[
+                          "services-panel",
+                          index !== 0 && "hidden",
+                        ]}
+                        role="tabpanel"
+                        aria-labelledby={tab.tabId}>
+                        <div class="services-content text-left">
+                          <h3 class="services-card-title mt-0! mb-4! text-[var(--text-card-title)]">
+                            {tab.label}
+                          </h3>
+                          <div
+                            class:list={[
+                              "services-prose prose-styles max-w-none",
+                            ]}
+                            set:html={markdownify(tab.content)}
+                          />
 
                           {tab.cta && tab.cta.length > 0 && (
-                            <div class="flex flex-wrap gap-4 pt-4">
+                            <div class="services-cta-group flex flex-wrap gap-4 pt-5">
                               {tab.cta.map((cta) => (
                                 <a
                                   href={cta.url}
                                   class:list={[
-                                    "inline-flex items-center rounded-full px-6 py-3 text-sm font-medium transition",
+                                    "btn text-sm",
                                     cta.style === "outline"
-                                      ? "border border-white/30 text-white hover:bg-white/10"
-                                      : "bg-white text-black hover:bg-white/90",
+                                      ? "services-cta-outline"
+                                      : "services-cta-solid",
                                   ]}>
                                   {cta.label}
                                 </a>
@@ -84,10 +165,10 @@ let { enable = true, title, subtitle, tabs = [] } = actualContent;
                             </div>
                           )}
                         </div>
-                      )}
-                    </Tab>
-                  ))}
-                </Tabs>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -96,3 +177,222 @@ let { enable = true, title, subtitle, tabs = [] } = actualContent;
     </section>
   )
 }
+
+<script>
+  import "@preline/tabs";
+</script>
+
+<style>
+  .services-shell {
+    background: var(--gradient-services-shell);
+    border-color: var(--color-services-shell-border-dark);
+    box-shadow: var(--shadow-services-shell);
+  }
+
+  .services-mobile-item {
+    border-bottom: 1px solid var(--color-services-shell-divider);
+  }
+
+  .services-mobile-item:first-child {
+    border-top: 1px solid var(--color-services-shell-divider);
+  }
+
+  .services-mobile-summary {
+    list-style: none;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.95rem 0.1rem;
+    cursor: pointer;
+  }
+
+  .services-mobile-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .services-mobile-step {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+    color: var(--color-link-dark-bg);
+  }
+
+  .services-mobile-label {
+    color: var(--color-services-tab-active-on-dark);
+    font-size: 0.98rem;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .services-mobile-icon {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .services-mobile-icon::before,
+  .services-mobile-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1.5px;
+    border-radius: 999px;
+    background: var(--color-link-dark-bg);
+    transform: translateY(-50%);
+    transition: transform 180ms ease;
+  }
+
+  .services-mobile-icon::after {
+    transform: translateY(-50%) rotate(90deg);
+  }
+
+  .services-mobile-item[open] .services-mobile-icon::after {
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  .services-timeline-nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .services-timeline-nav::before {
+    content: "";
+    position: absolute;
+    left: 2.45rem;
+    top: 0.8rem;
+    bottom: 0.8rem;
+    width: 1px;
+    background: var(--color-services-shell-divider);
+  }
+
+  .services-timeline-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+    border-radius: 0.8rem;
+    padding: 0.72rem 0.65rem;
+    color: var(--color-services-tab-text-on-dark);
+    transition:
+      color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .services-timeline-item:hover {
+    background: var(--color-duo-collage-surface);
+  }
+
+  .services-timeline-step {
+    width: 1.9rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-link-dark-bg);
+    flex-shrink: 0;
+  }
+
+  .services-timeline-dot {
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 999px;
+    background: var(--color-duo-collage-surface);
+    border: 1px solid var(--color-services-shell-divider);
+    flex-shrink: 0;
+  }
+
+  .services-timeline-label {
+    font-size: 0.97rem;
+    line-height: 1.35;
+  }
+
+  .services-timeline-item.active {
+    color: var(--color-services-tab-active-on-dark);
+    background: var(--color-duo-collage-border);
+  }
+
+  .services-timeline-item.active .services-timeline-dot {
+    background: var(--color-link-dark-bg);
+    border-color: var(--color-link-dark-bg);
+  }
+
+  .services-timeline-item:focus-visible {
+    outline: 2px solid var(--color-link-dark-bg);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  .services-panels {
+    border-color: var(--color-services-shell-divider);
+  }
+
+  .services-content {
+    padding: 0.3rem 0.1rem 0.2rem;
+  }
+
+  .services-card-title {
+    line-height: 1.08;
+    color: var(--color-services-tab-active-on-dark);
+  }
+
+  .services-content .prose-styles a {
+    color: var(--color-link-dark-bg);
+  }
+
+  .services-prose.prose-styles p,
+  .services-prose.prose-styles li {
+    color: var(--color-services-tab-text-on-dark);
+  }
+
+  .services-prose.prose-styles h1,
+  .services-prose.prose-styles h2,
+  .services-prose.prose-styles h3,
+  .services-prose.prose-styles h4,
+  .services-prose.prose-styles h5,
+  .services-prose.prose-styles h6 {
+    color: var(--color-services-tab-active-on-dark);
+  }
+
+  .services-content .prose-styles a:hover {
+    color: var(--color-link-dark-bg-hover);
+  }
+
+  .services-cta-solid,
+  .services-cta-outline {
+    border: 1px solid transparent;
+  }
+
+  .services-cta-solid {
+    background: var(--color-mustard);
+    color: var(--color-monire-ink);
+  }
+
+  .services-cta-solid:hover {
+    background: var(--color-link-dark-bg-hover);
+  }
+
+  .services-cta-outline {
+    border-color: var(--color-services-shell-divider);
+    color: var(--color-light);
+    background: transparent;
+  }
+
+  .services-cta-outline:hover {
+    background: var(--color-duo-collage-glow-a);
+  }
+
+  @media (max-width: 767px) {
+    .services-content {
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 0.2rem;
+      padding-bottom: 1rem;
+    }
+  }
+</style>

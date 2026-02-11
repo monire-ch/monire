@@ -10,7 +10,8 @@ const data = entry.data;
 ---
 
 <Layout title={data.title}>
-  <section class="relative z-10 container pt-24">
+  <section class="section-light relative z-10 pt-24">
+    <div class="container">
     <ButtonLink
       content={{
         enable: true,
@@ -19,29 +20,32 @@ const data = entry.data;
       }}
       class="btn-primary"
     />
+    </div>
   </section>
 
-  <section class="container grid grid-cols-1 gap-16 py-20 md:grid-cols-2">
-    <div>
-      <CaseStudyHero title={data.title} category={data.category} />
-    </div>
+  <section class="section-light">
+    <div class="container grid grid-cols-1 gap-16 py-20 md:grid-cols-2">
+      <div>
+        <CaseStudyHero title={data.title} category={data.category} />
+      </div>
 
-    <div class="space-y-16">
-      <CaseStudyDescription
-        before={data.before}
-        after={data.after}
-        impact={data.impact}
-        description={data.description}
-        type={data.type}
-      />
+      <div class="space-y-16">
+        <CaseStudyDescription
+          before={data.before}
+          after={data.after}
+          impact={data.impact}
+          description={data.description}
+          type={data.type}
+        />
 
-      <CaseStudyInfo
-        client={data.client}
-        date={data.date}
-        category={data.category}
-        tools={data.tools}
-        website={data.website}
-      />
+        <CaseStudyInfo
+          client={data.client}
+          date={data.date}
+          category={data.category}
+          tools={data.tools}
+          website={data.website}
+        />
+      </div>
     </div>
   </section>
 </Layout>

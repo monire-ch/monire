@@ -7,8 +7,17 @@ form,
   .form-input,
   .hs-select input.form-input,
   .hs-select button.form-input {
-    @apply bg-accent text-text-default placeholder:text-text-default focus:border-primary/50 rounded-md border border-transparent px-4 py-4;
+    @apply rounded-md border px-4 py-4;
+    background-color: var(--color-bg-page);
+    border-color: var(--color-value-card-neutral-border);
+    color: var(--color-monire-ink);
     @apply focus:shadow-none! focus:ring-0!;
+  }
+
+  .form-input::placeholder,
+  .hs-select input.form-input::placeholder,
+  .hs-select button.form-input::placeholder {
+    color: color-mix(in srgb, var(--color-monire-ink) 55%, transparent);
   }
 
   [type="text"]:focus,
@@ -27,11 +36,16 @@ form,
   [multiple]:focus,
   textarea:focus,
   select:focus {
-    @apply border-primary/50;
+    border-color: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 50%,
+      transparent
+    );
   }
 
   .form-label {
-    @apply text-text-default mb-2 block font-normal;
+    @apply mb-2 block font-normal;
+    color: var(--color-monire-deep-teal);
   }
 
   /* Form Checkbox & Radio */
@@ -46,16 +60,44 @@ form,
       @apply cursor-pointer leading-relaxed;
 
       a {
-        @apply text-secondary underline;
+        color: var(--color-link-light-bg);
+        text-decoration: underline;
+        text-decoration-thickness: var(--color-link-underline-thickness);
+        text-underline-offset: 0.15em;
+        transition:
+          color 180ms ease,
+          text-decoration-color 180ms ease,
+          outline-color 180ms ease;
+      }
+
+      a:hover {
+        color: var(--color-link-light-bg-hover);
+      }
+
+      a:focus-visible {
+        outline: 2px solid var(--color-link-light-bg-focus);
+        outline-offset: 2px;
+        border-radius: 4px;
       }
     }
 
     .form-radio,
     .form-checkbox {
       @apply shrink-0 cursor-pointer transition-[ring] duration-500;
-      @apply ring-primary mt-1 h-4 w-4 border-0 bg-white/10 ring-0 outline-0;
+      @apply mt-1 h-4 w-4 border-0 ring-0 outline-0;
+      background-color: color-mix(
+        in srgb,
+        var(--color-monire-deep-teal) 12%,
+        white
+      );
+      --tw-ring-color: var(--color-monire-deep-teal);
       @apply focus:ring-0 focus:ring-offset-0 focus:outline-0;
-      @apply checked:bg-primary checked:ring-primary/15 checked:mt-[9px] checked:ml-2 checked:h-2 checked:w-2 checked:bg-none checked:ring-8;
+      @apply checked:mt-[9px] checked:ml-2 checked:h-2 checked:w-2 checked:bg-none checked:ring-8;
+    }
+
+    .form-radio:checked,
+    .form-checkbox:checked {
+      background-color: var(--color-monire-deep-teal);
     }
 
     .form-radio {
@@ -69,22 +111,37 @@ form,
 
   /* Preline Dropdown "Search Not Found Text" */
   [data-hs-select-dropdown] > span {
-    @apply text-text-default py-3;
+    @apply py-3;
+    color: var(--color-monire-ink);
   }
 
   .hs-dropdown {
-    @apply bg-accent border-border-light rounded-md border p-1;
+    @apply rounded-md border p-1;
+    background-color: var(--color-bg-page);
+    border-color: var(--color-value-card-neutral-border);
 
     .hs-search-input-wrapper {
       @apply sticky top-0 p-1;
 
       .hs-dropdown-search-input {
-        @apply border-border-light focus:ring-border-light block w-full px-3 py-2 before:absolute before:inset-0 before:z-10 focus:shadow-none focus:ring-0 focus:outline-none;
+        @apply block w-full px-3 py-2 before:absolute before:inset-0 before:z-10 focus:shadow-none focus:ring-0 focus:outline-none;
+        border-color: var(--color-value-card-neutral-border);
+        color: var(--color-monire-ink);
       }
     }
 
     .hs-dropdown-search-item {
-      @apply text-text-default hover:bg-primary/10 focus:bg-primary/10 w-full cursor-pointer rounded-md px-4 py-2 text-sm transition-colors duration-300 focus:outline-none;
+      @apply w-full cursor-pointer rounded-md px-4 py-2 text-sm transition-colors duration-300 focus:outline-none;
+      color: var(--color-monire-ink);
+    }
+
+    .hs-dropdown-search-item:hover,
+    .hs-dropdown-search-item:focus {
+      background-color: color-mix(
+        in srgb,
+        var(--color-monire-deep-teal) 10%,
+        white
+      );
     }
   }
 }

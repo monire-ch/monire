@@ -21,7 +21,19 @@
 }
 
 @utility btn-text-secondary {
-  @apply text-secondary border-b-secondary;
+  color: var(--color-link-light-bg);
+  border-bottom-color: var(--color-link-light-bg);
+}
+
+@utility btn-secondary {
+  color: var(--color-link-dark-bg);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+}
+
+.btn-secondary:hover {
+  color: var(--color-link-dark-bg-hover);
 }
 
 @utility btn-outline-white {
@@ -33,29 +45,33 @@
 }
 
 @utility btn-pricing-dark {
-  @apply text-[#F8F5F1] border border-[#CFA947]/70 bg-transparent uppercase tracking-[0.22em];
+  @apply bg-transparent tracking-[0.22em] uppercase;
+  border: 1px solid var(--color-mustard-70);
+  color: var(--color-light);
 }
 
 .btn-pricing-dark:hover {
-  border-color: rgba(207, 169, 71, 1);
-  color: #f8f5f1;
+  border-color: var(--color-mustard);
+  color: var(--color-light);
   background-color: rgba(7, 47, 59, 0.65);
 }
 
 @utility btn-pricing-light {
-  @apply text-[#F8F5F1] bg-[#0b3d4a] uppercase tracking-[0.22em];
+  @apply tracking-[0.22em] uppercase;
+  background-color: #0b3d4a;
+  color: var(--color-light);
 }
 
 .btn-pricing-light:hover {
-  background-color: #0f4b5a;
-  color: #f8f5f1;
+  background-color: var(--color-monire-deep-teal);
+  color: var(--color-light);
 }
 
 @utility btn-hero {
   @apply text-light rounded-[10px] tracking-[0.22em] uppercase;
   border: 1px solid transparent;
   background:
-    linear-gradient(#011B23, #011B23) padding-box,
+    linear-gradient(#011b23, #011b23) padding-box,
     url("/images/hero/gold-fill.webp") border-box;
   background-size: cover;
   background-position: center;

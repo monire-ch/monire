@@ -12,14 +12,21 @@
   --color-border-light: #242222;
   --color-theme-dark: #1A191C;
   --color-monire-teal: 0 59 75;
-  --color-monire-nav: 26 54 60;
+  --color-monire-nav: 3 56 68;
+  --color-monire-nav-active: 16 86 101;
+  --color-monire-deep-teal: #0F4B5A;
+  --color-monire-deep-teal-soft: #136175;
+  --color-monire-deep-teal-focus: #2A7E94;
+  --color-monire-ink: #011B23;
+  --color-monire-ink-alt: #011B22;
   --color-light: #F8F5F1;
   --color-mustard: #CFA947;
+  --color-mustard-70: rgba(207, 169, 71, 0.7);
+  --color-mustard-50: rgba(207, 169, 71, 0.5);
 
   
   --color-text-default: #C8C1C1;
   --color-dark: #000E30;
-  --color-light: #fff6f6;
 
   --color-blob: 0.61 0.06 205.6;
 
@@ -27,6 +34,68 @@
   --color-bg-page: #F8F5F1;           /* main light background */
   --color-bg-dark: #011B23;           /* dark sections */
   --color-bg-dark-soft: #082F3A;      /* softer dark blocks */
+  --color-bg-light-start: #F4F1EB;    /* light section gradient start */
+  --color-bg-light-end: #ECEAE6;      /* light section gradient end */
+  --gradient-bg-light: linear-gradient(
+    160deg,
+    var(--color-bg-light-start) 0%,
+    var(--color-bg-light-end) 100%
+  );
+  --gradient-vibe-dark: linear-gradient(rgb(5 40 50) 50%, rgb(3 38 48) 100%);
+  --color-vibe-orb-strong: rgba(46, 212, 199, 0.34);
+  --color-vibe-orb-soft: rgba(120, 200, 255, 0.18);
+  --color-vibe-orb-strong-soft: rgba(46, 212, 199, 0.26);
+  --color-vibe-orb-soft-soft: rgba(120, 200, 255, 0.16);
+  --color-link-light-bg: #0F4B5A;
+  --color-link-light-bg-hover: var(--color-monire-deep-teal-soft);
+  --color-link-light-bg-focus: var(--color-monire-deep-teal-focus);
+  --color-link-dark-bg: #F1D69A;
+  --color-link-dark-bg-hover: #FAE7BE;
+  --color-link-dark-bg-focus: #FFECC2;
+  --color-link-underline-thickness: 1px;
+
+  --color-about-card-border-light: rgba(255, 255, 255, 0.12);
+  --color-about-card-border-dark: rgba(166, 231, 245, 0.2);
+  --color-about-card-border-soft: #d5cec2;
+  --gradient-about-card-light: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  --gradient-about-card-dark: linear-gradient(
+    145deg,
+    rgba(5, 62, 80, 0.85) 0%,
+    rgba(3, 44, 57, 0.92) 100%
+  );
+  --gradient-about-card-soft: var(--gradient-bg-light);
+  --color-about-card-glow-light: rgba(186, 239, 255, 0.2);
+  --color-about-card-glow-dark: rgba(94, 234, 212, 0.2);
+  --color-about-card-glow-soft: rgba(15, 75, 90, 0.16);
+  --color-duo-collage-glow-a: rgba(255, 255, 255, 0.1);
+  --color-duo-collage-glow-b: rgba(103, 232, 249, 0.2);
+  --color-duo-collage-border: rgba(255, 255, 255, 0.18);
+  --color-duo-collage-surface: rgba(255, 255, 255, 0.05);
+  --color-duo-profile-divider: rgba(255, 255, 255, 0.18);
+
+  --gradient-value-card-featured: linear-gradient(145deg, #2f6f83 0%, #0f4b5a 100%);
+  --color-value-card-neutral-bg: #F6F3EE;
+  --color-value-card-neutral-border: #d5cec2;
+  --shadow-value-card-featured: 0 14px 34px rgba(15, 75, 90, 0.28);
+  --color-pricing-from-featured: #3B6A78;
+  --color-pricing-tab-border: rgba(255, 255, 255, 0.25);
+  --color-pricing-tab-text: rgba(255, 255, 255, 0.85);
+  --shadow-elevation-soft: 0 10px 20px rgba(0, 0, 0, 0.2);
+  --color-duo-link-bg: rgba(1, 27, 34, 0.84);
+  --color-duo-link-bg-hover: rgba(1, 27, 34, 0.96);
+  --color-duo-link-border: rgba(241, 214, 154, 0.72);
+  --color-duo-link-border-hover: rgba(241, 214, 154, 0.95);
+  --shadow-duo-link: 0 8px 20px rgba(1, 27, 34, 0.35);
+  --gradient-services-shell: var(--gradient-value-card-featured);
+  --color-services-shell-border-dark: rgba(255, 255, 255, 0.14);
+  --color-services-shell-divider: rgba(248, 245, 241, 0.24);
+  --color-services-tab-text-on-dark: rgba(248, 245, 241, 0.9);
+  --color-services-tab-active-on-dark: #ffffff;
+  --shadow-services-shell: 0 18px 34px rgba(15, 75, 90, 0.18);
 
   /* Cards */
   --color-card: #082F3A;           /* or tweak darker */
@@ -45,6 +114,8 @@
   --text-base-sm: calc(var(--text-base) * 0.9);
 
   --text-display-1: calc(var(--text-base) * pow(var(--text-base-scale), 8.8)); /* 115px  */
+  --text-section-title: clamp(1.875rem, 1.35rem + 1.6vw, 2.6rem);
+  --text-card-title: clamp(1.4rem, 1.05rem + 0.9vw, 1.95rem);
 
   --text-h1: calc(var(--text-base) * pow(var(--text-base-scale), 6));
   --text-h2: calc(var(--text-base) * pow(var(--text-base-scale), 5));

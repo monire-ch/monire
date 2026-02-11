@@ -47,10 +47,15 @@ const t = await useTranslations(Astro.currentLocale as string);
 ---
 
 <Base {...page.data}>
-  <section>
+  <section class="section-light">
     <div class="container">
       <div class="has-video-modal mx-auto max-w-5xl" data-aos="fade-up-sm">
-        {title && <h1 class="text-4xl" set:html={markdownify(title)} />}
+        {title && (
+          <h1
+            class="text-4xl text-monire-deep-teal"
+            set:html={markdownify(title)}
+          />
+        )}
         <div class="mt-8 flex">
           {
             date && (

@@ -24,7 +24,7 @@ const { label, url, icon, layout, size } = Astro.props as Props;
     },
     { "text-dark hover:scale-110": layout === "minimal" },
     {
-      "bg-primary/25 hover:bg-primary text-secondary hover:text-light rounded-full":
+      "bg-primary/25 hover:bg-primary hover:text-light rounded-full text-[var(--color-link-dark-bg)]":
         layout === "modern",
     },
     {

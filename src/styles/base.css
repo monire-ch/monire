@@ -5,6 +5,7 @@ html {
     "lnum" 1,
     "tnum" 1;
   /* Lining and tabular numbers */
+  overflow-x: clip;
 }
 
 @font-face {
@@ -28,6 +29,7 @@ html {
 
 body {
   @apply bg-body font-primary text-text-default leading-normal font-normal;
+  overflow-x: clip;
 }
 
 .font-hero {
@@ -80,6 +82,11 @@ h2,
   @apply text-h2-sm md:text-h2;
 }
 
+.section-title {
+  font-size: var(--text-section-title);
+  line-height: 1.1;
+}
+
 h3,
 .h3 {
   @apply text-h3-sm md:text-h3;
@@ -110,7 +117,49 @@ code {
 }
 
 a {
-  @apply text-secondary;
+  color: inherit;
+}
+
+.text-link {
+  color: var(--color-link-light-bg);
+  text-decoration: underline;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+  text-underline-offset: 0.15em;
+  transition:
+    color 180ms ease,
+    text-decoration-color 180ms ease,
+    outline-color 180ms ease;
+}
+
+.text-link:hover {
+  color: var(--color-link-light-bg-hover);
+}
+
+.text-link:focus-visible {
+  outline: 2px solid var(--color-link-light-bg-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.text-link-dark {
+  color: var(--color-link-dark-bg);
+  text-decoration: underline;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+  text-underline-offset: 0.15em;
+  transition:
+    color 180ms ease,
+    text-decoration-color 180ms ease,
+    outline-color 180ms ease;
+}
+
+.text-link-dark:hover {
+  color: var(--color-link-dark-bg-hover);
+}
+
+.text-link-dark:focus-visible {
+  outline: 2px solid var(--color-link-dark-bg-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 p {

@@ -37,8 +37,8 @@ list:
       target: ""
     ctaBtn2:
       enable: true
-      label: "2025 Recipient"
-      url: ""
-      rel: ""
-      target: ""
+      label: "2026 Recipient"
+      url: "https://snipsquad.org"
+      rel: "noopener noreferrer"
+      target: "_blank"
 ---

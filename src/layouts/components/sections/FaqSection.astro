@@ -35,14 +35,16 @@ list = limit && list ? list.slice(0, limit as number) : list;
 
 {
   enable && (
-    <section id="faq">
+    <section id="faq" class="pricing-vibe faq-vibe relative overflow-hidden">
+      <div class="pricing-orb pricing-orb-1" aria-hidden="true"></div>
+      <div class="pricing-orb pricing-orb-2" aria-hidden="true"></div>
       <div class="container">
         <div class="space-y-12 md:space-y-16">
           <div class="mx-auto max-w-2xl text-center" data-aos="fade-up-sm">
             <Subtitle content={subtitle} />
             {title && (
               <h2
-                class="has-italic-text text-white capitalize"
+                class="section-title has-italic-text text-white capitalize"
                 set:html={markdownify(title)}
               />
             )}
@@ -69,7 +71,7 @@ list = limit && list ? list.slice(0, limit as number) : list;
                         aria-controls={"faq-tab-" + (index + 1)}
                         aria-selected={index === 0 ? "true" : "false"}
                         class:list={[
-                          "px-6 py-2.5 text-start text-lg max-lg:min-w-full [&.active]:text-white [&.active]:max-lg:bg-white/5",
+                          "faq-tab px-6 py-2.5 text-start text-lg text-white/70 max-lg:min-w-full [&.active]:text-white",
                           { active: index === 0 },
                         ]}
                       />
@@ -102,3 +104,21 @@ list = limit && list ? list.slice(0, limit as number) : list;
   import "@preline/tabs";
   import "@preline/accordion";
 </script>
+
+<style>
+  .faq-tab {
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .faq-tab.active {
+    background: var(--color-duo-collage-surface);
+    border-color: var(--color-services-shell-divider);
+    box-shadow: inset 0 -2px 0 0 var(--color-services-shell-divider);
+  }
+</style>

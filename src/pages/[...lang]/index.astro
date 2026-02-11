@@ -22,11 +22,50 @@ const homepage = await getEntryCTM("homepage", "-index", Astro.currentLocale);
 <Base {...homepage.data}>
   <HomeBanner />
   <OurValue />
-  <About />
-  <MeetTheDuo />
-  <PricingSection />
+  <div class="about-flow relative overflow-hidden">
+    <div class="about-flow-orb about-flow-orb-1" aria-hidden="true"></div>
+    <div class="about-flow-orb about-flow-orb-2" aria-hidden="true"></div>
+    <About />
+    <MeetTheDuo />
+  </div>
   <ServicesSection />
+  <PricingSection />
   <TestimonialSection />
   <FaqSection content={homepage.data.faqSection} />
   <CallToAction />
 </Base>
+
+<style>
+  .about-flow {
+    background: var(--gradient-vibe-dark);
+  }
+
+  .about-flow-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .about-flow-orb-1 {
+    top: -5rem;
+    right: -5rem;
+    width: 22rem;
+    height: 22rem;
+    background: var(--color-vibe-orb-strong);
+  }
+
+  .about-flow-orb-2 {
+    bottom: 4rem;
+    left: -4rem;
+    width: 18rem;
+    height: 18rem;
+    background: var(--color-vibe-orb-soft);
+  }
+
+  .about-flow > section {
+    position: relative;
+    z-index: 1;
+  }
+</style>

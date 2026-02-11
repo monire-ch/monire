@@ -26,9 +26,8 @@ function encodeEmail(email: string) {
 const encodedEmail = encodeEmail(contact.email);
 ---
 
-<footer class="to-primary/20 lg:to-primary/5 bg-linear-to-b from-transparent">
-  <div
-    class="lg:bg-[radial-gradient(55%_55%_at_50%_130%,var(--color-primary)_40%,transparent_120%)] xl:bg-[radial-gradient(55%_55%_at_50%_100%,var(--color-primary)_0%,transparent_100%)]">
+<footer class="footer-vibe">
+  <div class="footer-vibe-inner">
     <div class="container space-y-16 lg:space-y-28">
       <div class="grid pt-16 lg:grid-cols-2 xl:grid-cols-3">
         <div class="flex flex-col gap-y-5 lg:pe-10">
@@ -151,3 +150,23 @@ const encodedEmail = encodeEmail(contact.email);
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-vibe {
+    background: var(--gradient-vibe-dark);
+  }
+
+  .footer-vibe-inner {
+    background:
+      radial-gradient(
+        55% 55% at 50% 115%,
+        var(--color-vibe-orb-soft-soft) 0%,
+        transparent 75%
+      ),
+      radial-gradient(
+        42% 42% at 50% -10%,
+        var(--color-vibe-orb-strong-soft) 0%,
+        transparent 85%
+      );
+  }
+</style>

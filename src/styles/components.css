@@ -232,22 +232,19 @@
 
 .hero-bg .prose-styles a,
 .about-flow .prose-styles a,
-.pricing-vibe .prose-styles a,
-.cta-section .prose-styles a {
+.pricing-vibe .prose-styles a {
   color: var(--color-link-dark-bg);
 }
 
 .hero-bg .prose-styles a:hover,
 .about-flow .prose-styles a:hover,
-.pricing-vibe .prose-styles a:hover,
-.cta-section .prose-styles a:hover {
+.pricing-vibe .prose-styles a:hover {
   color: var(--color-link-dark-bg-hover);
 }
 
 .hero-bg .prose-styles a:focus-visible,
 .about-flow .prose-styles a:focus-visible,
-.pricing-vibe .prose-styles a:focus-visible,
-.cta-section .prose-styles a:focus-visible {
+.pricing-vibe .prose-styles a:focus-visible {
   outline-color: var(--color-link-dark-bg-focus);
 }
 

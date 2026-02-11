@@ -2,12 +2,6 @@
   "main": [
     {
       "enable": true,
-      "name": "Home",
-      "weight": 1,
-      "url": "/"
-    },
-    {
-      "enable": true,
       "name": "Services",
       "url": "/#services",
       "weight": 2

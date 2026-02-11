@@ -108,7 +108,7 @@ const encodedEmail = encodeEmail(contact.email);
         <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {
             config.settings.copyright && config.settings.copyright.enable && (
-              <ul class="has-list has-list-slash prose-a:text-inherit flex flex-wrap gap-y-4 text-white">
+              <ul class="footer-bottom-links prose-a:text-inherit flex flex-wrap items-center justify-center gap-y-4 text-white">
                 {copyrightParts.map((value: string) => (
                   <li class="inline-block opacity-90 [&_a]:text-[var(--color-link-dark-bg)] [&_a]:no-underline [&_a]:decoration-[1px] [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-300 [&_a:focus-visible]:underline [&_a:hover]:text-[var(--color-link-dark-bg-hover)] [&_a:hover]:underline">
                     <span set:html={markdownify(value)} />
@@ -204,5 +204,19 @@ const encodedEmail = encodeEmail(contact.email);
     margin-left: 0 !important;
     transform: translateX(-1.9rem);
     max-width: calc(100% + 1.9rem);
+  }
+
+  .footer-bottom-links > li {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-bottom-links > li + li::before {
+    content: "/";
+    display: inline-block;
+    margin: 0 0.75rem;
+    color: rgb(255 255 255 / 0.56);
+    line-height: 1;
+    transform: translateY(-0.01em);
   }
 </style>

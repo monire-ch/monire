@@ -14,11 +14,11 @@ const { testimonials = [] as Testimonial[] } = Astro.props;
       testimonials.map((t: Testimonial) => (
         <div class="swiper-slide">
           <div class="testimonial-slide-inner">
-            <p class="mb-6 text-lg text-slate-100 italic">{t.content}</p>
+            <p class="mb-6 text-lg text-monire-deep-teal/88 italic">{t.content}</p>
 
             <div class="mt-4">
-              <div class="font-semibold text-slate-100">{t.customer.name}</div>
-              <div class="text-sm text-slate-300">{t.customer.role}</div>
+              <div class="font-semibold text-monire-deep-teal">{t.customer.name}</div>
+              <div class="text-sm text-monire-deep-teal/70">{t.customer.role}</div>
             </div>
           </div>
         </div>

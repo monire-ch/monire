@@ -47,7 +47,10 @@ const { pathname } = Astro.url;
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         const a = link as HTMLAnchorElement;
-        if (a.getAttribute("href") === "/" && window.location.pathname === "/") {
+        if (
+          a.getAttribute("href") === "/" &&
+          window.location.pathname === "/"
+        ) {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: "smooth" });
         }

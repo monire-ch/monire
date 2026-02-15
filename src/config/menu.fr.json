@@ -2,6 +2,12 @@
   "main": [
     {
       "enable": true,
+      "name": "Home",
+      "url": "/",
+      "weight": 1
+    },
+    {
+      "enable": true,
       "name": "About",
       "url": "/#about",
       "weight": 2
@@ -17,12 +23,6 @@
       "name": "Pricing",
       "url": "/#pricing",
       "weight": 4
-    },
-    {
-      "enable": true,
-      "name": "FAQ",
-      "url": "/#faq",
-      "weight": 5
     },
     {
       "enable": false,

@@ -58,6 +58,11 @@ const { pathname } = Astro.url;
           window.location.pathname === "/"
         ) {
           e.preventDefault();
+          const cleanUrl = `${window.location.pathname}${window.location.search}`;
+          if (window.location.hash) {
+            window.history.pushState({}, "", cleanUrl);
+            window.dispatchEvent(new Event("hashchange"));
+          }
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });

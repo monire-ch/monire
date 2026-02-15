@@ -31,8 +31,8 @@ function encodeEmail(email: string) {
 const encodedEmail = encodeEmail(contact.email);
 ---
 
-<footer class="footer-vibe">
-  <div class="footer-vibe-inner">
+<footer class="footer-dark-teal">
+  <div class="footer-dark-teal-inner">
     <div class="container space-y-14 lg:space-y-20">
       <div
         class="grid gap-12 pt-14 md:pt-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,2fr)] lg:items-start lg:gap-14">
@@ -131,20 +131,20 @@ const encodedEmail = encodeEmail(contact.email);
 </footer>
 
 <style>
-  .footer-vibe {
-    background: var(--gradient-vibe-dark);
+  .footer-dark-teal {
+    background: var(--gradient-dark-teal);
   }
 
-  .footer-vibe-inner {
+  .footer-dark-teal-inner {
     background:
       radial-gradient(
         55% 55% at 50% 115%,
-        var(--color-vibe-orb-soft-soft) 0%,
+        var(--color-dark-teal-orb-soft-soft) 0%,
         transparent 75%
       ),
       radial-gradient(
         42% 42% at 50% -10%,
-        var(--color-vibe-orb-strong-soft) 0%,
+        var(--color-dark-teal-orb-strong-soft) 0%,
         transparent 85%
       );
   }
@@ -195,12 +195,12 @@ const encodedEmail = encodeEmail(contact.email);
     outline-offset: 2px;
   }
 
-  .footer-vibe :global(.logo-wrapper) {
+  .footer-dark-teal :global(.logo-wrapper) {
     margin-left: 0 !important;
     padding-left: 0 !important;
   }
 
-  .footer-vibe :global(.logo-wrapper .logo) {
+  .footer-dark-teal :global(.logo-wrapper .logo) {
     margin-left: 0 !important;
     transform: translateX(-1.9rem);
     max-width: calc(100% + 1.9rem);

@@ -42,19 +42,25 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 const { title, date } = page.data;
 const { Content } = await page.render();
-const isPolicyPage = page.id?.includes("privacy-policy");
+const pageTheme = page.data.theme || "default";
+const isDarkTealTheme = pageTheme === "darkTeal";
 
 const t = await useTranslations(Astro.currentLocale as string);
 ---
 
 <Base {...page.data}>
-  <section class="section-light">
+  <section class:list={["section-light", isDarkTealTheme && "page-theme-dark-teal"]}>
+    {isDarkTealTheme && <div class="page-theme-orb page-theme-orb-1" aria-hidden="true"></div>}
+    {isDarkTealTheme && <div class="page-theme-orb page-theme-orb-2" aria-hidden="true"></div>}
     <div class="container">
       <div class="has-video-modal mx-auto max-w-5xl" data-aos="fade-up-sm">
         {
           title && (
             <h1
-              class="text-monire-deep-teal text-4xl"
+              class:list={[
+                "text-4xl",
+                isDarkTealTheme ? "text-light" : "text-monire-deep-teal",
+              ]}
               set:html={markdownify(title)}
             />
           )
@@ -66,7 +72,13 @@ const t = await useTranslations(Astro.currentLocale as string);
                 <p class="font-primary text-sm tracking-[.12em] opacity-60">
                   {t("common.publishedOn")}
                 </p>
-                <p class="text-sm font-medium" set:html={dateFormat(date)} />
+                <p
+                  class:list={[
+                    "text-sm font-medium",
+                    isDarkTealTheme && "page-theme-date",
+                  ]}
+                  set:html={dateFormat(date)}
+                />
               </div>
             )
           }
@@ -74,7 +86,7 @@ const t = await useTranslations(Astro.currentLocale as string);
         <div
           class:list={[
             "prose-styles content-page-prose lg:text-lg",
-            isPolicyPage && "policy-page-prose",
+            isDarkTealTheme && "page-theme-prose",
             date ? "mt-10 md:mt-20" : "mt-5 md:mt-10",
           ]}>
           <Content />
@@ -84,3 +96,148 @@ const t = await useTranslations(Astro.currentLocale as string);
   </section>
   <CallToAction />
 </Base>
+
+<style is:global>
+  .page-theme-dark-teal {
+    position: relative;
+    overflow: hidden;
+    background: var(--gradient-dark-teal);
+    color: var(--color-text-shell-muted);
+    padding-bottom: clamp(8rem, 5rem + 5vw, 12rem);
+  }
+
+  html:has(.page-theme-dark-teal),
+  body:has(.page-theme-dark-teal) {
+    background: var(--gradient-dark-teal);
+  }
+
+  .page-theme-dark-teal .container,
+  .page-theme-dark-teal .has-video-modal {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-theme-dark-teal .has-video-modal {
+    padding: 0;
+  }
+
+  .page-theme-dark-teal .page-theme-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-theme-dark-teal .page-theme-orb-1 {
+    top: clamp(7.5rem, 14vw, 11rem);
+    right: -7.5rem;
+    width: 17rem;
+    height: 17rem;
+    background: var(--color-dark-teal-orb-strong-soft);
+    opacity: 0.62;
+  }
+
+  .page-theme-dark-teal .page-theme-orb-2 {
+    bottom: -2rem;
+    left: -5.5rem;
+    width: 14rem;
+    height: 14rem;
+    background: var(--color-dark-teal-orb-soft-soft);
+    opacity: 0.55;
+  }
+
+  .page-theme-dark-teal,
+  .page-theme-dark-teal p,
+  .page-theme-dark-teal li,
+  .page-theme-dark-teal a,
+  .page-theme-dark-teal .font-primary {
+    color: var(--color-text-shell-muted) !important;
+  }
+
+  .page-theme-dark-teal .page-theme-date {
+    color: color-mix(in srgb, white 84%, transparent);
+  }
+
+  .page-theme-dark-teal .page-theme-prose {
+    max-width: 65ch;
+  }
+
+  .page-theme-dark-teal .prose-styles p,
+  .page-theme-dark-teal .prose-styles li,
+  .page-theme-dark-teal .prose-styles ol > li {
+    color: var(--color-text-shell-muted) !important;
+    line-height: 1.72;
+  }
+
+  .page-theme-dark-teal .prose-styles h1,
+  .page-theme-dark-teal .prose-styles h2,
+  .page-theme-dark-teal .prose-styles h3,
+  .page-theme-dark-teal .prose-styles h4,
+  .page-theme-dark-teal .prose-styles h5,
+  .page-theme-dark-teal .prose-styles h6,
+  .page-theme-dark-teal .prose-styles strong,
+  .page-theme-dark-teal .prose-styles b {
+    color: var(--color-text-shell-strong) !important;
+  }
+
+  .page-theme-dark-teal .page-theme-prose h2 {
+    margin-top: 2.6rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-divider-shell) 92%, transparent);
+  }
+
+  .page-theme-dark-teal .page-theme-prose h3 {
+    margin-top: 2.35rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-divider-shell) 92%, transparent);
+  }
+
+  .page-theme-dark-teal .page-theme-prose h3:first-of-type {
+    margin-top: 1.75rem;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .page-theme-dark-teal .page-theme-prose p + p,
+  .page-theme-dark-teal .page-theme-prose ul + p,
+  .page-theme-dark-teal .page-theme-prose ol + p {
+    margin-top: 0.95rem;
+  }
+
+  .page-theme-dark-teal .page-theme-prose ul:not(.list-unstyled) li::marker {
+    color: color-mix(in srgb, white 82%, transparent);
+  }
+
+  .page-theme-dark-teal .prose-styles a {
+    color: var(--color-link-dark-bg) !important;
+    text-decoration: none;
+  }
+
+  .page-theme-dark-teal .prose-styles a:hover {
+    color: var(--color-link-dark-bg-hover) !important;
+    text-decoration: underline;
+  }
+
+  .page-theme-dark-teal .prose-styles a:focus-visible {
+    color: var(--color-link-dark-bg-hover) !important;
+    text-decoration: underline;
+    outline-color: var(--color-link-dark-bg-focus);
+  }
+
+  @media (max-width: 767px) {
+    .page-theme-dark-teal .page-theme-orb-1 {
+      width: 12rem;
+      height: 12rem;
+      top: 6.25rem;
+      right: -4.75rem;
+    }
+
+    .page-theme-dark-teal .page-theme-orb-2 {
+      width: 10rem;
+      height: 10rem;
+      left: -4rem;
+      bottom: -2rem;
+    }
+  }
+</style>

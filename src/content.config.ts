@@ -15,6 +15,7 @@ const page = z.object({
   canonical: z.string().optional(),
   keywords: z.array(z.string()).optional(),
   disableTagline: z.boolean().optional(),
+  theme: z.enum(["default", "darkTeal"]).optional().default("default"),
 });
 
 // Call to Action Button

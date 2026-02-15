@@ -77,6 +77,10 @@ const {
   }
 
   @media (min-width: 1024px) {
+    .header > .container > nav {
+      margin-top: clamp(0.45rem, 1.2vw, 0.9rem);
+    }
+
     #nav-menu {
       display: flex !important;
       position: static !important;
@@ -92,6 +96,10 @@ const {
   /* Mobile menu styles */
   @media (max-width: 1023px) {
     /* Ensure header logo is visible on mobile */
+    .header > .container > nav {
+      margin-top: 0.5rem;
+    }
+
     .header nav > .logo-wrapper {
       display: flex !important;
       visibility: visible !important;
@@ -116,7 +124,11 @@ const {
       border-radius: 0 !important;
       border: none !important;
       box-shadow: none !important;
-      background: #000000 !important;
+      background: linear-gradient(
+        180deg,
+        var(--color-bg-dark) 0%,
+        var(--color-bg-dark-soft) 100%
+      ) !important;
       opacity: 0;
       pointer-events: none;
       display: flex !important;
@@ -173,7 +185,11 @@ const {
     }
 
     :global(.dark) #nav-menu {
-      background: #111827;
+      background: linear-gradient(
+        180deg,
+        var(--color-bg-dark) 0%,
+        var(--color-bg-dark-soft) 100%
+      );
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
     }
 

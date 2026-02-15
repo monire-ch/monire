@@ -1,54 +1,44 @@
 ---
 import { markdownify } from "@/lib/utils/textConverter";
-import Icon from "@/components/icons/Icon.astro";
 
 interface Props {
   title: string;
   description: string;
-  icon?: string;
   featured?: boolean;
 }
 
-const { title, description, icon, featured = false } = Astro.props;
+const { title, description, featured = false } = Astro.props;
 const firstToken = title?.trim().split(/\s+/)[0] ?? "";
 const hasMetricToken = /\d/.test(firstToken);
 const displayTitle =
   hasMetricToken && featured ? title.replace(/^\S+\s*/, "") : title;
 const cardStyle = featured
-  ? "background-image: var(--gradient-value-card-featured); box-shadow: var(--shadow-value-card-featured);"
-  : "background-color: var(--color-value-card-neutral-bg); border-color: var(--color-value-card-neutral-border);";
+  ? "background-image: var(--gradient-surface-dark); border-color: var(--color-border-surface-dark);"
+  : "background-image: var(--gradient-surface-light); border-color: color-mix(in srgb, var(--color-monire-deep-teal), transparent);";
+const glowStyle = featured
+  ? "background: var(--color-glow-surface-dark);"
+  : "background: var(--color-glow-surface-light);";
 ---
 
 <div
   class:list={[
-    "value-card relative h-full rounded-[18px] p-8 transition-all duration-300",
+    "value-card relative h-full w-full max-w-[25rem] overflow-hidden rounded-[22px] border px-6 py-8 transition-all duration-300 md:px-7 md:py-9",
     "hover:-translate-y-0.5",
-    featured
-      ? "border border-transparent text-white"
-      : "text-monire-deep-teal border",
+    featured ? "text-white" : "text-monire-deep-teal",
   ]}
   style={cardStyle}>
+  <div
+    class="pointer-events-none absolute -right-14 -bottom-14 h-44 w-44 rounded-full blur-3xl"
+    style={glowStyle}
+  />
   {
     hasMetricToken && featured && (
-      <div class="mb-2 text-7xl leading-none font-semibold tracking-tight md:text-8xl">
+      <div class="relative mb-1 text-6xl leading-none font-semibold tracking-tight md:text-7xl">
         {firstToken}
       </div>
     )
   }
-  <div class="mb-5 flex items-start gap-3">
-    {
-      icon && !(hasMetricToken && featured) && (
-        <Icon
-          name={icon}
-          class:list={[
-            "h-10 w-10",
-            featured ? "text-white" : "text-monire-deep-teal",
-          ]}
-          title={title}
-        />
-      )
-    }
-
+  <div class="relative mb-4">
     {
       title && (
         <h3
@@ -66,7 +56,7 @@ const cardStyle = featured
     description && (
       <p
         class:list={[
-          "text-[1.05rem] leading-relaxed",
+          "relative text-[1rem] leading-relaxed",
           featured ? "text-white/90" : "text-monire-deep-teal/90",
         ]}
         set:html={markdownify(description)}

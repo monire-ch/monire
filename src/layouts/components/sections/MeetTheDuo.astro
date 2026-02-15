@@ -59,7 +59,7 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
           <article class="text-left md:grid md:grid-cols-[300px_1fr] md:items-center md:gap-6">
             <div
               class="relative w-full max-w-[300px] overflow-hidden rounded-3xl border"
-              style="border-color: var(--color-duo-collage-border); background: var(--color-duo-collage-surface);">
+              style="border-color: var(--color-border-overlay); background: var(--color-surface-overlay);">
               <OptimizedImage
                 src={item.image}
                 width={640}
@@ -82,8 +82,8 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
               <h3 class="text-[2.15rem] leading-tight font-semibold text-white">
                 {item.name}
               </h3>
-              <p class="text-base text-white/84">{item.role}</p>
-              <p class="text-sm text-white/65">{item.languages}</p>
+              <p class="text-base text-white/90">{item.role}</p>
+              <p class="text-sm text-white/78">{item.languages}</p>
             </div>
           </article>
         ))

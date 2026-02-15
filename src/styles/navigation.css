@@ -13,25 +13,6 @@
       opacity 0.3s;
   }
 
-  &.scroll-up {
-    .hs-dropdown-menu.mega-menu {
-      @apply pointer-events-auto;
-    }
-  }
-
-  &.scroll-down,
-  &.scroll-up {
-    > .container {
-      @apply lg:max-w-5xl!;
-    }
-
-    .nav-item {
-      > .nav-link {
-        @apply lg:px-4 lg:py-2 xl:px-4;
-      }
-    }
-  }
-
   /* Header Customize */
   > .container {
     @apply mx-auto transition-all duration-300 ease-[cubic-bezier(0.617,1.5,0.68,1)];
@@ -88,7 +69,7 @@
 /* Navbar */
 .navbar {
   @apply lg:flex!;
-  @apply flex max-h-[80vh] max-lg:left-0 max-lg:overflow-auto max-lg:rounded-3xl lg:relative lg:ml-auto lg:bg-transparent;
+  @apply flex max-h-[80vh] max-lg:left-0 max-lg:overflow-auto max-lg:rounded-3xl lg:relative lg:ml-auto lg:w-full lg:flex-1 lg:justify-center lg:bg-transparent;
   @apply max-lg:bg-theme-dark max-lg:hs-dropdown-open:opacity-100 mx-auto max-lg:top-full max-lg:z-40 max-lg:hidden max-lg:w-full max-lg:flex-col max-lg:space-y-1 max-lg:border max-lg:p-2 max-lg:opacity-0 max-lg:transition-[opacity,margin] lg:items-center;
   @apply lg:h-full;
 
@@ -127,12 +108,49 @@
         background: url("/images/hero/gold-fill.webp") center/100% 100%
           no-repeat;
         pointer-events: none;
-        -webkit-mask: linear-gradient(#000 0 0) content-box,
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
           linear-gradient(#000 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
       }
     }
+  }
+
+  .nav-item.nav-item-cta {
+    @apply lg:ml-auto;
+  }
+
+  .nav-link.nav-link-cta {
+    background: color-mix(
+      in srgb,
+      rgb(var(--color-monire-nav-active)) 86%,
+      white
+    );
+    color: var(--color-light);
+    border-color: var(--color-mustard-70);
+    font-weight: 600;
+    box-shadow: 0 0.375rem 0.875rem rgba(3, 56, 68, 0.3);
+  }
+
+  .nav-link.nav-link-cta:hover {
+    color: var(--color-light);
+    background: color-mix(
+      in srgb,
+      rgb(var(--color-monire-nav-active)) 94%,
+      white
+    );
+    border-color: var(--color-mustard);
+  }
+
+  .nav-link.nav-link-cta.nav-link-active {
+    background: color-mix(
+      in srgb,
+      rgb(var(--color-monire-nav-active)) 94%,
+      white
+    );
+    color: var(--color-light);
+    border-color: var(--color-mustard);
   }
 
   /* Regular Dropdown */
@@ -168,6 +186,34 @@
   /* Show navbar on click on small devices */
   &.expanded {
     @apply translate-x-0 translate-y-0 max-lg:visible;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar {
+    padding-right: clamp(10rem, 14vw, 12rem);
+  }
+
+  .navbar .nav-item.nav-item-cta {
+    position: absolute;
+    right: clamp(1.1rem, 1.6vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .navbar .nav-item.nav-item-cta {
+    @apply ml-0;
+    position: static;
+    right: auto;
+    top: auto;
+    transform: none;
+  }
+
+  .navbar .nav-link.nav-link-cta {
+    @apply w-full justify-center;
   }
 }
 

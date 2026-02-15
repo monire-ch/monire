@@ -38,10 +38,10 @@ body {
 
 /* Custom Scrollbar */
 * {
-  @apply [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-thumb]:bg-white/5 [&::-webkit-scrollbar-track]:bg-white/5;
+  @apply [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-thumb]:bg-white/15 [&::-webkit-scrollbar-track]:bg-transparent;
 }
 .has-customized-scrollbar {
-  @apply [&::-webkit-scrollbar]:w-3! [&::-webkit-scrollbar-thumb]:bg-white/5! [&::-webkit-scrollbar-track]:bg-white/5!;
+  @apply [&::-webkit-scrollbar]:w-3! [&::-webkit-scrollbar-thumb]:bg-white/15! [&::-webkit-scrollbar-track]:bg-transparent!; 
 }
 
 /* Global Section Spacing */
@@ -51,6 +51,14 @@ main.has-section-spacing-md section {
 
 main.has-section-spacing-lg > section {
   @apply pt-16 pb-16 md:pt-32 md:pb-32;
+}
+
+main.has-section-spacing-md section.has-wave-padding {
+  @apply pt-12 pb-12;
+}
+
+main.has-section-spacing-lg > section.has-wave-padding {
+  @apply pt-12 pb-12 md:pt-24 md:pb-24;
 }
 
 h1,

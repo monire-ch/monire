@@ -3,32 +3,26 @@
     {
       "enable": true,
       "name": "Home",
-      "weight": 1,
-      "url": "/"
-    },
-    {
-      "enable": true,
-      "name": "Services",
-      "url": "/#services",
-      "weight": 2
-    },
-    {
-      "enable": false,
-      "name": "Portfolio",
-      "url": "/#portfolio",
-      "weight": 3
+      "url": "/",
+      "weight": 1
     },
     {
       "enable": true,
       "name": "About",
       "url": "/#about",
-      "weight": 4
+      "weight": 2
+    },
+    {
+      "enable": true,
+      "name": "Services",
+      "url": "/#services",
+      "weight": 3
     },
     {
       "enable": true,
       "name": "Pricing",
       "url": "/#pricing",
-      "weight": 5
+      "weight": 4
     },
     {
       "enable": false,
@@ -41,7 +35,7 @@
       "name": "Contact",
       "action": "openContactModal",
       "url": "",
-      "weight": 7
+      "weight": 8
     }
   ],
   "footerMenuQuickLink": [
@@ -62,13 +56,11 @@
       "name": "Pricing",
       "url": "/#pricing",
       "weight": 0
-    }
-  ],
-  "footerMenuLegal": [
+    },
     {
       "enable": true,
-      "name": "Privacy Policy",
-      "url": "/privacy-policy",
+      "name": "FAQ",
+      "url": "/#faq",
       "weight": 0
     }
   ]

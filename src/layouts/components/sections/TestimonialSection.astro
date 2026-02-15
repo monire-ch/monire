@@ -23,9 +23,7 @@ const testimonials = list.filter((t) => t.enable);
 
 {
   enable && (
-    <section
-      class="section-light testimonial-light relative space-y-12 md:space-y-16"
-      style="background-color: var(--color-bg-page);">
+    <section class="section-light testimonial-light has-wave-padding relative space-y-12 md:space-y-16">
       <SectionWave
         class="testimonial-wave-top"
         aria-hidden="true"
@@ -61,7 +59,7 @@ const testimonials = list.filter((t) => t.enable);
     top: 0;
     width: 100%;
     min-width: 0;
-    height: clamp(52px, 7vw, 110px);
+    height: clamp(3.25rem, 7vw, 6.875rem);
     transform: translateY(-99%);
     color: var(--color-bg-page);
     fill: currentColor;

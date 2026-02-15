@@ -7,15 +7,158 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     transition:
       opacity 0.3s ease,
       backdrop-filter 0.3s ease;
-    backdrop-filter: blur(0px);
+    backdrop-filter: blur(0rem);
   }
 
   .modal-overlay.active {
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(0.5rem);
   }
 
   .modal-panel {
     transition: transform 0.35s ease;
+  }
+
+  .contact-modal-panel {
+    background: var(--gradient-surface-dark);
+    border-left: 1px solid var(--color-border-surface-dark);
+    color: color-mix(in srgb, white 90%, transparent);
+  }
+
+  .contact-modal-title {
+    color: white;
+    font-size: clamp(1.85rem, 1.45rem + 1.1vw, 2.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+
+  .contact-modal-close {
+    color: white;
+    background: transparent;
+    border: 0;
+  }
+
+  .contact-modal-close:hover {
+    color: white;
+    background: transparent;
+  }
+
+  .contact-modal-panel :global(section.section-light) {
+    background: transparent;
+    color: inherit;
+  }
+
+  .contact-modal-panel :global(.form-label) {
+    color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .contact-modal-panel :global(.form-input),
+  .contact-modal-panel :global(.hs-select input.form-input),
+  .contact-modal-panel :global(.hs-select button.form-input),
+  .contact-modal-panel :global(.hs-dropdown) {
+    background: color-mix(in srgb, white 8%, transparent);
+    border-color: color-mix(in srgb, white 24%, transparent);
+    color: white;
+  }
+
+  .contact-modal-panel :global(#validation-target) {
+    position: relative;
+    z-index: 40;
+  }
+
+  .contact-modal-panel :global(#validation-target:has([aria-expanded="true"])) {
+    z-index: 2600;
+  }
+
+  .contact-modal-panel :global(.hs-dropdown) {
+    position: absolute !important;
+    top: calc(100% + 0.5rem) !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 3200 !important;
+    background: color-mix(
+      in srgb,
+      var(--color-bg-dark) 82%,
+      rgb(var(--color-monire-nav-active))
+    );
+    border-color: color-mix(in srgb, white 28%, transparent);
+    box-shadow: 0 1.25rem 2.5rem rgba(1, 22, 29, 0.6);
+    backdrop-filter: blur(0.25rem);
+  }
+
+  .contact-modal-panel :global([data-hs-select-dropdown]) {
+    z-index: 3200 !important;
+  }
+
+  .contact-modal-panel :global(.hs-dropdown-search-item) {
+    color: color-mix(in srgb, white 90%, transparent);
+  }
+
+  .contact-modal-panel :global(.hs-dropdown-search-item:hover),
+  .contact-modal-panel :global(.hs-dropdown-search-item:focus) {
+    color: white;
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--color-monire-nav-active)) 55%,
+      transparent
+    );
+  }
+
+  .contact-modal-panel :global(.form-input::placeholder),
+  .contact-modal-panel :global(.hs-select input.form-input::placeholder),
+  .contact-modal-panel :global(.hs-select button.form-input::placeholder) {
+    color: color-mix(in srgb, white 58%, transparent);
+  }
+
+  .contact-modal-panel :global(.form-checkbox) {
+    color: var(--color-light);
+    border-color: color-mix(in srgb, white 72%, transparent);
+  }
+
+  .contact-modal-panel :global(.form-checkbox:checked) {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 11' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 5.5L5.5 9.5L12.5 1.5' fill='none' stroke='%23f8f5f1' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    border-color: color-mix(in srgb, white 82%, transparent);
+    background-color: transparent;
+  }
+
+  .contact-modal-panel :global(.btn-primary) {
+    background: color-mix(
+      in srgb,
+      rgb(var(--color-monire-nav-active)) 88%,
+      white
+    );
+    color: var(--color-light);
+    border: 1px solid var(--color-mustard-70);
+    box-shadow: none !important;
+  }
+
+  .contact-modal-panel :global(.btn-primary:hover) {
+    background: color-mix(
+      in srgb,
+      rgb(var(--color-monire-nav-active)) 96%,
+      white
+    );
+    border-color: var(--color-mustard);
+    box-shadow: none !important;
+  }
+
+  .contact-modal-panel :global(.btn-primary:focus),
+  .contact-modal-panel :global(.btn-primary:focus-visible),
+  .contact-modal-panel :global(.btn-primary:active) {
+    box-shadow: none !important;
+  }
+
+  .contact-modal-panel :global(.prose-a\:text-primary a),
+  .contact-modal-panel :global(.text-link),
+  .contact-modal-panel :global(form a) {
+    color: var(--color-link-dark-bg) !important;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+    text-underline-offset: 0.15em;
+  }
+
+  .contact-modal-panel :global(.prose-a\:text-primary a:hover),
+  .contact-modal-panel :global(.text-link:hover),
+  .contact-modal-panel :global(form a:hover) {
+    color: var(--color-link-dark-bg-hover) !important;
   }
 
   :global(body.modal-open) {
@@ -36,15 +179,15 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
 
 <div
   id="contactPanel"
-  class="modal-panel fixed top-0 right-0 z-1000 flex h-full w-full translate-x-full flex-col overflow-y-auto bg-white p-8 shadow-2xl sm:w-[480px] dark:bg-gray-900">
+  class="modal-panel contact-modal-panel fixed top-0 right-0 z-1000 flex h-full w-full translate-x-full flex-col overflow-y-auto p-8 shadow-2xl sm:w-[30rem] md:p-10">
   <button
     id="closeModalBtn"
-    class="absolute top-4 right-4 flex h-8 w-8 items-center justify-center text-2xl text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-white"
+    class="contact-modal-close absolute top-4 right-4 flex h-9 w-9 items-center justify-center text-2xl transition-colors"
     aria-label="Close modal">
     ✕
   </button>
 
-  <h2 class="mb-6 text-3xl font-semibold">Let's Work Together</h2>
+  <h2 class="contact-modal-title mb-7 font-semibold">Let's Work Together</h2>
 
   <ContactSection />
   <slot />

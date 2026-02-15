@@ -7,11 +7,17 @@ const { pathname } = Astro.url;
 
 {
   menu.name && (
-    <li class="nav-item" role="menuitem">
+    <li
+      class:list={[
+        "nav-item",
+        { "nav-item-cta": menu.action === "openContactModal" },
+      ]}
+      role="menuitem">
       <a
         href={menu.action ? "#" : menu.url || "#"}
         class:list={[
           "nav-link text-text-default font-bold uppercase",
+          { "nav-link-cta": menu.action === "openContactModal" },
           { "nav-link-active": pathname === menu.url },
         ]}
         data-menu-action={menu.action || null}>
@@ -52,6 +58,11 @@ const { pathname } = Astro.url;
           window.location.pathname === "/"
         ) {
           e.preventDefault();
+          const cleanUrl = `${window.location.pathname}${window.location.search}`;
+          if (window.location.hash) {
+            window.history.pushState({}, "", cleanUrl);
+            window.dispatchEvent(new Event("hashchange"));
+          }
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });

@@ -13,10 +13,24 @@ let main = menuFromJson.main as NavigationLink[];
 main = filteredEnabled(main);
 main = sortByWeight(main);
 
+const isHomepage = Astro.url.pathname === "/";
+
 const {
   site: { logoHoverAnimation },
+  settings: { stickyHeader },
 } = config;
 ---
+
+{
+  !isHomepage && (
+    <div
+      class="absolute top-0 left-1/2 -z-30 h-1/2 w-full -translate-x-1/2 overflow-hidden"
+      aria-hidden="true">
+      <div class="absolute top-[-550px] left-[-10%] h-[800px] w-[800px] bg-[radial-gradient(53.29%_50%_at_50%_50%,var(--color-primary)_0%,rgba(39,27,69,0)_100%)]" />
+      <div class="absolute top-[-550px] right-[-10%] h-[800px] w-[800px] bg-[radial-gradient(53.29%_50%_at_50%_50%,var(--color-primary)_0%,rgba(39,27,69,0)_100%)]" />
+    </div>
+  )
+}
 
 <header class:list={["header group/header sticky-header relative z-50"]}>
   <div class="container">
@@ -40,11 +54,8 @@ const {
 
 <style>
   .header.sticky-header {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
+    position: sticky !important;
+    top: clamp(0.45rem, 1.2vw, 0.9rem) !important;
     z-index: 50 !important;
     background: transparent !important;
   }
@@ -60,6 +71,7 @@ const {
 
   @media (max-width: 1023px) {
     .header.sticky-header {
+      top: 0 !important;
       z-index: 9998 !important;
     }
   }
@@ -104,7 +116,11 @@ const {
       border-radius: 0 !important;
       border: none !important;
       box-shadow: none !important;
-      background: #000000 !important;
+      background: linear-gradient(
+        180deg,
+        var(--color-bg-dark) 0%,
+        var(--color-bg-dark-soft) 100%
+      ) !important;
       opacity: 0;
       pointer-events: none;
       display: flex !important;
@@ -161,7 +177,11 @@ const {
     }
 
     :global(.dark) #nav-menu {
-      background: #111827;
+      background: linear-gradient(
+        180deg,
+        var(--color-bg-dark) 0%,
+        var(--color-bg-dark-soft) 100%
+      );
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
     }
 

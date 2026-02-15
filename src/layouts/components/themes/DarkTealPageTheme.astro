@@ -1,0 +1,217 @@
+---
+type Props = {
+  title?: string;
+};
+
+const { title = "Let's Work Together" } = Astro.props;
+---
+
+<section class="dark-teal-page-theme relative overflow-hidden">
+  <div
+    class="dark-teal-page-theme-orb dark-teal-page-theme-orb-1"
+    aria-hidden="true"></div>
+  <div
+    class="dark-teal-page-theme-orb dark-teal-page-theme-orb-2"
+    aria-hidden="true"></div>
+  <div class="container relative z-1">
+    <h1 class="dark-teal-page-theme-title text-4xl text-light mb-12">
+      {title}
+    </h1>
+  </div>
+  <slot />
+</section>
+
+<style is:global>
+  .dark-teal-page-theme {
+    background: var(--gradient-dark-teal);
+    padding-top: 4rem;
+    padding-bottom: clamp(8rem, 5rem + 5vw, 12rem);
+  }
+
+  @media (min-width: 768px) {
+    .dark-teal-page-theme {
+      padding-top: 8rem;
+    }
+  }
+
+  html:has(.dark-teal-page-theme),
+  body:has(.dark-teal-page-theme) {
+    background: var(--gradient-dark-teal);
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-title {
+    width: min(100% - 2rem, 56rem);
+    margin-inline: auto;
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-orb-1 {
+    top: clamp(7rem, 12vw, 10rem);
+    right: -6rem;
+    width: 16rem;
+    height: 16rem;
+    background: var(--color-dark-teal-orb-strong-soft);
+    opacity: 0.52;
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-orb-2 {
+    bottom: 0;
+    left: -5rem;
+    width: 12rem;
+    height: 12rem;
+    background: var(--color-dark-teal-orb-soft-soft);
+    opacity: 0.5;
+  }
+
+  .dark-teal-page-theme section.section-light {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-inline: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    color: color-mix(in srgb, white 90%, transparent);
+    padding: 0;
+  }
+
+  .dark-teal-page-theme
+    section.section-light
+    > [data-aos][data-aos-delay="200"] {
+    width: min(100% - 2rem, 56rem);
+    max-width: none;
+    margin-inline: auto;
+    padding: 0 !important;
+  }
+
+  .dark-teal-page-theme .form-label {
+    color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .dark-teal-page-theme .form-input,
+  .dark-teal-page-theme .hs-select input.form-input,
+  .dark-teal-page-theme .hs-select button.form-input,
+  .dark-teal-page-theme .hs-dropdown {
+    background: color-mix(in srgb, white 8%, transparent) !important;
+    border-color: color-mix(in srgb, white 24%, transparent) !important;
+    color: white !important;
+  }
+
+  .dark-teal-page-theme .form-input::placeholder,
+  .dark-teal-page-theme .hs-select input.form-input::placeholder,
+  .dark-teal-page-theme .hs-select button.form-input::placeholder {
+    color: color-mix(in srgb, white 58%, transparent);
+  }
+
+  .dark-teal-page-theme #validation-target {
+    position: relative;
+    z-index: 40;
+  }
+
+  .dark-teal-page-theme #validation-target:has([aria-expanded="true"]) {
+    z-index: 2600;
+  }
+
+  .dark-teal-page-theme .hs-dropdown {
+    position: absolute !important;
+    top: calc(100% + 0.5rem) !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 3200 !important;
+    background: color-mix(
+      in srgb,
+      var(--color-bg-dark) 78%,
+      var(--color-monire-deep-teal)
+    ) !important;
+    border-color: color-mix(in srgb, white 28%, transparent) !important;
+    box-shadow: 0 1.25rem 2.5rem rgba(1, 22, 29, 0.6);
+    backdrop-filter: blur(0.25rem);
+  }
+
+  .dark-teal-page-theme [data-hs-select-dropdown] {
+    z-index: 3200 !important;
+  }
+
+  .dark-teal-page-theme .hs-dropdown-search-item {
+    color: color-mix(in srgb, white 90%, transparent) !important;
+  }
+
+  .dark-teal-page-theme .hs-dropdown-search-item * {
+    color: inherit !important;
+  }
+
+  .dark-teal-page-theme .hs-dropdown-search-item:hover,
+  .dark-teal-page-theme .hs-dropdown-search-item:focus {
+    color: white !important;
+    background-color: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 58%,
+      transparent
+    ) !important;
+  }
+
+  .dark-teal-page-theme .form-check .form-checkbox {
+    color: var(--color-light) !important;
+    border-color: color-mix(in srgb, white 72%, transparent) !important;
+  }
+
+  .dark-teal-page-theme .form-check .form-checkbox:checked {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 11' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 5.5L5.5 9.5L12.5 1.5' fill='none' stroke='%23f8f5f1' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    border-color: color-mix(in srgb, white 82%, transparent) !important;
+    background-color: transparent !important;
+  }
+
+  .dark-teal-page-theme .btn-primary {
+    background: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 88%,
+      white
+    );
+    color: var(--color-light);
+    border: 1px solid var(--color-mustard-70);
+    box-shadow: none !important;
+  }
+
+  .dark-teal-page-theme .btn-primary:hover {
+    background: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 96%,
+      white
+    );
+    border-color: var(--color-mustard);
+    box-shadow: none !important;
+  }
+
+  .dark-teal-page-theme .btn-primary:focus,
+  .dark-teal-page-theme .btn-primary:focus-visible,
+  .dark-teal-page-theme .btn-primary:active {
+    box-shadow: none !important;
+  }
+
+  .dark-teal-page-theme .prose-a\:text-primary a,
+  .dark-teal-page-theme .text-link,
+  .dark-teal-page-theme form a {
+    color: var(--color-link-dark-bg) !important;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+    text-underline-offset: 0.15em;
+  }
+
+  .dark-teal-page-theme .prose-a\:text-primary a:hover,
+  .dark-teal-page-theme .text-link:hover,
+  .dark-teal-page-theme form a:hover {
+    color: var(--color-link-dark-bg-hover) !important;
+  }
+
+  @media (max-width: 767px) {
+    .dark-teal-page-theme .dark-teal-page-theme-title {
+      width: calc(100% - 1.25rem);
+    }
+  }
+</style>

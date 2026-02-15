@@ -1,5 +1,5 @@
 ---
-title: "Contacter"
-description: "Prendre contact avec nous! Pour les demandes, le support ou les commentaires. "
+title: "Contact"
+description: "Get in touch with us! Reach out for inquiries, support, or feedback. "
 draft: false
 ---

@@ -1,5 +1,9 @@
 ---
 import ContactSection from "@/layouts/components/sections/ContactSection.astro";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+
+const contactPage = await getEntryCTM("contact", "-index", Astro.currentLocale);
+const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
 ---
 
 <style>
@@ -19,7 +23,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   }
 
   .contact-modal-panel {
-    background: var(--gradient-surface-dark);
+    background: var(--gradient-dark-teal);
     border-left: 1px solid var(--color-border-surface-dark);
     color: color-mix(in srgb, white 90%, transparent);
   }
@@ -77,8 +81,8 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     z-index: 3200 !important;
     background: color-mix(
       in srgb,
-      var(--color-bg-dark) 82%,
-      rgb(var(--color-monire-nav-active))
+      var(--color-bg-dark) 78%,
+      var(--color-monire-deep-teal)
     );
     border-color: color-mix(in srgb, white 28%, transparent);
     box-shadow: 0 1.25rem 2.5rem rgba(1, 22, 29, 0.6);
@@ -98,7 +102,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     color: white;
     background-color: color-mix(
       in srgb,
-      rgb(var(--color-monire-nav-active)) 55%,
+      var(--color-monire-deep-teal) 58%,
       transparent
     );
   }
@@ -123,7 +127,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   .contact-modal-panel :global(.btn-primary) {
     background: color-mix(
       in srgb,
-      rgb(var(--color-monire-nav-active)) 88%,
+      var(--color-monire-deep-teal) 88%,
       white
     );
     color: var(--color-light);
@@ -134,7 +138,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   .contact-modal-panel :global(.btn-primary:hover) {
     background: color-mix(
       in srgb,
-      rgb(var(--color-monire-nav-active)) 96%,
+      var(--color-monire-deep-teal) 96%,
       white
     );
     border-color: var(--color-mustard);
@@ -187,7 +191,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     ✕
   </button>
 
-  <h2 class="contact-modal-title mb-7 font-semibold">Let's Work Together</h2>
+  <h2 class="contact-modal-title mb-7 font-semibold">{modalHeading}</h2>
 
   <ContactSection />
   <slot />

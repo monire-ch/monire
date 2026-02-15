@@ -49,9 +49,9 @@ const t = await useTranslations(Astro.currentLocale as string);
 ---
 
 <Base {...page.data}>
-  <section class:list={["section-light", isDarkTealTheme && "page-theme-dark-teal"]}>
-    {isDarkTealTheme && <div class="page-theme-orb page-theme-orb-1" aria-hidden="true"></div>}
-    {isDarkTealTheme && <div class="page-theme-orb page-theme-orb-2" aria-hidden="true"></div>}
+  <section class:list={["section-light", isDarkTealTheme && "page-theme-dark-teal dark-teal-theme-base"]}>
+    {isDarkTealTheme && <div class="dark-teal-theme-orb dark-teal-theme-orb-1" aria-hidden="true"></div>}
+    {isDarkTealTheme && <div class="dark-teal-theme-orb dark-teal-theme-orb-2" aria-hidden="true"></div>}
     <div class="container">
       <div class="has-video-modal mx-auto max-w-5xl" data-aos="fade-up-sm">
         {
@@ -98,19 +98,6 @@ const t = await useTranslations(Astro.currentLocale as string);
 </Base>
 
 <style is:global>
-  .page-theme-dark-teal {
-    position: relative;
-    overflow: hidden;
-    background: var(--gradient-dark-teal);
-    color: var(--color-text-shell-muted);
-    padding-bottom: clamp(8rem, 5rem + 5vw, 12rem);
-  }
-
-  html:has(.page-theme-dark-teal),
-  body:has(.page-theme-dark-teal) {
-    background: var(--gradient-dark-teal);
-  }
-
   .page-theme-dark-teal .container,
   .page-theme-dark-teal .has-video-modal {
     position: relative;
@@ -119,32 +106,6 @@ const t = await useTranslations(Astro.currentLocale as string);
 
   .page-theme-dark-teal .has-video-modal {
     padding: 0;
-  }
-
-  .page-theme-dark-teal .page-theme-orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(64px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .page-theme-dark-teal .page-theme-orb-1 {
-    top: clamp(7.5rem, 14vw, 11rem);
-    right: -7.5rem;
-    width: 17rem;
-    height: 17rem;
-    background: var(--color-dark-teal-orb-strong-soft);
-    opacity: 0.62;
-  }
-
-  .page-theme-dark-teal .page-theme-orb-2 {
-    bottom: -2rem;
-    left: -5.5rem;
-    width: 14rem;
-    height: 14rem;
-    background: var(--color-dark-teal-orb-soft-soft);
-    opacity: 0.55;
   }
 
   .page-theme-dark-teal,
@@ -225,19 +186,4 @@ const t = await useTranslations(Astro.currentLocale as string);
     outline-color: var(--color-link-dark-bg-focus);
   }
 
-  @media (max-width: 767px) {
-    .page-theme-dark-teal .page-theme-orb-1 {
-      width: 12rem;
-      height: 12rem;
-      top: 6.25rem;
-      right: -4.75rem;
-    }
-
-    .page-theme-dark-teal .page-theme-orb-2 {
-      width: 10rem;
-      height: 10rem;
-      left: -4rem;
-      bottom: -2rem;
-    }
-  }
 </style>

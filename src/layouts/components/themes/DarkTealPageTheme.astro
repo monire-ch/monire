@@ -6,12 +6,12 @@ type Props = {
 const { title = "Let's Work Together" } = Astro.props;
 ---
 
-<section class="dark-teal-page-theme relative overflow-hidden">
+<section class="dark-teal-page-theme dark-teal-theme-base relative overflow-hidden">
   <div
-    class="dark-teal-page-theme-orb dark-teal-page-theme-orb-1"
+    class="dark-teal-theme-orb dark-teal-theme-orb-1"
     aria-hidden="true"></div>
   <div
-    class="dark-teal-page-theme-orb dark-teal-page-theme-orb-2"
+    class="dark-teal-theme-orb dark-teal-theme-orb-2"
     aria-hidden="true"></div>
   <div class="container relative z-1">
     <h1 class="dark-teal-page-theme-title text-4xl text-light mb-12">
@@ -23,9 +23,7 @@ const { title = "Let's Work Together" } = Astro.props;
 
 <style is:global>
   .dark-teal-page-theme {
-    background: var(--gradient-dark-teal);
     padding-top: 4rem;
-    padding-bottom: clamp(8rem, 5rem + 5vw, 12rem);
   }
 
   @media (min-width: 768px) {
@@ -34,40 +32,9 @@ const { title = "Let's Work Together" } = Astro.props;
     }
   }
 
-  html:has(.dark-teal-page-theme),
-  body:has(.dark-teal-page-theme) {
-    background: var(--gradient-dark-teal);
-  }
-
   .dark-teal-page-theme .dark-teal-page-theme-title {
     width: min(100% - 2rem, 56rem);
     margin-inline: auto;
-  }
-
-  .dark-teal-page-theme .dark-teal-page-theme-orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(64px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .dark-teal-page-theme .dark-teal-page-theme-orb-1 {
-    top: clamp(7rem, 12vw, 10rem);
-    right: -6rem;
-    width: 16rem;
-    height: 16rem;
-    background: var(--color-dark-teal-orb-strong-soft);
-    opacity: 0.52;
-  }
-
-  .dark-teal-page-theme .dark-teal-page-theme-orb-2 {
-    bottom: 0;
-    left: -5rem;
-    width: 12rem;
-    height: 12rem;
-    background: var(--color-dark-teal-orb-soft-soft);
-    opacity: 0.5;
   }
 
   .dark-teal-page-theme section.section-light {

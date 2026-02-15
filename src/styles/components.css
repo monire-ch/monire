@@ -316,9 +316,9 @@
 }
 
 .pricing-tab {
-  padding: 0.6rem 1.6rem;
+  padding: var(--btn-py) var(--btn-px);
   border-radius: 9999px;
-  font-size: 0.95rem;
+  font-size: var(--btn-font-size);
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: capitalize;

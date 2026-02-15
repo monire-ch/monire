@@ -4,6 +4,12 @@
   @apply inline-block overflow-hidden rounded-full px-5 py-2 font-normal whitespace-nowrap duration-[.35s] disabled:cursor-not-allowed md:px-7;
 }
 
+.btn {
+  padding: var(--btn-py) var(--btn-px);
+  font-size: var(--btn-font-size);
+  min-height: var(--btn-height);
+}
+
 @utility btn-has-icon {
   @apply pe-2 md:pe-4;
 }

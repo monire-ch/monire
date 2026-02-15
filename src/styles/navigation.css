@@ -77,10 +77,12 @@
     @apply flex items-center lg:h-full;
 
     > .nav-link {
-      @apply relative inline-flex items-center justify-center rounded-full px-4 py-1.5 tracking-wider text-white transition-all duration-300 lg:py-2 xl:px-6;
+      @apply relative inline-flex items-center justify-center rounded-full tracking-wider text-white transition-all duration-300;
       border: 1px solid transparent;
       box-sizing: border-box;
-      height: 2.65rem;
+      padding: var(--btn-py) var(--btn-px);
+      font-size: var(--btn-font-size);
+      height: var(--btn-height);
       line-height: 1;
 
       &:hover {
@@ -122,35 +124,25 @@
   }
 
   .nav-link.nav-link-cta {
-    background: color-mix(
-      in srgb,
-      rgb(var(--color-monire-nav-active)) 86%,
-      white
-    );
-    color: var(--color-light);
-    border-color: var(--color-mustard-70);
+    background: transparent;
+    color: #f8f5f1;
+    border-color: rgba(207, 169, 71, 0.7);
     font-weight: 600;
-    box-shadow: 0 0.375rem 0.875rem rgba(3, 56, 68, 0.3);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    box-shadow: none;
   }
 
   .nav-link.nav-link-cta:hover {
-    color: var(--color-light);
-    background: color-mix(
-      in srgb,
-      rgb(var(--color-monire-nav-active)) 94%,
-      white
-    );
-    border-color: var(--color-mustard);
+    color: #f8f5f1;
+    background-color: rgba(7, 47, 59, 0.65);
+    border-color: rgba(207, 169, 71, 1);
   }
 
   .nav-link.nav-link-cta.nav-link-active {
-    background: color-mix(
-      in srgb,
-      rgb(var(--color-monire-nav-active)) 94%,
-      white
-    );
-    color: var(--color-light);
-    border-color: var(--color-mustard);
+    background-color: rgba(7, 47, 59, 0.65);
+    color: #f8f5f1;
+    border-color: rgba(207, 169, 71, 1);
   }
 
   /* Regular Dropdown */

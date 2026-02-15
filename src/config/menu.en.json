@@ -20,6 +20,12 @@
     },
     {
       "enable": true,
+      "name": "Projects",
+      "url": "/#projects",
+      "weight": 3.5
+    },
+    {
+      "enable": true,
       "name": "Pricing",
       "url": "/#pricing",
       "weight": 4

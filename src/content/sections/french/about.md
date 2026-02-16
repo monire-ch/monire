@@ -39,6 +39,7 @@ list:
       enable: true
       label: "2026 Recipient"
       url: "https://snipsquad.org"
+      renderAs: "link"
       rel: "noopener noreferrer"
       target: "_blank"
 ---

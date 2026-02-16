@@ -39,8 +39,7 @@ let {
   list,
 } = actualContent as aboutSectionType;
 
-const isRecipientLink = (btn?: ButtonData) =>
-  btn?.label?.trim().toLowerCase() === "2026 recipient";
+const isTextLink = (btn?: ButtonData) => btn?.renderAs === "link";
 ---
 
 {
@@ -87,7 +86,7 @@ const isRecipientLink = (btn?: ButtonData) =>
                 {(item.ctaBtn?.enable || item.ctaBtn2?.enable) && (
                   <div class="flex flex-wrap items-center gap-4 pt-2">
                     {item.ctaBtn?.enable && (
-                      isRecipientLink(item.ctaBtn) ? (
+                      isTextLink(item.ctaBtn) ? (
                         <Link href={item.ctaBtn.url} class="text-link">
                           {item.ctaBtn.label}
                         </Link>
@@ -100,7 +99,7 @@ const isRecipientLink = (btn?: ButtonData) =>
                       )
                     )}
                     {item.ctaBtn2?.enable && (
-                      isRecipientLink(item.ctaBtn2) ? (
+                      isTextLink(item.ctaBtn2) ? (
                         <Link href={item.ctaBtn2.url} class="text-link">
                           {item.ctaBtn2.label}
                         </Link>

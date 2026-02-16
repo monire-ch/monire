@@ -84,7 +84,7 @@ const isTextLink = (btn?: ButtonData) => btn?.renderAs === "link";
                   />
                 )}
                 {(item.ctaBtn?.enable || item.ctaBtn2?.enable) && (
-                  <div class="flex flex-wrap items-center gap-4 pt-2">
+                  <div class="flex flex-wrap items-center gap-7 pt-2 md:gap-9 lg:gap-10">
                     {item.ctaBtn?.enable && (
                       isTextLink(item.ctaBtn) ? (
                         <Link href={item.ctaBtn.url} class="text-link">

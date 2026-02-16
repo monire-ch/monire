@@ -377,11 +377,11 @@ const validationMessages = {
                 <button
                   type="submit"
                   class:list={[
-                    "btn btn-md btn-primary btn-has-icon group relative inline-flex w-fit overflow-hidden",
-                    "relative z-0 flex items-center gap-4",
+                    "btn btn-action btn-action-primary btn-has-icon btn-icon-end group relative inline-flex w-fit overflow-hidden",
+                    "relative z-0 flex items-center",
                   ]}>
-                  {form.submitButton.label}
-                  <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
+                  <span>{form.submitButton.label}</span>
+                  <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
                     <OptimizedImage
                       alt="icon"
                       class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"

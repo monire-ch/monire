@@ -48,9 +48,10 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     <div class="flex justify-center">
       <div class="pricing-tabs">
         {
-          plans?.list?.map((item) => (
+          plans?.list?.map((item, index) => (
             <button
-              class="pricing-tab"
+              class="btn btn-action btn-action-secondary btn-toggle pricing-tab"
+              data-tab-key={index === 0 ? "web" : "ai"}
               data-tab={item.label}
               data-active={item.selected ? "true" : "false"}>
               {item.label}
@@ -112,8 +113,10 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
                 enable: true,
                 label: btn.label,
                 url: btn.url,
+                style: btn.style,
               }}
-              class="btn-md btn-pricing-dark flex justify-center text-center"
+              variant={btn.style === "outline" ? "secondary" : "primary"}
+              class="justify-center text-center"
             />
           ))
         }
@@ -128,17 +131,16 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     const webDesign = document.getElementById("web-design-content");
     const aiBlock = document.getElementById("ai-content");
 
+    const setActiveTab = (activeTab) => {
+      tabs.forEach((t) => (t.dataset.active = t === activeTab ? "true" : "false"));
+      const isWebTab = activeTab?.dataset.tabKey === "web";
+      webDesign?.classList.toggle("hidden", !isWebTab);
+      aiBlock?.classList.toggle("hidden", isWebTab);
+    };
+
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
-        tabs.forEach((t) => (t.dataset.active = "false"));
-        tab.dataset.active = "true";
-        if (tab.dataset.tab === "WEB DESIGN & DEVELOPMENT") {
-          webDesign.classList.remove("hidden");
-          aiBlock.classList.add("hidden");
-        } else {
-          aiBlock.classList.remove("hidden"); // ← missing
-          webDesign.classList.add("hidden");
-        }
+        setActiveTab(tab);
       });
     });
   });

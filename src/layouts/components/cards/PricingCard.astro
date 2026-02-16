@@ -177,11 +177,8 @@ const cardSurfaceStyle = featured
 
         {ctaBtn?.enable && (
           <ButtonLink
-            class:list={[
-              "btn-md flex justify-center text-center",
-              { "btn-pricing-light": featured },
-              { "btn-pricing-dark": !featured },
-            ]}
+            class="w-full justify-center text-center"
+            variant="primary"
             content={ctaBtn}
           />
         )}

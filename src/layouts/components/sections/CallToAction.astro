@@ -48,10 +48,7 @@ let { enable = true, title, ctaBtn } = actualContent as ctaSectionType;
           <div class="flex flex-wrap-reverse items-center gap-x-20 gap-y-6 md:flex-nowrap lg:justify-end">
             {ctaBtn && ctaBtn.enable && (
               <div class="relative" data-aos="fade-right-sm">
-                <ButtonLink
-                  class="btn-md btn-pricing-light group relative z-30 flex items-center gap-4"
-                  content={ctaBtn}
-                />
+                <ButtonLink content={ctaBtn} variant="primary" />
               </div>
             )}
           </div>

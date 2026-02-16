@@ -1,15 +1,18 @@
 ---
 import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 import { markdownify } from "@/lib/utils/textConverter";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 
 type Props = {
   tag?: "button" | "a";
+  variant?: "primary" | "secondary";
   content: {
     enable?: boolean;
     label: string;
     url?: string;
     rel?: string;
     target?: string;
+    style?: "primary" | "secondary" | "outline" | "fill" | string;
   };
   class?: string;
   [key: string]: any;
@@ -17,13 +20,31 @@ type Props = {
 
 const {
   tag = "a",
-  content: { enable, label, url, rel, target },
+  variant: variantProp,
+  content: { enable, label, url, rel, target, style },
+  class: className,
   ...rest
 } = Astro.props;
 
 const normalizedLabel = (label || "").trim().toLowerCase();
 const opensContactModal =
   normalizedLabel === "work with us" || normalizedLabel === "get started";
+
+const normalizedStyle = (style || "").toLowerCase();
+const inferredVariant =
+  normalizedStyle === "outline" || normalizedStyle === "secondary"
+    ? "secondary"
+    : normalizedStyle === "fill" || normalizedStyle === "primary"
+      ? "primary"
+      : "primary";
+const variant = variantProp || inferredVariant;
+const isPrimary = variant === "primary";
+
+const ctaClass = [
+  "btn-action",
+  isPrimary ? "btn-action-primary btn-icon-end group" : "btn-action-secondary",
+  className,
+];
 ---
 
 {
@@ -32,9 +53,18 @@ const opensContactModal =
       <button
         data-content={label}
         data-open-contact={opensContactModal ? "true" : undefined}
-        class:list={["btn", Astro.props.class, "relative overflow-hidden"]}
+        class:list={["btn", ctaClass, "relative overflow-hidden"]}
         {...rest}>
-        <span class="label" set:html={markdownify(label)} />
+        <span class="label flex h-full items-center" set:html={markdownify(label)} />
+        {isPrimary && (
+          <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
+            <OptimizedImage
+              alt="icon"
+              class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
+              src="/images/icons/svg/star.svg"
+            />
+          </span>
+        )}
         <slot />
       </button>
     ) : (
@@ -61,9 +91,18 @@ const opensContactModal =
             : url && getLocaleUrlCTM(url, Astro.currentLocale),
         }}
         data-content={label}
-        class:list={["btn", Astro.props.class, "relative overflow-hidden"]}
+        class:list={["btn", ctaClass, "relative overflow-hidden"]}
         {...rest}>
-        <span class="label" set:html={markdownify(label)} />
+        <span class="label flex h-full items-center" set:html={markdownify(label)} />
+        {isPrimary && (
+          <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
+            <OptimizedImage
+              alt="icon"
+              class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
+              src="/images/icons/svg/star.svg"
+            />
+          </span>
+        )}
         <slot />
       </a>
     ))

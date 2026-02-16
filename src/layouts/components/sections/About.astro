@@ -84,13 +84,15 @@ let {
                   <div class="flex flex-wrap items-center gap-4 pt-2">
                     {item.ctaBtn?.enable && (
                       <ButtonLink
-                        class="btn-md btn-pricing-dark text-center"
+                        class="text-center"
+                        variant="secondary"
                         content={{ ...item.ctaBtn }}
                       />
                     )}
                     {item.ctaBtn2?.enable && (
                       <ButtonLink
-                        class="btn-md btn-secondary text-center"
+                        class="text-center"
+                        variant="secondary"
                         content={{ ...item.ctaBtn2 }}
                       />
                     )}

@@ -1,5 +1,6 @@
 ---
 import type { NavigationLink } from "@/types";
+import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
 
 const menu = Astro.props.menu as NavigationLink;
 const { pathname } = Astro.url;
@@ -13,16 +14,24 @@ const { pathname } = Astro.url;
         { "nav-item-cta": menu.action === "openContactModal" },
       ]}
       role="menuitem">
-      <a
-        href={menu.action ? "#" : menu.url || "#"}
-        class:list={[
-          "nav-link text-text-default font-bold uppercase",
-          { "nav-link-cta": menu.action === "openContactModal" },
-          { "nav-link-active": pathname === menu.url },
-        ]}
-        data-menu-action={menu.action || null}>
-        {menu.name}
-      </a>
+      {menu.action === "openContactModal" ? (
+        <ButtonLink
+          variant="primary"
+          content={{ enable: true, label: menu.name, url: "#" }}
+          class="nav-link nav-link-cta uppercase font-bold"
+          data-menu-action={menu.action}
+        />
+      ) : (
+        <a
+          href={menu.url || "#"}
+          class:list={[
+            "nav-link uppercase text-text-default font-bold",
+            { "nav-link-active": pathname === menu.url },
+          ]}
+          data-menu-action={menu.action || null}>
+          {menu.name}
+        </a>
+      )}
     </li>
   )
 }

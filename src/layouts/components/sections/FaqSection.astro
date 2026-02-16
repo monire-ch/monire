@@ -73,7 +73,7 @@ list = limit && list ? list.slice(0, limit as number) : list;
                         aria-controls={"faq-tab-" + (index + 1)}
                         aria-selected={index === 0 ? "true" : "false"}
                         class:list={[
-                          "faq-tab px-6 py-2.5 text-start text-lg max-lg:min-w-full",
+                          "faq-tab btn btn-action btn-action-secondary btn-toggle text-start text-lg max-lg:min-w-full",
                           { active: index === 0 },
                         ]}
                       />
@@ -125,29 +125,14 @@ list = limit && list ? list.slice(0, limit as number) : list;
   }
 
   .faq-tab {
-    border-radius: 999rem;
-    border: 1px solid
-      color-mix(in srgb, var(--color-border-surface-dark) 85%, transparent);
-    background: transparent;
-    color: color-mix(in srgb, white 82%, transparent);
+    width: 100%;
+    justify-content: flex-start;
     transition:
       color 180ms ease,
       background-color 180ms ease,
       border-color 180ms ease,
       box-shadow 180ms ease,
       transform 180ms ease;
-  }
-
-  .faq-tab:hover {
-    color: white;
-    border-color: color-mix(in srgb, var(--color-mustard-70) 80%, transparent);
-  }
-
-  .faq-tab.active {
-    background: color-mix(in srgb, white 18%, transparent);
-    border-color: var(--color-mustard-70);
-    color: white;
-    box-shadow: none;
   }
 
   .faq-tab:focus-visible {

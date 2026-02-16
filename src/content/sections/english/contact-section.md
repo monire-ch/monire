@@ -19,6 +19,11 @@ form:
   emailSubject: "New form submission from Moniré website"
   submitButton:
     label: "Let's Talk"
+  validationMessages:
+    requiredSelect: "Please select an option."
+    invalidEmail: "Please enter a valid email address."
+    submitting: "Form Submitting!..."
+    assistanceAt: "Please contact us for assistance at"
   # This note will show at the end of form
   # note: |
   #   Your data is safe with us. We respect your privacy and never share your information. <br /> Read our [Privacy Policy](/privacy-policy/).
@@ -55,6 +60,7 @@ form:
       halfWidth: false
       dropdown:
         type: ""
+        multiple: true
         search: # if type is search then it will work
           placeholder: ""
         items:

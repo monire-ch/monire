@@ -109,6 +109,18 @@ form = {
   ...form,
   inputs: combineRadio(form.inputs),
 };
+
+const validationMessages = {
+  requiredSelect:
+    form.validationMessages?.requiredSelect || "Please select an option.",
+  invalidEmail:
+    form.validationMessages?.invalidEmail ||
+    "Please enter a valid email address.",
+  submitting: form.validationMessages?.submitting || "Form Submitting!...",
+  assistanceAt:
+    form.validationMessages?.assistanceAt ||
+    "Please contact us for assistance at",
+};
 ---
 
 {
@@ -135,6 +147,10 @@ form = {
                   "data-netlify":
                     contactFormProvider === "netlify" ? "true" : undefined,
                   "data-action": contactFormAction,
+                  "data-msg-required-select": validationMessages.requiredSelect,
+                  "data-msg-invalid-email": validationMessages.invalidEmail,
+                  "data-msg-submitting": validationMessages.submitting,
+                  "data-msg-assistance-at": validationMessages.assistanceAt,
                   action:
                     contactFormProvider === "netlify"
                       ? contactFormAction
@@ -196,6 +212,7 @@ form = {
                       name={
                         input.name || input.label || "Please set name value"
                       }
+                      {...(input.dropdown?.multiple ? { multiple: true } : {})}
                       {...(input.required ? { required: true } : {})}
                       data-hs-select={`{
                           ${input.dropdown.type === "search" ? `\"hasSearch\": true,` : `\"hasSearch\": false,`}
@@ -203,7 +220,11 @@ form = {
                           \"searchClasses\": \"form-input hs-dropdown-search-input\",
                           \n\"searchWrapperClasses\": \"hs-search-input-wrapper\",
                           \n\"placeholder\": \"${input.placeholder || "Please set placeholder"}\",
-                          \n\"toggleTag\": \"<button type=\\\"button\\\" aria-expanded=\\\"false\\\"><span class=\\\"text-text-default \\\" data-title><\/span><\/button>\",
+                          ${
+                            input.dropdown?.multiple
+                              ? `\n\"toggleTag\": \"<button type=\\\"button\\\" aria-expanded=\\\"false\\\"><span class=\\\"text-text-default\\\"><\/span><\/button>\",`
+                              : `\n\"toggleTag\": \"<button type=\\\"button\\\" aria-expanded=\\\"false\\\"><span class=\\\"text-text-default\\\" data-title><\/span><\/button>\",`
+                          }
                           \n\"toggleClasses\": \"form-input hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer border border-gray-200 text-start focus:shadow-none focus:outline-none focus:ring-1 focus:ring-primary\",\n\"dropdownClasses\": \"hs-dropdown mt-2 max-h-72 space-y-0.5 z-20 w-full border border-gray-200 overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300\",\n\"optionClasses\": \"hs-dropdown-search-item\",\n\"optionTemplate\": \"<div><div class=\\\"flex items-center\\\"><div class=\\\"text-inherit \\\" data-title><\/div><\/div><\/div>\",
                           \"optionTemplate\": \"<div class=\\\"text-inherit flex justify-between items-center w-full\\\"><span data-title><\/span><span class=\\\"hidden hs-selected:block\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/span><\/div>\",
                           \"extraMarkup\": [\n      \"<div class=\\\"hidden hs-error:block absolute top-1/2 end-8 -translate-y-1/2\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"\/><line x1=\\\"12\\\" x2=\\\"12\\\" y1=\\\"8\\\" y2=\\\"12\\\"\/><line x1=\\\"12\\\" x2=\\\"12.01\\\" y1=\\\"16\\\" y2=\\\"16\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"hidden hs-success:flex absolute inset-y-0 end-8 items-center pointer-events-none\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"absolute top-1\/2 end-3 -translate-y-1\/2\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"m7 15 5 5 5-5\\\"\/><path d=\\\"m7 9 5-5 5 5\\\"\/><\/svg><\/div>\"\n    ]
@@ -219,7 +240,7 @@ form = {
                       ))}
                     </select>
                     <p class="hs-error:block mt-2 hidden text-sm text-red-600">
-                      Please select an option.
+                      {validationMessages.requiredSelect}
                     </p>
                   </div>
                 ) : input.tag === "textarea" ? (
@@ -335,6 +356,12 @@ form = {
                     name={input.name || input.label || "Please set name value"}
                     placeholder={input.placeholder || "Please set placeholder"}
                     class="form-input"
+                    {...(input.type === "email"
+                      ? {
+                          inputmode: "email",
+                          autocomplete: "email",
+                        }
+                      : {})}
                     {...(input.required ? { required: true } : {})}
                   />
                 )}
@@ -534,6 +561,19 @@ form = {
     const selectTags = form.querySelectorAll(
       "select[data-hs-select]",
     ) as NodeListOf<HTMLSelectElement>;
+    const emailInput = form.querySelector(
+      'input[type="email"]',
+    ) as HTMLInputElement | null;
+    const validationMessages = {
+      requiredSelect:
+        form.dataset.msgRequiredSelect || "Please select an option.",
+      invalidEmail:
+        form.dataset.msgInvalidEmail || "Please enter a valid email address.",
+      submitting: form.dataset.msgSubmitting || "Form Submitting!...",
+      assistanceAt:
+        form.dataset.msgAssistanceAt ||
+        "Please contact us for assistance at",
+    };
 
     selectTags.forEach((select) => {
       if (select.hasAttribute("required")) {
@@ -601,6 +641,33 @@ form = {
       });
     });
 
+    const isValidEmailFormat = (value: string): boolean =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+
+    const validateEmail = (): boolean => {
+      if (!emailInput) return true;
+      const value = emailInput.value.trim();
+
+      if (!value) {
+        emailInput.setCustomValidity("");
+        return true;
+      }
+
+      if (!isValidEmailFormat(value)) {
+        emailInput.setCustomValidity(validationMessages.invalidEmail);
+        return false;
+      }
+
+      emailInput.setCustomValidity("");
+      return true;
+    };
+
+    emailInput?.addEventListener("input", validateEmail);
+    emailInput?.addEventListener("blur", () => {
+      validateEmail();
+      emailInput.reportValidity();
+    });
+
     form.addEventListener("submit", async (e: Event) => {
       e.preventDefault();
 
@@ -632,12 +699,18 @@ form = {
         return;
       }
 
+      if (!validateEmail()) {
+        emailInput?.reportValidity();
+        emailInput?.focus();
+        return;
+      }
+
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
 
-      setMessage("Form Submitting!...", true, true, form);
+      setMessage(validationMessages.submitting, true, true, form);
 
       try {
         switch (provider) {
@@ -662,8 +735,7 @@ form = {
         }
       } catch (error) {
         setMessage(
-          error +
-            `! Please contact us for assitance at [${contact.email}](mailto:${contact.email})`,
+          `${error}! ${validationMessages.assistanceAt} [${contact.email}](mailto:${contact.email})`,
           false,
           false,
           form,

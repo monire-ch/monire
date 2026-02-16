@@ -128,6 +128,12 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
     color: color-mix(in srgb, white 58%, transparent);
   }
 
+  .contact-modal-panel
+    :global(.hs-select button.form-input .text-text-default),
+  .contact-modal-panel :global(.hs-select button.form-input > span.truncate) {
+    color: color-mix(in srgb, white 58%, transparent) !important;
+  }
+
   .contact-modal-panel :global(.form-checkbox) {
     color: var(--color-light);
     border-color: color-mix(in srgb, white 72%, transparent);

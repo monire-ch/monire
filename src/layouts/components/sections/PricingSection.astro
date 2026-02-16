@@ -164,14 +164,10 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    /** @type {NodeListOf<HTMLElement>} */
     const tabs = document.querySelectorAll(".pricing-tab");
     const webDesign = document.getElementById("web-design-content");
     const aiBlock = document.getElementById("ai-content");
 
-    /**
-     * @param {HTMLElement | null} activeTab
-     */
     function setActiveTab(activeTab: Element) {
       tabs.forEach((t) => {
         t.setAttribute("data-active", t === activeTab ? "true" : "false");

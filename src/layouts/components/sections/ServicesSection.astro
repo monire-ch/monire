@@ -8,7 +8,7 @@ import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
 
 type ServiceCTA = {
   label: string;
-  style?: "primary" | "outline";
+  variant?: "primary" | "secondary";
   url: string;
 };
 
@@ -85,13 +85,12 @@ const tabsWithIds = tabs.map((tab, index) => ({
                           <div class="services-cta-group flex flex-wrap gap-4 pt-5">
                             {tab.cta.map((cta) => (
                               <ButtonLink
-                                variant={cta.style === "outline" ? "secondary" : "primary"}
+                                variant={cta.variant || "primary"}
                                 class="text-center"
                                 content={{
                                   enable: true,
                                   label: cta.label,
                                   url: cta.url,
-                                  style: cta.style,
                                 }}
                               />
                             ))}
@@ -151,13 +150,12 @@ const tabsWithIds = tabs.map((tab, index) => ({
                             <div class="services-cta-group flex flex-wrap gap-4 pt-5">
                               {tab.cta.map((cta) => (
                                 <ButtonLink
-                                  variant={cta.style === "outline" ? "secondary" : "primary"}
+                                  variant={cta.variant || "primary"}
                                   class="text-center"
                                   content={{
                                     enable: true,
                                     label: cta.label,
                                     url: cta.url,
-                                    style: cta.style,
                                   }}
                                 />
                               ))}

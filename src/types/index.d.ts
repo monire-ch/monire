@@ -21,7 +21,7 @@ export type Button = {
   enable: boolean;
   label: string;
   url: string;
-  style?: "primary" | "secondary" | "outline" | "fill";
+  variant?: "primary" | "secondary";
   type?: string;
   rel?: string;
   target?: string;

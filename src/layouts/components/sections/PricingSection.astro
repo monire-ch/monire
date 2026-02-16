@@ -113,9 +113,8 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
                 enable: true,
                 label: btn.label,
                 url: btn.url,
-                style: btn.style,
               }}
-              variant={btn.style === "outline" ? "secondary" : "primary"}
+              variant={btn.variant || "primary"}
               class="justify-center text-center"
             />
           ))

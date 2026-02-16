@@ -12,7 +12,7 @@ type Props = {
     url?: string;
     rel?: string;
     target?: string;
-    style?: "primary" | "secondary" | "outline" | "fill" | string;
+    variant?: "primary" | "secondary";
   };
   class?: string;
   [key: string]: any;
@@ -21,7 +21,7 @@ type Props = {
 const {
   tag = "a",
   variant: variantProp,
-  content: { enable, label, url, rel, target, style },
+  content: { enable, label, url, rel, target, variant: contentVariant },
   class: className,
   ...rest
 } = Astro.props;
@@ -30,14 +30,7 @@ const normalizedLabel = (label || "").trim().toLowerCase();
 const opensContactModal =
   normalizedLabel === "work with us" || normalizedLabel === "get started";
 
-const normalizedStyle = (style || "").toLowerCase();
-const inferredVariant =
-  normalizedStyle === "outline" || normalizedStyle === "secondary"
-    ? "secondary"
-    : normalizedStyle === "fill" || normalizedStyle === "primary"
-      ? "primary"
-      : "primary";
-const variant = variantProp || inferredVariant;
+const variant = variantProp || contentVariant || "primary";
 const isPrimary = variant === "primary";
 
 const ctaClass = [

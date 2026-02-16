@@ -127,9 +127,9 @@ ai_automations:
   subtitle: "We build custom automation systems that reduce manual, repetitive work and seamlessly connect the tools you already use. Pricing is defined individually after a short discovery call."
   ctas:
     - label: "Get started"
-      style: "primary"
+      variant: "primary"
       url: "/contact/"
     - label: "Latest case study"
-      style: "outline"
+      variant: "secondary"
       url: "/case-studies/expense-receipt-automation/"
 ---

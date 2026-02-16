@@ -334,18 +334,18 @@ const validationMessages = {
                   <div
                     {...{ "data-default": input.content }}
                     class:list={[
-                      "prose-styles border p-4 text-sm",
-                      input.note === "info"
-                        ? "prose-p:text-slate-400 border-blue-400/25 bg-slate-600/10"
+                      "prose-styles form-status-message border p-4 text-sm",
+                      input.note === "success"
+                        ? "form-status-success"
                         : input.note === "warning"
-                          ? "prose-p:text-orange-400 border-amber-400/25 bg-orange-600/10"
-                          : input.note === "success"
-                            ? "prose-p:text-green-400 border-green-400/25 bg-green-600/10"
-                            : input.note === "deprecated"
-                              ? "prose-p:text-stone-400 border-green-400/25 bg-stone-600/10"
-                              : input.note === "hint"
-                                ? "prose-p:text-purple-400 border-purple-400/25 bg-purple-600/10"
-                                : "prose-p:text-gray-400 border-gray-400/25 bg-gray-600/10",
+                          ? "form-status-error"
+                          : input.note === "info"
+                            ? "form-status-info"
+                            : input.note === "hint"
+                              ? "form-status-hint"
+                              : input.note === "deprecated"
+                                ? "form-status-deprecated"
+                                : "",
                     ]}
                     set:html={markdownify(input.content || "", true)}
                   />
@@ -455,6 +455,135 @@ const validationMessages = {
 }
 
 <style>
+  .contact-form .form-status-message {
+    border-radius: 1rem;
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 70%,
+      transparent
+    );
+    background: color-mix(in srgb, var(--color-bg-dark) 76%, transparent);
+    color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .contact-form .form-status-message :global(p) {
+    margin: 0;
+    color: inherit;
+  }
+
+  .contact-form .form-status-message :global(strong) {
+    color: inherit;
+  }
+
+  .contact-form .form-status-message :global(a) {
+    color: var(--color-link-dark-bg) !important;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+    text-underline-offset: 0.15em;
+  }
+
+  .contact-form .form-status-message :global(a:hover) {
+    color: var(--color-link-dark-bg-hover) !important;
+  }
+
+  .contact-form .form-status-success {
+    border-color: color-mix(in srgb, var(--color-link-dark-bg) 45%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 52%,
+      var(--color-bg-dark)
+    );
+    color: color-mix(in srgb, white 96%, transparent);
+  }
+
+  .contact-form .form-status-error {
+    border-width: 2px;
+    border-color: color-mix(in srgb, var(--color-mustard) 88%, white);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-mustard-30) 42%, transparent) 0%,
+      color-mix(in srgb, var(--color-mustard) 18%, transparent) 100%
+    );
+    color: white;
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-mustard) 30%, transparent),
+      0 0.5rem 1.25rem color-mix(in srgb, black 30%, transparent);
+  }
+
+  .contact-form .form-status-error :global(p)::before {
+    content: "!";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    line-height: 1;
+    color: color-mix(in srgb, var(--color-bg-dark) 92%, black);
+    background: color-mix(in srgb, var(--color-mustard) 92%, white);
+    box-shadow: 0 0 0 1px color-mix(in srgb, black 24%, transparent);
+    vertical-align: text-bottom;
+  }
+
+  .contact-form .form-status-info {
+    border-color: color-mix(in srgb, var(--color-link-dark-bg) 35%, transparent);
+    background: color-mix(in srgb, var(--color-bg-dark) 82%, transparent);
+    color: color-mix(in srgb, white 90%, transparent);
+  }
+
+  .contact-form .form-status-hint {
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 82%,
+      transparent
+    );
+    background: color-mix(in srgb, var(--color-bg-dark) 80%, transparent);
+    color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .contact-form .form-status-deprecated {
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 72%,
+      transparent
+    );
+    background: color-mix(in srgb, var(--color-bg-dark) 86%, transparent);
+    color: color-mix(in srgb, white 76%, transparent);
+  }
+
+  .contact-form.is-submitting .message.success .form-status-message {
+    border-color: color-mix(in srgb, var(--color-link-dark-bg) 58%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 44%,
+      var(--color-bg-dark)
+    );
+  }
+
+  .contact-form.is-submitting .message.success .form-status-message :global(p) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact-form.is-submitting .message.success .form-status-message :global(p)::before {
+    content: "";
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, white 34%, transparent);
+    border-top-color: color-mix(in srgb, white 92%, transparent);
+    animation: contact-form-spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes contact-form-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .contact-details-panel {
     border-color: color-mix(
       in srgb,
@@ -660,6 +789,14 @@ const validationMessages = {
         toggle?.focus();
       };
 
+      const showFormMessage = (
+        message: string,
+        success: boolean,
+        disableSubmit = false,
+      ) => {
+        setMessage(message, success, disableSubmit, form);
+      };
+
       form.addEventListener("submit", async (e: Event) => {
         e.preventDefault();
 
@@ -720,7 +857,7 @@ const validationMessages = {
           }
         }
 
-        setMessage(validationMessages.submitting, true, true, form);
+        showFormMessage(validationMessages.submitting, true, true);
 
         try {
           switch (provider) {
@@ -744,11 +881,10 @@ const validationMessages = {
               throw new Error("Unknown form provider.");
           }
         } catch (error) {
-          setMessage(
+          showFormMessage(
             `${error}! ${validationMessages.assistanceAt} [${contact.email}](mailto:${contact.email})`,
             false,
             false,
-            form,
           );
         }
       });

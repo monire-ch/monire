@@ -115,5 +115,5 @@ form:
       content: We have received your message! We'll get back to you as soon as possible.
     - note: warning
       parentClass: "hidden message error"
-      content: Something went wrong! Please contact us for assistance at [hello@monire.ch](hello@monire.ch)
+      content: Something went wrong! Please contact us for assistance at [hello@monire.ch](mailto:hello@monire.ch)
 ---

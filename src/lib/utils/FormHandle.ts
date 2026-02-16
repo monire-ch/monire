@@ -111,6 +111,7 @@ export const setMessage = (
 
   // Show the selected message
   messageElement?.classList.remove("hidden");
+  form?.classList.toggle("is-submitting", disableSubmit && success);
 
   // Disable or enable submit button based on 'disableSubmit'
   if (disableSubmit) {

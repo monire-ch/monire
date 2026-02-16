@@ -13,24 +13,10 @@ let main = menuFromJson.main as NavigationLink[];
 main = filteredEnabled(main);
 main = sortByWeight(main);
 
-const isHomepage = Astro.url.pathname === "/";
-
 const {
   site: { logoHoverAnimation },
-  settings: { stickyHeader },
 } = config;
 ---
-
-{
-  !isHomepage && (
-    <div
-      class="absolute top-0 left-1/2 -z-30 h-1/2 w-full -translate-x-1/2 overflow-hidden"
-      aria-hidden="true">
-      <div class="absolute top-[-550px] left-[-10%] h-[800px] w-[800px] bg-[radial-gradient(53.29%_50%_at_50%_50%,var(--color-primary)_0%,rgba(39,27,69,0)_100%)]" />
-      <div class="absolute top-[-550px] right-[-10%] h-[800px] w-[800px] bg-[radial-gradient(53.29%_50%_at_50%_50%,var(--color-primary)_0%,rgba(39,27,69,0)_100%)]" />
-    </div>
-  )
-}
 
 <header class:list={["header group/header sticky-header relative z-50"]}>
   <div class="container">

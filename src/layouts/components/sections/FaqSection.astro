@@ -35,7 +35,7 @@ list = limit && list ? list.slice(0, limit as number) : list;
 
 {
   enable && (
-    <section id="faq" class="pricing-vibe faq-vibe relative overflow-hidden">
+    <section id="faq" class="pricing-dark-teal faq-dark-teal relative overflow-hidden">
       <div class="pricing-orb pricing-orb-1" aria-hidden="true" />
       <div class="pricing-orb pricing-orb-2" aria-hidden="true" />
       <div class="container">
@@ -155,7 +155,7 @@ list = limit && list ? list.slice(0, limit as number) : list;
     outline-offset: 0.125rem;
   }
 
-  .faq-vibe :global(.hs-accordion-toggle) {
+  .faq-dark-teal :global(.hs-accordion-toggle) {
     color: white;
     border-color: color-mix(
       in srgb,
@@ -164,17 +164,17 @@ list = limit && list ? list.slice(0, limit as number) : list;
     ) !important;
   }
 
-  .faq-vibe :global(.hs-accordion-toggle .title),
-  .faq-vibe :global(.hs-accordion-content p),
-  .faq-vibe :global(.hs-accordion-content li) {
+  .faq-dark-teal :global(.hs-accordion-toggle .title),
+  .faq-dark-teal :global(.hs-accordion-content p),
+  .faq-dark-teal :global(.hs-accordion-content li) {
     color: var(--color-text-shell-muted);
   }
 
-  .faq-vibe :global(.hs-accordion.active .hs-accordion-toggle .title) {
+  .faq-dark-teal :global(.hs-accordion.active .hs-accordion-toggle .title) {
     color: white;
   }
 
-  .faq-vibe :global(.hs-accordion) {
+  .faq-dark-teal :global(.hs-accordion) {
     background: color-mix(in srgb, var(--color-bg-dark-soft) 70%, transparent);
     border: 1px solid
       color-mix(in srgb, var(--color-border-overlay) 88%, transparent);

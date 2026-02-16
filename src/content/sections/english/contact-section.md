@@ -6,17 +6,24 @@ subtitle: "Contact"
 contactList:
   enable: true
   list:
-    - icon: "/images/icons/svg/email.svg"
-      label: "Email us"
+    - label: "Email"
+      value: "[hello@monire.ch](mailto:hello@monire.ch)"
+    - label: "Location"
+      value: "Zürich, Switzerland"
 
 social:
   enable: true
-  title: "Follow us on social media"
+  title: "Social"
 
 form:
   emailSubject: "New form submission from Moniré website"
   submitButton:
     label: "Let's Talk"
+  validationMessages:
+    requiredSelect: "Please select an option."
+    invalidEmail: "Please enter a valid email address."
+    submitting: "Form Submitting!..."
+    assistanceAt: "Please contact us for assistance at"
   # This note will show at the end of form
   # note: |
   #   Your data is safe with us. We respect your privacy and never share your information. <br /> Read our [Privacy Policy](/privacy-policy/).
@@ -53,6 +60,7 @@ form:
       halfWidth: false
       dropdown:
         type: ""
+        multiple: true
         search: # if type is search then it will work
           placeholder: ""
         items:
@@ -68,14 +76,6 @@ form:
             value: "SEO & Analytics"
           - label: "Other"
             value: "Other"
-    - label: "Tell us about your project:"
-      tag: "textarea"
-      defaultValue: ""
-      rows: "4" # Only work if tag is textarea
-      placeholder: "Tell us about your project:"
-      name: "Tell us about your project:"
-      required: true
-      halfWidth: false
     - label: "Your budget:"
       placeholder: "Your budget:"
       name: "Your budget:"
@@ -94,6 +94,14 @@ form:
             value: "CHF 10’000 – 20’000"
           - label: "CHF 20’000+"
             value: "CHF 20’000+"
+    - label: "Tell us about your project:"
+      tag: "textarea"
+      defaultValue: ""
+      rows: "4" # Only work if tag is textarea
+      placeholder: "Tell us about your project:"
+      name: "Tell us about your project:"
+      required: true
+      halfWidth: false
     - label: "I agree to the terms and conditions and [privacy policy](/privacy-policy/)."
       name: "Agreed Privacy"
       value: "Agreed"

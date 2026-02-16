@@ -20,6 +20,10 @@ const {
   content: { enable, label, url, rel, target },
   ...rest
 } = Astro.props;
+
+const normalizedLabel = (label || "").trim().toLowerCase();
+const opensContactModal =
+  normalizedLabel === "work with us" || normalizedLabel === "get started";
 ---
 
 {
@@ -27,6 +31,7 @@ const {
     (tag && tag === "button" ? (
       <button
         data-content={label}
+        data-open-contact={opensContactModal ? "true" : undefined}
         class:list={["btn", Astro.props.class, "relative overflow-hidden"]}
         {...rest}>
         <span class="label" set:html={markdownify(label)} />
@@ -35,18 +40,25 @@ const {
     ) : (
       <a
         {...{
+          ...(opensContactModal ? { "data-open-contact": "true" } : {}),
           // Set `rel` attribute for external urls or use provided value
-          rel: url?.startsWith("http")
+          rel: opensContactModal
+            ? undefined
+            : url?.startsWith("http")
             ? rel || "noopener noreferrer"
             : rel || undefined,
 
           // Set `target` to "_blank" for external urls unless otherwise specified
-          target: url?.startsWith("http")
+          target: opensContactModal
+            ? undefined
+            : url?.startsWith("http")
             ? target || "_blank"
             : target || undefined,
 
           // Set `href` attribute
-          href: url && getLocaleUrlCTM(url, Astro.currentLocale),
+          href: opensContactModal
+            ? "#"
+            : url && getLocaleUrlCTM(url, Astro.currentLocale),
         }}
         data-content={label}
         class:list={["btn", Astro.props.class, "relative overflow-hidden"]}

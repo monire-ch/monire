@@ -3,11 +3,11 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import type { ContactFormConfig, Section } from "@/types";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
-import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import SocialComponent from "@/components/social/Social.astro";
 import SocialData from "@/config/social.json";
 import type { InputField } from "@/types";
 import config from ".astro/config.generated.json" with { type: "json" };
+import Button from "@/layouts/components/buttons/Button.astro";
 
 const {
   settings: { contactFormAction, contactFormProvider },
@@ -374,21 +374,16 @@ const validationMessages = {
 
             {form.submitButton && (
               <div class="col-span-2 mt-4 flex flex-col">
-                <button
+                <Button
+                  tag="button"
                   type="submit"
-                  class:list={[
-                    "btn btn-action btn-action-primary btn-has-icon btn-icon-end group relative inline-flex w-fit overflow-hidden",
-                    "relative z-0 flex items-center",
-                  ]}>
-                  <span>{form.submitButton.label}</span>
-                  <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-                    <OptimizedImage
-                      alt="icon"
-                      class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                      src="/images/icons/svg/star.svg"
-                    />
-                  </span>
-                </button>
+                  content={{
+                    enable: true,
+                    label: form.submitButton.label,
+                  }}
+                  variant="primary"
+                  class="w-fit"
+                />
               </div>
             )}
             {form.note && (

@@ -3,7 +3,7 @@ import type { Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
-import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 type ctaSectionType = Section;
@@ -48,7 +48,7 @@ let { enable = true, title, ctaBtn } = actualContent as ctaSectionType;
           <div class="flex flex-wrap-reverse items-center gap-x-20 gap-y-6 md:flex-nowrap lg:justify-end">
             {ctaBtn && ctaBtn.enable && (
               <div class="relative" data-aos="fade-right-sm">
-                <ButtonLink content={ctaBtn} variant="primary" />
+                <Button content={ctaBtn} variant="primary" />
               </div>
             )}
           </div>

@@ -1,6 +1,6 @@
 ---
 import type { NavigationLink } from "@/types";
-import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 
 const menu = Astro.props.menu as NavigationLink;
 const { pathname } = Astro.url;
@@ -15,7 +15,7 @@ const { pathname } = Astro.url;
       ]}
       role="menuitem">
       {menu.action === "openContactModal" ? (
-        <ButtonLink
+        <Button
           variant="primary"
           content={{ enable: true, label: menu.name, url: "#" }}
           class="nav-link nav-link-cta uppercase font-bold"

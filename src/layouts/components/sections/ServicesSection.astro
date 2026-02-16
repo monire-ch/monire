@@ -4,7 +4,7 @@ import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import Subtitle from "../widgets/Subtitle.astro";
 import type { Section } from "@/types";
 import { markdownify } from "@/lib/utils/textConverter";
-import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 
 type ServiceCTA = {
   label: string;
@@ -84,7 +84,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
                         {tab.cta && tab.cta.length > 0 && (
                           <div class="services-cta-group flex flex-wrap gap-4 pt-5">
                             {tab.cta.map((cta) => (
-                              <ButtonLink
+                              <Button
                                 variant={cta.variant || "primary"}
                                 class="text-center"
                                 content={{
@@ -108,20 +108,23 @@ const tabsWithIds = tabs.map((tab, index) => ({
                     role="tablist"
                     aria-orientation="vertical">
                     {tabsWithIds.map((tab, index) => (
-                      <button
-                        type="button"
+                      <Button
+                        tag="button"
                         class:list={[
-                          "services-timeline-item btn btn-action btn-action-secondary btn-toggle",
+                          "services-timeline-item btn-toggle",
                           index === 0 && "active",
                         ]}
                         id={tab.tabId}
                         aria-controls={tab.panelId}
                         role="tab"
                         aria-selected={index === 0 ? "true" : "false"}
-                        data-hs-tab={`#${tab.panelId}`}>
-                        <span class="services-timeline-dot" aria-hidden="true"></span>
-                        <span class="services-timeline-label">{tab.label}</span>
-                      </button>
+                        data-hs-tab={`#${tab.panelId}`}
+                        content={{
+                          enable: true,
+                          label: tab.label,
+                        }}
+                        variant="secondary"
+                      />
                     ))}
                   </nav>
 
@@ -149,7 +152,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
                           {tab.cta && tab.cta.length > 0 && (
                             <div class="services-cta-group flex flex-wrap gap-4 pt-5">
                               {tab.cta.map((cta) => (
-                                <ButtonLink
+                                <Button
                                   variant={cta.variant || "primary"}
                                   class="text-center"
                                   content={{
@@ -264,15 +267,7 @@ const tabsWithIds = tabs.map((tab, index) => ({
       border-color 180ms ease;
   }
 
-  .services-timeline-step {
-    display: none;
-  }
-
-  .services-timeline-dot {
-    display: none;
-  }
-
-  .services-timeline-label {
+  .services-timeline-item .label {
     font-size: 1.02rem;
     line-height: 1.34;
     font-weight: 500;

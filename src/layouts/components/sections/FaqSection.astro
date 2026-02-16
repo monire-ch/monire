@@ -5,6 +5,7 @@ import Subtitle from "../widgets/Subtitle.astro";
 import type { FAQCategory, Section } from "@/types";
 import { markdownify } from "@/lib/utils/textConverter";
 import AccordionList from "@/layouts/components/widgets/AccordionList.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 
 type faqSectionType = Section & {
   list?: FAQCategory[];
@@ -64,16 +65,20 @@ list = limit && list ? list.slice(0, limit as number) : list;
                       "faq-tabs-wrapper lg:col-span-3 xl:col-span-2",
                     ]}>
                     {list.map((button: FAQCategory, index: number) => (
-                      <button
+                      <Button
                         role="tab"
-                        type="button"
-                        set:html={button.label}
+                        tag="button"
                         id={"faq-tab-item-" + (index + 1)}
                         data-hs-tab={"#faq-tab-" + (index + 1)}
                         aria-controls={"faq-tab-" + (index + 1)}
                         aria-selected={index === 0 ? "true" : "false"}
+                        content={{
+                          enable: true,
+                          label: button.label,
+                        }}
+                        variant="secondary"
                         class:list={[
-                          "faq-tab btn btn-action btn-action-secondary btn-toggle text-start text-lg max-lg:min-w-full",
+                          "faq-tab btn-toggle text-start text-lg max-lg:min-w-full",
                           { active: index === 0 },
                         ]}
                       />

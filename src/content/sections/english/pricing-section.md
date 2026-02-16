@@ -11,9 +11,9 @@ plans:
   list:
     # List of available plans. Ensure that these names are used consistently in other places where applicable.
     - selected: true
-      label: "WEB DESIGN & DEVELOPMENT" # Use this value exactly in all corresponding places below.
+      label: "Web Design & Development" # Use this value exactly in all corresponding places below.
     - selected: false
-      label: AI AUTOMATIONS # Use this value exactly in all corresponding places below.
+      label: AI Automations # Use this value exactly in all corresponding places below.
 
 list:
   # STARTER Plan
@@ -27,11 +27,11 @@ list:
 
     price:
       # Pricing details for each plan type.
-      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+      - type: "Web Design & Development" # Plan type (must match values in the 'plans' section above).
         prependValue: CHF
         value: 3500
         appendValue:
-      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+      - type: AI Automations # Plan type (must match values in the 'plans' section above).
         prependValue: CHF
         value: 24
         appendValue:
@@ -46,7 +46,7 @@ list:
 
     ctaBtn:
       enable: true
-      label: Get Started
+      label: Get started
       url: /contact/
       rel:
       target:
@@ -62,11 +62,11 @@ list:
 
     price:
       # Pricing details for each plan type.
-      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+      - type: "Web Design & Development" # Plan type (must match values in the 'plans' section above).
         prependValue: CHF
         value: 6000
         appendValue:
-      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+      - type: AI Automations # Plan type (must match values in the 'plans' section above).
         prependValue: CHF
         value: 40
         appendValue:
@@ -82,7 +82,7 @@ list:
 
     ctaBtn:
       enable: true
-      label: Get Started
+      label: Get started
       url: /contact/
       rel:
       target:
@@ -97,11 +97,11 @@ list:
     description: "Best for: growing firms, established brands, companies needing workflows & integrations."
 
     price:
-      - type: "WEB DESIGN & DEVELOPMENT" # Plan type (must match values in the 'plans' section above).
+      - type: "Web Design & Development" # Plan type (must match values in the 'plans' section above).
         prependValue: CHF
         value: 9000
         appendValue:
-      - type: AI AUTOMATIONS # Plan type (must match values in the 'plans' section above).
+      - type: AI Automations # Plan type (must match values in the 'plans' section above).
         prependValue: CHF
         value: 60
         appendValue:
@@ -116,7 +116,7 @@ list:
 
     ctaBtn:
       enable: true
-      label: Get Started
+      label: Get started
       url: /contact/
       rel:
       target:

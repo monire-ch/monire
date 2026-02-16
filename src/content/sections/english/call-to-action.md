@@ -4,7 +4,7 @@ title: Interested in working with us?
 
 ctaBtn:
   enable: true
-  label: Get In Touch
+  label: Get in touch
   url: /contact/
   rel: ""
   target: ""

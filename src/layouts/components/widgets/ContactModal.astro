@@ -79,6 +79,19 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
     color: white;
   }
 
+  .contact-modal-panel :global(input.form-input:-webkit-autofill),
+  .contact-modal-panel :global(input.form-input:-webkit-autofill:hover),
+  .contact-modal-panel :global(input.form-input:-webkit-autofill:focus),
+  .contact-modal-panel :global(textarea.form-input:-webkit-autofill),
+  .contact-modal-panel :global(textarea.form-input:-webkit-autofill:hover),
+  .contact-modal-panel :global(textarea.form-input:-webkit-autofill:focus) {
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+    box-shadow: 0 0 0 1000px color-mix(in srgb, white 8%, transparent) inset !important;
+    border-color: color-mix(in srgb, white 24%, transparent) !important;
+    transition: background-color 9999s ease-out 0s;
+  }
+
   .contact-modal-panel :global(#validation-target) {
     position: relative;
     z-index: 40;

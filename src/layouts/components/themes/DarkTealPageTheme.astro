@@ -84,6 +84,19 @@ const { title = "Let's Work Together", titleAlign = "center" } =
     color: white !important;
   }
 
+  .dark-teal-page-theme input.form-input:-webkit-autofill,
+  .dark-teal-page-theme input.form-input:-webkit-autofill:hover,
+  .dark-teal-page-theme input.form-input:-webkit-autofill:focus,
+  .dark-teal-page-theme textarea.form-input:-webkit-autofill,
+  .dark-teal-page-theme textarea.form-input:-webkit-autofill:hover,
+  .dark-teal-page-theme textarea.form-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+    box-shadow: 0 0 0 1000px color-mix(in srgb, white 8%, transparent) inset !important;
+    border-color: color-mix(in srgb, white 24%, transparent) !important;
+    transition: background-color 9999s ease-out 0s;
+  }
+
   .dark-teal-page-theme .form-input::placeholder,
   .dark-teal-page-theme .hs-select input.form-input::placeholder,
   .dark-teal-page-theme .hs-select button.form-input::placeholder {

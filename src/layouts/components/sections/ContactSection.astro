@@ -142,7 +142,9 @@ const validationMessages = {
                 showDetails ? "lg:pr-10" : "lg:px-10",
               ]}>
               <form
-                id="contact-form"
+              id="contact-form"
+                class="contact-form"
+                novalidate
                 {...{
                   "data-netlify":
                     contactFormProvider === "netlify" ? "true" : undefined,
@@ -209,6 +211,7 @@ const validationMessages = {
                     <select
                       {...(input.label ? { "data-name": input.label } : {})}
                       {...(input.id ? { id: input.id } : {})}
+                      data-required={input.required ? "true" : "false"}
                       name={
                         input.name || input.label || "Please set name value"
                       }
@@ -553,194 +556,209 @@ const validationMessages = {
   import contact from "@/config/contact.json" with { type: "json" };
 
   document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById(
-      "contact-form",
-    ) as HTMLFormElement | null;
+    const forms = document.querySelectorAll(
+      "form.contact-form",
+    ) as NodeListOf<HTMLFormElement>;
+    if (!forms.length) return;
 
-    if (!form) return;
+    const initForm = (form: HTMLFormElement) => {
+      const selectTags = form.querySelectorAll(
+        "select[data-hs-select]",
+      ) as NodeListOf<HTMLSelectElement>;
+      const emailInput = form.querySelector(
+        'input[type="email"]',
+      ) as HTMLInputElement | null;
+      const validationMessages = {
+        requiredSelect:
+          form.dataset.msgRequiredSelect || "Please select an option.",
+        invalidEmail:
+          form.dataset.msgInvalidEmail || "Please enter a valid email address.",
+        submitting: form.dataset.msgSubmitting || "Form Submitting!...",
+        assistanceAt:
+          form.dataset.msgAssistanceAt ||
+          "Please contact us for assistance at",
+      };
 
-    const selectTags = form.querySelectorAll(
-      "select[data-hs-select]",
-    ) as NodeListOf<HTMLSelectElement>;
-    const emailInput = form.querySelector(
-      'input[type="email"]',
-    ) as HTMLInputElement | null;
-    const validationMessages = {
-      requiredSelect:
-        form.dataset.msgRequiredSelect || "Please select an option.",
-      invalidEmail:
-        form.dataset.msgInvalidEmail || "Please enter a valid email address.",
-      submitting: form.dataset.msgSubmitting || "Form Submitting!...",
-      assistanceAt:
-        form.dataset.msgAssistanceAt ||
-        "Please contact us for assistance at",
-    };
-
-    selectTags.forEach((select) => {
-      if (select.hasAttribute("required")) {
-        select.setAttribute("data-required", "true");
-        select.removeAttribute("required");
-      }
-    });
-
-    const validatePrelineSelect = (select: HTMLSelectElement): boolean => {
-      const isRequired = select.getAttribute("data-required") === "true";
-      const value = select.value;
-      const isEmpty = !value || value === "" || value === "Choose";
-
-      let wrapper = select.parentElement;
-      while (wrapper && wrapper.tagName !== "FORM") {
-        if (wrapper.id === "validation-target") {
-          break;
+      selectTags.forEach((select) => {
+        if (select.hasAttribute("required")) {
+          select.removeAttribute("required");
         }
-        wrapper = wrapper.parentElement;
-      }
+      });
 
-      if (!wrapper) return true;
+      const validatePrelineSelect = (select: HTMLSelectElement): boolean => {
+        const isRequired = select.getAttribute("data-required") === "true";
+        const formData = new FormData(form);
+        const selectedValues = formData
+          .getAll(select.name)
+          .map((value) => String(value));
+        const hasValidValue = selectedValues.some(
+          (value) => value && value !== "Choose",
+        );
+        const isEmpty = selectedValues.length === 0 || !hasValidValue;
 
-      const errorMsg = wrapper.querySelector("p.text-red-600");
-      const successMsg = wrapper.querySelector("p.text-white");
+        const wrapper = select.closest("#validation-target");
+        if (!wrapper) return true;
 
-      if (isRequired && isEmpty) {
-        wrapper.classList.add("hs-error");
-        wrapper.classList.remove("hs-success");
+        const errorMsg = wrapper.querySelector("p.text-red-600");
+        const successMsg = wrapper.querySelector("p.text-white");
 
-        if (errorMsg) {
-          errorMsg.classList.remove("hidden");
-        }
-        if (successMsg) {
-          successMsg.classList.add("hidden");
+        if (isRequired && isEmpty) {
+          wrapper.classList.add("hs-error");
+          wrapper.classList.remove("hs-success");
+          errorMsg?.classList.remove("hidden");
+          successMsg?.classList.add("hidden");
+          return false;
         }
 
-        return false;
-      } else {
         wrapper.classList.remove("hs-error");
-
-        if (errorMsg) {
-          errorMsg.classList.add("hidden");
-        }
-
+        errorMsg?.classList.add("hidden");
         if (!isEmpty) {
           wrapper.classList.add("hs-success");
-          if (successMsg) {
-            successMsg.classList.remove("hidden");
-          }
+          successMsg?.classList.remove("hidden");
         } else {
           wrapper.classList.remove("hs-success");
-          if (successMsg) {
-            successMsg.classList.add("hidden");
-          }
+          successMsg?.classList.add("hidden");
+        }
+        return true;
+      };
+
+      selectTags.forEach((select) => {
+        select.addEventListener("change", () => {
+          validatePrelineSelect(select);
+        });
+      });
+
+      const isValidEmailFormat = (value: string): boolean =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+
+      const validateEmail = (): boolean => {
+        if (!emailInput) return true;
+        const value = emailInput.value.trim();
+
+        if (!value) {
+          emailInput.setCustomValidity("");
+          return true;
         }
 
-        return true;
-      }
-    };
+        if (!isValidEmailFormat(value)) {
+          emailInput.setCustomValidity(validationMessages.invalidEmail);
+          return false;
+        }
 
-    selectTags.forEach((select) => {
-      select.addEventListener("change", () => {
-        validatePrelineSelect(select);
-      });
-    });
-
-    const isValidEmailFormat = (value: string): boolean =>
-      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
-
-    const validateEmail = (): boolean => {
-      if (!emailInput) return true;
-      const value = emailInput.value.trim();
-
-      if (!value) {
         emailInput.setCustomValidity("");
         return true;
-      }
+      };
 
-      if (!isValidEmailFormat(value)) {
-        emailInput.setCustomValidity(validationMessages.invalidEmail);
-        return false;
-      }
+      emailInput?.addEventListener("input", validateEmail);
+      emailInput?.addEventListener("blur", validateEmail);
 
-      emailInput.setCustomValidity("");
-      return true;
-    };
+      const focusInvalidSelect = (select: HTMLSelectElement) => {
+        const wrapper = select.closest("#validation-target");
+        const toggle = wrapper?.querySelector(
+          'button[aria-expanded]',
+        ) as HTMLButtonElement | null;
+        toggle?.focus();
+      };
 
-    emailInput?.addEventListener("input", validateEmail);
-    emailInput?.addEventListener("blur", () => {
-      validateEmail();
-      emailInput.reportValidity();
-    });
+      form.addEventListener("submit", async (e: Event) => {
+        e.preventDefault();
 
-    form.addEventListener("submit", async (e: Event) => {
-      e.preventDefault();
+        const provider = form.getAttribute("data-provider") || "";
+        const action = form.getAttribute("data-action") || "";
 
-      const provider = form.getAttribute("data-provider") || "";
-      const action = form.getAttribute("data-action") || "";
-
-      let allSelectsValid = true;
-      selectTags.forEach((select) => {
-        const isValid = validatePrelineSelect(select);
-        if (!isValid) {
-          allSelectsValid = false;
-        }
-      });
-
-      if (!allSelectsValid) {
-        const firstInvalid = Array.from(selectTags).find(
-          (select) => !validatePrelineSelect(select),
-        );
-        if (firstInvalid) {
-          let wrapper = firstInvalid.parentElement;
-          while (wrapper && wrapper.tagName !== "FORM") {
-            if (wrapper.id === "validation-target") {
-              wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
-              break;
+        const orderedFields = Array.from(form.elements).filter((el) => {
+          const field = el as
+            | HTMLInputElement
+            | HTMLTextAreaElement
+            | HTMLSelectElement;
+          if (!field.name || field.hasAttribute("disabled")) return false;
+          if ("type" in field) {
+            const inputType = (field as HTMLInputElement).type;
+            if (
+              inputType === "hidden" ||
+              inputType === "submit" ||
+              inputType === "button" ||
+              inputType === "reset"
+            ) {
+              return false;
             }
-            wrapper = wrapper.parentElement;
+          }
+          return true;
+        }) as Array<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
+
+        for (const field of orderedFields) {
+          if (
+            field instanceof HTMLInputElement &&
+            (field.type === "radio" || field.type === "checkbox")
+          ) {
+            if (!field.checkValidity()) {
+              field.reportValidity();
+              field.focus();
+              return;
+            }
+            continue;
+          }
+
+          if (field instanceof HTMLSelectElement && field.matches("[data-hs-select]")) {
+            if (!validatePrelineSelect(field)) {
+              focusInvalidSelect(field);
+              return;
+            }
+            continue;
+          }
+
+          if (field === emailInput && !validateEmail()) {
+            emailInput.reportValidity();
+            emailInput.focus();
+            return;
+          }
+
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            field.focus();
+            return;
           }
         }
-        return;
-      }
 
-      if (!validateEmail()) {
-        emailInput?.reportValidity();
-        emailInput?.focus();
-        return;
-      }
+        setMessage(validationMessages.submitting, true, true, form);
 
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      setMessage(validationMessages.submitting, true, true, form);
-
-      try {
-        switch (provider) {
-          case "netlify":
-            await netlifySubmit(form, action);
-            break;
-          case "formsubmit.co":
-            await formSubmit({
-              form,
-              action,
-            });
-            break;
-          case "formspree":
-            await formspreeSubmit(
-              Object.fromEntries(new FormData(form).entries()),
-              5000,
-              form,
-            );
-            break;
-          default:
-            throw new Error("Unknown form provider.");
+        try {
+          switch (provider) {
+            case "netlify":
+              await netlifySubmit(form, action);
+              break;
+            case "formsubmit.co":
+              await formSubmit({
+                form,
+                action,
+              });
+              break;
+            case "formspree":
+              await formspreeSubmit(
+                Object.fromEntries(new FormData(form).entries()),
+                5000,
+                form,
+              );
+              break;
+            default:
+              throw new Error("Unknown form provider.");
+          }
+        } catch (error) {
+          setMessage(
+            `${error}! ${validationMessages.assistanceAt} [${contact.email}](mailto:${contact.email})`,
+            false,
+            false,
+            form,
+          );
         }
+      });
+    };
+
+    forms.forEach((form) => {
+      try {
+        initForm(form);
       } catch (error) {
-        setMessage(
-          `${error}! ${validationMessages.assistanceAt} [${contact.email}](mailto:${contact.email})`,
-          false,
-          false,
-          form,
-        );
+        console.error("Failed to initialize contact form", error);
       }
     });
   });

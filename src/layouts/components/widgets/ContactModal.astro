@@ -30,9 +30,6 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
 
   .contact-modal-title {
     color: white;
-    font-size: clamp(1.85rem, 1.45rem + 1.1vw, 2.4rem);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
   }
 
   .contact-modal-close {
@@ -49,6 +46,11 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
   .contact-modal-panel :global(section.section-light) {
     background: transparent;
     color: inherit;
+  }
+
+  .contact-modal-panel :global([data-aos][data-aos-delay="200"]) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .contact-modal-panel :global(.form-label) {
@@ -191,7 +193,7 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
     ✕
   </button>
 
-  <h2 class="contact-modal-title mb-7 font-semibold">{modalHeading}</h2>
+  <h2 class="contact-modal-title text-4xl text-light mb-8 mt-6">{modalHeading}</h2>
 
   <ContactSection />
   <slot />

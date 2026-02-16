@@ -1,9 +1,11 @@
 ---
 type Props = {
   title?: string;
+  titleAlign?: "left" | "center";
 };
 
-const { title = "Let's Work Together" } = Astro.props;
+const { title = "Let's Work Together", titleAlign = "center" } =
+  Astro.props as Props;
 ---
 
 <section class="dark-teal-page-theme dark-teal-theme-base relative overflow-hidden">
@@ -14,7 +16,13 @@ const { title = "Let's Work Together" } = Astro.props;
     class="dark-teal-theme-orb dark-teal-theme-orb-2"
     aria-hidden="true"></div>
   <div class="container relative z-1">
-    <h1 class="dark-teal-page-theme-title text-4xl text-light mb-12">
+    <h1
+      class:list={[
+        "dark-teal-page-theme-title text-4xl text-light mb-12",
+        titleAlign === "left"
+          ? "dark-teal-page-theme-title-left"
+          : "dark-teal-page-theme-title-center",
+      ]}>
       {title}
     </h1>
   </div>
@@ -32,9 +40,14 @@ const { title = "Let's Work Together" } = Astro.props;
     }
   }
 
-  .dark-teal-page-theme .dark-teal-page-theme-title {
+  .dark-teal-page-theme .dark-teal-page-theme-title-center {
     width: min(100% - 2rem, 56rem);
     margin-inline: auto;
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-title-left {
+    width: min(100% - 2rem, 56rem);
+    margin-inline: 0;
   }
 
   .dark-teal-page-theme section.section-light {
@@ -177,7 +190,8 @@ const { title = "Let's Work Together" } = Astro.props;
   }
 
   @media (max-width: 767px) {
-    .dark-teal-page-theme .dark-teal-page-theme-title {
+    .dark-teal-page-theme .dark-teal-page-theme-title-center,
+    .dark-teal-page-theme .dark-teal-page-theme-title-left {
       width: calc(100% - 1.25rem);
     }
   }

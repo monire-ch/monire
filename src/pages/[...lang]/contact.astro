@@ -23,8 +23,10 @@ if (response) return response;
 ---
 
 <Base {...contactIndex?.data}>
-  <DarkTealPageTheme title={contactIndex?.data?.pageHeading || contactIndex?.data?.title}>
-    <ContactSection />
+  <DarkTealPageTheme
+    title={contactIndex?.data?.pageHeading || contactIndex?.data?.title}
+    titleAlign="left">
+    <ContactSection showDetails={true} />
   </DarkTealPageTheme>
   <CallToAction />
 </Base>

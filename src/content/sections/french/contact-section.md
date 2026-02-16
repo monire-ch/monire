@@ -6,12 +6,14 @@ subtitle: "Contact"
 contactList:
   enable: true
   list:
-    - icon: "/images/icons/svg/email.svg"
-      label: "Email us"
+    - label: "Email"
+      value: "[hello@monire.ch](mailto:hello@monire.ch)"
+    - label: "Location"
+      value: "Zürich, Switzerland"
 
 social:
   enable: true
-  title: "Follow us on social media"
+  title: "Social"
 
 form:
   emailSubject: "New form submission from Moniré website"

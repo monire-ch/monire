@@ -60,14 +60,15 @@ const t = await useTranslations(Astro.currentLocale as string);
               class:list={[
                 "text-4xl",
                 isDarkTealTheme ? "text-light" : "text-monire-deep-teal",
+                isDarkTealTheme && !date && "mb-12",
               ]}
               set:html={markdownify(title)}
             />
           )
         }
-        <div class="mt-8 flex">
-          {
-            date && (
+        {
+          date && (
+            <div class="mt-8 flex">
               <div class="flex flex-col gap-y-4">
                 <p class="font-primary text-sm tracking-[.12em] opacity-60">
                   {t("common.publishedOn")}
@@ -80,14 +81,14 @@ const t = await useTranslations(Astro.currentLocale as string);
                   set:html={dateFormat(date)}
                 />
               </div>
-            )
-          }
-        </div>
+            </div>
+          )
+        }
         <div
           class:list={[
             "prose-styles content-page-prose lg:text-lg",
             isDarkTealTheme && "page-theme-prose",
-            date ? "mt-10 md:mt-20" : "mt-5 md:mt-10",
+            date ? "mt-10 md:mt-20" : "mt-0",
           ]}>
           <Content />
         </div>

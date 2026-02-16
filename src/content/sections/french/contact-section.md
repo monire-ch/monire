@@ -70,14 +70,6 @@ form:
             value: "SEO & Analytics"
           - label: "Other"
             value: "Other"
-    - label: "Tell us about your project:"
-      tag: "textarea"
-      defaultValue: ""
-      rows: "4" # Only work if tag is textarea
-      placeholder: "Tell us about your project:"
-      name: "Tell us about your project:"
-      required: true
-      halfWidth: false
     - label: "Your budget:"
       placeholder: "Your budget:"
       name: "Your budget:"
@@ -96,6 +88,14 @@ form:
             value: "CHF 10’000 – 20’000"
           - label: "CHF 20’000+"
             value: "CHF 20’000+"
+    - label: "Tell us about your project:"
+      tag: "textarea"
+      defaultValue: ""
+      rows: "4" # Only work if tag is textarea
+      placeholder: "Tell us about your project:"
+      name: "Tell us about your project:"
+      required: true
+      halfWidth: false
     - label: "I agree to the terms and conditions and [privacy policy](/privacy-policy/)."
       name: "Agreed Privacy"
       value: "Agreed"

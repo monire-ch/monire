@@ -117,7 +117,7 @@ form = {
       <div class="container">
         <div
           class:list={[
-            "grid grid-cols-1 gap-10",
+            "grid grid-cols-1 gap-4",
             showDetails && "lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]",
           ]}>
           {form && (
@@ -142,7 +142,10 @@ form = {
                   "data-provider": contactFormProvider,
                 }}
                 method="post"
-                class="grid grid-cols-1 gap-4">
+                class:list={[
+                  "grid gap-4",
+                  showDetails ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1",
+                ]}>
             {/* Some Hidden Inputs For provider */}
             {form.emailSubject &&
               (contactFormProvider === "formsubmit.co" ||
@@ -165,7 +168,13 @@ form = {
                 input-wrapper
                 class:list={[
                   "flex flex-col",
-                  !input.halfWidth ? "col-span-2" : "max-sm:col-span-2",
+                  showDetails &&
+                  input.tag !== "textarea" &&
+                  input.type !== "checkbox" &&
+                  input.type !== "radio" &&
+                  !input.note
+                    ? "max-sm:col-span-2"
+                    : "col-span-2",
                   input.parentClass,
                 ]}>
                 {!input.note &&
@@ -428,7 +437,7 @@ form = {
       color-mix(in srgb, var(--color-bg-dark) 88%, var(--color-monire-deep-teal))
         100%
     );
-    box-shadow: 0 0.75rem 2rem rgba(0, 24, 33, 0.22);
+    box-shadow: none;
   }
 
   .contact-detail-item {

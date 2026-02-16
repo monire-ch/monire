@@ -64,7 +64,7 @@ const encodedEmail = encodeEmail(contact.email);
                 />
               )
             }
-            <ul class="flex flex-col gap-y-2">
+            <ul class="footer-quick-links">
               {
                 t("footerMenuQuickLink") &&
                   t("footerMenuQuickLink").map(
@@ -204,6 +204,24 @@ const encodedEmail = encodeEmail(contact.email);
     margin-left: 0 !important;
     transform: translateX(-1.9rem);
     max-width: calc(100% + 1.9rem);
+  }
+
+  .footer-quick-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 0.5rem;
+  }
+
+  @media (min-width: 420px) {
+    .footer-quick-links {
+      display: inline-grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(3, auto);
+      grid-template-columns: repeat(2, auto);
+      justify-content: start;
+      column-gap: 2rem;
+      row-gap: 0.5rem;
+    }
   }
 
   .footer-bottom-links > li {

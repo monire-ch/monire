@@ -5,6 +5,7 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
 import Button from "../buttons/Button.astro";
+import Link from "@/layouts/components/links/Link.astro";
 
 type aboutSectionType = Section & {
   layoutType?: "modern" | "creative";
@@ -37,6 +38,9 @@ let {
   subtitle,
   list,
 } = actualContent as aboutSectionType;
+
+const isRecipientLink = (btn?: ButtonData) =>
+  btn?.label?.trim().toLowerCase() === "2026 recipient";
 ---
 
 {
@@ -83,18 +87,30 @@ let {
                 {(item.ctaBtn?.enable || item.ctaBtn2?.enable) && (
                   <div class="flex flex-wrap items-center gap-4 pt-2">
                     {item.ctaBtn?.enable && (
-                      <Button
-                        class="text-center"
-                        variant="secondary"
-                        content={{ ...item.ctaBtn }}
-                      />
+                      isRecipientLink(item.ctaBtn) ? (
+                        <Link href={item.ctaBtn.url} class="text-link">
+                          {item.ctaBtn.label}
+                        </Link>
+                      ) : (
+                        <Button
+                          class="text-center"
+                          variant="secondary"
+                          content={{ ...item.ctaBtn }}
+                        />
+                      )
                     )}
                     {item.ctaBtn2?.enable && (
-                      <Button
-                        class="text-center"
-                        variant="secondary"
-                        content={{ ...item.ctaBtn2 }}
-                      />
+                      isRecipientLink(item.ctaBtn2) ? (
+                        <Link href={item.ctaBtn2.url} class="text-link">
+                          {item.ctaBtn2.label}
+                        </Link>
+                      ) : (
+                        <Button
+                          class="text-center"
+                          variant="secondary"
+                          content={{ ...item.ctaBtn2 }}
+                        />
+                      )
                     )}
                   </div>
                 )}

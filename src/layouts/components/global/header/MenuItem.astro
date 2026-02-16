@@ -1,6 +1,7 @@
 ---
 import type { NavigationLink } from "@/types";
 import Button from "@/layouts/components/buttons/Button.astro";
+import Link from "@/layouts/components/links/Link.astro";
 
 const menu = Astro.props.menu as NavigationLink;
 const { pathname } = Astro.url;
@@ -22,15 +23,15 @@ const { pathname } = Astro.url;
           data-menu-action={menu.action}
         />
       ) : (
-        <a
+        <Link
+          variant="nav"
           href={menu.url || "#"}
           class:list={[
-            "nav-link uppercase text-text-default font-bold",
             { "nav-link-active": pathname === menu.url },
           ]}
           data-menu-action={menu.action || null}>
           {menu.name}
-        </a>
+        </Link>
       )}
     </li>
   )

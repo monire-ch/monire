@@ -18,6 +18,7 @@
 @layer components {
   @import "./animation.css";
   @import "./navigation.css";
+  @import "./links.css";
   @import "./components.css";
   @import "./hero.css";
 }

@@ -173,17 +173,20 @@ const t = await useTranslations(Astro.currentLocale as string);
 
   .page-theme-dark-teal .prose-styles a {
     color: var(--color-link-dark-bg) !important;
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-thickness: var(--color-link-underline-thickness);
   }
 
   .page-theme-dark-teal .prose-styles a:hover {
     color: var(--color-link-dark-bg-hover) !important;
     text-decoration: underline;
+    text-decoration-thickness: var(--color-link-underline-thickness);
   }
 
   .page-theme-dark-teal .prose-styles a:focus-visible {
     color: var(--color-link-dark-bg-hover) !important;
     text-decoration: underline;
+    text-decoration-thickness: var(--color-link-underline-thickness);
     outline-color: var(--color-link-dark-bg-focus);
   }
 

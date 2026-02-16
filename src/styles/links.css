@@ -1,0 +1,59 @@
+.link {
+  transition:
+    color 180ms ease,
+    text-decoration-color 180ms ease;
+}
+
+.link-default,
+.prose-styles a,
+.prose-a\:text-primary a {
+  color: var(--color-link-dark-bg);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+}
+
+.link-default:hover,
+.prose-styles a:hover,
+.prose-a\:text-primary a:hover {
+  color: var(--color-link-dark-bg-hover);
+  text-decoration: underline;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+}
+
+.link-default:focus-visible,
+.prose-styles a:focus-visible,
+.prose-a\:text-primary a:focus-visible {
+  color: var(--color-link-dark-bg-hover);
+  text-decoration: underline;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+  outline: 2px solid var(--color-link-dark-bg-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.link-footer {
+  color: var(--color-link-dark-bg);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+}
+
+.link-footer:hover {
+  color: var(--color-link-dark-bg-hover);
+  text-decoration: underline;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+}
+
+.link-footer:focus-visible {
+  color: var(--color-link-dark-bg-hover);
+  text-decoration: underline;
+  text-decoration-thickness: var(--color-link-underline-thickness);
+  outline: 2px solid var(--color-link-dark-bg-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.link-nav {
+  text-decoration: none;
+}

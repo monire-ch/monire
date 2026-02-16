@@ -8,6 +8,7 @@ import SocialData from "@/config/social.json";
 import type { InputField } from "@/types";
 import config from ".astro/config.generated.json" with { type: "json" };
 import Button from "@/layouts/components/buttons/Button.astro";
+import Link from "@/layouts/components/links/Link.astro";
 
 const {
   settings: { contactFormAction, contactFormProvider },
@@ -103,6 +104,13 @@ const combineRadio = (list: InputField[]) => {
   );
 
   return result;
+};
+
+const parseMarkdownLink = (value?: string) => {
+  if (!value) return null;
+  const match = value.match(/^\s*\[([^\]]+)\]\(([^)]+)\)\s*$/);
+  if (!match) return null;
+  return { label: match[1], href: match[2] };
 };
 
 form = {
@@ -412,12 +420,21 @@ const validationMessages = {
                             set:html={markdownify(item.label)}
                           />
                         )}
-                      {item.value && (
-                        <div
-                          class="contact-detail-value prose-a:text-primary text-base leading-relaxed [&_a]:text-[var(--color-link-dark-bg)] [&_a]:no-underline [&_a]:underline-offset-2 [&_a:hover]:underline"
-                          set:html={markdownify(item.value, true)}
-                        />
-                      )}
+                      {item.value &&
+                        (() => {
+                          const parsedLink = parseMarkdownLink(item.value);
+                          return parsedLink ? (
+                            <div class="contact-detail-value text-base leading-relaxed">
+                              <Link href={parsedLink.href}>
+                                {parsedLink.label}
+                              </Link>
+                            </div>
+                          ) : (
+                            <p class="contact-detail-value text-base leading-relaxed">
+                              {item.value}
+                            </p>
+                          );
+                        })()}
                     </div>
                   ))}
                 </div>
@@ -622,6 +639,7 @@ const validationMessages = {
   .contact-detail-value :global(a),
   .contact-details-panel :global(a) {
     color: var(--color-link-dark-bg) !important;
+    text-decoration: underline;
     text-decoration-thickness: var(--color-link-underline-thickness);
     text-underline-offset: 0.15em;
   }

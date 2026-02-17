@@ -150,11 +150,11 @@ const {
       justify-content: flex-start !important;
       align-items: center !important;
       width: 100% !important;
-      margin-bottom: 2rem !important;
+      margin-bottom: 1rem !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
       padding-top: calc(var(--spacing) * 2.5) !important;
-      padding-bottom: calc(var(--spacing) * 2.5) !important;
+      padding-bottom: calc(var(--spacing) * 6) !important;
       list-style: none !important;
     }
 
@@ -176,7 +176,7 @@ const {
         var(--color-bg-dark) 0%,
         var(--color-bg-dark-soft) 100%
       );
-      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-elevation-soft);
     }
 
     #nav-menu :global(.nav-item) {
@@ -184,21 +184,52 @@ const {
       width: 100%;
     }
 
+    #nav-menu :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta)) {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border-shell-dark);
+    }
+
     #nav-menu :global(.nav-link) {
       display: block;
-      padding: 0.875rem 1rem;
-      font-size: 1.125rem;
+      padding-left: 1.7rem;
+      font-size: 1.3rem;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      text-transform: none;
+      color: var(--color-text-shell-muted);
       width: 100%;
-      border-radius: 0.5rem;
-      transition: background-color 0.2s;
+      border-radius: 0;
+      transition:
+        background-color 0.2s,
+        color 0.2s;
     }
 
-    #nav-menu :global(.nav-link:hover) {
-      background-color: rgba(0, 0, 0, 0.05);
+    #nav-menu :global(.nav-link.nav-link-active) {
+      background-color: transparent !important;
+      color: var(--color-text-shell-strong) !important;
     }
 
-    :global(.dark) #nav-menu :global(.nav-link:hover) {
-      background-color: rgba(255, 255, 255, 0.05);
+    #nav-menu :global(.nav-item.nav-item-cta) {
+      display: flex;
+      justify-content: center;
+      padding-top: 2rem;
+      border-bottom: 0;
+    }
+
+    #nav-menu :global(.nav-link.nav-link-cta) {
+      width: auto !important;
+      min-width: 14rem;
+      text-transform: none !important;
+      border-radius: 999px;
+    }
+
+    #nav-menu :global(.nav-link.nav-link-cta .label) {
+      font-size: 1.3rem;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      text-transform: none !important;
     }
 
     #nav-menu > :first-child {

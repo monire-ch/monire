@@ -7,25 +7,24 @@ const t = await useTranslations(Astro.currentLocale as string);
 
 <div
   id="cookie-banner"
-  class="fixed right-4 bottom-4 left-4 z-[9999] hidden max-w-sm rounded-xl border border-white/20 bg-white p-5 text-gray-900 shadow-xl backdrop-blur md:right-6 md:left-auto">
-  <p class="text-sm leading-relaxed">
+  class="fixed right-4 bottom-4 left-4 z-[9999] hidden max-w-md rounded-3xl border p-5 text-[var(--color-text-shell-strong)] shadow-[var(--shadow-shell-soft)] backdrop-blur-xl md:right-6 md:left-auto md:p-6"
+  style="background-image: var(--gradient-surface-dark); border-color: var(--color-border-shell-dark);">
+  <p class="text-sm leading-relaxed text-[var(--color-text-shell-muted)] md:text-[0.95rem]">
     {t("cookie.message")}&nbsp;
-    <Link
-      href={getLocaleUrlCTM("/privacy-policy", Astro.currentLocale)}
-      class="text-primary hover:text-primary/80 underline">
+    <Link href={getLocaleUrlCTM("/privacy-policy", Astro.currentLocale)}>
       {t("cookie.learnMore")}
     </Link>
   </p>
 
-  <div class="mt-4 flex justify-end gap-3">
+  <div class="mt-5 flex flex-wrap justify-end gap-2.5">
     <button
-      class="rounded-md bg-gray-200 px-3 py-1.5 text-sm hover:bg-gray-300"
+      class="cookie-btn-secondary rounded-full border px-4 py-2 text-sm font-medium transition-colors"
       onclick="window.rejectCookies()">
       {t("cookie.reject")}
     </button>
 
     <button
-      class="bg-primary hover:bg-primary/90 rounded-md px-3 py-1.5 text-sm text-white"
+      class="cookie-btn-primary rounded-full border px-4 py-2 text-sm font-semibold transition-colors"
       onclick="window.acceptCookies()">
       {t("cookie.accept")}
     </button>
@@ -52,3 +51,27 @@ const t = await useTranslations(Astro.currentLocale as string);
     document.getElementById("cookie-banner")?.remove();
   };
 </script>
+
+<style>
+  .cookie-btn-secondary {
+    border-color: var(--color-border-control-on-dark);
+    color: var(--color-text-control-on-dark);
+  }
+
+  .cookie-btn-secondary:hover {
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 94%, white);
+    border-color: var(--color-mustard-70);
+    color: var(--color-text-shell-strong);
+  }
+
+  .cookie-btn-primary {
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 88%, white);
+    border-color: var(--color-mustard-70);
+    color: var(--color-light);
+  }
+
+  .cookie-btn-primary:hover {
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 96%, white);
+    border-color: var(--color-mustard);
+  }
+</style>

@@ -57,7 +57,7 @@ const background = "/images/hero/background.jpg";
         {
           description && (
             <p
-              class="hero-description my-10 shrink-0 text-center tracking-wider opacity-80"
+              class="hero-description my-10 shrink-0 text-center tracking-wider opacity-90"
               set:html={markdownify(description)}
             />
           )
@@ -104,10 +104,12 @@ const background = "/images/hero/background.jpg";
   .hero-subtitle {
     font-size: clamp(1.05rem, 1.7vw, 1.35rem);
     line-height: 1.45;
+    color: var(--color-text-shell-muted);
   }
 
   .hero-description {
     font-size: clamp(1rem, 1.35vw, 1.35rem);
     line-height: 1.5;
+    color: var(--color-text-shell-muted);
   }
 </style>

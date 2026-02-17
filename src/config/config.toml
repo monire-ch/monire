@@ -13,7 +13,7 @@
 
   # Add a trailing slash at the end of URLs (e.g., https://example.com/, https://example.com/contact/)
   # Note: Manually restart your server when you change this value
-  trailingSlash = true
+  trailingSlash = false
 
   # Add your site logo in image path below and open your terminal and run "npm run generate-favicons" to generate favicons for different devices and platform (https://realfavicongenerator.net/checker)
   [site.favicon]

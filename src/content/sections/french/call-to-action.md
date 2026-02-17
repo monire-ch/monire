@@ -1,5 +1,6 @@
 ---
 enable: true
+subtitle: Booking new projects
 title: Interested in working with us?
 
 ctaBtn:

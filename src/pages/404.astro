@@ -1,15 +1,64 @@
 ---
 import Base from "@/layouts/Base.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+
+type NotFoundContent = {
+  errorLabel: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
+};
+
+const notFoundContent = (
+  await getEntryCTM("sections", "not-found", Astro.currentLocale)
+)?.data as NotFoundContent;
 ---
 
-<Base status={404} title="Page Not Found" disableTagline={true}>
-  <section class="section-light py-8 md:py-16">
-    <div class="container">
-      <div class="flex flex-col items-center gap-y-10">
-        <h1 class="h2 md:text-h1 text-monire-deep-teal text-center">
-          Page Not Found
+<Base status={404} title={notFoundContent.title} disableTagline={true}>
+  <section class="relative overflow-hidden py-16 md:py-24">
+    <div class="container relative z-10">
+      <div class="notfound-shell mx-auto max-w-3xl rounded-[2rem] border px-6 py-12 text-center md:px-12 md:py-16">
+        <p class="text-mustard text-sm tracking-[0.28em] uppercase">
+          {notFoundContent.errorLabel}
+        </p>
+
+        <p class="mt-4 text-6xl leading-none font-secondary text-mustard md:text-8xl">
+          404
+        </p>
+
+        <h1 class="mt-6 text-3xl font-medium text-[var(--color-text-shell-strong)] md:text-5xl">
+          {notFoundContent.title}
         </h1>
+
+        <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--color-text-shell-muted)] md:text-lg">
+          {notFoundContent.description}
+        </p>
+
+        <div class="mt-10 flex justify-center">
+          <Button
+            variant="primary"
+            content={{
+              enable: true,
+              label: notFoundContent.ctaLabel,
+              url: getLocaleUrlCTM("/", Astro.currentLocale),
+            }}
+          />
+        </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  :global(body) {
+    background: var(--color-bg-page);
+  }
+
+  .notfound-shell {
+    background-image: var(--gradient-surface-dark);
+    border-color: var(--color-border-shell-dark);
+    box-shadow: var(--shadow-shell-soft);
+  }
+</style>

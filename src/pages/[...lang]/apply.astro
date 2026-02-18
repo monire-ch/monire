@@ -1,16 +1,194 @@
 ---
 import Base from "@/layouts/Base.astro";
+import CallToAction from "@/layouts/components/sections/CallToAction.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+import { getEntryCTM } from "@/lib/contentParser.astro";
 import { generatePaths } from "@/lib/utils/i18nUtils";
-import DarkTealPageTheme from "@/layouts/components/themes/DarkTealPageTheme.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { Button as ButtonData } from "@/types";
 
 export function getStaticPaths() {
   return generatePaths();
 }
+
+type ApplyPageContent = {
+  enable?: boolean;
+  title?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  subtitle?: string;
+  heading?: string;
+  description?: string;
+  supportingText?: string;
+  stepsTitle?: string;
+  steps?: Array<{ title: string; description: string }>;
+  comingSoon?: string;
+  ctaBtn?: ButtonData;
+};
+
+const applyContent = (
+  await getEntryCTM("sections", "apply-page", Astro.currentLocale)
+)?.data as ApplyPageContent;
 ---
 
-<Base>
-  <DarkTealPageTheme
-    title={""}
-    titleAlign="left">
-  </DarkTealPageTheme>
+<Base {...applyContent}>
+  <section class="apply-page section-light relative overflow-hidden">
+    <div class="container">
+      <div class="mx-auto max-w-4xl space-y-10 md:space-y-12">
+        <div class="text-center">
+          <Subtitle content={applyContent?.subtitle} />
+          {applyContent?.heading && (
+            <h1
+              class="section-title has-italic-text mx-auto max-w-3xl text-monire-deep-teal capitalize"
+              set:html={markdownify(applyContent.heading)}
+            />
+          )}
+        </div>
+
+        <div class="apply-shell rounded-[1.6rem] border px-6 py-8 md:px-10 md:py-11">
+          {applyContent?.description && (
+            <p
+              class="mx-auto max-w-3xl text-center text-lg leading-relaxed text-[var(--color-text-shell-strong)] md:text-xl"
+              set:html={markdownify(applyContent.description)}
+            />
+          )}
+          {applyContent?.supportingText && (
+            <p
+              class="mx-auto mt-5 max-w-3xl text-center leading-relaxed text-[var(--color-text-shell-muted)]"
+              set:html={markdownify(applyContent.supportingText)}
+            />
+          )}
+          <div class="apply-divider mt-7" aria-hidden="true"></div>
+
+          {applyContent?.steps?.length ? (
+            <div class="mt-9 space-y-5 md:mt-10">
+              {applyContent?.stepsTitle && (
+                <h2
+                  class="text-center text-2xl font-medium tracking-[0.02em] text-[var(--color-text-shell-strong)]"
+                  set:html={markdownify(applyContent.stepsTitle)}
+                />
+              )}
+              <div class="grid gap-4 md:grid-cols-3">
+                {applyContent.steps.map((step, index) => (
+                  <article
+                    class:list={[
+                      "apply-step rounded-2xl border p-5",
+                      index === 1 ? "apply-step-featured" : "apply-step-soft",
+                    ]}>
+                    <p
+                      class:list={[
+                        "apply-step-index mb-3 inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-[0.16em] uppercase",
+                        index === 1
+                          ? "text-[var(--color-text-shell-strong)]"
+                          : "text-monire-deep-teal",
+                      ]}>
+                      {`STEP ${index + 1}`}
+                    </p>
+                    <h3
+                      class:list={[
+                        "text-lg font-medium",
+                        index === 1
+                          ? "text-[var(--color-text-shell-strong)]"
+                          : "text-monire-deep-teal",
+                      ]}
+                      set:html={markdownify(step.title)}
+                    />
+                    <p
+                      class:list={[
+                        "mt-2 leading-relaxed",
+                        index === 1
+                          ? "text-[var(--color-text-shell-muted)]"
+                          : "text-monire-deep-teal/86",
+                      ]}
+                      set:html={markdownify(step.description)}
+                    />
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          <div class="mt-8 flex flex-col items-center gap-5 md:mt-10">
+            {applyContent?.comingSoon && (
+              <p
+                class="apply-note rounded-full border px-5 py-2 text-center text-sm tracking-[0.04em] text-[var(--color-text-shell-strong)]"
+                set:html={markdownify(applyContent.comingSoon)}
+              />
+            )}
+            {applyContent?.ctaBtn?.enable && (
+              <Button variant="primary" content={applyContent.ctaBtn} />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <CallToAction />
 </Base>
+
+<style>
+  .apply-page {
+    background: var(--color-bg-page);
+    padding-top: clamp(7.25rem, 12vw, 10rem);
+    padding-bottom: clamp(6.5rem, 7vw, 9rem);
+  }
+
+  .apply-shell {
+    position: relative;
+    border-color: var(--color-border-surface-dark);
+    background: var(--gradient-surface-dark);
+    box-shadow: 0 18px 34px rgba(3, 42, 52, 0.16);
+  }
+
+  .apply-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--color-border-shell-dark) 92%, transparent) 50%,
+      transparent 100%
+    );
+  }
+
+  .apply-step {
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .apply-step:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-mustard-50);
+  }
+
+  .apply-step-featured {
+    border-color: var(--color-border-surface-dark);
+    background: var(--gradient-surface-dark);
+  }
+
+  .apply-step-soft {
+    border-color: var(--color-border-surface-soft);
+    background: var(--gradient-surface-soft);
+    box-shadow: 0 12px 24px rgba(1, 27, 35, 0.08);
+  }
+
+  .apply-step-index {
+    background: color-mix(in srgb, var(--color-bg-page) 90%, transparent);
+  }
+
+  .apply-step-featured .apply-step-index {
+    border-color: color-mix(in srgb, var(--color-mustard-50) 66%, transparent);
+    background: color-mix(in srgb, var(--color-bg-dark) 76%, transparent);
+  }
+
+  .apply-step-soft .apply-step-index {
+    border-color: color-mix(in srgb, var(--color-monire-deep-teal) 34%, transparent);
+    background: color-mix(in srgb, var(--color-bg-page) 96%, white);
+  }
+
+  .apply-note {
+    border-color: color-mix(in srgb, var(--color-mustard-50) 72%, transparent);
+    background: color-mix(in srgb, var(--color-bg-page) 20%, var(--color-bg-dark-soft));
+  }
+</style>

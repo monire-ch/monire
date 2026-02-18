@@ -1,6 +1,7 @@
 ---
 import Base from "@/layouts/Base.astro";
 import { generatePaths } from "@/lib/utils/i18nUtils";
+import DarkTealPageTheme from "@/layouts/components/themes/DarkTealPageTheme.astro";
 
 export function getStaticPaths() {
   return generatePaths();
@@ -8,4 +9,8 @@ export function getStaticPaths() {
 ---
 
 <Base>
+  <DarkTealPageTheme
+    title={""}
+    titleAlign="left">
+  </DarkTealPageTheme>
 </Base>

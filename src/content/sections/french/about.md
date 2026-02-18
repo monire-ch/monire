@@ -32,13 +32,14 @@ list:
     ctaBtn:
       enable: true
       label: "Apply here"
-      url: ""
+      url: "/apply/"
       rel: ""
       target: ""
     ctaBtn2:
       enable: true
       label: "2026 Recipient"
       url: "https://snipsquad.org"
+      renderAs: "link"
       rel: "noopener noreferrer"
       target: "_blank"
 ---

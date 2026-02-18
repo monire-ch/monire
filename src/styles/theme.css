@@ -25,7 +25,7 @@
   --color-mustard-50: rgba(207, 169, 71, 0.5);
 
   
-  --color-text-default: #C8C1C1;
+  --color-text-default: var(--color-text-shell-muted);
   --color-dark: #000E30;
 
   --color-blob: 0.61 0.06 205.6;
@@ -52,7 +52,7 @@
   --color-link-dark-bg: #F1D69A;
   --color-link-dark-bg-hover: #FAE7BE;
   --color-link-dark-bg-focus: #FFECC2;
-  --color-link-underline-thickness: 1px;
+  --color-link-underline-thickness: 0.05em;
 
   /* Shared surface tokens (used across About, Services, Pricing, Value cards) */
   --color-border-surface-light: rgba(255, 255, 255, 0.12);

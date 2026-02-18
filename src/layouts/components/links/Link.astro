@@ -1,0 +1,53 @@
+---
+type Props = {
+  href: string;
+  label?: string;
+  htmlLabel?: string;
+  rel?: string;
+  target?: string;
+  variant?: "default" | "footer" | "nav";
+  class?: string;
+  [key: string]: any;
+};
+
+const {
+  href,
+  label,
+  htmlLabel,
+  rel,
+  target,
+  variant = "default",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const isExternal = /^https?:\/\//i.test(href || "");
+const computedRel = isExternal ? rel || "noopener noreferrer" : rel;
+const computedTarget = isExternal ? target || "_blank" : target;
+---
+
+<a
+  href={href}
+  rel={computedRel}
+  target={computedTarget}
+  class:list={[
+    "link",
+    {
+      "link-default": variant === "default",
+      "link-footer": variant === "footer",
+      "link-nav nav-link text-text-default font-bold uppercase": variant ===
+        "nav",
+    },
+    className,
+  ]}
+  {...rest}>
+  {
+    htmlLabel ? (
+      <span set:html={htmlLabel} />
+    ) : label ? (
+      label
+    ) : (
+      <slot />
+    )
+  }
+</a>

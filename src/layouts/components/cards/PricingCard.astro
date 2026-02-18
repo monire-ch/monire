@@ -1,6 +1,6 @@
 ---
 import type { ComparisonCategory, PricingPlans, PricingTier } from "@/types";
-import ButtonLink from "../buttons/ButtonLink.astro";
+import Button from "../buttons/Button.astro";
 import OptimizedImage from "../utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import AnimatedNumber from "@/components/widgets/AnimatedNumber.astro";
@@ -8,7 +8,7 @@ import AnimatedNumber from "@/components/widgets/AnimatedNumber.astro";
 type Props = {
   content: PricingTier & {
     plans: PricingPlans;
-    comparison: ComparisonCategory[];
+    comparison?: ComparisonCategory[];
   };
   index: number;
   class?: string;
@@ -176,12 +176,9 @@ const cardSurfaceStyle = featured
         </div>
 
         {ctaBtn?.enable && (
-          <ButtonLink
-            class:list={[
-              "btn-md flex justify-center text-center",
-              { "btn-pricing-light": featured },
-              { "btn-pricing-dark": !featured },
-            ]}
+          <Button
+            class="w-full justify-center text-center"
+            variant="primary"
             content={ctaBtn}
           />
         )}

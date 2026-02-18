@@ -21,6 +21,8 @@ export type Button = {
   enable: boolean;
   label: string;
   url: string;
+  variant?: "primary" | "secondary";
+  renderAs?: "button" | "link";
   type?: string;
   rel?: string;
   target?: string;

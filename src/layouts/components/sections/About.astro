@@ -1,10 +1,11 @@
 ---
 import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
-import type { Button, Section } from "@/types";
+import type { Button as ButtonData, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
-import ButtonLink from "../buttons/ButtonLink.astro";
+import Button from "../buttons/Button.astro";
+import Link from "@/layouts/components/links/Link.astro";
 
 type aboutSectionType = Section & {
   layoutType?: "modern" | "creative";
@@ -14,8 +15,8 @@ type aboutSectionType = Section & {
     image?: string;
     descriptionFontSize?: "sm" | "lg";
     description: string;
-    ctaBtn: Button;
-    ctaBtn2?: Button;
+    ctaBtn: ButtonData;
+    ctaBtn2?: ButtonData;
   }[];
 };
 type Props = {
@@ -37,6 +38,8 @@ let {
   subtitle,
   list,
 } = actualContent as aboutSectionType;
+
+const isTextLink = (btn?: ButtonData) => btn?.renderAs === "link";
 ---
 
 {
@@ -81,18 +84,32 @@ let {
                   />
                 )}
                 {(item.ctaBtn?.enable || item.ctaBtn2?.enable) && (
-                  <div class="flex flex-wrap items-center gap-4 pt-2">
+                  <div class="flex flex-wrap items-center gap-7 pt-2 md:gap-9 lg:gap-10">
                     {item.ctaBtn?.enable && (
-                      <ButtonLink
-                        class="btn-md btn-pricing-dark text-center"
-                        content={{ ...item.ctaBtn }}
-                      />
+                      isTextLink(item.ctaBtn) ? (
+                        <Link href={item.ctaBtn.url} class="text-link">
+                          {item.ctaBtn.label}
+                        </Link>
+                      ) : (
+                        <Button
+                          class="text-center"
+                          variant="secondary"
+                          content={{ ...item.ctaBtn }}
+                        />
+                      )
                     )}
                     {item.ctaBtn2?.enable && (
-                      <ButtonLink
-                        class="btn-md btn-secondary text-center"
-                        content={{ ...item.ctaBtn2 }}
-                      />
+                      isTextLink(item.ctaBtn2) ? (
+                        <Link href={item.ctaBtn2.url} class="text-link">
+                          {item.ctaBtn2.label}
+                        </Link>
+                      ) : (
+                        <Button
+                          class="text-center"
+                          variant="secondary"
+                          content={{ ...item.ctaBtn2 }}
+                        />
+                      )
                     )}
                   </div>
                 )}

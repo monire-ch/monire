@@ -1,0 +1,103 @@
+---
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
+import { markdownify } from "@/lib/utils/textConverter";
+import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+
+type Props = {
+  tag?: "button" | "a";
+  variant?: "primary" | "secondary";
+  content: {
+    enable?: boolean;
+    label: string;
+    url?: string;
+    rel?: string;
+    target?: string;
+    variant?: "primary" | "secondary";
+  };
+  class?: string;
+  [key: string]: any;
+};
+
+const {
+  tag: tagProp,
+  variant: variantProp,
+  content: { enable, label, url, rel, target, variant: contentVariant },
+  class: className,
+  ...rest
+} = Astro.props;
+
+const normalizedLabel = (label || "").trim().toLowerCase();
+const opensContactModal =
+  normalizedLabel === "work with us" || normalizedLabel === "get started";
+
+const variant = variantProp || contentVariant || "primary";
+const isPrimary = variant === "primary";
+
+const ctaClass = [
+  "btn-action",
+  isPrimary ? "btn-action-primary btn-icon-end group" : "btn-action-secondary",
+  className,
+];
+
+const tag = tagProp || (url || opensContactModal ? "a" : "button");
+const href = opensContactModal
+  ? "#"
+  : url
+    ? getLocaleUrlCTM(url, Astro.currentLocale)
+    : undefined;
+const targetAttr = opensContactModal
+  ? undefined
+  : url?.startsWith("http")
+    ? target || "_blank"
+    : target || undefined;
+const relAttr = opensContactModal
+  ? undefined
+  : url?.startsWith("http")
+    ? rel || "noopener noreferrer"
+    : rel || undefined;
+---
+
+{
+  enable &&
+    (tag === "button" ? (
+      <button
+        type="button"
+        data-content={label}
+        data-open-contact={opensContactModal ? "true" : undefined}
+        class:list={["btn", ctaClass, "relative overflow-hidden"]}
+        {...rest}>
+        <span class="label flex h-full items-center" set:html={markdownify(label)} />
+        {isPrimary && (
+          <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
+            <OptimizedImage
+              alt="icon"
+              class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
+              src="/images/icons/svg/star.svg"
+            />
+          </span>
+        )}
+        <slot />
+      </button>
+    ) : (
+      <a
+        href={href}
+        rel={relAttr}
+        target={targetAttr}
+        data-content={label}
+        data-open-contact={opensContactModal ? "true" : undefined}
+        class:list={["btn", ctaClass, "relative overflow-hidden"]}
+        {...rest}>
+        <span class="label flex h-full items-center" set:html={markdownify(label)} />
+        {isPrimary && (
+          <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
+            <OptimizedImage
+              alt="icon"
+              class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
+              src="/images/icons/svg/star.svg"
+            />
+          </span>
+        )}
+        <slot />
+      </a>
+    ))
+}

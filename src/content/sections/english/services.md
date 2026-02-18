@@ -25,6 +25,6 @@ tabs:
       Simple, practical automations that handle repetitive tasks and free up your time. We build small, reliable workflows using tools like n8n to sort documents, process information, and organize data, so you can focus on what matters.
     cta:
     - label: "Latest case study"
-      style: "outline"
+      variant: "secondary"
       url: "/case-studies/expense-receipt-automation/"
 ---

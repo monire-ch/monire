@@ -3,7 +3,7 @@ import type { Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
-import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 type ctaSectionType = Section;
@@ -21,7 +21,12 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as ctaSectionType;
 
-let { enable = true, title, ctaBtn } = actualContent as ctaSectionType;
+let {
+  enable = true,
+  title,
+  subtitle,
+  ctaBtn,
+} = actualContent as ctaSectionType;
 ---
 
 {
@@ -32,29 +37,25 @@ let { enable = true, title, ctaBtn } = actualContent as ctaSectionType;
         aria-hidden="true"
         preserveAspectRatio="none"
       />
-      <div class="py-14 md:py-28">
-        <div class="container grid grid-cols-1 place-content-between gap-y-16 lg:grid-cols-2 lg:gap-x-10">
-          <div
-            class="space-y-7 lg:max-w-2xl"
-            data-aos="fade-up-sm"
-            data-aos-offset="0">
-            {title && (
-              <h2
-                class="section-title has-italic-text text-monire-deep-teal capitalize"
-                set:html={markdownify(title)}
-              />
-            )}
-          </div>
-          <div class="flex flex-wrap-reverse items-center gap-x-20 gap-y-6 md:flex-nowrap lg:justify-end">
-            {ctaBtn && ctaBtn.enable && (
-              <div class="relative" data-aos="fade-right-sm">
-                <ButtonLink
-                  class="btn-md btn-pricing-light group relative z-30 flex items-center gap-4"
-                  content={ctaBtn}
-                />
-              </div>
-            )}
-          </div>
+      <div class="container py-6 md:py-6">
+        <div
+          class="mx-auto flex max-w-2xl flex-col items-center space-y-8 text-center"
+          data-aos="fade-up-sm"
+          data-aos-offset="0">
+          {subtitle && (
+            <p class="text-s font-medium tracking-[0.2em] text-monire-deep-teal/80 uppercase">
+              {subtitle}
+            </p>
+          )}
+          {title && (
+            <h2
+              class="section-title has-italic-text text-monire-deep-teal capitalize"
+              set:html={markdownify(title)}
+            />
+          )}
+          {ctaBtn && ctaBtn.enable && (
+            <Button content={ctaBtn} variant="primary" class="mt-2 md:mt-3" />
+          )}
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 ---
 enable: true # Control the visibility of this section across all pages where it is used
-title: "Two services. One goal: helping your business grow."
+title: "Two services. One goal: **helping your business grow.**"
 subtitle: Pricing
 
 heading: Need Something More Specific?

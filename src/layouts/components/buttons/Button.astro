@@ -5,6 +5,7 @@ import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 
 type Props = {
   tag?: "button" | "a";
+  type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
   content: {
     enable?: boolean;
@@ -20,6 +21,7 @@ type Props = {
 
 const {
   tag: tagProp,
+  type: typeProp,
   variant: variantProp,
   content: { enable, label, url, rel, target, variant: contentVariant },
   class: className,
@@ -55,13 +57,14 @@ const relAttr = opensContactModal
   : url?.startsWith("http")
     ? rel || "noopener noreferrer"
     : rel || undefined;
+const buttonType = typeProp || "button";
 ---
 
 {
   enable &&
     (tag === "button" ? (
       <button
-        type="button"
+        type={buttonType}
         data-content={label}
         data-open-contact={opensContactModal ? "true" : undefined}
         class:list={["btn", ctaClass, "relative overflow-hidden"]}

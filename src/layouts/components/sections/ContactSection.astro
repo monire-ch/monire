@@ -150,7 +150,7 @@ const validationMessages = {
                 showDetails ? "lg:pr-10" : "lg:px-10",
               ]}>
               <form
-              id="contact-form"
+                id={showDetails ? "contact-form-main" : "contact-form-modal"}
                 class="contact-form"
                 novalidate
                 {...{
@@ -161,10 +161,7 @@ const validationMessages = {
                   "data-msg-invalid-email": validationMessages.invalidEmail,
                   "data-msg-submitting": validationMessages.submitting,
                   "data-msg-assistance-at": validationMessages.assistanceAt,
-                  action:
-                    contactFormProvider === "netlify"
-                      ? contactFormAction
-                      : undefined,
+                  action: contactFormAction || undefined,
                   "data-provider": contactFormProvider,
                 }}
                 method="post"
@@ -688,7 +685,6 @@ const validationMessages = {
 </style>
 
 <script>
-  import "@preline/select";
   import {
     formspreeSubmit,
     netlifySubmit,
@@ -698,6 +694,11 @@ const validationMessages = {
   import contact from "@/config/contact.json" with { type: "json" };
 
   document.addEventListener("DOMContentLoaded", () => {
+    // Keep form logic running even if select enhancement fails.
+    import("@preline/select").catch((error) => {
+      console.warn("Preline select failed to load:", error);
+    });
+
     const forms = document.querySelectorAll(
       "form.contact-form",
     ) as NodeListOf<HTMLFormElement>;

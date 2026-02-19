@@ -74,6 +74,12 @@
       "name": "Contact",
       "url": "/contact",
       "weight": 0
+    },
+    {
+      "enable": true,
+      "name": "Privacy Policy",
+      "url": "/privacy-policy",
+      "weight": 0
     }
   ]
 }

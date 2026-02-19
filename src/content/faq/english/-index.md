@@ -1,7 +1,7 @@
 ---
 subtitle: "FAQ"
 title: "Frequently Asked Questions"
-metaDescription: This is a example description
+metaDescription: Frequently Asked Questions
 draft: false
 
 list:
@@ -15,6 +15,10 @@ list:
         title: "Can you help with SEO?"
         content: |
           While our primary focus is on development and AI automation, we build websites with SEO best practices in mind. We can also recommend trusted partners for ongoing SEO services.
+      - active: false
+        title: "Do you work with international clients?"
+        content: |
+          Yes! We’re based in Switzerland and work remotely with clients worldwide. Communication is async-friendly, and we’ll align on meeting windows that work across time zones.
   - label: "Design and Development"
     list:
       - active: true

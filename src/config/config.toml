@@ -1,7 +1,7 @@
 # Site Configuration
 [site]
   title              = "Moniré"
-  description        = "Custom website development and AI-powered workflow automation in Switzerland."
+  description        = "Custom website development and AI-powered workflow automation — based in Switzerland, serving clients worldwide."
   tagline            = "WEB DEVELOPMENT & AI AUTOMATIONS"
   taglineSeparator   = "" # default is " - " 
   baseUrl            = "https://monire.ch"

@@ -20,6 +20,12 @@
     },
     {
       "enable": true,
+      "name": "Projects",
+      "url": "/#projects",
+      "weight": 3.5
+    },
+    {
+      "enable": true,
       "name": "Pricing",
       "url": "/#pricing",
       "weight": 4
@@ -67,6 +73,12 @@
       "enable": true,
       "name": "Contact",
       "url": "/contact",
+      "weight": 0
+    },
+    {
+      "enable": true,
+      "name": "Privacy Policy",
+      "url": "/privacy-policy",
       "weight": 0
     }
   ]

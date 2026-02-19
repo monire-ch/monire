@@ -18,7 +18,6 @@
   "footer": {
     "company": "Liens rapides",
     "contact": "Contact",
-    "privacyPolicy": "Politique de confidentialité",
     "description": "Custom website development and AI-powered workflow automation in Switzerland.",
     "copyright": "© {{ year }} Moniré. All rights reserved."
   }

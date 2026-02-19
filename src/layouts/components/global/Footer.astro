@@ -16,11 +16,6 @@ let { copyright, footerDescription } = config.settings;
 footerDescription = footerDescription || t("footer.description");
 const copyrightText = copyright.text || t("footer.copyright");
 const copyrightParts = splitProtectedText(copyrightText);
-const privacyPolicyLabel = t("footer.privacyPolicy") as string;
-const privacyPolicyUrl = getLocaleUrlCTM(
-  "/privacy-policy",
-  Astro.currentLocale,
-);
 
 function encodeEmail(email: string) {
   return email
@@ -113,17 +108,8 @@ const encodedEmail = encodeEmail(contact.email);
             config.settings.copyright && config.settings.copyright.enable && (
               <ul class="footer-bottom-links flex flex-wrap items-center justify-center gap-y-4 text-white">
                 {copyrightParts.map((value: string) => (
-                  <li class="inline-block opacity-90">
-                    {value}
-                  </li>
+                  <li class="inline-block opacity-90">{value}</li>
                 ))}
-                <li class="inline-block opacity-90">
-                  <Link
-                    variant="footer"
-                    href={privacyPolicyUrl}
-                    htmlLabel={privacyPolicyLabel}
-                  />
-                </li>
               </ul>
             )
           }

@@ -8,6 +8,24 @@ html {
   overflow-x: clip;
 }
 
+@media (max-width: 1023px) {
+  :root {
+    --btn-px: 1.25rem;
+    --btn-py: 0.6rem;
+    --btn-font-size: 0.95rem;
+    --btn-height: 2.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --btn-px: 1.5rem;
+    --btn-py: 0.7rem;
+    --btn-font-size: 1rem;
+    --btn-height: 3rem;
+  }
+}
+
 @font-face {
   font-family: "Degular";
   src: local("Degular");
@@ -20,8 +38,8 @@ html {
 }
 
 @font-face {
-  font-family: "Craftwork Grotesk";
-  src: url("../assets/fonts/CraftworkGrotesk.woff2") format("woff2");
+  font-family: "Gellix";
+  src: url("../assets/fonts/Gellix.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -41,7 +59,7 @@ body {
   @apply [&::-webkit-scrollbar]:w-3 [&::-webkit-scrollbar-thumb]:bg-white/15 [&::-webkit-scrollbar-track]:bg-transparent;
 }
 .has-customized-scrollbar {
-  @apply [&::-webkit-scrollbar]:w-3! [&::-webkit-scrollbar-thumb]:bg-white/15! [&::-webkit-scrollbar-track]:bg-transparent!; 
+  @apply [&::-webkit-scrollbar]:w-3! [&::-webkit-scrollbar-thumb]:bg-white/15! [&::-webkit-scrollbar-track]:bg-transparent!;
 }
 
 /* Global Section Spacing */
@@ -77,7 +95,7 @@ h6 {
 h1,
 h2,
 h3 {
-  font-family: "Craftwork Grotesk", var(--font-secondary), serif;
+  font-family: "Gellix", var(--font-secondary), serif;
 }
 
 h1,

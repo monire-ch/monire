@@ -51,5 +51,18 @@
     "preload": false,
     "cssVariable": "--font-primary",
     "fallback": "sans-serif"
+  },
+  {
+    "name": "Cooper",
+    "variants": [
+      {
+        "weight": "400",
+        "src": ["./src/assets/fonts/cooper-bt.woff2"]
+      }
+    ],
+    "provider": "local",
+    "preload": false,
+    "cssVariable": "--font-secondary",
+    "fallback": "sans-serif"
   }
 ]

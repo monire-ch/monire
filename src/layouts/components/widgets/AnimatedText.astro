@@ -20,8 +20,8 @@ if (content) {
   const words = content.split(" "); // Split text into words
   processedContent = words
     .map(
-      (word: string) =>
-        `<span class="word" style="display: inline-block; will-change: transform; transform: translateY(10px); opacity: 0; filter: blur(10px);">${word}</span>`,
+      (word: string, index: number) =>
+        `<span class="word" style="--word-index:${index};">${word}</span>`,
     )
     .join(" ");
 }
@@ -30,48 +30,42 @@ if (content) {
 <div
   class:list={["animated-text", Astro.props.class]}
   set:html={processedContent}
-  data-duration={duration}
-  data-delay={delay}
-  data-stagger={stagger}
+  style={`--at-duration:${duration}s; --at-delay:${delay}s; --at-stagger:${stagger}s;`}
   {...rest}
 />
 
-<script>
-  import { animate, stagger, inView } from "motion";
-
-  const animatedTexts = document.querySelectorAll(".animated-text");
-
-  animatedTexts.forEach((animatedText) => {
-    const duration = parseFloat(
-      animatedText.getAttribute("data-duration") as string,
+<style is:global>
+  .animated-text .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(8px);
+    will-change: transform, opacity, filter;
+    animation-name: animated-text-word-in;
+    animation-duration: var(--at-duration, 0.6s);
+    animation-delay: calc(
+      var(--at-delay, 0s) + (var(--word-index, 0) * var(--at-stagger, 0.1s))
     );
-    const delay = parseFloat(animatedText.getAttribute("data-delay") as string);
-    const dataStagger = parseFloat(
-      animatedText.getAttribute("data-stagger") as string,
-    );
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: forwards;
+  }
 
-    inView(animatedText, (element) => {
-      const words = element.querySelectorAll(".word");
-      const animation = animate(
-        words,
-        // @ts-expect-error
-        { opacity: 1, y: 0, filter: "blur(0px)" },
-        {
-          duration: duration,
-          delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
-          easing: "ease-out",
-        },
-      );
+  @keyframes animated-text-word-in {
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      will-change: auto;
+    }
+  }
 
-      // This will fire when the element leaves the viewport
-      return () => {
-        // animation.stop();
-        // animate(element.querySelectorAll(".word"), {
-        //   opacity: 0,
-        //   y: 20,
-        //   filter: "blur(10px)",
-        // });
-      };
-    });
-  });
-</script>
+  @media (prefers-reduced-motion: reduce) {
+    .animated-text .word {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      filter: none;
+      will-change: auto;
+    }
+  }
+</style>

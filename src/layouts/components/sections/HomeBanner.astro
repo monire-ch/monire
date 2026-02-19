@@ -57,29 +57,28 @@ const background = "/images/hero/background.jpg";
         {
           description && (
             <p
-              class="hero-description shrink-0 text-center tracking-wider opacity-90"
-              data-aos="fade-in"
-              data-aos-delay="300"
-              data-aos-duration="900"
+              class="hero-description hero-fade hero-fade-description shrink-0 text-center tracking-wider"
               set:html={markdownify(description)}
             />
           )
         }
       </div>
-      <div
-        data-aos="fade-in"
-        data-aos-delay="400"
-        data-aos-duration="900"
-        class="hero-cta-stack flex flex-col items-center justify-center">
+      <div class="hero-cta-stack flex flex-col items-center justify-center">
         {
           ctaContext && (
             <p
-              class="hero-cta-context text-center"
+              class="hero-cta-context hero-fade hero-fade-context text-center"
               set:html={markdownify(ctaContext)}
             />
           )
         }
-        {button && <Button content={button} variant="primary" />}
+        {
+          button && (
+            <div class="hero-fade hero-fade-button">
+              <Button content={button} variant="primary" />
+            </div>
+          )
+        }
       </div>
     </div>
   </div>
@@ -136,5 +135,44 @@ const background = "/images/hero/background.jpg";
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: color-mix(in srgb, var(--color-text-shell-muted) 94%, white);
+  }
+
+  .hero-fade {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+    will-change: transform, opacity, filter;
+    animation: hero-fade-up-in 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .hero-fade-description {
+    animation-delay: 0.52s;
+  }
+
+  .hero-fade-context {
+    animation-delay: 0.64s;
+  }
+
+  .hero-fade-button {
+    animation-delay: 0.76s;
+  }
+
+  @keyframes hero-fade-up-in {
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      will-change: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fade {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      filter: none;
+      will-change: auto;
+    }
   }
 </style>

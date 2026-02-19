@@ -9,7 +9,7 @@ contactList:
     - label: "Email"
       value: "[hello@monire.ch](mailto:hello@monire.ch)"
     - label: "Location"
-      value: "Zürich, Switzerland"
+      value: "Zürich, Switzerland • Serving clients worldwide"
 
 social:
   enable: true

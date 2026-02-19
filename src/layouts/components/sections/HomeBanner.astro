@@ -5,7 +5,6 @@ import type { Button as ButtonData, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import Button from "../buttons/Button.astro";
 import AnimatedText from "../widgets/AnimatedText.astro";
-import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import HeroBlobs from "@/components/hero/HeroBlobs.astro";
 
 type homeBannerSectionType = Section & {
@@ -38,6 +37,17 @@ const background = "/images/hero/background.jpg";
     <div class="relative z-10 mx-auto max-w-4xl">
       <div>
         {
+          ctaContext && (
+            <p
+              class="hero-eyebrow text-center mb-10"
+              data-aos="fade-in"
+              data-aos-delay="180"
+              data-aos-duration="900"
+              set:html={markdownify(ctaContext)}
+            />
+          )
+        }
+        {
           title && (
             <AnimatedText
               class="font-hero gold-text hero-title mb-6 text-center tracking-wider capitalize"
@@ -59,6 +69,9 @@ const background = "/images/hero/background.jpg";
           description && (
             <p
               class="hero-description shrink-0 text-center tracking-wider opacity-90"
+              data-aos="fade-in"
+              data-aos-delay="300"
+              data-aos-duration="900"
               set:html={markdownify(description)}
             />
           )
@@ -69,14 +82,6 @@ const background = "/images/hero/background.jpg";
         data-aos-delay="400"
         data-aos-duration="900"
         class="hero-cta-stack flex flex-col items-center justify-center">
-        {
-          ctaContext && (
-            <p
-              class="hero-cta-context text-center"
-              set:html={markdownify(ctaContext)}
-            />
-          )
-        }
         {button && <Button content={button} variant="primary" />}
       </div>
     </div>
@@ -119,21 +124,20 @@ const background = "/images/hero/background.jpg";
   .hero-description {
     font-size: clamp(1rem, 1.35vw, 1.35rem);
     line-height: 1.5;
-    margin-top: clamp(1.75rem, 3vw, 2.5rem);
     margin-bottom: 0;
     color: var(--color-text-shell-muted);
   }
 
-  .hero-cta-stack {
-    margin-top: clamp(1.5rem, 2.4vw, 2.2rem);
-    gap: clamp(1.5rem, 2.4vw, 2.2rem);
-  }
-
-  .hero-cta-context {
-    font-size: clamp(0.85rem, 1vw, 0.95rem);
-    line-height: 1.45;
-    letter-spacing: 0.08em;
+  .hero-eyebrow {
+    font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+    line-height: 1.35;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: color-mix(in srgb, var(--color-text-shell-muted) 94%, white);
+  }
+
+  .hero-cta-stack {
+    margin-top: clamp(1.5rem, 2.4vw, 2.2rem);
+    gap: clamp(0.65rem, 1vw, 0.9rem);
   }
 </style>

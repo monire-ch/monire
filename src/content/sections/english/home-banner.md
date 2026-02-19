@@ -1,7 +1,7 @@
 ---
 title: WEB DEVELOPMENT & AI AUTOMATIONS
 subtitle:
-description: High-end website development and AI automations for small to midsize businesses, built to drive measurable growth and eliminate repetitive manual work.
+description: High-end solutions for growing small to midsize businesses.
 ctaContext: Switzerland-based • Serving clients worldwide
 button:
   enable: true

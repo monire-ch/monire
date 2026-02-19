@@ -7,6 +7,7 @@ import { splitProtectedText } from "@/lib/utils/splitProtectedText";
 import SocialComponent from "@/components/social/Social.astro";
 import { useTranslations, getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 import contact from "@/config/contact.json";
+import Link from "@/layouts/components/links/Link.astro";
 
 const t = await useTranslations(Astro.currentLocale as string);
 
@@ -31,8 +32,8 @@ function encodeEmail(email: string) {
 const encodedEmail = encodeEmail(contact.email);
 ---
 
-<footer class="footer-vibe">
-  <div class="footer-vibe-inner">
+<footer class="footer-dark-teal">
+  <div class="footer-dark-teal-inner">
     <div class="container space-y-14 lg:space-y-20">
       <div
         class="grid gap-12 pt-14 md:pt-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,2fr)] lg:items-start lg:gap-14">
@@ -64,17 +65,17 @@ const encodedEmail = encodeEmail(contact.email);
                 />
               )
             }
-            <ul class="flex flex-col gap-y-2">
+            <ul class="footer-quick-links">
               {
                 t("footerMenuQuickLink") &&
                   t("footerMenuQuickLink").map(
                     (menu: { name: string; url: string }) => (
                       <li class="inline-block">
-                        <a
-                          class="footer-link"
+                        <Link
+                          variant="footer"
                           href={getLocaleUrlCTM(menu.url, Astro.currentLocale)}>
                           {menu.name}
-                        </a>
+                        </Link>
                       </li>
                     ),
                   )
@@ -92,9 +93,11 @@ const encodedEmail = encodeEmail(contact.email);
             }
             <ul class="flex flex-col gap-2">
               <li class="inline-block">
-                <a class="footer-link" href={`mailto:${contact.email}`}>
-                  <span set:html={encodedEmail} />
-                </a>
+                <Link
+                  variant="footer"
+                  href={`mailto:${contact.email}`}
+                  htmlLabel={encodedEmail}
+                />
               </li>
               <li class="inline-block text-white/82">
                 {contact.location}
@@ -108,17 +111,17 @@ const encodedEmail = encodeEmail(contact.email);
         <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {
             config.settings.copyright && config.settings.copyright.enable && (
-              <ul class="footer-bottom-links prose-a:text-inherit flex flex-wrap items-center justify-center gap-y-4 text-white">
+              <ul class="footer-bottom-links flex flex-wrap items-center justify-center gap-y-4 text-white">
                 {copyrightParts.map((value: string) => (
-                  <li class="inline-block opacity-90 [&_a]:text-[var(--color-link-dark-bg)] [&_a]:no-underline [&_a]:decoration-[1px] [&_a]:underline-offset-2 [&_a]:transition-colors [&_a]:duration-300 [&_a:focus-visible]:underline [&_a:hover]:text-[var(--color-link-dark-bg-hover)] [&_a:hover]:underline">
-                    <span set:html={markdownify(value)} />
+                  <li class="inline-block opacity-90">
+                    {value}
                   </li>
                 ))}
                 <li class="inline-block opacity-90">
-                  <a
-                    class="footer-link"
+                  <Link
+                    variant="footer"
                     href={privacyPolicyUrl}
-                    set:html={privacyPolicyLabel}
+                    htmlLabel={privacyPolicyLabel}
                   />
                 </li>
               </ul>
@@ -131,46 +134,22 @@ const encodedEmail = encodeEmail(contact.email);
 </footer>
 
 <style>
-  .footer-vibe {
-    background: var(--gradient-vibe-dark);
+  .footer-dark-teal {
+    background: var(--gradient-dark-teal);
   }
 
-  .footer-vibe-inner {
+  .footer-dark-teal-inner {
     background:
       radial-gradient(
         55% 55% at 50% 115%,
-        var(--color-vibe-orb-soft-soft) 0%,
+        var(--color-dark-teal-orb-soft-soft) 0%,
         transparent 75%
       ),
       radial-gradient(
         42% 42% at 50% -10%,
-        var(--color-vibe-orb-strong-soft) 0%,
+        var(--color-dark-teal-orb-strong-soft) 0%,
         transparent 85%
       );
-  }
-
-  .footer-link {
-    display: inline-block;
-    color: var(--color-link-dark-bg);
-    text-decoration: none;
-    text-underline-offset: 0.18em;
-    text-decoration-thickness: var(--color-link-underline-thickness);
-    transition:
-      color 180ms ease,
-      text-decoration-color 180ms ease;
-  }
-
-  .footer-link:hover {
-    color: var(--color-link-dark-bg-hover);
-    text-decoration: underline;
-  }
-
-  .footer-link:focus-visible {
-    color: var(--color-link-dark-bg-hover);
-    text-decoration: underline;
-    outline: 2px solid var(--color-link-dark-bg-focus);
-    outline-offset: 2px;
-    border-radius: 4px;
   }
 
   .footer-social :global(a) {
@@ -195,15 +174,33 @@ const encodedEmail = encodeEmail(contact.email);
     outline-offset: 2px;
   }
 
-  .footer-vibe :global(.logo-wrapper) {
+  .footer-dark-teal :global(.logo-wrapper) {
     margin-left: 0 !important;
     padding-left: 0 !important;
   }
 
-  .footer-vibe :global(.logo-wrapper .logo) {
+  .footer-dark-teal :global(.logo-wrapper .logo) {
     margin-left: 0 !important;
     transform: translateX(-1.9rem);
     max-width: calc(100% + 1.9rem);
+  }
+
+  .footer-quick-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 0.5rem;
+  }
+
+  @media (min-width: 420px) {
+    .footer-quick-links {
+      display: inline-grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(3, auto);
+      grid-template-columns: repeat(2, auto);
+      justify-content: start;
+      column-gap: 2rem;
+      row-gap: 0.5rem;
+    }
   }
 
   .footer-bottom-links > li {

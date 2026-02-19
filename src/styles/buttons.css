@@ -18,8 +18,115 @@
   @apply px-6 py-3 md:text-lg;
 }
 
+@utility btn-action {
+  @apply inline-flex items-center rounded-full whitespace-nowrap transition-all duration-[.35s];
+  height: 3.125rem;
+  min-height: 3.125rem;
+  padding-inline: 1.5rem;
+  padding-block: 0;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.btn .label {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  line-height: 1;
+  height: 100%;
+}
+
+.btn .label :global(p) {
+  margin: 0;
+  line-height: inherit;
+}
+
+@utility btn-action-primary {
+  color: var(--color-light);
+  background: color-mix(in srgb, var(--color-monire-deep-teal) 88%, white);
+  border: 1px solid var(--color-mustard-70);
+  box-shadow: none;
+}
+
+.btn-action-primary:hover {
+  background: color-mix(in srgb, var(--color-monire-deep-teal) 96%, white);
+  border-color: var(--color-mustard);
+  color: var(--color-light);
+}
+
+.btn-action-primary:focus,
+.btn-action-primary:focus-visible,
+.btn-action-primary:active {
+  box-shadow: none;
+}
+
+@utility btn-action-secondary {
+  color: var(--color-light);
+  background: transparent;
+  border: 1px solid var(--color-mustard-70);
+  box-shadow: none;
+}
+
+.btn-action-secondary:hover {
+  border-color: var(--color-mustard);
+  color: var(--color-light);
+  background-color: rgba(7, 47, 59, 0.65);
+}
+
+.btn-toggle {
+  height: 2.75rem;
+  min-height: 2.75rem;
+  padding-inline: 1.35rem;
+  font-size: 0.95rem;
+  border-color: transparent;
+  background: transparent;
+  color: color-mix(in srgb, white 84%, transparent);
+}
+
+.btn-toggle:hover {
+  color: white;
+  border-color: transparent;
+  background: color-mix(in srgb, white 10%, transparent);
+}
+
+.btn-toggle.active,
+.btn-toggle[data-active="true"],
+.btn-toggle[aria-selected="true"] {
+  background: color-mix(in srgb, white 18%, transparent);
+  color: white;
+  border-color: var(--color-mustard-70);
+  box-shadow: none;
+}
+
 @utility btn-primary {
-  @apply text-light bg-primary hover:ring-primary/35 ring-4 ring-transparent;
+  @apply btn-action btn-action-primary;
+}
+
+.btn-primary:hover {
+  @apply btn-action-primary;
+  background: color-mix(in srgb, var(--color-monire-deep-teal) 96%, white);
+  border-color: var(--color-mustard);
+  color: var(--color-light);
+}
+
+.btn-primary:focus,
+.btn-primary:focus-visible,
+.btn-primary:active {
+  @apply btn-action-primary;
+  box-shadow: none;
+}
+
+.btn-icon-end {
+  position: relative;
+  justify-content: flex-start;
+  padding-right: 4.75rem !important;
+}
+
+.btn-icon-end .btn-icon-pill {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 @utility btn-text {
@@ -48,29 +155,6 @@
 
 @utility btn-outline-primary {
   @apply text-light border-primary bg-body border;
-}
-
-@utility btn-pricing-dark {
-  @apply bg-transparent tracking-[0.22em] uppercase;
-  border: 1px solid var(--color-mustard-70);
-  color: var(--color-light);
-}
-
-.btn-pricing-dark:hover {
-  border-color: var(--color-mustard);
-  color: var(--color-light);
-  background-color: rgba(7, 47, 59, 0.65);
-}
-
-@utility btn-pricing-light {
-  @apply tracking-[0.22em] uppercase;
-  background-color: #0b3d4a;
-  color: var(--color-light);
-}
-
-.btn-pricing-light:hover {
-  background-color: var(--color-monire-deep-teal);
-  color: var(--color-light);
 }
 
 @utility btn-hero {

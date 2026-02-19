@@ -5,6 +5,7 @@ import type { Section } from "@/types";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import SocialMediaLink from "@/layouts/components/social/SocialMediaLink.astro";
 import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 
 type meetTheDuoSectionType = Section & {
   items: {
@@ -35,12 +36,10 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
 
 <section class="relative pt-8 pb-20 md:pt-10 md:pb-28">
   <div class="container mx-auto space-y-8 md:space-y-10">
-    <div class="space-y-4 text-left">
+    <div class="text-left">
       {
         title && (
-          <h2 class="inline-flex w-fit items-center rounded-full border border-[var(--color-mustard-50)] bg-white/5 px-4 py-1.5 text-sm font-medium tracking-[0.18em] text-[var(--color-link-dark-bg)] uppercase">
-            {markdownify(title)}
-          </h2>
+          <Subtitle content={title} class="mx-0!" />
         )
       }
       {

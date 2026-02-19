@@ -1,5 +1,9 @@
 ---
 import ContactSection from "@/layouts/components/sections/ContactSection.astro";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+
+const contactPage = await getEntryCTM("contact", "-index", Astro.currentLocale);
+const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
 ---
 
 <style>
@@ -15,20 +19,25 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   }
 
   .modal-panel {
-    transition: transform 0.35s ease;
+    opacity: 1;
+    transition:
+      transform 0.42s cubic-bezier(0.22, 0.9, 0.22, 1),
+      opacity 0.28s ease;
+    will-change: transform, opacity;
+  }
+
+  .modal-panel.translate-x-full {
+    opacity: 0;
   }
 
   .contact-modal-panel {
-    background: var(--gradient-surface-dark);
+    background: var(--gradient-dark-teal);
     border-left: 1px solid var(--color-border-surface-dark);
     color: color-mix(in srgb, white 90%, transparent);
   }
 
   .contact-modal-title {
     color: white;
-    font-size: clamp(1.85rem, 1.45rem + 1.1vw, 2.4rem);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
   }
 
   .contact-modal-close {
@@ -47,6 +56,16 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     color: inherit;
   }
 
+  .contact-modal-panel :global(.container) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .contact-modal-panel :global([data-aos][data-aos-delay="200"]) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .contact-modal-panel :global(.form-label) {
     color: color-mix(in srgb, white 88%, transparent);
   }
@@ -60,6 +79,19 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     color: white;
   }
 
+  .contact-modal-panel :global(input.form-input:-webkit-autofill),
+  .contact-modal-panel :global(input.form-input:-webkit-autofill:hover),
+  .contact-modal-panel :global(input.form-input:-webkit-autofill:focus),
+  .contact-modal-panel :global(textarea.form-input:-webkit-autofill),
+  .contact-modal-panel :global(textarea.form-input:-webkit-autofill:hover),
+  .contact-modal-panel :global(textarea.form-input:-webkit-autofill:focus) {
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+    box-shadow: 0 0 0 1000px color-mix(in srgb, white 8%, transparent) inset !important;
+    border-color: color-mix(in srgb, white 24%, transparent) !important;
+    transition: background-color 9999s ease-out 0s;
+  }
+
   .contact-modal-panel :global(#validation-target) {
     position: relative;
     z-index: 40;
@@ -70,15 +102,11 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   }
 
   .contact-modal-panel :global(.hs-dropdown) {
-    position: absolute !important;
-    top: calc(100% + 0.5rem) !important;
-    left: 0 !important;
-    right: 0 !important;
     z-index: 3200 !important;
     background: color-mix(
       in srgb,
-      var(--color-bg-dark) 82%,
-      rgb(var(--color-monire-nav-active))
+      var(--color-bg-dark) 78%,
+      var(--color-monire-deep-teal)
     );
     border-color: color-mix(in srgb, white 28%, transparent);
     box-shadow: 0 1.25rem 2.5rem rgba(1, 22, 29, 0.6);
@@ -98,7 +126,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     color: white;
     background-color: color-mix(
       in srgb,
-      rgb(var(--color-monire-nav-active)) 55%,
+      var(--color-monire-deep-teal) 58%,
       transparent
     );
   }
@@ -107,6 +135,12 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   .contact-modal-panel :global(.hs-select input.form-input::placeholder),
   .contact-modal-panel :global(.hs-select button.form-input::placeholder) {
     color: color-mix(in srgb, white 58%, transparent);
+  }
+
+  .contact-modal-panel
+    :global(.hs-select button.form-input .text-text-default),
+  .contact-modal-panel :global(.hs-select button.form-input > span.truncate) {
+    color: color-mix(in srgb, white 58%, transparent) !important;
   }
 
   .contact-modal-panel :global(.form-checkbox) {
@@ -123,7 +157,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   .contact-modal-panel :global(.btn-primary) {
     background: color-mix(
       in srgb,
-      rgb(var(--color-monire-nav-active)) 88%,
+      var(--color-monire-deep-teal) 88%,
       white
     );
     color: var(--color-light);
@@ -134,7 +168,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
   .contact-modal-panel :global(.btn-primary:hover) {
     background: color-mix(
       in srgb,
-      rgb(var(--color-monire-nav-active)) 96%,
+      var(--color-monire-deep-teal) 96%,
       white
     );
     border-color: var(--color-mustard);
@@ -187,7 +221,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
     ✕
   </button>
 
-  <h2 class="contact-modal-title mb-7 font-semibold">Let's Work Together</h2>
+  <h2 class="contact-modal-title text-4xl text-light mb-8 mt-6">{modalHeading}</h2>
 
   <ContactSection />
   <slot />
@@ -227,6 +261,7 @@ import ContactSection from "@/layouts/components/sections/ContactSection.astro";
         document.body.classList.add("modal-open");
         document.body.style.top = `-${scrollY}px`;
 
+        panel.scrollTo({ top: 0, behavior: "auto" });
         panel.classList.remove("translate-x-full");
         overlay.classList.remove("opacity-0", "pointer-events-none");
         overlay.classList.add("opacity-100", "pointer-events-auto", "active");

@@ -124,25 +124,58 @@
   }
 
   .nav-link.nav-link-cta {
-    background: transparent;
-    color: #f8f5f1;
-    border-color: rgba(207, 169, 71, 0.7);
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    @apply btn btn-primary btn-has-icon relative inline-flex items-center gap-3 overflow-hidden;
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 88%, white);
+    color: var(--color-light);
+    border-color: var(--color-mustard-70);
+    padding-inline: 1rem;
+    padding-block: 0;
     box-shadow: none;
+    height: 2.75rem;
+    min-height: 2.75rem;
+    line-height: 1;
+  }
+
+  .nav-link.nav-link-cta.btn-icon-end {
+    padding-right: 4.2rem !important;
+  }
+
+  .nav-link.nav-link-cta .btn-icon-pill {
+    right: 0.5rem;
+    width: 2.5rem;
+    height: 1.4rem;
+  }
+
+  .nav-link.nav-link-cta .label {
+    margin-right: 0.45rem;
+    padding-right: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .nav-link.nav-link-cta .btn-icon-pill img {
+    width: 1rem;
+    height: 1rem;
   }
 
   .nav-link.nav-link-cta:hover {
-    color: #f8f5f1;
-    background-color: rgba(7, 47, 59, 0.65);
-    border-color: rgba(207, 169, 71, 1);
+    color: var(--color-light);
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 96%, white);
+    border-color: var(--color-mustard);
   }
 
   .nav-link.nav-link-cta.nav-link-active {
-    background-color: rgba(7, 47, 59, 0.65);
-    color: #f8f5f1;
-    border-color: rgba(207, 169, 71, 1);
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 96%, white);
+    color: var(--color-light);
+    border-color: var(--color-mustard);
+  }
+
+  .nav-link.nav-link-cta:hover::after,
+  .nav-link.nav-link-cta.nav-link-active:hover::after {
+    content: none;
   }
 
   /* Regular Dropdown */
@@ -183,12 +216,13 @@
 
 @media (min-width: 1024px) {
   .navbar {
-    padding-right: clamp(10rem, 14vw, 12rem);
+    --nav-cta-space: clamp(16.5rem, 22vw, 19rem);
+    padding-right: var(--nav-cta-space);
   }
 
   .navbar .nav-item.nav-item-cta {
     position: absolute;
-    right: clamp(1.1rem, 1.6vw, 1.5rem);
+    right: clamp(1.25rem, 1.9vw, 1.9rem);
     top: 50%;
     transform: translateY(-50%);
     margin-left: 0;

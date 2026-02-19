@@ -3,13 +3,12 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import type { ContactFormConfig, Section } from "@/types";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
-import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
-import SocialComponent from "@/layouts/components/social/Social.astro";
+import SocialComponent from "@/components/social/Social.astro";
 import SocialData from "@/config/social.json";
 import type { InputField } from "@/types";
 import config from ".astro/config.generated.json" with { type: "json" };
-import contact from "@/config/contact.json" with { type: "json" };
-import Subtitle from "../widgets/Subtitle.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
+import Link from "@/layouts/components/links/Link.astro";
 
 const {
   settings: { contactFormAction, contactFormProvider },
@@ -47,6 +46,7 @@ type pricingSectionType = Section & {
 
 type Props = {
   content?: pricingSectionType;
+  showDetails?: boolean;
 };
 
 let defaultContent = (
@@ -57,18 +57,19 @@ let actualContent = overrideObjects(
   { ...defaultContent },
   Astro.props.content,
 ) as pricingSectionType;
+const { showDetails = false } = Astro.props as Props;
 
 let {
   enable = true,
-  title,
-  description,
-  subtitle,
   social,
   form,
   contactList,
 } = actualContent as pricingSectionType;
 
 const genIdFromLabel = (label: string) => label.toLowerCase().replace(" ", "-");
+const socialLinks =
+  social?.list?.filter((item) => item.enable) ||
+  SocialData.main.filter((item) => item.enable);
 
 const combineRadio = (list: InputField[]) => {
   const groupMap: Record<
@@ -105,102 +106,72 @@ const combineRadio = (list: InputField[]) => {
   return result;
 };
 
+const parseMarkdownLink = (value?: string) => {
+  if (!value) return null;
+  const match = value.match(/^\s*\[([^\]]+)\]\(([^)]+)\)\s*$/);
+  if (!match) return null;
+  return { label: match[1], href: match[2] };
+};
+
 form = {
   ...form,
   inputs: combineRadio(form.inputs),
+};
+
+const validationMessages = {
+  requiredSelect:
+    form.validationMessages?.requiredSelect || "Please select an option.",
+  invalidEmail:
+    form.validationMessages?.invalidEmail ||
+    "Please enter a valid email address.",
+  submitting: form.validationMessages?.submitting || "Form Submitting!...",
+  assistanceAt:
+    form.validationMessages?.assistanceAt ||
+    "Please contact us for assistance at",
 };
 ---
 
 {
   enable && (
     <section class="section-light relative">
-      {/*  <div class:list={["container"]}>
+      <div class="container">
         <div
           class:list={[
-            "flex flex-wrap items-start justify-between gap-x-20 gap-y-6 lg:flex-nowrap",
+            "grid grid-cols-1 gap-4",
+            showDetails && "lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]",
           ]}>
-          <div data-aos="fade-up-sm" class="lg:sticky lg:top-32 lg:max-w-lg">
-            <Subtitle class="ml-0" content={subtitle} />
-            {title && (
-              <h2
-                class="section-title has-italic-text capitalize"
-                set:html={markdownify(title)}
-              />
-            )}
-            {description && (
-              <p class="mt-6" set:html={markdownify(description, true)} />
-            )}
-            {contactList?.enable && (
-              <div class="mt-8 space-y-3">
-                {contactList.list.map((item) => {
-                  const value =
-                    item.value ??
-                    (item.label === "Email us" ? contact.email : "");
-                  return (
-                    <div class="flex items-center justify-start gap-x-4 py-1.5">
-                      {item.icon && (
-                        <div class="group-hover/item:bg-primary bg-primary/15 text-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-lg transition duration-300">
-                          <OptimizedImage
-                            inlineSvg={true}
-                            src={item.icon || ""}
-                            class="h-5 w-5 transition"
-                          />
-                        </div>
-                      )}
-                      <div class="prose-a:text-text-default space-y-px">
-                        {item.label && (
-                          <div
-                            class="text-sm text-white"
-                            set:html={item.label}
-                          />
-                        )}
-                        {value && <p set:html={markdownify(value)} />}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            {social?.enable &&
-              SocialData.main.filter((social) => social.enable).length > 0 && (
-                <div class="bg-accent box-shadow-primary mt-8 w-fit space-y-4 rounded-lg p-8">
-                  {social.title && (
-                    <h3
-                      class="text-base-sm font-primary font-normal text-inherit md:text-base"
-                      set:html={markdownify(social.title)}
-                    />
-                  )}
-                  <SocialComponent
-                    size="sm"
-                    class="gap-2"
-                    layout="modern"
-                    list={
-                      social.list ||
-                      SocialData.main.filter((social) => social.enable)
-                    }
-                  />
-                </div>
-              )}
-          </div> */}
-      {form && (
-        <div
-          data-aos="fade-up-sm"
-          data-aos-delay="200"
-          class="mt-10 w-full lg:mt-0 lg:max-w-2xl lg:p-10">
-          <form
-            id="contact-form"
-            {...{
-              "data-netlify":
-                contactFormProvider === "netlify" ? "true" : undefined,
-              "data-action": contactFormAction,
-              action:
-                contactFormProvider === "netlify"
-                  ? contactFormAction
-                  : undefined,
-              "data-provider": contactFormProvider,
-            }}
-            method="post"
-            class="grid grid-cols-1 gap-4">
+          {form && (
+            <div
+              data-aos="fade-up-sm"
+              data-aos-delay="200"
+              class:list={[
+                "order-1 w-full lg:pb-10",
+                showDetails ? "lg:max-w-[46rem]" : "",
+                showDetails ? "lg:pr-10" : "lg:px-10",
+              ]}>
+              <form
+              id="contact-form"
+                class="contact-form"
+                novalidate
+                {...{
+                  "data-netlify":
+                    contactFormProvider === "netlify" ? "true" : undefined,
+                  "data-action": contactFormAction,
+                  "data-msg-required-select": validationMessages.requiredSelect,
+                  "data-msg-invalid-email": validationMessages.invalidEmail,
+                  "data-msg-submitting": validationMessages.submitting,
+                  "data-msg-assistance-at": validationMessages.assistanceAt,
+                  action:
+                    contactFormProvider === "netlify"
+                      ? contactFormAction
+                      : undefined,
+                  "data-provider": contactFormProvider,
+                }}
+                method="post"
+                class:list={[
+                  "grid gap-4",
+                  showDetails ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1",
+                ]}>
             {/* Some Hidden Inputs For provider */}
             {form.emailSubject &&
               (contactFormProvider === "formsubmit.co" ||
@@ -223,7 +194,13 @@ form = {
                 input-wrapper
                 class:list={[
                   "flex flex-col",
-                  !input.halfWidth ? "col-span-2" : "max-sm:col-span-2",
+                  showDetails &&
+                  input.tag !== "textarea" &&
+                  input.type !== "checkbox" &&
+                  input.type !== "radio" &&
+                  !input.note
+                    ? "max-sm:col-span-2"
+                    : "col-span-2",
                   input.parentClass,
                 ]}>
                 {!input.note &&
@@ -238,21 +215,28 @@ form = {
                 {input.dropdown ? (
                   <div
                     id="validation-target"
-                    {...(input.required && { "data-required": "true" })}>
+                    {...(input.required ? { "data-required": "true" } : {})}>
                     <select
-                      {...(input.label && { "data-name": input.label })}
-                      {...(input.id && { id: input.id })}
+                      {...(input.label ? { "data-name": input.label } : {})}
+                      {...(input.id ? { id: input.id } : {})}
+                      data-required={input.required ? "true" : "false"}
                       name={
                         input.name || input.label || "Please set name value"
                       }
-                      {...(input.required && { required: true })}
+                      {...(input.dropdown?.multiple ? { multiple: true } : {})}
+                      {...(input.required ? { required: true } : {})}
                       data-hs-select={`{
                           ${input.dropdown.type === "search" ? `\"hasSearch\": true,` : `\"hasSearch\": false,`}
                           \n\"searchPlaceholder\": \"${input.dropdown.type === "search" ? input.dropdown.search?.placeholder || "Please set placeholder" : ""}\",\n
                           \"searchClasses\": \"form-input hs-dropdown-search-input\",
                           \n\"searchWrapperClasses\": \"hs-search-input-wrapper\",
                           \n\"placeholder\": \"${input.placeholder || "Please set placeholder"}\",
-                          \n\"toggleTag\": \"<button type=\\\"button\\\" aria-expanded=\\\"false\\\"><span class=\\\"text-text-default \\\" data-title><\/span><\/button>\",
+                          \n\"dropdownAutoPlacement\": true,
+                          ${
+                            input.dropdown?.multiple
+                              ? `\n\"toggleTag\": \"<button type=\\\"button\\\" aria-expanded=\\\"false\\\"><span class=\\\"text-text-default\\\"><\/span><\/button>\",`
+                              : `\n\"toggleTag\": \"<button type=\\\"button\\\" aria-expanded=\\\"false\\\"><span class=\\\"text-text-default\\\" data-title><\/span><\/button>\",`
+                          }
                           \n\"toggleClasses\": \"form-input hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer border border-gray-200 text-start focus:shadow-none focus:outline-none focus:ring-1 focus:ring-primary\",\n\"dropdownClasses\": \"hs-dropdown mt-2 max-h-72 space-y-0.5 z-20 w-full border border-gray-200 overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300\",\n\"optionClasses\": \"hs-dropdown-search-item\",\n\"optionTemplate\": \"<div><div class=\\\"flex items-center\\\"><div class=\\\"text-inherit \\\" data-title><\/div><\/div><\/div>\",
                           \"optionTemplate\": \"<div class=\\\"text-inherit flex justify-between items-center w-full\\\"><span data-title><\/span><span class=\\\"hidden hs-selected:block\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/span><\/div>\",
                           \"extraMarkup\": [\n      \"<div class=\\\"hidden hs-error:block absolute top-1/2 end-8 -translate-y-1/2\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"\/><line x1=\\\"12\\\" x2=\\\"12\\\" y1=\\\"8\\\" y2=\\\"12\\\"\/><line x1=\\\"12\\\" x2=\\\"12.01\\\" y1=\\\"16\\\" y2=\\\"16\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"hidden hs-success:flex absolute inset-y-0 end-8 items-center pointer-events-none\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"absolute top-1\/2 end-3 -translate-y-1\/2\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"m7 15 5 5 5-5\\\"\/><path d=\\\"m7 9 5-5 5 5\\\"\/><\/svg><\/div>\"\n    ]
@@ -261,14 +245,14 @@ form = {
                       <option value="">Choose</option>
                       {input.dropdown?.items?.map((option) => (
                         <option
-                          {...(option.selected && { selected: true })}
+                          {...(option.selected ? { selected: true } : {})}
                           value={option.value}>
                           {option.label}
                         </option>
                       ))}
                     </select>
                     <p class="hs-error:block mt-2 hidden text-sm text-red-600">
-                      Please select an option.
+                      {validationMessages.requiredSelect}
                     </p>
                   </div>
                 ) : input.tag === "textarea" ? (
@@ -277,7 +261,7 @@ form = {
                     name={input.name || input.label || "Please set name value"}
                     placeholder={input.placeholder || "Please set placeholder"}
                     class="form-input"
-                    {...(input.required && { required: true })}
+                    {...(input.required ? { required: true } : {})}
                     set:html={input.defaultValue || ""}
                   />
                 ) : input.group || input.items ? (
@@ -310,7 +294,7 @@ form = {
                               ? "form-radio"
                               : "form-checkbox",
                           ]}
-                          {...(input.required && { required: true })}
+                          {...(input.required ? { required: true } : {})}
                         />
                         <label
                           for={
@@ -344,7 +328,7 @@ form = {
                       class:list={[
                         input.type === "radio" ? "form-radio" : "form-checkbox",
                       ]}
-                      {...(input.required && { required: true })}
+                      {...(input.required ? { required: true } : {})}
                     />
                     <label
                       for={
@@ -358,31 +342,39 @@ form = {
                   <div
                     {...{ "data-default": input.content }}
                     class:list={[
-                      "prose-styles border p-4 text-sm",
-                      input.note === "info"
-                        ? "prose-p:text-slate-400 border-blue-400/25 bg-slate-600/10"
+                      "prose-styles form-status-message border p-4 text-sm",
+                      input.note === "success"
+                        ? "form-status-success"
                         : input.note === "warning"
-                          ? "prose-p:text-orange-400 border-amber-400/25 bg-orange-600/10"
-                          : input.note === "success"
-                            ? "prose-p:text-green-400 border-green-400/25 bg-green-600/10"
-                            : input.note === "deprecated"
-                              ? "prose-p:text-stone-400 border-green-400/25 bg-stone-600/10"
-                              : input.note === "hint"
-                                ? "prose-p:text-purple-400 border-purple-400/25 bg-purple-600/10"
-                                : "prose-p:text-gray-400 border-gray-400/25 bg-gray-600/10",
+                          ? "form-status-error"
+                          : input.note === "info"
+                            ? "form-status-info"
+                            : input.note === "hint"
+                              ? "form-status-hint"
+                              : input.note === "deprecated"
+                                ? "form-status-deprecated"
+                                : "",
                     ]}
                     set:html={markdownify(input.content || "", true)}
                   />
                 ) : (
                   <input
-                    {...(input.defaultValue && {
-                      value: input.defaultValue,
-                    })}
+                    {...(input.defaultValue
+                      ? {
+                          value: input.defaultValue,
+                        }
+                      : {})}
                     type={input.type || "text"}
                     name={input.name || input.label || "Please set name value"}
                     placeholder={input.placeholder || "Please set placeholder"}
                     class="form-input"
-                    {...(input.required && { required: true })}
+                    {...(input.type === "email"
+                      ? {
+                          inputmode: "email",
+                          autocomplete: "email",
+                        }
+                      : {})}
+                    {...(input.required ? { required: true } : {})}
                   />
                 )}
               </div>
@@ -390,21 +382,16 @@ form = {
 
             {form.submitButton && (
               <div class="col-span-2 mt-4 flex flex-col">
-                <button
+                <Button
+                  tag="button"
                   type="submit"
-                  class:list={[
-                    "btn btn-md btn-primary btn-has-icon group relative inline-flex w-fit overflow-hidden",
-                    "relative z-0 flex items-center gap-4",
-                  ]}>
-                  {form.submitButton.label}
-                  <span class="flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
-                    <OptimizedImage
-                      alt="icon"
-                      class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
-                      src="/images/icons/svg/star.svg"
-                    />
-                  </span>
-                </button>
+                  content={{
+                    enable: true,
+                    label: form.submitButton.label,
+                  }}
+                  variant="primary"
+                  class="w-fit"
+                />
               </div>
             )}
             {form.note && (
@@ -413,12 +400,292 @@ form = {
                 set:html={markdownify(form.note, true)}
               />
             )}
-          </form>
+              </form>
+            </div>
+          )}
+
+          {showDetails && (contactList?.enable || social?.enable) && (
+            <aside
+              data-aos="fade-up-sm"
+              data-aos-delay="250"
+              class="order-2 hidden w-full lg:block lg:pt-1">
+              <div class="contact-details-panel rounded-3xl border p-6 sm:p-7 lg:p-8">
+                {contactList?.enable && contactList.list?.length > 0 && (
+                  <div class="space-y-4">
+                    {contactList.list.map((item) => (
+                      <div class="contact-detail-item px-1 py-1">
+                        {item.label && (
+                          <p
+                            class="contact-detail-label text-sm tracking-[0.04em]"
+                            set:html={markdownify(item.label)}
+                          />
+                        )}
+                      {item.value &&
+                        (() => {
+                          const parsedLink = parseMarkdownLink(item.value);
+                          return parsedLink ? (
+                            <div class="contact-detail-value text-base leading-relaxed">
+                              <Link href={parsedLink.href}>
+                                {parsedLink.label}
+                              </Link>
+                            </div>
+                          ) : (
+                            <p class="contact-detail-value text-base leading-relaxed">
+                              {item.value}
+                            </p>
+                          );
+                        })()}
+                    </div>
+                  ))}
+                </div>
+                )}
+
+                {social?.enable && socialLinks.length > 0 && (
+                  <div class="contact-social-block mt-6 pt-6">
+                    {social.title && (
+                      <h3
+                        class="contact-detail-label text-sm font-medium tracking-[0.04em]"
+                        set:html={markdownify(social.title)}
+                      />
+                    )}
+                    <SocialComponent
+                      layout="classic"
+                      linkType="follow"
+                      size="sm"
+                      class="contact-details-social mt-4 gap-3"
+                      list={socialLinks}
+                    />
+                  </div>
+                )}
+              </div>
+            </aside>
+          )}
         </div>
-      )}
+      </div>
     </section>
   )
 }
+
+<style>
+  .contact-form .form-status-message {
+    border-radius: 1rem;
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 70%,
+      transparent
+    );
+    background: color-mix(in srgb, var(--color-bg-dark) 76%, transparent);
+    color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .contact-form .form-status-message :global(p) {
+    margin: 0;
+    color: inherit;
+  }
+
+  .contact-form .form-status-message :global(strong) {
+    color: inherit;
+  }
+
+  .contact-form .form-status-message :global(a) {
+    color: var(--color-link-dark-bg) !important;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+    text-underline-offset: 0.15em;
+  }
+
+  .contact-form .form-status-message :global(a:hover) {
+    color: var(--color-link-dark-bg-hover) !important;
+  }
+
+  .contact-form .form-status-success {
+    border-color: color-mix(in srgb, var(--color-link-dark-bg) 45%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 52%,
+      var(--color-bg-dark)
+    );
+    color: color-mix(in srgb, white 96%, transparent);
+  }
+
+  .contact-form .form-status-error {
+    border-width: 2px;
+    border-color: color-mix(in srgb, var(--color-mustard) 88%, white);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-mustard-30) 42%, transparent) 0%,
+      color-mix(in srgb, var(--color-mustard) 18%, transparent) 100%
+    );
+    color: white;
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-mustard) 30%, transparent),
+      0 0.5rem 1.25rem color-mix(in srgb, black 30%, transparent);
+  }
+
+  .contact-form .form-status-error :global(p)::before {
+    content: "!";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    line-height: 1;
+    color: color-mix(in srgb, var(--color-bg-dark) 92%, black);
+    background: color-mix(in srgb, var(--color-mustard) 92%, white);
+    box-shadow: 0 0 0 1px color-mix(in srgb, black 24%, transparent);
+    vertical-align: text-bottom;
+  }
+
+  .contact-form .form-status-info {
+    border-color: color-mix(in srgb, var(--color-link-dark-bg) 35%, transparent);
+    background: color-mix(in srgb, var(--color-bg-dark) 82%, transparent);
+    color: color-mix(in srgb, white 90%, transparent);
+  }
+
+  .contact-form .form-status-hint {
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 82%,
+      transparent
+    );
+    background: color-mix(in srgb, var(--color-bg-dark) 80%, transparent);
+    color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .contact-form .form-status-deprecated {
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 72%,
+      transparent
+    );
+    background: color-mix(in srgb, var(--color-bg-dark) 86%, transparent);
+    color: color-mix(in srgb, white 76%, transparent);
+  }
+
+  .contact-form.is-submitting .message.success .form-status-message {
+    border-color: color-mix(in srgb, var(--color-link-dark-bg) 58%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-monire-deep-teal) 44%,
+      var(--color-bg-dark)
+    );
+  }
+
+  .contact-form.is-submitting .message.success .form-status-message :global(p) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact-form.is-submitting .message.success .form-status-message :global(p)::before {
+    content: "";
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, white 34%, transparent);
+    border-top-color: color-mix(in srgb, white 92%, transparent);
+    animation: contact-form-spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes contact-form-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .contact-details-panel {
+    border-color: color-mix(
+      in srgb,
+      var(--color-border-surface-dark) 72%,
+      transparent
+    );
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-bg-dark) 80%, var(--color-monire-deep-teal))
+        0%,
+      color-mix(in srgb, var(--color-bg-dark) 88%, var(--color-monire-deep-teal))
+        100%
+    );
+    box-shadow: none;
+  }
+
+  .contact-detail-item {
+    border: 0;
+    background: transparent;
+  }
+
+  .contact-detail-label {
+    color: color-mix(in srgb, white 74%, transparent);
+  }
+
+  .contact-detail-value {
+    margin-top: 0.25rem;
+    color: color-mix(in srgb, white 94%, transparent);
+  }
+
+  .contact-detail-value :global(p),
+  .contact-detail-value :global(span),
+  .contact-detail-value :global(strong) {
+    color: inherit;
+  }
+
+  .contact-detail-value :global(p) {
+    margin: 0;
+  }
+
+  .contact-detail-value :global(a),
+  .contact-details-panel :global(a) {
+    color: var(--color-link-dark-bg) !important;
+    text-decoration: underline;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+    text-underline-offset: 0.15em;
+  }
+
+  .contact-detail-value :global(a:hover),
+  .contact-details-panel :global(a:hover) {
+    color: var(--color-link-dark-bg-hover) !important;
+  }
+
+  .contact-social-block {
+    border-top: 1px solid color-mix(in srgb, white 14%, transparent);
+  }
+
+  .contact-details-social :global(a) {
+    color: var(--color-link-dark-bg);
+    background: transparent;
+    border: 1px solid
+      color-mix(in srgb, var(--color-link-dark-bg) 55%, transparent);
+  }
+
+  .contact-details-social :global(a:hover) {
+    color: var(--color-link-dark-bg-hover);
+    border-color: color-mix(
+      in srgb,
+      var(--color-link-dark-bg-hover) 72%,
+      transparent
+    );
+    background: transparent;
+  }
+
+  @media (max-width: 1023px) {
+    .contact-details-panel {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .contact-social-block {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top-color: color-mix(in srgb, white 10%, transparent);
+    }
+  }
+</style>
 
 <script>
   import "@preline/select";
@@ -431,149 +698,216 @@ form = {
   import contact from "@/config/contact.json" with { type: "json" };
 
   document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById(
-      "contact-form",
-    ) as HTMLFormElement | null;
+    const forms = document.querySelectorAll(
+      "form.contact-form",
+    ) as NodeListOf<HTMLFormElement>;
+    if (!forms.length) return;
 
-    if (!form) return;
+    const initForm = (form: HTMLFormElement) => {
+      const selectTags = form.querySelectorAll(
+        "select[data-hs-select]",
+      ) as NodeListOf<HTMLSelectElement>;
+      const emailInput = form.querySelector(
+        'input[type="email"]',
+      ) as HTMLInputElement | null;
+      const validationMessages = {
+        requiredSelect:
+          form.dataset.msgRequiredSelect || "Please select an option.",
+        invalidEmail:
+          form.dataset.msgInvalidEmail || "Please enter a valid email address.",
+        submitting: form.dataset.msgSubmitting || "Form Submitting!...",
+        assistanceAt:
+          form.dataset.msgAssistanceAt ||
+          "Please contact us for assistance at",
+      };
 
-    const selectTags = form.querySelectorAll(
-      "select[data-hs-select]",
-    ) as NodeListOf<HTMLSelectElement>;
-
-    selectTags.forEach((select) => {
-      if (select.hasAttribute("required")) {
-        select.setAttribute("data-required", "true");
-        select.removeAttribute("required");
-      }
-    });
-
-    const validatePrelineSelect = (select: HTMLSelectElement): boolean => {
-      const isRequired = select.getAttribute("data-required") === "true";
-      const value = select.value;
-      const isEmpty = !value || value === "" || value === "Choose";
-
-      let wrapper = select.parentElement;
-      while (wrapper && wrapper.tagName !== "FORM") {
-        if (wrapper.id === "validation-target") {
-          break;
+      selectTags.forEach((select) => {
+        if (select.hasAttribute("required")) {
+          select.removeAttribute("required");
         }
-        wrapper = wrapper.parentElement;
-      }
+      });
 
-      if (!wrapper) return true;
+      const validatePrelineSelect = (select: HTMLSelectElement): boolean => {
+        const isRequired = select.getAttribute("data-required") === "true";
+        const formData = new FormData(form);
+        const selectedValues = formData
+          .getAll(select.name)
+          .map((value) => String(value));
+        const hasValidValue = selectedValues.some(
+          (value) => value && value !== "Choose",
+        );
+        const isEmpty = selectedValues.length === 0 || !hasValidValue;
 
-      const errorMsg = wrapper.querySelector("p.text-red-600");
-      const successMsg = wrapper.querySelector("p.text-white");
+        const wrapper = select.closest("#validation-target");
+        if (!wrapper) return true;
 
-      if (isRequired && isEmpty) {
-        wrapper.classList.add("hs-error");
-        wrapper.classList.remove("hs-success");
+        const errorMsg = wrapper.querySelector("p.text-red-600");
+        const successMsg = wrapper.querySelector("p.text-white");
 
-        if (errorMsg) {
-          errorMsg.classList.remove("hidden");
+        if (isRequired && isEmpty) {
+          wrapper.classList.add("hs-error");
+          wrapper.classList.remove("hs-success");
+          errorMsg?.classList.remove("hidden");
+          successMsg?.classList.add("hidden");
+          return false;
         }
-        if (successMsg) {
-          successMsg.classList.add("hidden");
-        }
 
-        return false;
-      } else {
         wrapper.classList.remove("hs-error");
-
-        if (errorMsg) {
-          errorMsg.classList.add("hidden");
-        }
-
+        errorMsg?.classList.add("hidden");
         if (!isEmpty) {
           wrapper.classList.add("hs-success");
-          if (successMsg) {
-            successMsg.classList.remove("hidden");
-          }
+          successMsg?.classList.remove("hidden");
         } else {
           wrapper.classList.remove("hs-success");
-          if (successMsg) {
-            successMsg.classList.add("hidden");
+          successMsg?.classList.add("hidden");
+        }
+        return true;
+      };
+
+      selectTags.forEach((select) => {
+        select.addEventListener("change", () => {
+          validatePrelineSelect(select);
+        });
+      });
+
+      const isValidEmailFormat = (value: string): boolean =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+
+      const validateEmail = (): boolean => {
+        if (!emailInput) return true;
+        const value = emailInput.value.trim();
+
+        if (!value) {
+          emailInput.setCustomValidity("");
+          return true;
+        }
+
+        if (!isValidEmailFormat(value)) {
+          emailInput.setCustomValidity(validationMessages.invalidEmail);
+          return false;
+        }
+
+        emailInput.setCustomValidity("");
+        return true;
+      };
+
+      emailInput?.addEventListener("input", validateEmail);
+      emailInput?.addEventListener("blur", validateEmail);
+
+      const focusInvalidSelect = (select: HTMLSelectElement) => {
+        const wrapper = select.closest("#validation-target");
+        const toggle = wrapper?.querySelector(
+          'button[aria-expanded]',
+        ) as HTMLButtonElement | null;
+        toggle?.focus();
+      };
+
+      const showFormMessage = (
+        message: string,
+        success: boolean,
+        disableSubmit = false,
+      ) => {
+        setMessage(message, success, disableSubmit, form);
+      };
+
+      form.addEventListener("submit", async (e: Event) => {
+        e.preventDefault();
+
+        const provider = form.getAttribute("data-provider") || "";
+        const action = form.getAttribute("data-action") || "";
+
+        const orderedFields = Array.from(form.elements).filter((el) => {
+          const field = el as
+            | HTMLInputElement
+            | HTMLTextAreaElement
+            | HTMLSelectElement;
+          if (!field.name || field.hasAttribute("disabled")) return false;
+          if ("type" in field) {
+            const inputType = (field as HTMLInputElement).type;
+            if (
+              inputType === "hidden" ||
+              inputType === "submit" ||
+              inputType === "button" ||
+              inputType === "reset"
+            ) {
+              return false;
+            }
+          }
+          return true;
+        }) as Array<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
+
+        for (const field of orderedFields) {
+          if (
+            field instanceof HTMLInputElement &&
+            (field.type === "radio" || field.type === "checkbox")
+          ) {
+            if (!field.checkValidity()) {
+              field.reportValidity();
+              field.focus();
+              return;
+            }
+            continue;
+          }
+
+          if (field instanceof HTMLSelectElement && field.matches("[data-hs-select]")) {
+            if (!validatePrelineSelect(field)) {
+              focusInvalidSelect(field);
+              return;
+            }
+            continue;
+          }
+
+          if (field === emailInput && !validateEmail()) {
+            emailInput.reportValidity();
+            emailInput.focus();
+            return;
+          }
+
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            field.focus();
+            return;
           }
         }
 
-        return true;
-      }
+        showFormMessage(validationMessages.submitting, true, true);
+
+        try {
+          switch (provider) {
+            case "netlify":
+              await netlifySubmit(form, action);
+              break;
+            case "formsubmit.co":
+              await formSubmit({
+                form,
+                action,
+              });
+              break;
+            case "formspree":
+              await formspreeSubmit(
+                Object.fromEntries(new FormData(form).entries()),
+                5000,
+                form,
+              );
+              break;
+            default:
+              throw new Error("Unknown form provider.");
+          }
+        } catch (error) {
+          showFormMessage(
+            `${error}! ${validationMessages.assistanceAt} [${contact.email}](mailto:${contact.email})`,
+            false,
+            false,
+          );
+        }
+      });
     };
 
-    selectTags.forEach((select) => {
-      select.addEventListener("change", () => {
-        validatePrelineSelect(select);
-      });
-    });
-
-    form.addEventListener("submit", async (e: Event) => {
-      e.preventDefault();
-
-      const provider = form.getAttribute("data-provider") || "";
-      const action = form.getAttribute("data-action") || "";
-
-      let allSelectsValid = true;
-      selectTags.forEach((select) => {
-        const isValid = validatePrelineSelect(select);
-        if (!isValid) {
-          allSelectsValid = false;
-        }
-      });
-
-      if (!allSelectsValid) {
-        const firstInvalid = Array.from(selectTags).find(
-          (select) => !validatePrelineSelect(select),
-        );
-        if (firstInvalid) {
-          let wrapper = firstInvalid.parentElement;
-          while (wrapper && wrapper.tagName !== "FORM") {
-            if (wrapper.id === "validation-target") {
-              wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
-              break;
-            }
-            wrapper = wrapper.parentElement;
-          }
-        }
-        return;
-      }
-
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      setMessage("Form Submitting!...", true, true, form);
-
+    forms.forEach((form) => {
       try {
-        switch (provider) {
-          case "netlify":
-            await netlifySubmit(form, action);
-            break;
-          case "formsubmit.co":
-            await formSubmit({
-              form,
-              action,
-            });
-            break;
-          case "formspree":
-            await formspreeSubmit(
-              Object.fromEntries(new FormData(form).entries()),
-              5000,
-              form,
-            );
-            break;
-          default:
-            throw new Error("Unknown form provider.");
-        }
+        initForm(form);
       } catch (error) {
-        setMessage(
-          error +
-            `! Please contact us for assitance at [${contact.email}](mailto:${contact.email})`,
-          false,
-          false,
-          form,
-        );
+        console.error("Failed to initialize contact form", error);
       }
     });
   });

@@ -25,7 +25,7 @@
   --color-mustard-50: rgba(207, 169, 71, 0.5);
 
   
-  --color-text-default: #C8C1C1;
+  --color-text-default: var(--color-text-shell-muted);
   --color-dark: #000E30;
 
   --color-blob: 0.61 0.06 205.6;
@@ -41,18 +41,18 @@
     var(--color-bg-light-start) 0%,
     var(--color-bg-light-end) 100%
   );
-  --gradient-vibe-dark: linear-gradient(rgb(5 40 50) 50%, rgb(3 38 48) 100%);
-  --color-vibe-orb-strong: rgba(46, 212, 199, 0.34);
-  --color-vibe-orb-soft: rgba(120, 200, 255, 0.18);
-  --color-vibe-orb-strong-soft: rgba(46, 212, 199, 0.26);
-  --color-vibe-orb-soft-soft: rgba(120, 200, 255, 0.16);
+  --gradient-dark-teal: linear-gradient(rgb(5 40 50) 50%, rgb(3 38 48) 100%);
+  --color-dark-teal-orb-strong: rgba(46, 212, 199, 0.34);
+  --color-dark-teal-orb-soft: rgba(120, 200, 255, 0.18);
+  --color-dark-teal-orb-strong-soft: rgba(46, 212, 199, 0.26);
+  --color-dark-teal-orb-soft-soft: rgba(120, 200, 255, 0.16);
   --color-link-light-bg: #0F4B5A;
   --color-link-light-bg-hover: var(--color-monire-deep-teal-soft);
   --color-link-light-bg-focus: var(--color-monire-deep-teal-focus);
   --color-link-dark-bg: #F1D69A;
   --color-link-dark-bg-hover: #FAE7BE;
   --color-link-dark-bg-focus: #FFECC2;
-  --color-link-underline-thickness: 1px;
+  --color-link-underline-thickness: 0.05em;
 
   /* Shared surface tokens (used across About, Services, Pricing, Value cards) */
   --color-border-surface-light: rgba(255, 255, 255, 0.12);

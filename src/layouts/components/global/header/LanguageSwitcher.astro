@@ -3,6 +3,7 @@ import Icons from "@/helpers/Icons.astro";
 import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 import { getLocaleUrlCTM, supportedLanguages } from "@/lib/utils/i18nUtils";
 import trailingSlashChecker from "@/lib/utils/trailingSlashChecker";
+import Link from "@/layouts/components/links/Link.astro";
 
 const currentLocale = Astro.currentLocale;
 const languages = supportedLanguages.map((lang) => {
@@ -48,7 +49,7 @@ const languages = supportedLanguages.map((lang) => {
         (language) =>
           language && (
             <li>
-              <a
+              <Link
                 class:list={[
                   {
                     active: language.languageCode === currentLocale,
@@ -57,7 +58,7 @@ const languages = supportedLanguages.map((lang) => {
                 ]}
                 href={language.slug}>
                 {language.contentDir}
-              </a>
+              </Link>
             </li>
           ),
       )

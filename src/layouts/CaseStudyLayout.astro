@@ -3,7 +3,7 @@ import Layout from "@/layouts/Base.astro";
 import CaseStudyHero from "@/layouts/components/case-study/Hero.astro";
 import CaseStudyDescription from "@/layouts/components/case-study/CaseStudyDescription.astro";
 import CaseStudyInfo from "@/layouts/components/case-study/CaseStudyInfo.astro";
-import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 
 const { entry } = Astro.props;
 const data = entry.data;
@@ -12,13 +12,13 @@ const data = entry.data;
 <Layout title={data.title}>
   <section class="section-light case-study-top relative z-10">
     <div class="container">
-      <ButtonLink
+      <Button
         content={{
           enable: true,
           label: data.backLabel || "Back",
           url: data.backUrl || "/",
         }}
-        class="btn-md btn-pricing-light"
+        variant="secondary"
       />
     </div>
   </section>

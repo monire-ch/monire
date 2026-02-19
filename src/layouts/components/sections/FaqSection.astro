@@ -5,6 +5,7 @@ import Subtitle from "../widgets/Subtitle.astro";
 import type { FAQCategory, Section } from "@/types";
 import { markdownify } from "@/lib/utils/textConverter";
 import AccordionList from "@/layouts/components/widgets/AccordionList.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 
 type faqSectionType = Section & {
   list?: FAQCategory[];
@@ -35,7 +36,7 @@ list = limit && list ? list.slice(0, limit as number) : list;
 
 {
   enable && (
-    <section id="faq" class="pricing-vibe faq-vibe relative overflow-hidden">
+    <section id="faq" class="pricing-dark-teal faq-dark-teal relative overflow-hidden">
       <div class="pricing-orb pricing-orb-1" aria-hidden="true" />
       <div class="pricing-orb pricing-orb-2" aria-hidden="true" />
       <div class="container">
@@ -64,16 +65,20 @@ list = limit && list ? list.slice(0, limit as number) : list;
                       "faq-tabs-wrapper lg:col-span-3 xl:col-span-2",
                     ]}>
                     {list.map((button: FAQCategory, index: number) => (
-                      <button
+                      <Button
                         role="tab"
-                        type="button"
-                        set:html={button.label}
+                        tag="button"
                         id={"faq-tab-item-" + (index + 1)}
                         data-hs-tab={"#faq-tab-" + (index + 1)}
                         aria-controls={"faq-tab-" + (index + 1)}
                         aria-selected={index === 0 ? "true" : "false"}
+                        content={{
+                          enable: true,
+                          label: button.label,
+                        }}
+                        variant="secondary"
                         class:list={[
-                          "faq-tab px-6 py-2.5 text-start text-lg max-lg:min-w-full",
+                          "faq-tab btn-toggle text-start text-lg max-lg:min-w-full",
                           { active: index === 0 },
                         ]}
                       />
@@ -125,11 +130,8 @@ list = limit && list ? list.slice(0, limit as number) : list;
   }
 
   .faq-tab {
-    border-radius: 999rem;
-    border: 1px solid
-      color-mix(in srgb, var(--color-border-surface-dark) 85%, transparent);
-    background: transparent;
-    color: color-mix(in srgb, white 82%, transparent);
+    width: 100%;
+    justify-content: flex-start;
     transition:
       color 180ms ease,
       background-color 180ms ease,
@@ -138,24 +140,12 @@ list = limit && list ? list.slice(0, limit as number) : list;
       transform 180ms ease;
   }
 
-  .faq-tab:hover {
-    color: white;
-    border-color: color-mix(in srgb, var(--color-mustard-70) 80%, transparent);
-  }
-
-  .faq-tab.active {
-    background: color-mix(in srgb, white 18%, transparent);
-    border-color: var(--color-mustard-70);
-    color: white;
-    box-shadow: none;
-  }
-
   .faq-tab:focus-visible {
     outline: 0.125rem solid var(--color-mustard);
     outline-offset: 0.125rem;
   }
 
-  .faq-vibe :global(.hs-accordion-toggle) {
+  .faq-dark-teal :global(.hs-accordion-toggle) {
     color: white;
     border-color: color-mix(
       in srgb,
@@ -164,17 +154,17 @@ list = limit && list ? list.slice(0, limit as number) : list;
     ) !important;
   }
 
-  .faq-vibe :global(.hs-accordion-toggle .title),
-  .faq-vibe :global(.hs-accordion-content p),
-  .faq-vibe :global(.hs-accordion-content li) {
+  .faq-dark-teal :global(.hs-accordion-toggle .title),
+  .faq-dark-teal :global(.hs-accordion-content p),
+  .faq-dark-teal :global(.hs-accordion-content li) {
     color: var(--color-text-shell-muted);
   }
 
-  .faq-vibe :global(.hs-accordion.active .hs-accordion-toggle .title) {
+  .faq-dark-teal :global(.hs-accordion.active .hs-accordion-toggle .title) {
     color: white;
   }
 
-  .faq-vibe :global(.hs-accordion) {
+  .faq-dark-teal :global(.hs-accordion) {
     background: color-mix(in srgb, var(--color-bg-dark-soft) 70%, transparent);
     border: 1px solid
       color-mix(in srgb, var(--color-border-overlay) 88%, transparent);

@@ -1,44 +1,44 @@
 ---
 import config from ".astro/config.generated.json" with { type: "json" };
 
-let faviconPath = "/images/favicons";
+const base = import.meta.env.BASE_URL || "/";
+const withBase = (path: string) =>
+  `${base.endsWith("/") ? base.slice(0, -1) : base}${path}`;
+const version = "20260218";
 
 const favicons = [
   {
-    rel: "apple-touch-icon",
-    sizes: "180x180",
-    href: `${faviconPath}/apple-touch-icon.png`,
+    rel: "icon",
+    type: "image/png",
+    sizes: "32x32",
+    href: `${withBase("/favicon-32x32.png")}?v=${version}`,
   },
   {
     rel: "icon",
     type: "image/png",
-    sizes: "96x96",
-    href: `${faviconPath}/favicon-96x96.png`,
+    sizes: "16x16",
+    href: `${withBase("/favicon-16x16.png")}?v=${version}`,
+  },
+  {
+    rel: "shortcut icon",
+    type: "image/x-icon",
+    href: `${withBase("/favicon.ico")}?v=${version}`,
   },
   {
     rel: "icon",
-    type: "image/png",
-    sizes: "192x192",
-    href: `${faviconPath}/web-app-manifest-192x192.png`,
-  },
-  {
-    rel: "icon",
-    type: "image/png",
-    sizes: "512x512",
-    href: `${faviconPath}/web-app-manifest-512x512.png`,
+    type: "image/x-icon",
+    href: `${withBase("/favicon.ico")}?v=${version}`,
   },
   {
     rel: "icon",
     type: "image/svg+xml",
-    href: `${faviconPath}/favicon.svg`,
+    sizes: "any",
+    href: `${withBase("/favicon.svg")}?v=${version}`,
   },
   {
-    rel: "shortcut icon",
-    href: `${faviconPath}/favicon.ico`,
-  },
-  {
-    rel: "manifest",
-    href: `${faviconPath}/site.webmanifest`,
+    rel: "apple-touch-icon",
+    sizes: "180x180",
+    href: `${withBase("/apple-touch-icon.png")}?v=${version}`,
   },
 ];
 

@@ -1,4 +1,6 @@
 ---
+import Link from "@/layouts/components/links/Link.astro";
+
 interface Props {
   client: string;
   date: string;
@@ -49,9 +51,9 @@ const { client, date, category, tools = [], website } = Astro.props as Props;
     website && (
       <div class="flex justify-between py-2">
         <span class="opacity-60">Website</span>
-        <a href={website} class="text-link">
+        <Link href={website} class="text-link">
           Visit Website
-        </a>
+        </Link>
       </div>
     )
   }

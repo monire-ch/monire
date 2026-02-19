@@ -7,7 +7,7 @@
 <button
   type="button"
   id="nav-toggle"
-  class="relative z-[10001] inline-flex items-center justify-center gap-2 rounded-md p-2 text-[var(--color-link-dark-bg)] hover:bg-transparent hover:text-[var(--color-link-dark-bg-hover)] lg:hidden"
+  class="relative z-[10001] -translate-x-2 inline-flex items-center justify-center gap-2 rounded-md p-2 text-[var(--color-link-dark-bg)] hover:bg-transparent hover:text-[var(--color-link-dark-bg-hover)] lg:hidden"
   aria-controls="nav-menu"
   aria-label="Toggle navigation"
   aria-expanded="false"
@@ -66,10 +66,9 @@
         hamburgerIcon?.classList.add("hidden");
         closeIcon?.classList.remove("hidden");
         toggleBtn.setAttribute("aria-expanded", "true");
-        // Only prevent body scroll, not html
+        // Prevent scrolling without changing body layout/position
+        document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
-        document.body.style.position = "fixed";
-        document.body.style.width = "100%";
       } catch (error) {
         // Silently handle errors
       }
@@ -87,9 +86,8 @@
         closeIcon?.classList.add("hidden");
         toggleBtn.setAttribute("aria-expanded", "false");
         // Restore body scroll
+        document.documentElement.style.overflow = "";
         document.body.style.overflow = "";
-        document.body.style.position = "";
-        document.body.style.width = "";
       } catch (error) {
         // Silently handle errors
       }

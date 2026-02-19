@@ -68,6 +68,12 @@
       "name": "FAQ",
       "url": "/#faq",
       "weight": 0
+    },
+    {
+      "enable": true,
+      "name": "Contact",
+      "url": "/contact",
+      "weight": 0
     }
   ]
 }

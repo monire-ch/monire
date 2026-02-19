@@ -1,22 +1,55 @@
 ---
 import { markdownify } from "@/lib/utils/textConverter";
 import overrideObjects from "@/lib/utils/overrideObjects";
-import ButtonLink from "@/layouts/components/buttons/ButtonLink.astro";
+import Button from "@/layouts/components/buttons/Button.astro";
 import PricingCard from "@/layouts/components/cards/PricingCard.astro";
 import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 import { getEntryCTM } from "@/lib/contentParser.astro";
+import type { 
+  Button as ButtonData,
+  PricingPlans,
+  PricingTier,
+  Section,
+ } from "@/types";
+
+type PricingTabItem = {
+  label: string;
+  selected: boolean;
+};
+
+type AiAutomationsContent = {
+  title: string;
+  subtitle: string;
+  ctas: Pick<ButtonData, "label" | "url" | "variant">[];
+};
+
+type PricingSectionContent = Section & {
+  plans: PricingPlans;
+  list: PricingTier[];
+  heading?: string;
+  description?: string;
+  ai_automations: AiAutomationsContent;
+};
 
 const defaultContent = (
   await getEntryCTM("sections", "pricing-section", Astro.currentLocale)
-)?.data;
+)?.data as PricingSectionContent;
 
-const content = overrideObjects(defaultContent, Astro.props.content);
+const content = overrideObjects(
+  defaultContent,
+  Astro.props.content,
+) as PricingSectionContent;
 
 const { title, subtitle, plans, list, heading, description, ai_automations } =
   content;
+
+const pricingTabs: PricingTabItem[] = plans?.list || [];
+const pricingCards: PricingTier[] = list || [];
+const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
+  ai_automations?.ctas || [];
 ---
 
-<section id="pricing" class="pricing-vibe relative overflow-hidden">
+<section id="pricing" class="pricing-dark-teal relative overflow-hidden">
   <div class="pricing-orb pricing-orb-1" aria-hidden="true"></div>
   <div class="pricing-orb pricing-orb-2" aria-hidden="true"></div>
   <!-- background glows -->
@@ -48,13 +81,19 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     <div class="flex justify-center">
       <div class="pricing-tabs">
         {
-          plans?.list?.map((item) => (
-            <button
-              class="pricing-tab"
+          pricingTabs.map((item, index) => (
+            <Button
+              class="btn-toggle pricing-tab"
+              tag="button"
+              data-tab-key={index === 0 ? "web" : "ai"}
               data-tab={item.label}
-              data-active={item.selected ? "true" : "false"}>
-              {item.label}
-            </button>
+              data-active={item.selected ? "true" : "false"}
+              content={{
+                enable: true,
+                label: item.label,
+              }}
+              variant="secondary"
+            />
           ))
         }
       </div>
@@ -63,10 +102,10 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     <!-- WEB DESIGN CONTENT -->
     <div
       id="web-design-content"
-      class:list={[plans.list[0].selected ? "block" : "hidden"]}>
+      class:list={[plans?.list?.[0]?.selected ? "block" : "hidden"]}>
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start">
         {
-          list?.map((item, index) => (
+          pricingCards.map((item, index) => (
             <PricingCard index={index} content={{ ...item, plans }} />
           ))
         }
@@ -75,7 +114,7 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
       {
         heading && (
           <h4
-            class="mt-20 text-center font-medium"
+            class="mt-20 text-center font-medium text-[var(--color-text-shell-muted)]"
             set:html={markdownify(heading)}
           />
         )
@@ -84,7 +123,7 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
       {
         description && (
           <div
-            class="mx-auto p-6 text-center"
+            class="mx-auto p-6 text-center text-[var(--color-text-shell-muted)]"
             set:html={markdownify(description, true)}
           />
         )
@@ -94,26 +133,27 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     <!-- AI AUTOMATIONS CONTENT -->
     <div
       id="ai-content"
-      class:list={[plans.list[1].selected ? "block" : "hidden"]}
-      class="space-y-6 text-center">
-      <h3 class="text-h3 font-semibold">
+      class:list={[plans?.list?.[1]?.selected ? "block" : "hidden"]}
+      class="space-y-6 pt-6 pb-6 text-center md:pt-8 md:pb-8">
+      <h3 class="mx-auto max-w-3xl text-2xl font-medium tracking-[0.02em] text-mustard md:text-4xl">
         {ai_automations.title}
       </h3>
 
-      <p class="mx-auto max-w-xl text-base text-white/88">
+      <p class="mx-auto max-w-xl text-base text-[var(--color-text-shell-muted)]">
         {ai_automations.subtitle}
       </p>
 
       <div class="mt-6 flex items-center justify-center gap-4">
         {
-          ai_automations.ctas.map((btn) => (
-            <ButtonLink
+          aiCtas.map((btn) => (
+            <Button
               content={{
                 enable: true,
                 label: btn.label,
                 url: btn.url,
               }}
-              class="btn-md btn-pricing-dark flex justify-center text-center"
+              variant={btn.variant || "primary"}
+              class="justify-center text-center"
             />
           ))
         }
@@ -128,17 +168,18 @@ const { title, subtitle, plans, list, heading, description, ai_automations } =
     const webDesign = document.getElementById("web-design-content");
     const aiBlock = document.getElementById("ai-content");
 
+    function setActiveTab(activeTab: Element) {
+      tabs.forEach((t) => {
+        t.setAttribute("data-active", t === activeTab ? "true" : "false");
+      });
+      const isWebTab = activeTab?.getAttribute("data-tab-key") === "web";
+      webDesign?.classList.toggle("hidden", !isWebTab);
+      aiBlock?.classList.toggle("hidden", isWebTab);
+    }
+
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
-        tabs.forEach((t) => (t.dataset.active = "false"));
-        tab.dataset.active = "true";
-        if (tab.dataset.tab === "WEB DESIGN & DEVELOPMENT") {
-          webDesign.classList.remove("hidden");
-          aiBlock.classList.add("hidden");
-        } else {
-          aiBlock.classList.remove("hidden"); // ← missing
-          webDesign.classList.add("hidden");
-        }
+        setActiveTab(tab);
       });
     });
   });

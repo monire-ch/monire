@@ -111,6 +111,7 @@ export const setMessage = (
 
   // Show the selected message
   messageElement?.classList.remove("hidden");
+  form?.classList.toggle("is-submitting", disableSubmit && success);
 
   // Disable or enable submit button based on 'disableSubmit'
   if (disableSubmit) {
@@ -137,7 +138,21 @@ export const formSubmit = async ({
   form: HTMLFormElement;
   action: string;
 }) => {
-  const data = Object.fromEntries(new FormData(form).entries());
+  const formData = new FormData(form);
+  const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
+
+  formData.forEach((value, key) => {
+    if (key in data) {
+      const existing = data[key];
+      if (Array.isArray(existing)) {
+        existing.push(value);
+      } else {
+        data[key] = [existing, value];
+      }
+    } else {
+      data[key] = value;
+    }
+  });
   const controller = new AbortController();
   const signal = controller.signal;
   const timeout = 60000;

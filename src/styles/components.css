@@ -12,7 +12,7 @@
   @apply prose-h6:text-h6;
   @apply prose-strong:text-secondary prose-strong:font-normal;
   @apply prose-pre:bg-white/5;
-  @apply prose-a:underline prose-a:transition prose-a:duration-300 prose-a:font-normal [&_a:hover]:no-underline;
+  @apply prose-a:underline prose-a:transition prose-a:duration-300 prose-a:font-normal;
   @apply prose-p:text-text-default prose-p:mt-2 prose-p:mb-3;
 
   @apply prose-hr:mt-0 prose-hr:mb-[1em] prose-hr:border-border-light;
@@ -222,24 +222,79 @@
   background: color-mix(in srgb, var(--color-monire-ink) 78%, transparent);
 }
 
-.policy-page-prose ul:not(.list-unstyled) {
+.page-theme-prose ul:not(.list-unstyled) {
   list-style: disc;
   list-style-position: outside;
   padding-left: 1.25rem;
 }
 
-.policy-page-prose ul:not(.list-unstyled) li {
+.page-theme-prose ul:not(.list-unstyled) li {
   padding-left: 0;
 }
 
-.policy-page-prose ul:not(.list-unstyled) li::before,
-.policy-page-prose ul:not(.list-unstyled) li::after {
+.page-theme-prose ul:not(.list-unstyled) li::before,
+.page-theme-prose ul:not(.list-unstyled) li::after {
   content: none !important;
   display: none !important;
 }
 
-.policy-page-prose ul:not(.list-unstyled) li::marker {
+.page-theme-prose ul:not(.list-unstyled) li::marker {
   color: currentColor;
+}
+
+.dark-teal-theme-base {
+  position: relative;
+  overflow: hidden;
+  background: var(--gradient-dark-teal);
+  color: var(--color-text-shell-muted);
+  padding-bottom: clamp(8rem, 5rem + 5vw, 12rem);
+}
+
+html:has(.dark-teal-theme-base),
+body:has(.dark-teal-theme-base) {
+  background: var(--gradient-dark-teal);
+}
+
+.dark-teal-theme-base .dark-teal-theme-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark-teal-theme-base .dark-teal-theme-orb-1 {
+  top: var(--dark-teal-orb-1-top, clamp(7.5rem, 14vw, 11rem));
+  right: var(--dark-teal-orb-1-right, -7.5rem);
+  width: var(--dark-teal-orb-1-width, 17rem);
+  height: var(--dark-teal-orb-1-height, 17rem);
+  background: var(--dark-teal-orb-1-bg, var(--color-dark-teal-orb-strong-soft));
+  opacity: var(--dark-teal-orb-1-opacity, 0.62);
+}
+
+.dark-teal-theme-base .dark-teal-theme-orb-2 {
+  bottom: var(--dark-teal-orb-2-bottom, -2rem);
+  left: var(--dark-teal-orb-2-left, -5.5rem);
+  width: var(--dark-teal-orb-2-width, 14rem);
+  height: var(--dark-teal-orb-2-height, 14rem);
+  background: var(--dark-teal-orb-2-bg, var(--color-dark-teal-orb-soft-soft));
+  opacity: var(--dark-teal-orb-2-opacity, 0.55);
+}
+
+@media (max-width: 767px) {
+  .dark-teal-theme-base .dark-teal-theme-orb-1 {
+    top: var(--dark-teal-orb-1-top-mobile, 6.25rem);
+    right: var(--dark-teal-orb-1-right-mobile, -4.75rem);
+    width: var(--dark-teal-orb-1-width-mobile, 12rem);
+    height: var(--dark-teal-orb-1-height-mobile, 12rem);
+  }
+
+  .dark-teal-theme-base .dark-teal-theme-orb-2 {
+    bottom: var(--dark-teal-orb-2-bottom-mobile, -2rem);
+    left: var(--dark-teal-orb-2-left-mobile, -4rem);
+    width: var(--dark-teal-orb-2-width-mobile, 10rem);
+    height: var(--dark-teal-orb-2-height-mobile, 10rem);
+  }
 }
 
 .prose-styles a {
@@ -265,19 +320,19 @@
 
 .hero-bg .prose-styles a,
 .about-flow .prose-styles a,
-.pricing-vibe .prose-styles a {
+.pricing-dark-teal .prose-styles a {
   color: var(--color-link-dark-bg);
 }
 
 .hero-bg .prose-styles a:hover,
 .about-flow .prose-styles a:hover,
-.pricing-vibe .prose-styles a:hover {
+.pricing-dark-teal .prose-styles a:hover {
   color: var(--color-link-dark-bg-hover);
 }
 
 .hero-bg .prose-styles a:focus-visible,
 .about-flow .prose-styles a:focus-visible,
-.pricing-vibe .prose-styles a:focus-visible {
+.pricing-dark-teal .prose-styles a:focus-visible {
   outline-color: var(--color-link-dark-bg-focus);
 }
 
@@ -316,22 +371,13 @@
 }
 
 .pricing-tab {
-  padding: var(--btn-py) var(--btn-px);
+  padding-inline: 1.6rem;
   border-radius: 9999px;
   font-size: var(--btn-font-size);
   font-weight: 500;
   letter-spacing: 0.08em;
-  text-transform: capitalize;
-  color: color-mix(in srgb, white 84%, transparent);
-  background: transparent;
+  text-transform: none;
   transition: all 0.25s ease;
-}
-
-.pricing-tab[data-active="true"] {
-  background: color-mix(in srgb, white 18%, transparent);
-  color: white;
-  border: 1px solid var(--color-mustard-70);
-  box-shadow: none;
 }
 
 .pricing-card-dark,
@@ -345,7 +391,7 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.7048 0.152545C13.7834 0.212172 13.8494 0.286703 13.8991 0.371871C13.9488 0.45704 13.9812 0.551175 13.9945 0.648889C14.0078 0.746602 14.0017 0.845976 13.9765 0.941322C13.9513 1.03667 13.9076 1.12612 13.8478 1.20455L5.84782 11.7045C5.78293 11.7896 5.70059 11.8598 5.60634 11.9104C5.51209 11.961 5.4081 11.9909 5.30135 11.998C5.19461 12.0051 5.08758 11.9892 4.98745 11.9516C4.88732 11.9139 4.79641 11.8552 4.72082 11.7795L0.220823 7.27954C0.0883431 7.13737 0.0162199 6.94932 0.0196481 6.75502C0.0230763 6.56072 0.101788 6.37534 0.239201 6.23792C0.376614 6.10051 0.561999 6.0218 0.7563 6.01837C0.950602 6.01494 1.13865 6.08707 1.28082 6.21955L5.17482 10.1125L12.6548 0.295545C12.7752 0.137497 12.9534 0.0336733 13.1502 0.00686313C13.3471 -0.0199471 13.5466 0.0324471 13.7048 0.152545Z' fill='%23CFA947'/%3E%3C/svg%3E%0A") !important;
 }
 
-.pricing-vibe {
+.pricing-dark-teal {
   background: linear-gradient(
     155deg,
     color-mix(

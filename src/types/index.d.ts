@@ -21,6 +21,8 @@ export type Button = {
   enable: boolean;
   label: string;
   url: string;
+  variant?: "primary" | "secondary";
+  renderAs?: "button" | "link";
   type?: string;
   rel?: string;
   target?: string;
@@ -183,6 +185,7 @@ export interface DropdownItem {
 
 export interface DropdownConfig {
   type?: DropdownType;
+  multiple?: boolean;
   search?: DropdownSearchConfig;
   items: DropdownItem[];
 }
@@ -215,6 +218,12 @@ export interface ContactFormConfig {
   emailSubject: string;
   submitButton: SubmitButtonConfig;
   note: string;
+  validationMessages?: {
+    requiredSelect?: string;
+    invalidEmail?: string;
+    submitting?: string;
+    assistanceAt?: string;
+  };
   inputs: InputField[];
 }
 

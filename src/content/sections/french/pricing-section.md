@@ -47,7 +47,7 @@ list:
     ctaBtn:
       enable: true
       label: Get started
-      url: /contact/
+      url: /contact
       rel:
       target:
 
@@ -83,7 +83,7 @@ list:
     ctaBtn:
       enable: true
       label: Get started
-      url: /contact/
+      url: /contact
       rel:
       target:
 
@@ -117,7 +117,7 @@ list:
     ctaBtn:
       enable: true
       label: Get started
-      url: /contact/
+      url: /contact
       rel:
       target:
 
@@ -128,8 +128,8 @@ ai_automations:
   ctas:
     - label: "Get started"
       variant: "primary"
-      url: "/contact/"
+      url: "/contact"
     - label: "Latest case study"
       variant: "secondary"
-      url: "/case-studies/expense-receipt-automation/"
+      url: "/case-studies/expense-receipt-automation"
 ---

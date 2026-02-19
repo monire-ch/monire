@@ -1,7 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
 import CallToAction from "@/layouts/components/sections/CallToAction.astro";
-import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 import DarkTealPageTheme from "@/layouts/components/themes/DarkTealPageTheme.astro";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import { generatePaths } from "@/lib/utils/i18nUtils";
@@ -30,21 +29,13 @@ const applyContent = (
 ---
 
 <Base {...applyContent}>
-  <DarkTealPageTheme title={""} titleAlign="left">
-    <section class="apply-page relative overflow-hidden">
+  <DarkTealPageTheme
+    title={applyContent?.heading}
+    subtitle={applyContent?.subtitle}>
+    <div class="apply-page relative overflow-hidden">
       <div class="container">
-        <div class="mx-auto max-w-4xl space-y-10 md:space-y-12">
-          <div class="text-center">
-            <Subtitle content={applyContent?.subtitle} />
-            {applyContent?.heading && (
-              <h1
-                class="apply-heading section-title has-italic-text mx-auto max-w-3xl capitalize"
-                set:html={markdownify(applyContent.heading)}
-              />
-            )}
-          </div>
-
-          <div class="apply-content">
+        <div class="mx-auto max-w-4xl">
+          <div class="apply-content space-y-6 md:space-y-8">
             {applyContent?.description && (
               <p
                 class="mx-auto max-w-3xl text-center text-lg leading-relaxed text-[var(--color-text-shell-strong)] md:text-xl"
@@ -53,25 +44,25 @@ const applyContent = (
             )}
             {applyContent?.supportingText && (
               <p
-                class="mx-auto mt-5 max-w-3xl text-center leading-relaxed text-[var(--color-text-shell-muted)]"
+                class="mx-auto max-w-3xl text-center leading-relaxed text-[var(--color-text-shell-muted)]"
                 set:html={markdownify(applyContent.supportingText)}
               />
             )}
-            <div class="apply-divider mt-7" aria-hidden="true"></div>
+            <div class="apply-divider" aria-hidden="true"></div>
 
             {applyContent?.steps?.length ? (
-              <div class="mt-9 space-y-5 md:mt-10">
+              <div class="apply-steps space-y-6 md:space-y-7">
                 {applyContent?.stepsTitle && (
                   <h2
                     class="text-center text-2xl font-medium tracking-[0.02em] text-[var(--color-text-shell-strong)]"
                     set:html={markdownify(applyContent.stepsTitle)}
                   />
                 )}
-                <div class="grid gap-4 md:grid-cols-3">
+                <div class="grid gap-5 md:grid-cols-3 md:gap-6">
                   {applyContent.steps.map((step, index) => (
                     <article
                       class:list={[
-                        "apply-step rounded-2xl border p-5",
+                        "apply-step rounded-2xl border p-6",
                         index === 1 ? "apply-step-featured" : "apply-step-soft",
                       ]}>
                       <p
@@ -88,7 +79,7 @@ const applyContent = (
                       />
                       <p
                         class:list={[
-                          "apply-step-copy mt-2 leading-relaxed",
+                          "apply-step-copy mt-3 leading-relaxed",
                         ]}
                         set:html={markdownify(step.description)}
                       />
@@ -100,7 +91,7 @@ const applyContent = (
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </DarkTealPageTheme>
   <CallToAction />
 </Base>
@@ -112,16 +103,16 @@ const applyContent = (
     --apply-soft-text-strong: var(--color-monire-deep-teal);
     --apply-soft-text-muted: color-mix(in srgb, var(--color-monire-deep-teal) 86%, transparent);
     --apply-step-soft-shadow: 0 10px 20px color-mix(in srgb, var(--color-bg-dark) 14%, transparent);
-    padding-top: clamp(1.5rem, 2.8vw, 2.5rem);
-    padding-bottom: clamp(6.5rem, 7vw, 9rem);
-  }
-
-  .apply-heading {
-    color: var(--apply-text-strong);
+    padding-top: clamp(1.25rem, 2.2vw, 2rem);
+    padding-bottom: clamp(7.5rem, 9vw, 10.5rem);
   }
 
   .apply-content {
     padding-inline: clamp(0rem, 1vw, 0.5rem);
+  }
+
+  .apply-steps {
+    padding-top: clamp(0.6rem, 1.2vw, 1rem);
   }
 
   .apply-divider {

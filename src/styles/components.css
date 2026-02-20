@@ -401,12 +401,6 @@ body:has(.dark-teal-theme-base) {
   cursor: pointer;
 }
 
-.pricing-tabs .pricing-tab.btn-action,
-.pricing-tabs .pricing-tab.btn-action-secondary,
-.pricing-tabs .pricing-tab.btn-action-secondary:hover,
-.pricing-tabs .pricing-tab.btn-action-secondary:active,
-.pricing-tabs .pricing-tab.btn-action-secondary:focus,
-.pricing-tabs .pricing-tab.btn-action-secondary:focus-visible,
 .pricing-tabs .pricing-tab[data-active="false"],
 .pricing-tabs .pricing-tab[data-active="false"]:hover,
 .pricing-tabs .pricing-tab[data-active="false"]:active,
@@ -418,11 +412,6 @@ body:has(.dark-teal-theme-base) {
   border-color: transparent !important;
   color: color-mix(in srgb, white 84%, transparent) !important;
   box-shadow: none !important;
-}
-
-.pricing-tab .label {
-  height: auto;
-  line-height: inherit;
 }
 
 .pricing-tabs .pricing-tab[data-active="true"],
@@ -480,22 +469,6 @@ body:has(.dark-teal-theme-base) {
     white-space: normal;
   }
 
-  .pricing-tab .label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: stretch;
-    height: auto;
-    width: 100%;
-    line-height: 1.2;
-    white-space: normal;
-    text-align: center;
-  }
-
-  .pricing-tab .label :global(p) {
-    width: 100%;
-    text-align: center;
-  }
 }
 
 .pricing-card-dark,

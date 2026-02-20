@@ -94,16 +94,24 @@ const background = "/images/hero/background.jpg";
   .gold-text,
   .gold-text * {
     @apply bg-clip-text text-transparent;
-    background-image: url("/images/hero/gold-fill.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image:
+      var(--image-texture-gold),
+      var(--gradient-gold-cool);
+    background-size:
+      cover,
+      100% 100%;
+    background-position:
+      center,
+      center;
+    background-repeat:
+      no-repeat,
+      no-repeat;
 
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    color: var(--color-primary);
+    color: var(--color-link-dark-bg);
   }
 
   .hero-title {

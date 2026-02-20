@@ -42,7 +42,7 @@ const sectionSpacingClass =
 <!doctype html>
 <html lang={config.settings.multilingual.defaultLanguage || "en"}>
   <Head {...props} structuredData={structuredData} />
-  <body>
+  <body class:list={[Astro.props.homepage && "body-homepage"]}>
     {!Astro.props.homepage && <PageLoader />}
     <Header {...props} />
     <main class:list={[sectionSpacingClass, Astro.props.class]}>
@@ -55,3 +55,10 @@ const sectionSpacingClass =
     <BreakpointIndicator />
   </body>
 </html>
+
+<style is:global>
+  body.body-homepage {
+    background: var(--gradient-dark-teal);
+    background-color: #052832;
+  }
+</style>

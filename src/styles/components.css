@@ -381,6 +381,24 @@ body:has(.dark-teal-theme-base) {
   transition: all 0.25s ease;
 }
 
+.pricing-tabs .pricing-tab[data-active="false"] {
+  background: transparent;
+}
+
+@media (hover: none) {
+  .pricing-tabs .pricing-tab:hover {
+    background: transparent;
+    border-color: transparent;
+    color: color-mix(in srgb, white 84%, transparent);
+  }
+
+  .pricing-tabs .pricing-tab[data-active="true"]:hover {
+    background: color-mix(in srgb, white 18%, transparent);
+    border-color: var(--color-mustard-70);
+    color: white;
+  }
+}
+
 @media (max-width: 640px) {
   .pricing-tabs {
     width: 100%;

@@ -368,6 +368,7 @@ body:has(.dark-teal-theme-base) {
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
+  max-width: 100%;
 }
 
 .pricing-tab {
@@ -378,6 +379,40 @@ body:has(.dark-teal-theme-base) {
   letter-spacing: 0.08em;
   text-transform: none;
   transition: all 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .pricing-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 0.35rem;
+    padding: 0.25rem;
+    box-sizing: border-box;
+  }
+
+  .pricing-tab {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    height: auto;
+    min-height: 3.15rem;
+    padding-block: 0.45rem;
+    padding-inline: clamp(0.45rem, 2vw, 0.75rem);
+    font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+    letter-spacing: 0.02em;
+  }
+
+  .pricing-tab .label {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    height: auto;
+    line-height: 1.2;
+    white-space: normal;
+    text-align: center;
+  }
 }
 
 .pricing-card-dark,

@@ -154,4 +154,32 @@ const background = "/images/hero/background.jpg";
     text-transform: uppercase;
     color: color-mix(in srgb, var(--color-text-shell-muted) 94%, white);
   }
+
+  @media (max-width: 1023px) {
+    .hero-description {
+      max-width: 34ch;
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-bg .container {
+      width: 100%;
+      padding-inline: 1.2rem;
+    }
+
+    .hero-bg .max-w-4xl {
+      max-width: 100%;
+    }
+
+    .hero-subtitle {
+      max-width: 31ch;
+      margin-inline: auto;
+    }
+
+    .hero-description {
+      max-width: 31ch;
+      margin-inline: auto;
+    }
+  }
 </style>

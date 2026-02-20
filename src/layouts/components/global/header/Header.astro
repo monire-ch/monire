@@ -21,13 +21,21 @@ const {
 <header class:list={["header group/header sticky-header relative z-50"]}>
   <div class="container">
     <nav class="relative flex items-center justify-between px-2 py-2.5">
-      <Logo class={logoHoverAnimation ? "has-hover-animation -translate-x-3 -translate-y-0.5" : "-translate-x-3 -translate-y-0.5"} />
+      <Logo
+        class={logoHoverAnimation
+          ? "has-hover-animation -translate-x-3 -translate-y-0.5"
+          : "-translate-x-3 -translate-y-0.5"}
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+      />
 
       <ul
         id="nav-menu"
         class="navbar lg:flex lg:flex-row lg:items-center lg:gap-5">
         {/* Mobile logo - only visible in mobile menu */}
-        <li class="mobile-logo-wrapper lg:hidden -translate-x-1 -translate-y-0.5">
+        <li
+          class="mobile-logo-wrapper -translate-x-1 -translate-y-0.5 lg:hidden">
           <Logo class={logoHoverAnimation ? "has-hover-animation" : ""} />
         </li>
         {main.map((menu) => <MenuItem menu={menu} />)}

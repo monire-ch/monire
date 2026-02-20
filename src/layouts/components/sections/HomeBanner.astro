@@ -79,7 +79,16 @@ const background = "/images/hero/background.jpg";
             />
           )
         }
-        {button && <Button content={button} variant="primary" />}
+        {
+          button && (
+            <Button
+              content={button}
+              variant="primary"
+              iconLoading="eager"
+              iconFetchpriority="high"
+            />
+          )
+        }
       </div>
     </div>
   </div>

@@ -7,6 +7,9 @@ type Props = {
   tag?: "button" | "a";
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
+  iconLoading?: "eager" | "lazy";
+  iconDecoding?: "async" | "auto" | "sync";
+  iconFetchpriority?: "high" | "low" | "auto";
   content: {
     enable?: boolean;
     label: string;
@@ -23,6 +26,9 @@ const {
   tag: tagProp,
   type: typeProp,
   variant: variantProp,
+  iconLoading = "lazy",
+  iconDecoding = "async",
+  iconFetchpriority = "auto",
   content: { enable, label, url, rel, target, variant: contentVariant },
   class: className,
   ...rest
@@ -76,6 +82,11 @@ const buttonType = typeProp || "button";
               alt="icon"
               class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
               src="/images/icons/svg/star.svg"
+              width={25}
+              height={25}
+              loading={iconLoading}
+              decoding={iconDecoding}
+              fetchpriority={iconFetchpriority}
             />
           </span>
         )}
@@ -97,6 +108,11 @@ const buttonType = typeProp || "button";
               alt="icon"
               class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
               src="/images/icons/svg/star.svg"
+              width={25}
+              height={25}
+              loading={iconLoading}
+              decoding={iconDecoding}
+              fetchpriority={iconFetchpriority}
             />
           </span>
         )}

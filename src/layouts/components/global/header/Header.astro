@@ -229,7 +229,29 @@ const {
       border-radius: 0;
       transition:
         background-color 0.2s,
-        color 0.2s;
+        color 0.2s,
+        outline-color 0.2s;
+    }
+
+    #nav-menu :global(.nav-link::after) {
+      content: none !important;
+    }
+
+    #nav-menu :global(.nav-link:hover) {
+      background-color: transparent;
+      color: var(--color-text-shell-strong);
+    }
+
+    #nav-menu :global(.nav-link:active) {
+      background-color: color-mix(in srgb, white 6%, transparent);
+      color: var(--color-text-shell-strong);
+    }
+
+    #nav-menu :global(.nav-link:focus-visible) {
+      background-color: color-mix(in srgb, white 4%, transparent);
+      color: var(--color-text-shell-strong);
+      outline: 1px solid color-mix(in srgb, var(--color-mustard) 45%, transparent);
+      outline-offset: 2px;
     }
 
     #nav-menu :global(.nav-link.nav-link-active) {
@@ -249,6 +271,20 @@ const {
       min-width: 14rem;
       text-transform: none !important;
       border-radius: 999px;
+    }
+
+    #nav-menu :global(.nav-link.nav-link-cta:hover) {
+      background: color-mix(
+        in srgb,
+        var(--color-monire-deep-teal) 92%,
+        white
+      ) !important;
+      border-color: var(--color-mustard-70) !important;
+    }
+
+    #nav-menu :global(.nav-link.nav-link-cta:focus-visible) {
+      outline: 1px solid color-mix(in srgb, var(--color-mustard) 50%, transparent);
+      outline-offset: 2px;
     }
 
     #nav-menu :global(.nav-link.nav-link-cta .label) {

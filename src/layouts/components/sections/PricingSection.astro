@@ -175,6 +175,9 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
       const isWebTab = activeTab?.getAttribute("data-tab-key") === "web";
       webDesign?.classList.toggle("hidden", !isWebTab);
       aiBlock?.classList.toggle("hidden", isWebTab);
+      if (activeTab instanceof HTMLElement) {
+        activeTab.blur();
+      }
     }
 
     tabs.forEach((tab) => {

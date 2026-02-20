@@ -49,6 +49,7 @@ if (content) {
     const dataStagger = parseFloat(
       animatedText.getAttribute("data-stagger") as string,
     );
+    
     inView(animatedText, (element) => {
       const words = element.querySelectorAll(".word");
       const animation = animate(
@@ -61,6 +62,7 @@ if (content) {
           easing: "ease-out",
         },
       );
+     
       // This will fire when the element leaves the viewport
       return () => {
         // animation.stop();

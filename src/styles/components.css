@@ -372,24 +372,70 @@ body:has(.dark-teal-theme-base) {
 }
 
 .pricing-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: color-mix(in srgb, white 84%, transparent);
+  box-shadow: none;
   padding-inline: 1.6rem;
+  padding-block: 0.4rem;
   border-radius: 9999px;
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: none;
-  transition: all 0.25s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+}
+
+.pricing-tabs .pricing-tab.btn-action,
+.pricing-tabs .pricing-tab.btn-action-secondary {
+  height: auto;
+  min-height: 2.75rem;
+  background: transparent;
+  border-color: transparent;
+  color: color-mix(in srgb, white 84%, transparent);
+  box-shadow: none;
+}
+
+.pricing-tab .label {
+  height: auto;
+  line-height: inherit;
+}
+
+.pricing-tabs .pricing-tab[data-active="true"] {
+  background: color-mix(in srgb, white 18%, transparent);
+  border-color: var(--color-mustard-70);
+  color: white;
+}
+
+.pricing-tabs .pricing-tab:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-mustard) 55%, transparent);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pricing-tabs .pricing-tab[data-active="false"]:hover {
+    background: color-mix(in srgb, white 10%, transparent);
+    color: white;
+    border-color: transparent;
+  }
 }
 
 @media (hover: none), (pointer: coarse) {
-  .pricing-tab {
-    appearance: none;
-    -webkit-appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    user-select: none;
-  }
-
   .pricing-tab:focus,
   .pricing-tab:focus-visible {
     outline: none;
@@ -431,7 +477,6 @@ body:has(.dark-teal-theme-base) {
   .pricing-tab {
     width: 100%;
     min-width: 0;
-    justify-content: center;
     text-align: center;
     height: auto;
     min-height: 3.15rem;
@@ -439,15 +484,24 @@ body:has(.dark-teal-theme-base) {
     padding-inline: clamp(0.45rem, 2vw, 0.75rem);
     font-size: clamp(0.78rem, 2.8vw, 0.92rem);
     letter-spacing: 0.02em;
+    line-height: 1.2;
+    white-space: normal;
   }
 
   .pricing-tab .label {
-    width: 100%;
-    min-width: 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    align-self: stretch;
     height: auto;
+    width: 100%;
     line-height: 1.2;
     white-space: normal;
+    text-align: center;
+  }
+
+  .pricing-tab .label :global(p) {
+    width: 100%;
     text-align: center;
   }
 }

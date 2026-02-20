@@ -83,16 +83,17 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
         {
           pricingTabs.map((item, index) => (
             <Button
-              class="btn-toggle pricing-tab"
               tag="button"
+              variant="secondary"
+              class="btn-toggle pricing-tab"
               data-tab-key={index === 0 ? "web" : "ai"}
               data-tab={item.label}
               data-active={item.selected ? "true" : "false"}
+              aria-pressed={item.selected ? "true" : "false"}
               content={{
                 enable: true,
                 label: item.label,
               }}
-              variant="secondary"
             />
           ))
         }
@@ -171,6 +172,7 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
     function setActiveTab(activeTab: Element) {
       tabs.forEach((t) => {
         t.setAttribute("data-active", t === activeTab ? "true" : "false");
+        t.setAttribute("aria-pressed", t === activeTab ? "true" : "false");
       });
       const isWebTab = activeTab?.getAttribute("data-tab-key") === "web";
       webDesign?.classList.toggle("hidden", !isWebTab);

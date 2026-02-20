@@ -402,13 +402,22 @@ body:has(.dark-teal-theme-base) {
 }
 
 .pricing-tabs .pricing-tab.btn-action,
-.pricing-tabs .pricing-tab.btn-action-secondary {
+.pricing-tabs .pricing-tab.btn-action-secondary,
+.pricing-tabs .pricing-tab.btn-action-secondary:hover,
+.pricing-tabs .pricing-tab.btn-action-secondary:active,
+.pricing-tabs .pricing-tab.btn-action-secondary:focus,
+.pricing-tabs .pricing-tab.btn-action-secondary:focus-visible,
+.pricing-tabs .pricing-tab[data-active="false"],
+.pricing-tabs .pricing-tab[data-active="false"]:hover,
+.pricing-tabs .pricing-tab[data-active="false"]:active,
+.pricing-tabs .pricing-tab[data-active="false"]:focus,
+.pricing-tabs .pricing-tab[data-active="false"]:focus-visible {
   height: auto;
   min-height: 2.75rem;
-  background: transparent;
-  border-color: transparent;
-  color: color-mix(in srgb, white 84%, transparent);
-  box-shadow: none;
+  background: transparent !important;
+  border-color: transparent !important;
+  color: color-mix(in srgb, white 84%, transparent) !important;
+  box-shadow: none !important;
 }
 
 .pricing-tab .label {
@@ -416,10 +425,15 @@ body:has(.dark-teal-theme-base) {
   line-height: inherit;
 }
 
-.pricing-tabs .pricing-tab[data-active="true"] {
-  background: color-mix(in srgb, white 18%, transparent);
-  border-color: var(--color-mustard-70);
-  color: white;
+.pricing-tabs .pricing-tab[data-active="true"],
+.pricing-tabs .pricing-tab[data-active="true"]:hover,
+.pricing-tabs .pricing-tab[data-active="true"]:active,
+.pricing-tabs .pricing-tab[data-active="true"]:focus,
+.pricing-tabs .pricing-tab[data-active="true"]:focus-visible {
+  background: color-mix(in srgb, white 18%, transparent) !important;
+  border-color: var(--color-mustard-70) !important;
+  color: white !important;
+  box-shadow: none !important;
 }
 
 .pricing-tabs .pricing-tab:focus-visible {
@@ -429,9 +443,9 @@ body:has(.dark-teal-theme-base) {
 
 @media (hover: hover) and (pointer: fine) {
   .pricing-tabs .pricing-tab[data-active="false"]:hover {
-    background: color-mix(in srgb, white 10%, transparent);
-    color: white;
-    border-color: transparent;
+    background: color-mix(in srgb, white 10%, transparent) !important;
+    color: white !important;
+    border-color: transparent !important;
   }
 }
 
@@ -439,28 +453,6 @@ body:has(.dark-teal-theme-base) {
   .pricing-tab:focus,
   .pricing-tab:focus-visible {
     outline: none;
-  }
-
-  .pricing-tabs .pricing-tab[data-active="false"],
-  .pricing-tabs .pricing-tab[data-active="false"]:hover,
-  .pricing-tabs .pricing-tab[data-active="false"]:active,
-  .pricing-tabs .pricing-tab[data-active="false"]:focus,
-  .pricing-tabs .pricing-tab[data-active="false"]:focus-visible {
-    background: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
-    color: color-mix(in srgb, white 84%, transparent);
-  }
-
-  .pricing-tabs .pricing-tab[data-active="true"],
-  .pricing-tabs .pricing-tab[data-active="true"]:hover,
-  .pricing-tabs .pricing-tab[data-active="true"]:active,
-  .pricing-tabs .pricing-tab[data-active="true"]:focus,
-  .pricing-tabs .pricing-tab[data-active="true"]:focus-visible {
-    background: color-mix(in srgb, white 18%, transparent) !important;
-    border-color: var(--color-mustard-70) !important;
-    color: white;
-    box-shadow: none !important;
   }
 }
 

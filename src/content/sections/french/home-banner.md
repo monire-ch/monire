@@ -1,7 +1,7 @@
 ---
 title: WEB DEVELOPMENT & AI AUTOMATIONS
 subtitle:
-description: High-end web solutions for growing small to midsize businesses.
+description: High-end web solutions for growing small to midsize businesses
 ctaContext: Switzerland-based • Serving clients worldwide
 button:
   enable: true

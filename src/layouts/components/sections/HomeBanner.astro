@@ -79,7 +79,16 @@ const background = "/images/hero/background.jpg";
             />
           )
         }
-        {button && <Button content={button} variant="primary" />}
+        {
+          button && (
+            <Button
+              content={button}
+              variant="primary"
+              iconLoading="eager"
+              iconFetchpriority="high"
+            />
+          )
+        }
       </div>
     </div>
   </div>
@@ -94,16 +103,24 @@ const background = "/images/hero/background.jpg";
   .gold-text,
   .gold-text * {
     @apply bg-clip-text text-transparent;
-    background-image: url("/images/hero/gold-fill.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image:
+      var(--image-texture-gold),
+      var(--gradient-gold-cool);
+    background-size:
+      cover,
+      100% 100%;
+    background-position:
+      center,
+      center;
+    background-repeat:
+      no-repeat,
+      no-repeat;
 
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    color: var(--color-primary);
+    color: var(--color-link-dark-bg);
   }
 
   .hero-title {
@@ -136,5 +153,25 @@ const background = "/images/hero/background.jpg";
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: color-mix(in srgb, var(--color-text-shell-muted) 94%, white);
+  }
+
+  @media (max-width: 1023px) {
+    .hero-description {
+      max-width: 34ch;
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 767px) {
+
+    .hero-subtitle {
+      max-width: 31ch;
+      margin-inline: auto;
+    }
+
+    .hero-description {
+      max-width: 31ch;
+      margin-inline: auto;
+    }
   }
 </style>

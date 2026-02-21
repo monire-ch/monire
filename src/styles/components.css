@@ -368,16 +368,107 @@ body:has(.dark-teal-theme-base) {
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
+  max-width: 100%;
 }
 
 .pricing-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: color-mix(in srgb, white 84%, transparent);
+  box-shadow: none;
   padding-inline: 1.6rem;
+  padding-block: 0.4rem;
   border-radius: 9999px;
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: none;
-  transition: all 0.25s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+}
+
+.pricing-tabs .pricing-tab[data-active="false"],
+.pricing-tabs .pricing-tab[data-active="false"]:hover,
+.pricing-tabs .pricing-tab[data-active="false"]:active,
+.pricing-tabs .pricing-tab[data-active="false"]:focus,
+.pricing-tabs .pricing-tab[data-active="false"]:focus-visible {
+  height: auto;
+  min-height: 2.75rem;
+  background: transparent !important;
+  border-color: transparent !important;
+  color: color-mix(in srgb, white 84%, transparent) !important;
+  box-shadow: none !important;
+}
+
+.pricing-tabs .pricing-tab[data-active="true"],
+.pricing-tabs .pricing-tab[data-active="true"]:hover,
+.pricing-tabs .pricing-tab[data-active="true"]:active,
+.pricing-tabs .pricing-tab[data-active="true"]:focus,
+.pricing-tabs .pricing-tab[data-active="true"]:focus-visible {
+  background: color-mix(in srgb, white 18%, transparent) !important;
+  border-color: var(--color-mustard-70) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.pricing-tabs .pricing-tab:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-mustard) 55%, transparent);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pricing-tabs .pricing-tab[data-active="false"]:hover {
+    background: color-mix(in srgb, white 10%, transparent) !important;
+    color: white !important;
+    border-color: transparent !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .pricing-tab:focus,
+  .pricing-tab:focus-visible {
+    outline: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .pricing-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 0.35rem;
+    padding: 0.25rem;
+    box-sizing: border-box;
+  }
+
+  .pricing-tab {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+    height: auto;
+    min-height: 3.15rem;
+    padding-block: 0.45rem;
+    padding-inline: clamp(0.45rem, 2vw, 0.75rem);
+    font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
 }
 
 .pricing-card-dark,

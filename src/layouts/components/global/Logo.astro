@@ -7,9 +7,18 @@ import config from ".astro/config.generated.json" with { type: "json" };
 type Props = {
   src?: string;
   class?: string;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "auto" | "sync";
+  fetchpriority?: "high" | "low" | "auto";
 };
 
-let { src, class: className } = Astro.props;
+let {
+  src,
+  class: className,
+  loading = "lazy",
+  decoding = "async",
+  fetchpriority = "auto",
+} = Astro.props;
 
 let { logo, title } = config.site;
 ---
@@ -18,7 +27,10 @@ let { logo, title } = config.site;
   <OptimizedImage
     src={src ? src : logo}
     class="logo"
-    alt={toSentenceCase("Brand logo of " + title)}
+    alt={toSentenceCase("Brand logo of Moniré")}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
     style="height: 100%; width: auto; object-fit: contain;"
   />
 </a>

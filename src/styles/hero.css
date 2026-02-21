@@ -1,8 +1,7 @@
 .hero-bg {
   --hero-header-offset: clamp(68px, 7.5vw, 92px);
   position: relative;
-  background: var(--gradient-dark-teal);
-  background-color: #052832; /* rgb(5 40 50) */
+  background-color: var(--color-primary);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

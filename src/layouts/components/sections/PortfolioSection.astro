@@ -92,11 +92,15 @@ const portfolioCategories = Array.from(
                     class="portfolio-card"
                     href={item.url}
                     data-category={item.category}
+                    draggable="false"
+                    ondragstart="return false;"
                     aria-label={`View ${item.title} case study`}>
                     {item.image ? (
                       <OptimizedImage
                         src={item.image}
                         alt={item.title}
+                        draggable="false"
+                        ondragstart="return false;"
                         class="portfolio-card-image"
                       />
                     ) : (
@@ -241,6 +245,7 @@ const portfolioCategories = Array.from(
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     cursor: grab;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .portfolio-track {
@@ -253,6 +258,11 @@ const portfolioCategories = Array.from(
   .portfolio-carousel.is-dragging {
     cursor: grabbing;
     user-select: none;
+  }
+
+  .portfolio-carousel.is-dragging .portfolio-card {
+    filter: none;
+    opacity: 1;
   }
 
   .portfolio-card {
@@ -275,6 +285,10 @@ const portfolioCategories = Array.from(
     filter: brightness(0.62) saturate(0.88);
     opacity: 0.92;
     background: var(--color-monire-dark-teal, #0b3d4a);
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .portfolio-card::after {
@@ -299,6 +313,8 @@ const portfolioCategories = Array.from(
     object-fit: cover;
     object-position: top center;
     display: block;
+    -webkit-user-drag: none;
+    user-select: none;
   }
 
   .portfolio-card-placeholder {
@@ -528,10 +544,20 @@ const portfolioCategories = Array.from(
   }
 
   document.querySelectorAll(".portfolio-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+
     card.addEventListener("click", (event) => {
       if (!dragMoved) return;
       event.preventDefault();
       dragMoved = false;
+    });
+  });
+
+  document.querySelectorAll(".portfolio-card-image").forEach((image) => {
+    image.addEventListener("dragstart", (event) => {
+      event.preventDefault();
     });
   });
 </script>

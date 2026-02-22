@@ -21,23 +21,29 @@ const { enable = true, subtitle, title } = actualContent;
 const portfolioItems = [
   {
     id: "portfolio-1",
-    title: "n8n",
-    image: "/images/portfolio/n8n_preview.webp",
-    url: "/case-studies/expense-receipt-automation/",
+    title: "Snip Squad",
+    image: "/images/portfolio/snip-squad_full.png",
+    url: "/case-studies/snip-squad/",
+    category: "Veterinary",
   },
   {
     id: "portfolio-2",
-    title: "Snip Squad",
-    image: "/images/portfolio/snip_squad_preview.png",
-    url: "/case-studies/snip-squad/",
+    title: "SystemicAlly",
+    image: "/images/portfolio/systemically_full.png",
+    url: "/case-studies/systemically/",
+    category: "Consulting",
   },
   {
     id: "portfolio-3",
     title: "Towarowa",
-    image: "/images/portfolio/towarowa_preview.png",
+    image: "/images/portfolio/towarowa_full.png",
     url: "/case-studies/towarowa/",
+    category: "Real Estate",
   },
 ];
+const portfolioCategories = Array.from(
+  new Set(portfolioItems.map((item) => item.category)),
+);
 ---
 
 {
@@ -64,61 +70,82 @@ const portfolioItems = [
       </div>
 
       <div class="container">
-        <div class="portfolio-carousel">
-          <div class="portfolio-track" id="portfolio-track">
-            {portfolioItems.map((item) => (
-              <a
-                class="portfolio-card"
-                href={item.url}
-                aria-label={`View ${item.title} case study`}>
-                {item.image ? (
-                  <OptimizedImage
-                    src={item.image}
-                    alt={item.title}
-                    class="portfolio-card-image"
-                  />
-                ) : (
-                  <div class="portfolio-card-placeholder" aria-hidden="true" />
-                )}
-                <span class="sr-only">View {item.title} case study</span>
-              </a>
-            ))}
+        <div class="portfolio-layout">
+          <div class="portfolio-categories-shell">
+            <div class="portfolio-categories" aria-label="Project categories">
+              {portfolioCategories.map((category) => (
+                <button
+                  class="portfolio-category"
+                  type="button"
+                  data-portfolio-category={category}>
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div class="portfolio-controls">
-          <button
-            class="portfolio-arrow"
-            type="button"
-            aria-label="Previous project"
-            data-portfolio-prev>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M15 18l-6-6 6-6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-          <button
-            class="portfolio-arrow"
-            type="button"
-            aria-label="Next project"
-            data-portfolio-next>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M9 6l6 6-6 6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
+          <div class="portfolio-gallery">
+            <div class="portfolio-carousel">
+              <div class="portfolio-track" id="portfolio-track">
+                {portfolioItems.map((item) => (
+                  <a
+                    class="portfolio-card"
+                    href={item.url}
+                    data-category={item.category}
+                    aria-label={`View ${item.title} case study`}>
+                    {item.image ? (
+                      <OptimizedImage
+                        src={item.image}
+                        alt={item.title}
+                        class="portfolio-card-image"
+                      />
+                    ) : (
+                      <div
+                        class="portfolio-card-placeholder"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span class="sr-only">View {item.title} case study</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div class="portfolio-controls">
+              <button
+                class="portfolio-arrow"
+                type="button"
+                aria-label="Previous project"
+                data-portfolio-prev>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <button
+                class="portfolio-arrow"
+                type="button"
+                aria-label="Next project"
+                data-portfolio-next>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M9 6l6 6-6 6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -150,11 +177,66 @@ const portfolioItems = [
     z-index: 2;
   }
 
+  .portfolio-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .portfolio-categories-shell {
+    border-radius: 1.55rem;
+    border: 1px solid var(--color-border-surface-dark);
+    background: var(--gradient-surface-dark);
+    box-shadow: 0 18px 34px rgba(3, 42, 52, 0.16);
+    padding: 1.45rem 1.1rem;
+  }
+
+  .portfolio-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 0.62rem;
+  }
+
+  .portfolio-category {
+    width: 100%;
+    min-height: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: color-mix(in srgb, white 84%, transparent);
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    padding-inline: 1.35rem;
+    padding-block: 0;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .portfolio-category:hover,
+  .portfolio-category.is-active {
+    border-color: var(--color-mustard);
+    background: color-mix(in srgb, white 18%, transparent);
+    color: #ffffff;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .portfolio-gallery {
+    min-width: 0;
+  }
+
   .portfolio-carousel {
     width: 100%;
     overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0;
+    overflow-y: visible;
+    padding: 0.15rem 0 0;
     margin: 0;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
@@ -174,9 +256,11 @@ const portfolioItems = [
   }
 
   .portfolio-card {
-    flex: 0 0 45vw;
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
     border-radius: 1.5rem;
-    border: 1px solid rgba(1, 27, 34, 0.1);
+    border: 0;
     box-shadow: none;
     overflow: hidden;
     display: block;
@@ -184,18 +268,36 @@ const portfolioItems = [
     color: inherit;
     transition:
       transform 0.35s ease,
-      box-shadow 0.35s ease;
+      box-shadow 0.35s ease,
+      filter 0.35s ease,
+      opacity 0.35s ease;
     scroll-snap-align: start;
+    filter: brightness(0.62) saturate(0.88);
+    opacity: 0.92;
+    background: var(--color-monire-dark-teal, #0b3d4a);
   }
 
-  .portfolio-card:hover {
-    transform: translateY(-4px);
+  .portfolio-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(1, 27, 34, 0.24);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .portfolio-card.is-active {
+    filter: none;
+    opacity: 1;
   }
 
   .portfolio-card-image {
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 16 / 8.5;
     object-fit: cover;
+    object-position: top center;
     display: block;
   }
 
@@ -241,14 +343,35 @@ const portfolioItems = [
   }
 
   @media (max-width: 1023px) {
-    .portfolio-card {
-      flex: 0 0 72vw;
+    .portfolio-layout {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .portfolio-categories {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+
+    .portfolio-categories-shell {
+      padding: 1rem;
+    }
+
+    .portfolio-category {
+      width: auto;
+      min-height: 2.75rem;
+      height: 2.75rem;
+      font-size: 0.95rem;
+      padding-inline: 1.35rem;
+      padding-block: 0;
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 1023px) {
     .portfolio-card {
-      flex: 0 0 90%;
+      flex: 0 0 100%;
     }
   }
 </style>
@@ -258,6 +381,9 @@ const portfolioItems = [
   const track = document.getElementById("portfolio-track");
   const prev = document.querySelector("[data-portfolio-prev]");
   const next = document.querySelector("[data-portfolio-next]");
+  const categoryButtons = Array.from(
+    document.querySelectorAll("[data-portfolio-category]"),
+  );
   const cards = track
     ? Array.from(track.querySelectorAll(".portfolio-card"))
     : [];
@@ -282,6 +408,8 @@ const portfolioItems = [
     const step = getScrollStep();
     scroller.scrollTo({ left: step * activeIndex, behavior: "smooth" });
     updateArrows();
+    updateActiveCategory();
+    updateActiveCard();
   };
 
   const updateArrows = () => {
@@ -300,6 +428,36 @@ const portfolioItems = [
     next?.setAttribute("aria-disabled", isAtEnd ? "true" : "false");
   };
 
+  const updateActiveCategory = () => {
+    if (!cards.length) return;
+    const activeCategory = cards[activeIndex]?.getAttribute("data-category");
+    categoryButtons.forEach((button) => {
+      button.classList.toggle(
+        "is-active",
+        button.getAttribute("data-portfolio-category") === activeCategory,
+      );
+    });
+  };
+
+  const updateActiveCard = () => {
+    cards.forEach((card, index) => {
+      card.classList.toggle("is-active", index === activeIndex);
+    });
+  };
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const category = button.getAttribute("data-portfolio-category");
+      if (!category) return;
+      const targetIndex = cards.findIndex(
+        (card) => card.getAttribute("data-category") === category,
+      );
+      if (targetIndex >= 0) {
+        setActive(targetIndex);
+      }
+    });
+  });
+
   prev?.addEventListener("click", () => {
     setActive(activeIndex - 1);
   });
@@ -308,10 +466,15 @@ const portfolioItems = [
     setActive(activeIndex + 1);
   });
 
-  window.addEventListener("load", () => {
+  const initPortfolioUI = () => {
     setActive(0);
     updateArrows();
-  });
+    updateActiveCategory();
+    updateActiveCard();
+  };
+
+  initPortfolioUI();
+  window.addEventListener("load", initPortfolioUI);
 
   if (scroller) {
     scroller.addEventListener("mousedown", (event) => {
@@ -343,6 +506,8 @@ const portfolioItems = [
         activeIndex = Math.round(scroller.scrollLeft / step);
       }
       updateArrows();
+      updateActiveCategory();
+      updateActiveCard();
     });
 
     scroller.addEventListener("mouseleave", () => {
@@ -357,6 +522,8 @@ const portfolioItems = [
         activeIndex = Math.round(scroller.scrollLeft / step);
       }
       updateArrows();
+      updateActiveCategory();
+      updateActiveCard();
     });
   }
 

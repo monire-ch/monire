@@ -6,6 +6,7 @@ import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 type Props = {
   tag?: "button" | "a";
   variant?: "primary" | "secondary";
+  showIcon?: boolean;
   content: {
     enable?: boolean;
     label: string;
@@ -21,6 +22,7 @@ type Props = {
 const {
   tag: tagProp,
   variant: variantProp,
+  showIcon: showIconProp,
   content: { enable, label, url, rel, target, variant: contentVariant },
   class: className,
   ...rest
@@ -32,10 +34,15 @@ const opensContactModal =
 
 const variant = variantProp || contentVariant || "primary";
 const isPrimary = variant === "primary";
+const showIcon = isPrimary && showIconProp !== false;
 
 const ctaClass = [
   "btn-action",
-  isPrimary ? "btn-action-primary btn-icon-end group" : "btn-action-secondary",
+  isPrimary
+    ? showIcon
+      ? "btn-action-primary btn-icon-end group"
+      : "btn-action-primary"
+    : "btn-action-secondary",
   className,
 ];
 
@@ -67,7 +74,7 @@ const relAttr = opensContactModal
         class:list={["btn", ctaClass, "relative overflow-hidden"]}
         {...rest}>
         <span class="label flex h-full items-center" set:html={markdownify(label)} />
-        {isPrimary && (
+        {showIcon && (
           <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
             <OptimizedImage
               alt="icon"
@@ -88,7 +95,7 @@ const relAttr = opensContactModal
         class:list={["btn", ctaClass, "relative overflow-hidden"]}
         {...rest}>
         <span class="label flex h-full items-center" set:html={markdownify(label)} />
-        {isPrimary && (
+        {showIcon && (
           <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
             <OptimizedImage
               alt="icon"

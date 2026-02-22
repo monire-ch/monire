@@ -1,6 +1,6 @@
 ---
 title: "Towarowa"
-category: "Web Experience"
+category: "WEB DESIGN & WEB DEVELOPMENT"
 date: "October 2025"
 type: "website"
 
@@ -8,10 +8,10 @@ backUrl: "/"
 backLabel: "Back to Home"
 
 client: "Towarowa"
-website: "https://towarowa.pl"
+website: "https://towarowa.netlify.app/"
 
 tools:
-  - ASTRO
+  - TYPESCRIPT
   - TAILWIND
   - FIGMA
   - NETLIFY

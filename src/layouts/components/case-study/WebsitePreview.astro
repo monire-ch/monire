@@ -1,0 +1,114 @@
+---
+interface Props {
+  website: string;
+  title?: string;
+}
+
+const { website, title = "Website Preview" } = Astro.props as Props;
+---
+
+<section class="section-light website-preview-section">
+  <div class="container">
+    <div class="website-preview-shell">
+      <div class="website-preview-head">
+        <h2 class="website-preview-title">{title}</h2>
+        <a href={website} target="_blank" rel="noopener noreferrer" class="website-preview-link">
+          Open Live Site
+        </a>
+      </div>
+
+      <div class="website-preview-viewport">
+        <iframe
+          src={website}
+          title={`${title} - ${website}`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        />
+      </div>
+
+      <p class="website-preview-note">
+        Scroll inside the preview to explore the full page. If preview is blocked, use
+        {" "}
+        <a href={website} target="_blank" rel="noopener noreferrer">Open Live Site</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .website-preview-section {
+    padding-top: 0;
+  }
+
+  .website-preview-shell {
+    border: 1px solid color-mix(in srgb, var(--color-monire-deep-teal) 25%, transparent);
+    border-radius: 1.5rem;
+    background: white;
+    overflow: hidden;
+  }
+
+  .website-preview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-monire-deep-teal) 16%, transparent);
+    background: color-mix(in srgb, var(--color-bg-page) 88%, white);
+  }
+
+  .website-preview-title {
+    margin: 0;
+    color: var(--color-monire-deep-teal);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .website-preview-link {
+    color: var(--color-monire-deep-teal);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .website-preview-viewport {
+    height: clamp(26rem, 65vh, 46rem);
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .website-preview-viewport iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .website-preview-note {
+    margin: 0;
+    padding: 0.9rem 1.2rem 1.1rem;
+    color: color-mix(in srgb, var(--color-monire-deep-teal) 72%, transparent);
+    font-size: 0.9rem;
+  }
+
+  .website-preview-note a {
+    color: var(--color-monire-deep-teal);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  @media (max-width: 640px) {
+    .website-preview-head {
+      padding: 0.85rem 1rem;
+    }
+
+    .website-preview-viewport {
+      height: 65vh;
+    }
+
+    .website-preview-note {
+      padding-inline: 1rem;
+    }
+  }
+</style>

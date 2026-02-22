@@ -42,10 +42,10 @@ const sectionSpacingClass =
 <!doctype html>
 <html lang={config.settings.multilingual.defaultLanguage || "en"}>
   <Head {...props} structuredData={structuredData} />
-  <body>
+  <body class="site-shell">
     {!Astro.props.homepage && <PageLoader />}
     <Header {...props} />
-    <main class:list={[sectionSpacingClass, Astro.props.class]}>
+    <main class:list={["site-main", sectionSpacingClass, Astro.props.class]}>
       <slot />
       <CookieBanner />
     </main>
@@ -55,3 +55,16 @@ const sectionSpacingClass =
     <BreakpointIndicator />
   </body>
 </html>
+
+<style>
+  .site-shell {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-main {
+    flex: 1 0 auto;
+  }
+</style>

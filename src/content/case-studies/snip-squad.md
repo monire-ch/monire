@@ -1,20 +1,19 @@
 ---
 title: "Snip Squad"
-category: "Brand & Web"
-date: "September 2025"
+category: "Web Design & Web Development"
+date: "January 2026"
 type: "website"
 
 backUrl: "/"
 backLabel: "Back to Home"
 
 client: "Snip Squad"
-website: "https://snipsquad.com"
+website: "https://snipsquad.org"
 
 tools:
-  - ASTRO
-  - TAILWIND
+  - WEBFLOW
   - FIGMA
-  - NETLIFY
+  - RELUME
 
 before: |
   The salon needed a stronger digital presence to match the in-store experience:

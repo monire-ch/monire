@@ -32,6 +32,19 @@ const fontVariables = fontsJson.map((font) => font.cssVariable) as any[];
     content="#000"
   />
   <meta name="generator" content={Astro.generator} />
+  <link
+    rel="preload"
+    href={config.site.logo}
+    as="image"
+    fetchpriority="high"
+  />
+  <link
+    rel="preload"
+    href="/images/hero/gold-fill.webp"
+    as="image"
+    type="image/webp"
+    fetchpriority="high"
+  />
   {
     config.head?.content && (
       // Injecting custom scripts such as Google Analytics, Google Tag Manager, etc. tracking code,

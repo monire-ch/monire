@@ -53,6 +53,13 @@
   --color-link-dark-bg-hover: #FAE7BE;
   --color-link-dark-bg-focus: #FFECC2;
   --color-link-underline-thickness: 0.05em;
+  --image-texture-gold: url("/images/hero/gold-fill.webp");
+  --gradient-gold-cool: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--color-link-dark-bg) 72%, var(--color-text-shell-muted)) 0%,
+    color-mix(in srgb, var(--color-link-dark-bg-hover) 78%, var(--color-text-shell-strong)) 56%,
+    color-mix(in srgb, var(--color-link-dark-bg) 76%, var(--color-text-shell-muted)) 100%
+  );
 
   /* Shared surface tokens (used across About, Services, Pricing, Value cards) */
   --color-border-surface-light: rgba(255, 255, 255, 0.12);

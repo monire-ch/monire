@@ -42,7 +42,7 @@ const sectionSpacingClass =
 <!doctype html>
 <html lang={config.settings.multilingual.defaultLanguage || "en"}>
   <Head {...props} structuredData={structuredData} />
-  <body class="site-shell">
+  <body class:list={[Astro.props.homepage && "body-homepage site-shell"]}>
     {!Astro.props.homepage && <PageLoader />}
     <Header {...props} />
     <main class:list={["site-main", sectionSpacingClass, Astro.props.class]}>
@@ -56,7 +56,7 @@ const sectionSpacingClass =
   </body>
 </html>
 
-<style>
+<style is:global>
   .site-shell {
     min-height: 100vh;
     min-height: 100dvh;
@@ -66,5 +66,8 @@ const sectionSpacingClass =
 
   .site-main {
     flex: 1 0 auto;
+}
+  body.body-homepage {
+    background-color: var(--color-primary);
   }
 </style>

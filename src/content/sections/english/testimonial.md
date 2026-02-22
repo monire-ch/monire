@@ -23,11 +23,4 @@ list:
     customer:
       name: Margot & Hans-Peter Märki
       role: Owners, Juragarage Märki
-
-  - enable: true
-    content: >
-      Test testetststststststs
-    customer:
-      name: Test
-      role: tetstststs, Owner
 ---

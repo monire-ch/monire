@@ -16,6 +16,12 @@ let { copyright, footerDescription } = config.settings;
 footerDescription = footerDescription || t("footer.description");
 const copyrightText = copyright.text || t("footer.copyright");
 const copyrightParts = splitProtectedText(copyrightText);
+const privacyPolicyLabel = t("footer.privacyPolicy") as string;
+const servingClientsLabel = t("footer.servingClientsWorldwide") as string;
+const privacyPolicyUrl = getLocaleUrlCTM(
+  "/privacy-policy",
+  Astro.currentLocale,
+);
 
 function encodeEmail(email: string) {
   return email
@@ -97,6 +103,13 @@ const encodedEmail = encodeEmail(contact.email);
               <li class="inline-block text-white/82">
                 {contact.location}
               </li>
+              {
+                servingClientsLabel && (
+                  <li class="inline-block text-white/72">
+                    {servingClientsLabel}
+                  </li>
+                )
+              }
             </ul>
           </div>
         </div>

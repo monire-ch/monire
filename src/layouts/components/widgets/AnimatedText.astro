@@ -5,6 +5,7 @@ interface Props {
   duration?: number;
   delay?: number;
   stagger?: number;
+  blur?: boolean;
 }
 
 let {
@@ -12,16 +13,27 @@ let {
   duration = 0.6,
   delay = 0,
   stagger = 0.1,
+  blur = true,
   ...rest
 } = Astro.props;
 
 let processedContent = "";
 if (content) {
   const words = content.split(" "); // Split text into words
+  const wordStyle = [
+    "display: inline-block",
+    "will-change: transform",
+    "transform: translateY(10px)",
+    "opacity: 0",
+    blur ? "filter: blur(10px)" : "",
+  ]
+    .filter(Boolean)
+    .join("; ");
+
   processedContent = words
     .map(
       (word: string) =>
-        `<span class="word" style="display: inline-block; will-change: transform; transform: translateY(10px); opacity: 0; filter: blur(10px);">${word}</span>`,
+        `<span class="word" style="${wordStyle}">${word}</span>`,
     )
     .join(" ");
 }
@@ -33,6 +45,7 @@ if (content) {
   data-duration={duration}
   data-delay={delay}
   data-stagger={stagger}
+  data-blur={blur ? "true" : "false"}
   {...rest}
 />
 
@@ -40,6 +53,7 @@ if (content) {
   import { animate, stagger, inView } from "motion";
 
   const animatedTexts = document.querySelectorAll(".animated-text");
+  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
 
   animatedTexts.forEach((animatedText) => {
     const duration = parseFloat(
@@ -49,19 +63,28 @@ if (content) {
     const dataStagger = parseFloat(
       animatedText.getAttribute("data-stagger") as string,
     );
+    const useBlur = animatedText.getAttribute("data-blur") !== "false";
+    const shouldBlur = useBlur && !isFirefox;
     
     inView(animatedText, (element) => {
       const words = element.querySelectorAll(".word");
-      const animation = animate(
-        words,
-        // @ts-expect-error
-        { opacity: 1, y: 0, filter: "blur(0px)" },
-        {
-          duration: duration,
-          delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
-          easing: "ease-out",
-        },
-      );
+
+      if (!shouldBlur) {
+        words.forEach((word) => {
+          (word as HTMLElement).style.filter = "none";
+        });
+      }
+
+      const animationProps = shouldBlur
+        ? // @ts-expect-error
+          { opacity: 1, y: 0, filter: "blur(0px)" }
+        : { opacity: 1, y: 0 };
+
+      const animation = animate(words, animationProps, {
+        duration: duration,
+        delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
+        easing: "ease-out",
+      });
      
       // This will fire when the element leaves the viewport
       return () => {

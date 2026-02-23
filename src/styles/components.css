@@ -742,25 +742,6 @@ footer {
   }
 }
 
-/* Odometer (Number Count With Animation) Default Style Reset */
-.odometer {
-  span,
-  .odometer-inside {
-    @apply inline-block!;
-  }
-
-  &,
-  * {
-    @apply leading-inherit! font-[inherit]! text-inherit!;
-  }
-
-  /* change default duration from default 3s to "duration" */
-  &.odometer-animating-up .odometer-ribbon-inner,
-  &.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
-    transition-duration: var(--odometer-duration, 2s) !important;
-  }
-}
-
 .video-player:empty {
   @apply h-96 bg-black;
 }

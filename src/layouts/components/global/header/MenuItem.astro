@@ -13,8 +13,7 @@ const { pathname } = Astro.url;
       class:list={[
         "nav-item",
         { "nav-item-cta": menu.action === "openContactModal" },
-      ]}
-      role="menuitem">
+      ]}>
       {menu.action === "openContactModal" ? (
         <Button
           variant="primary"

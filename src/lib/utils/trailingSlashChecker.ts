@@ -20,7 +20,9 @@ const trailingSlashChecker = (url: string): string => {
       ? urlPath
       : `${urlPath}/`
     : hasTrailingSlash
-      ? urlPath.slice(0, -1)
+      ? urlPath === "/"
+        ? "/"
+        : urlPath.slice(0, -1)
       : urlPath;
 
   // Reattach the fragment if it exists

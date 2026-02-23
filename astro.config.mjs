@@ -44,7 +44,6 @@ export default defineConfig({
         "@/shortcodes/Accordion.astro",
         "@/shortcodes/ListCheck.astro",
         "@/shortcodes/CardGrid.astro",
-        "@/shortcodes/Card.astro",
       ],
     }),
     mdx(),

@@ -238,7 +238,7 @@ const validationMessages = {
                           \"optionTemplate\": \"<div class=\\\"text-inherit flex justify-between items-center w-full\\\"><span data-title><\/span><span class=\\\"hidden hs-selected:block\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/span><\/div>\",
                           \"extraMarkup\": [\n      \"<div class=\\\"hidden hs-error:block absolute top-1/2 end-8 -translate-y-1/2\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><circle cx=\\\"12\\\" cy=\\\"12\\\" r=\\\"10\\\"\/><line x1=\\\"12\\\" x2=\\\"12\\\" y1=\\\"8\\\" y2=\\\"12\\\"\/><line x1=\\\"12\\\" x2=\\\"12.01\\\" y1=\\\"16\\\" y2=\\\"16\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"hidden hs-success:flex absolute inset-y-0 end-8 items-center pointer-events-none\\\"><svg class=\\\"shrink-0 size-4 text-inherit\\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><polyline points=\\\"20 6 9 17 4 12\\\"\/><\/svg><\/div>\",\n      \"<div class=\\\"absolute top-1\/2 end-3 -translate-y-1\/2\\\"><svg class=\\\"shrink-0 size-3.5 text-inherit \\\" xmlns=\\\"http:\/\/www.w3.org\/2000\/svg\\\" width=\\\"24\\\" height=\\\"24\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\"><path d=\\\"m7 15 5 5 5-5\\\"\/><path d=\\\"m7 9 5-5 5 5\\\"\/><\/svg><\/div>\"\n    ]
                           }`}
-                      class="hidden">
+                      class="form-input">
                       <option value="">Choose</option>
                       {input.dropdown?.items?.map((option) => (
                         <option
@@ -248,7 +248,7 @@ const validationMessages = {
                         </option>
                       ))}
                     </select>
-                    <p class="hs-error:block mt-2 hidden text-sm text-red-600">
+                    <p class="hs-error:block select-error-message mt-2 hidden text-sm">
                       {validationMessages.requiredSelect}
                     </p>
                   </div>
@@ -475,6 +475,10 @@ const validationMessages = {
     color: color-mix(in srgb, white 88%, transparent);
   }
 
+  .contact-form .select-error-message {
+    color: var(--color-form-error);
+  }
+
   .contact-form .form-status-message :global(p) {
     margin: 0;
     color: inherit;
@@ -694,10 +698,17 @@ const validationMessages = {
   import contact from "@/config/contact.json" with { type: "json" };
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Keep form logic running even if select enhancement fails.
-    import("@preline/select").catch((error) => {
-      console.warn("Preline select failed to load:", error);
-    });
+    // Keep native selects visible; enhance them when Preline is ready.
+    const initPrelineSelect = async () => {
+      try {
+        const prelineSelectModule = await import("@preline/select");
+        prelineSelectModule?.default?.autoInit?.();
+      } catch (error) {
+        console.warn("Preline select failed to load:", error);
+      }
+    };
+
+    initPrelineSelect();
 
     const forms = document.querySelectorAll(
       "form.contact-form",
@@ -742,7 +753,7 @@ const validationMessages = {
         const wrapper = select.closest("#validation-target");
         if (!wrapper) return true;
 
-        const errorMsg = wrapper.querySelector("p.text-red-600");
+        const errorMsg = wrapper.querySelector("p.select-error-message");
         const successMsg = wrapper.querySelector("p.text-white");
 
         if (isRequired && isEmpty) {

@@ -3,7 +3,7 @@ import type { ComparisonCategory, PricingPlans, PricingTier } from "@/types";
 import Button from "../buttons/Button.astro";
 import OptimizedImage from "../utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
-import AnimatedNumber from "@/components/widgets/AnimatedNumber.astro";
+import FormattedNumber from "@/components/widgets/FormattedNumber.astro";
 
 type Props = {
   content: PricingTier & {
@@ -108,9 +108,7 @@ const cardSurfaceStyle = featured
             </span>
 
             <span class="pricing-price text-h3/none font-secondary text-mustard flex gap-0">
-              <AnimatedNumber
-                animateOn="click"
-                transitionTime="1.2s"
+              <FormattedNumber
                 content={item}
               />
             </span>

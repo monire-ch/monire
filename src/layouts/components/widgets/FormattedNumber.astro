@@ -1,0 +1,50 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+
+interface Props {
+  class?: string;
+  childClass?: string;
+  content: {
+    value?: number;
+    prependValue?: string;
+    appendValue?: string;
+    type?: string; // optional, kept for compatibility if you're passing it elsewhere
+  };
+}
+
+const { class: className, childClass: childClassName, content } = Astro.props;
+
+// Swiss formatter (e.g. 1250 -> 1’250)
+const formatCH = (value: number) =>
+  new Intl.NumberFormat("de-CH", { maximumFractionDigits: 0 }).format(value);
+
+const formattedValue =
+  typeof content.value === "number" ? formatCH(content.value) : "";
+---
+
+<div
+  class:list={[
+    "font-secondary inline-flex place-items-stretch leading-none",
+    className,
+  ]}
+>
+  {
+    content.prependValue && (
+      <span
+        class:list={["prepend", childClassName]}
+        set:html={markdownify(content.prependValue)}
+      />
+    )
+  }
+
+  <span class:list={[childClassName]}>{formattedValue}</span>
+
+  {
+    content.appendValue && (
+      <span
+        class:list={["append", childClassName]}
+        set:html={markdownify(content.appendValue)}
+      />
+    )
+  }
+</div>

@@ -248,7 +248,7 @@ const validationMessages = {
                         </option>
                       ))}
                     </select>
-                    <p class="hs-error:block mt-2 hidden text-sm text-red-600">
+                    <p class="hs-error:block select-error-message mt-2 hidden text-sm">
                       {validationMessages.requiredSelect}
                     </p>
                   </div>
@@ -473,6 +473,10 @@ const validationMessages = {
     );
     background: color-mix(in srgb, var(--color-bg-dark) 76%, transparent);
     color: color-mix(in srgb, white 88%, transparent);
+  }
+
+  .contact-form .select-error-message {
+    color: var(--color-form-error);
   }
 
   .contact-form .form-status-message :global(p) {
@@ -742,7 +746,7 @@ const validationMessages = {
         const wrapper = select.closest("#validation-target");
         if (!wrapper) return true;
 
-        const errorMsg = wrapper.querySelector("p.text-red-600");
+        const errorMsg = wrapper.querySelector("p.select-error-message");
         const successMsg = wrapper.querySelector("p.text-white");
 
         if (isRequired && isEmpty) {

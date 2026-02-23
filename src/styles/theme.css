@@ -52,6 +52,7 @@
   --color-link-dark-bg: #F1D69A;
   --color-link-dark-bg-hover: #FAE7BE;
   --color-link-dark-bg-focus: #FFECC2;
+  --color-form-error: #FF6B6B;
   --color-link-underline-thickness: 0.05em;
   --image-texture-gold: url("/images/hero/gold-fill.webp");
   --gradient-gold-cool: linear-gradient(

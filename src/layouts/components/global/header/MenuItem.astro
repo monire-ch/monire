@@ -38,3 +38,107 @@ const { pathname } = Astro.url;
     </li>
   )
 }
+
+<script>
+  function initMenuActions() {
+    const menuLinks = document.querySelectorAll("[data-menu-action]");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    menuLinks.forEach((link) => {
+      const action = link.getAttribute("data-menu-action");
+
+      link.addEventListener("click", (e) => {
+        if (action === "openContactModal") {
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent("open-contact-modal"));
+
+          // Close mobile menu if open
+          const navMenu = document.getElementById("nav-menu");
+          if (navMenu?.classList.contains("open")) {
+            navMenu.classList.remove("open");
+            document.body.classList.remove("overflow-hidden");
+          }
+        }
+      });
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const a = link as HTMLAnchorElement;
+        if (
+          a.getAttribute("href") === "/" &&
+          window.location.pathname === "/"
+        ) {
+          e.preventDefault();
+          const cleanUrl = `${window.location.pathname}${window.location.search}`;
+          if (window.location.hash) {
+            window.history.pushState({}, "", cleanUrl);
+            window.dispatchEvent(new Event("hashchange"));
+          }
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMenuActions);
+  } else {
+    initMenuActions();
+  }
+
+  if (typeof window !== "undefined") {
+    const updateActiveLinks = () => {
+      const { pathname, hash } = window.location;
+      const links = document.querySelectorAll(".nav-link");
+
+      links.forEach((link) => {
+        const a = link as HTMLAnchorElement;
+        if (a.dataset.menuAction) {
+          link.classList.remove("nav-link-active");
+          return;
+        }
+        const linkPath = a.pathname;
+        const linkHash = a.hash;
+
+        // CASE 1 — Home "/" should ONLY be active on exact "/"
+        if (linkPath === "/" && !linkHash) {
+          if (pathname === "/" && !hash) {
+            link.classList.add("nav-link-active");
+          } else {
+            link.classList.remove("nav-link-active");
+          }
+          return;
+        }
+
+        // CASE 2 — Hash-based links (/#services, /#pricing, etc)
+        if (linkHash) {
+          if (pathname === "/" && hash === linkHash) {
+            link.classList.add("nav-link-active");
+          } else {
+            link.classList.remove("nav-link-active");
+          }
+          return;
+        }
+
+        // CASE 3 — Regular page links
+        if (pathname === linkPath) {
+          link.classList.add("nav-link-active");
+        } else {
+          link.classList.remove("nav-link-active");
+        }
+      });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", updateActiveLinks, {
+        once: true,
+      });
+    } else {
+      updateActiveLinks();
+    }
+
+    window.addEventListener("hashchange", updateActiveLinks);
+    document.addEventListener("astro:page-load", updateActiveLinks);
+  }
+</script>

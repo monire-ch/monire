@@ -385,7 +385,7 @@ body:has(.dark-teal-theme-base) {
   padding-inline: 1.6rem;
   padding-block: 0.4rem;
   border-radius: 9999px;
-  font-size: 0.95rem;
+  font-size: var(--btn-font-size);
   font-weight: 500;
   letter-spacing: 0.08em;
   line-height: 1.1;

@@ -7,6 +7,7 @@ type Props = {
   tag?: "button" | "a";
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
+  showIcon?: boolean;
   iconLoading?: "eager" | "lazy";
   iconDecoding?: "async" | "auto" | "sync";
   iconFetchpriority?: "high" | "low" | "auto";
@@ -26,6 +27,7 @@ const {
   tag: tagProp,
   type: typeProp,
   variant: variantProp,
+  showIcon: showIconProp,
   iconLoading = "lazy",
   iconDecoding = "async",
   iconFetchpriority = "auto",
@@ -40,10 +42,15 @@ const opensContactModal =
 
 const variant = variantProp || contentVariant || "primary";
 const isPrimary = variant === "primary";
+const showIcon = isPrimary && showIconProp !== false;
 
 const ctaClass = [
   "btn-action",
-  isPrimary ? "btn-action-primary btn-icon-end group" : "btn-action-secondary",
+  isPrimary
+    ? showIcon
+      ? "btn-action-primary btn-icon-end group"
+      : "btn-action-primary"
+    : "btn-action-secondary",
   className,
 ];
 
@@ -76,7 +83,7 @@ const buttonType = typeProp || "button";
         class:list={["btn", ctaClass, "relative overflow-hidden"]}
         {...rest}>
         <span class="label flex h-full items-center" set:html={markdownify(label)} />
-        {isPrimary && (
+        {showIcon && (
           <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
             <OptimizedImage
               alt="icon"
@@ -102,7 +109,7 @@ const buttonType = typeProp || "button";
         class:list={["btn", ctaClass, "relative overflow-hidden"]}
         {...rest}>
         <span class="label flex h-full items-center" set:html={markdownify(label)} />
-        {isPrimary && (
+        {showIcon && (
           <span class="btn-icon-pill flex h-6 w-12 items-center justify-center rounded-full bg-white/15">
             <OptimizedImage
               alt="icon"

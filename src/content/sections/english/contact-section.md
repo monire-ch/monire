@@ -86,8 +86,8 @@ form:
         search: # if type is search then it will work
           placeholder: ""
         items:
-          - label: "CHF 2’000 – 5’000"
-            value: "CHF 2’000 – 5’000"
+          - label: "<CHF 5’000"
+            value: "<CHF 5’000"
           - label: "CHF 5’000 – 10’000"
             value: "CHF 5’000 – 10’000"
           - label: "CHF 10’000 – 20’000"

@@ -1,7 +1,7 @@
 ---
 enable: true
-subtitle: Testimonials
-title: Client stories
+subtitle: Projects
+title: Our Work
 
 list:
   - enable: true

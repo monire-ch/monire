@@ -3,56 +3,152 @@ import Layout from "@/layouts/Base.astro";
 import CaseStudyHero from "@/layouts/components/case-study/Hero.astro";
 import CaseStudyDescription from "@/layouts/components/case-study/CaseStudyDescription.astro";
 import CaseStudyInfo from "@/layouts/components/case-study/CaseStudyInfo.astro";
+import OptimizedImage from "@/layouts/components/utilities/OptimizedImage.astro";
 import Button from "@/layouts/components/buttons/Button.astro";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 
 const { entry } = Astro.props;
 const data = entry.data;
+
+const previewImageBySlug: Record<string, string> = {
+  "towarowa": "/images/portfolio/towarowa_full.png",
+  "snip-squad": "/images/portfolio/snip-squad_full.png",
+  "expense-receipt-automation": "/images/portfolio/n8n_preview.webp",
+  "systemically": "/images/portfolio/systemically_full.png",
+};
+
+const previewImage = previewImageBySlug[entry.slug];
+const hasScrollablePreview = data.type === "website";
+const backToProjectsUrl = `${getLocaleUrlCTM("/", Astro.currentLocale)}#projects`;
 ---
 
-<Layout title={data.title}>
-  <section class="section-light case-study-top relative z-10">
-    <div class="container">
-      <Button
-        content={{
-          enable: true,
-          label: data.backLabel || "Back",
-          url: data.backUrl || "/",
-        }}
-        variant="secondary"
-      />
-    </div>
-  </section>
-
-  <section class="section-light">
-    <div class="container grid grid-cols-1 gap-16 py-20 md:grid-cols-2">
-      <div>
+<Layout title={data.title} sectionSpacing="md" class="case-study-page">
+  <section class="section-light case-study-content">
+    <div class="container pt-8 pb-16 md:pt-12 md:pb-20">
+      <div class="case-study-header-block">
+        <div class="case-study-back-wrap">
+          <Button
+            content={{
+              enable: true,
+              label: "Back to Projects",
+              url: backToProjectsUrl,
+            }}
+            variant="primary"
+            showIcon={false}
+          />
+        </div>
         <CaseStudyHero title={data.title} category={data.category} />
       </div>
 
-      <div class="space-y-16">
-        <CaseStudyDescription
-          before={data.before}
-          after={data.after}
-          impact={data.impact}
-          description={data.description}
-          type={data.type}
-        />
+      <div class="case-study-main-grid grid grid-cols-1 gap-16 md:grid-cols-2">
+        <div class="case-study-media-column">
+        {
+          previewImage && (
+            <div class="case-study-preview-shell">
+              <div class:list={["case-study-preview-frame", hasScrollablePreview && "case-study-preview-scroll"]}>
+                <OptimizedImage
+                  src={previewImage}
+                  alt={`${data.title} full website preview`}
+                  class="case-study-preview-image"
+                />
+              </div>
+            </div>
+          )
+        }
+        </div>
 
-        <CaseStudyInfo
-          client={data.client}
-          date={data.date}
-          category={data.category}
-          tools={data.tools}
-          website={data.website}
-        />
+        <div class="case-study-details-column space-y-16">
+          <CaseStudyDescription
+            before={data.before}
+            after={data.after}
+            impact={data.impact}
+            description={data.description}
+            type={data.type}
+          />
+
+          <CaseStudyInfo
+            client={data.client}
+            date={data.date}
+            category={data.category}
+            tools={data.tools}
+            website={data.website}
+          />
+        </div>
       </div>
     </div>
   </section>
 </Layout>
 
 <style>
-  .case-study-top {
-    padding-top: clamp(0.5rem, 1.2vw, 1rem) !important;
-    padding-bottom: clamp(0.35rem, 1vw, 0.75rem) !important;
+  :global(html:has(main.case-study-page)),
+  :global(body:has(main.case-study-page)) {
+    background: var(--color-bg-page) !important;
+  }
+
+  .case-study-content {
+    padding-top: clamp(0.35rem, 0.9vw, 0.8rem) !important;
+    padding-bottom: clamp(3.5rem, 5vw, 6rem) !important;
+  }
+
+  .case-study-back-wrap {
+    margin-bottom: clamp(1rem, 1.6vw, 1.6rem);
+  }
+
+  .case-study-header-block {
+    margin-bottom: clamp(1.25rem, 2.2vw, 2rem);
+  }
+
+  .case-study-preview-shell {
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--color-monire-deep-teal) 22%, transparent);
+    border-radius: 1.5rem;
+    background: #fff;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .case-study-preview-frame {
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .case-study-preview-scroll {
+    height: clamp(28rem, 68vh, 52rem);
+    border-radius: inherit;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    background: #fff;
+  }
+
+  .case-study-preview-scroll::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .case-study-preview-scroll::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--color-bg-page) 78%, white);
+  }
+
+  .case-study-preview-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 72%, white);
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, var(--color-bg-page) 78%, white);
+  }
+
+  .case-study-preview-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 767px) {
+    .case-study-media-column {
+      order: 2;
+    }
+
+    .case-study-details-column {
+      order: 1;
+    }
   }
 </style>

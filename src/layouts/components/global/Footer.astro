@@ -121,17 +121,8 @@ const encodedEmail = encodeEmail(contact.email);
             config.settings.copyright && config.settings.copyright.enable && (
               <ul class="footer-bottom-links flex flex-wrap items-center justify-center gap-y-4 text-white">
                 {copyrightParts.map((value: string) => (
-                  <li class="inline-block opacity-90">
-                    {value}
-                  </li>
+                  <li class="inline-block opacity-90">{value}</li>
                 ))}
-                <li class="inline-block opacity-90">
-                  <Link
-                    variant="footer"
-                    href={privacyPolicyUrl}
-                    htmlLabel={privacyPolicyLabel}
-                  />
-                </li>
               </ul>
             )
           }

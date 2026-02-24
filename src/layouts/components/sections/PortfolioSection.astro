@@ -1,0 +1,578 @@
+---
+import Subtitle from "../widgets/Subtitle.astro";
+import OptimizedImage from "@/layouts/components/utilities/OptimizedImage.astro";
+import { getEntryCTM } from "@/lib/contentParser.astro";
+import overrideObjects from "@/lib/utils/overrideObjects.ts";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { TestimonialSection } from "@/types";
+import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
+
+const defaultContent = (
+  await getEntryCTM("sections", "testimonial", Astro.currentLocale)
+)?.data as TestimonialSection;
+
+const actualContent = overrideObjects(
+  { ...defaultContent },
+  Astro.props.content,
+) as TestimonialSection;
+
+const { enable = true, subtitle, title } = actualContent;
+
+const portfolioItems = [
+  {
+    id: "portfolio-1",
+    title: "Snip Squad",
+    image: "/images/portfolio/snip-squad_full.png",
+    url: "/case-studies/snip-squad/",
+    category: "Veterinary",
+  },
+  {
+    id: "portfolio-2",
+    title: "SystemicAlly",
+    image: "/images/portfolio/systemically_full.png",
+    url: "/case-studies/systemically/",
+    category: "Consulting",
+  },
+  {
+    id: "portfolio-3",
+    title: "Towarowa",
+    image: "/images/portfolio/towarowa_full.png",
+    url: "/case-studies/towarowa/",
+    category: "Real Estate",
+  },
+  {
+    id: "portfolio-4",
+    title: "Towarowa",
+    image: "/images/portfolio/n8n_preview.webp",
+    url: "/case-studies/expense-receipt-automation/",
+    category: "AI Automation",
+  },
+];
+const portfolioCategories = Array.from(
+  new Set(portfolioItems.map((item) => item.category)),
+);
+---
+
+{
+  enable && (
+    <section
+      id="projects"
+      class="section-light testimonial-light has-wave-padding relative space-y-12 md:space-y-16">
+      <SectionWave
+        class="testimonial-wave-top"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+      />
+
+      <div class="container">
+        <div data-aos="fade-up-sm" class="mx-auto text-center lg:max-w-2xl">
+          {subtitle && <Subtitle content={subtitle} />}
+          {title && (
+            <h2
+              class="section-title has-italic-text text-monire-deep-teal capitalize"
+              set:html={markdownify(title)}
+            />
+          )}
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="portfolio-layout">
+          <div class="portfolio-categories-shell">
+            <div class="portfolio-categories" aria-label="Project categories">
+              {portfolioCategories.map((category) => (
+                <button
+                  class="portfolio-category"
+                  type="button"
+                  data-portfolio-category={category}>
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="portfolio-gallery">
+            <div class="portfolio-carousel">
+              <div class="portfolio-track" id="portfolio-track">
+                {portfolioItems.map((item) => (
+                  <a
+                    class="portfolio-card"
+                    href={item.url}
+                    data-category={item.category}
+                    draggable="false"
+                    ondragstart="return false;"
+                    aria-label={`View ${item.title} case study`}>
+                    {item.image ? (
+                      <OptimizedImage
+                        src={item.image}
+                        alt={item.title}
+                        draggable="false"
+                        ondragstart="return false;"
+                        class:list={[
+                          "portfolio-card-image",
+                          item.category === "AI Automation" &&
+                            "portfolio-card-image-centered",
+                        ]}
+                      />
+                    ) : (
+                      <div
+                        class="portfolio-card-placeholder"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span class="sr-only">View {item.title} case study</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div class="portfolio-controls">
+              <button
+                class="portfolio-arrow"
+                type="button"
+                aria-label="Previous project"
+                data-portfolio-prev>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <button
+                class="portfolio-arrow"
+                type="button"
+                aria-label="Next project"
+                data-portfolio-next>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M9 6l6 6-6 6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .testimonial-light {
+    isolation: isolate;
+  }
+
+  .testimonial-wave-top {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+    height: clamp(3.25rem, 7vw, 6.875rem);
+    transform: translateY(-99%);
+    color: var(--color-bg-page);
+    fill: currentColor;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .testimonial-light > .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .portfolio-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .portfolio-categories-shell {
+    border-radius: 1.55rem;
+    border: 1px solid var(--color-border-surface-dark);
+    background: var(--gradient-surface-dark);
+    box-shadow: 0 18px 34px rgba(3, 42, 52, 0.16);
+    padding: 1.45rem 1.1rem;
+  }
+
+  .portfolio-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 0.62rem;
+  }
+
+  .portfolio-category {
+    width: 100%;
+    min-height: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: color-mix(in srgb, white 84%, transparent);
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    padding-inline: 1.35rem;
+    padding-block: 0;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .portfolio-category:hover,
+  .portfolio-category.is-active {
+    border-color: var(--color-mustard);
+    background: color-mix(in srgb, white 18%, transparent);
+    color: #ffffff;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .portfolio-gallery {
+    min-width: 0;
+  }
+
+  .portfolio-carousel {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 0.15rem 0 0;
+    margin: 0;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    cursor: grab;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .portfolio-track {
+    display: flex;
+    gap: 24px;
+    padding-right: 0;
+    align-items: stretch;
+  }
+
+  .portfolio-carousel.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .portfolio-carousel.is-dragging .portfolio-card {
+    filter: none;
+    opacity: 1;
+  }
+
+  .portfolio-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    border-radius: 1.5rem;
+    border: 0;
+    box-shadow: none;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform 0.35s ease,
+      box-shadow 0.35s ease,
+      filter 0.35s ease,
+      opacity 0.35s ease;
+    scroll-snap-align: start;
+    filter: brightness(0.62) saturate(0.88);
+    opacity: 0.92;
+    background: var(--color-monire-dark-teal, #0b3d4a);
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .portfolio-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(1, 27, 34, 0.24);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .portfolio-card.is-active {
+    filter: none;
+    opacity: 1;
+  }
+
+  .portfolio-card-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 8.5;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+
+  .portfolio-card-image-centered {
+    object-position: center;
+  }
+
+  .portfolio-card-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #dfe3e6, #c9d0d5);
+  }
+
+  .portfolio-controls {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .portfolio-arrow {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(1, 27, 34, 0.2);
+    background: #0b3d4a;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .portfolio-arrow:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .portfolio-arrow:hover {
+    border-color: rgba(255, 255, 255, 0.7);
+    background: #135262;
+  }
+
+  .portfolio-arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (max-width: 1023px) {
+    .portfolio-layout {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .portfolio-categories {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+
+    .portfolio-categories-shell {
+      padding: 1rem;
+    }
+
+    .portfolio-category {
+      width: auto;
+      min-height: 2.75rem;
+      height: 2.75rem;
+      font-size: 0.95rem;
+      padding-inline: 1.35rem;
+      padding-block: 0;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .portfolio-card {
+      flex: 0 0 100%;
+    }
+  }
+</style>
+
+<script>
+  const scroller = document.querySelector(".portfolio-carousel");
+  const track = document.getElementById("portfolio-track");
+  const prev = document.querySelector("[data-portfolio-prev]");
+  const next = document.querySelector("[data-portfolio-next]");
+  const categoryButtons = Array.from(
+    document.querySelectorAll("[data-portfolio-category]"),
+  );
+  const cards = track
+    ? Array.from(track.querySelectorAll(".portfolio-card"))
+    : [];
+  let activeIndex = Math.min(cards.length - 1, 0);
+  let isDragging = false;
+  let startX = 0;
+  let scrollStart = 0;
+  let dragMoved = false;
+
+  const getScrollStep = () => {
+    if (!track) return 0;
+    const card = track.querySelector(".portfolio-card");
+    if (!card) return 0;
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.gap || styles.columnGap || "0");
+    return card.getBoundingClientRect().width + gap;
+  };
+
+  const setActive = (index) => {
+    activeIndex = Math.max(0, Math.min(cards.length - 1, index));
+    if (!scroller) return;
+    const step = getScrollStep();
+    scroller.scrollTo({ left: step * activeIndex, behavior: "smooth" });
+    updateArrows();
+    updateActiveCategory();
+    updateActiveCard();
+  };
+
+  const updateArrows = () => {
+    if (!cards.length) {
+      prev?.setAttribute("disabled", "true");
+      next?.setAttribute("disabled", "true");
+      prev?.setAttribute("aria-disabled", "true");
+      next?.setAttribute("aria-disabled", "true");
+      return;
+    }
+    const isAtStart = activeIndex <= 0;
+    const isAtEnd = activeIndex >= cards.length - 1;
+    prev?.toggleAttribute("disabled", isAtStart);
+    next?.toggleAttribute("disabled", isAtEnd);
+    prev?.setAttribute("aria-disabled", isAtStart ? "true" : "false");
+    next?.setAttribute("aria-disabled", isAtEnd ? "true" : "false");
+  };
+
+  const updateActiveCategory = () => {
+    if (!cards.length) return;
+    const activeCategory = cards[activeIndex]?.getAttribute("data-category");
+    categoryButtons.forEach((button) => {
+      button.classList.toggle(
+        "is-active",
+        button.getAttribute("data-portfolio-category") === activeCategory,
+      );
+    });
+  };
+
+  const updateActiveCard = () => {
+    cards.forEach((card, index) => {
+      card.classList.toggle("is-active", index === activeIndex);
+    });
+  };
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const category = button.getAttribute("data-portfolio-category");
+      if (!category) return;
+      const targetIndex = cards.findIndex(
+        (card) => card.getAttribute("data-category") === category,
+      );
+      if (targetIndex >= 0) {
+        setActive(targetIndex);
+      }
+    });
+  });
+
+  prev?.addEventListener("click", () => {
+    setActive(activeIndex - 1);
+  });
+
+  next?.addEventListener("click", () => {
+    setActive(activeIndex + 1);
+  });
+
+  const initPortfolioUI = () => {
+    setActive(0);
+    updateArrows();
+    updateActiveCategory();
+    updateActiveCard();
+  };
+
+  initPortfolioUI();
+  window.addEventListener("load", initPortfolioUI);
+
+  if (scroller) {
+    scroller.addEventListener("mousedown", (event) => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      isDragging = true;
+      dragMoved = false;
+      startX = event.pageX;
+      scrollStart = scroller.scrollLeft;
+      scroller.classList.add("is-dragging");
+    });
+
+    window.addEventListener("mousemove", (event) => {
+      if (!isDragging) return;
+      event.preventDefault();
+      const delta = event.pageX - startX;
+      if (Math.abs(delta) > 5) {
+        dragMoved = true;
+      }
+      scroller.scrollLeft = scrollStart - delta;
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      scroller.classList.remove("is-dragging");
+      const step = getScrollStep();
+      if (step > 0) {
+        activeIndex = Math.round(scroller.scrollLeft / step);
+      }
+      updateArrows();
+      updateActiveCategory();
+      updateActiveCard();
+    });
+
+    scroller.addEventListener("mouseleave", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      scroller.classList.remove("is-dragging");
+    });
+
+    scroller.addEventListener("scroll", () => {
+      const step = getScrollStep();
+      if (step > 0) {
+        activeIndex = Math.round(scroller.scrollLeft / step);
+      }
+      updateArrows();
+      updateActiveCategory();
+      updateActiveCard();
+    });
+  }
+
+  document.querySelectorAll(".portfolio-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+
+    card.addEventListener("click", (event) => {
+      if (!dragMoved) return;
+      event.preventDefault();
+      dragMoved = false;
+    });
+  });
+
+  document.querySelectorAll(".portfolio-card-image").forEach((image) => {
+    image.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+  });
+</script>

@@ -171,10 +171,9 @@ export class ScrollMenu {
 
   updateLocationHash(index: number) {
     const href = this.items[index].getAttribute("href");
-    const currentLocation = location.pathname + location.search;
-
     if (href && !href.match(/^#?$/)) {
-      history.pushState(href, document.title, currentLocation + href);
+      const absoluteUrl = new URL(href, window.location.origin);
+      history.pushState(href, document.title, absoluteUrl.pathname + absoluteUrl.search + absoluteUrl.hash);
     }
   }
 

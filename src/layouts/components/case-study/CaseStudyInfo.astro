@@ -51,10 +51,24 @@ const { client, date, category, tools = [], website } = Astro.props as Props;
     website && (
       <div class="flex justify-between py-2">
         <span class="opacity-60">Website</span>
-        <Link href={website} class="text-link">
+        <Link href={website} class="case-study-website-link">
           Visit Website
         </Link>
       </div>
     )
   }
 </div>
+
+<style>
+  :global(.case-study-website-link) {
+    color: var(--color-monire-deep-teal) !important;
+    text-decoration: none;
+  }
+
+  :global(.case-study-website-link:hover),
+  :global(.case-study-website-link:focus-visible) {
+    color: var(--color-link-light-bg-hover) !important;
+    text-decoration: underline;
+    text-decoration-thickness: var(--color-link-underline-thickness);
+  }
+</style>

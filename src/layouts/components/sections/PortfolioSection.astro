@@ -40,6 +40,13 @@ const portfolioItems = [
     url: "/case-studies/towarowa/",
     category: "Real Estate",
   },
+  {
+    id: "portfolio-4",
+    title: "Towarowa",
+    image: "/images/portfolio/n8n_preview.webp",
+    url: "/case-studies/expense-receipt-automation/",
+    category: "AI Automation",
+  },
 ];
 const portfolioCategories = Array.from(
   new Set(portfolioItems.map((item) => item.category)),
@@ -101,7 +108,11 @@ const portfolioCategories = Array.from(
                         alt={item.title}
                         draggable="false"
                         ondragstart="return false;"
-                        class="portfolio-card-image"
+                        class:list={[
+                          "portfolio-card-image",
+                          item.category === "AI Automation" &&
+                            "portfolio-card-image-centered",
+                        ]}
                       />
                     ) : (
                       <div
@@ -315,6 +326,10 @@ const portfolioCategories = Array.from(
     display: block;
     -webkit-user-drag: none;
     user-select: none;
+  }
+
+  .portfolio-card-image-centered {
+    object-position: center;
   }
 
   .portfolio-card-placeholder {

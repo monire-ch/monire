@@ -20,6 +20,10 @@
     path  = "/images/favicons" # favicon images path (No need to change it)
     image = "/images/monire_logo.png" # Add your site logo path here and follow upper instruction
 
+  [site.themeColor]
+    light = "#F8F5F1"
+    dark  = "#011B23"
+
 
 # SEO Metadata
 # Specific SEO configurations that complement the general site settings.

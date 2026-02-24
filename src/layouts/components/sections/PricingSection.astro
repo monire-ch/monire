@@ -164,6 +164,8 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
     const tabs = document.querySelectorAll(".pricing-tab");
     const webDesign = document.getElementById("web-design-content");
     const aiBlock = document.getElementById("ai-content");
+    const isTouchLike =
+      window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
     function setActiveTab(activeTab: Element) {
       tabs.forEach((t) => {
@@ -173,7 +175,16 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
       const isWebTab = activeTab?.getAttribute("data-tab-key") === "web";
       webDesign?.classList.toggle("hidden", !isWebTab);
       aiBlock?.classList.toggle("hidden", isWebTab);
-      if (activeTab instanceof HTMLElement) {
+
+      // iOS/WebKit can keep a stale tap/focus paint on the previously tapped button.
+      // On touch-like pointers, blur all tabs after toggling to clear that ghost state.
+      if (isTouchLike) {
+        tabs.forEach((t) => {
+          if (t instanceof HTMLElement) {
+            t.blur();
+          }
+        });
+      } else if (activeTab instanceof HTMLElement) {
         activeTab.blur();
       }
     }

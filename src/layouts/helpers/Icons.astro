@@ -1,36 +1,26 @@
 ---
 import type { IconProps } from "@lucide/astro";
+import { ArrowUpRight, ChevronDown, ChevronUp } from "@lucide/astro";
 
+const iconMap = {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
+} as const;
+
+type IconName = keyof typeof iconMap;
 interface Props extends IconProps {
-  icon: keyof typeof import("@lucide/astro");
+  icon: IconName;
 }
 
 const { icon, ...restProps } = Astro.props;
+const Icon = iconMap[icon];
 ---
 
-<div data-lucide={icon} {...restProps}></div>
-
-<script>
-  const iconElems = document.querySelectorAll("[data-lucide]");
-  const lucideModule = await import("lucide");
-
-  iconElems.forEach((iconElem) => {
-    const iconName = iconElem.getAttribute("data-lucide");
-    if (!iconName) return;
-
-    // @ts-expect-error
-    const IconDef = lucideModule[iconName];
-    if (!IconDef) {
-      console.warn(`Lucide icon "${iconName}" not found`);
-      return;
-    }
-
-    const svg = lucideModule.createElement(IconDef, {
-      ...Object.fromEntries(
-        [...iconElem.attributes].map((attr) => [attr.name, attr.value]),
-      ),
-    });
-
-    iconElem.replaceWith(svg);
-  });
-</script>
+{
+  Icon ? (
+    <Icon {...restProps} />
+  ) : (
+    <span aria-hidden="true" {...restProps} />
+  )
+}

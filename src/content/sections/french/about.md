@@ -32,7 +32,7 @@ list:
     ctaBtn:
       enable: true
       label: "Apply here"
-      url: "/apply/"
+      url: "/apply"
       rel: ""
       target: ""
     ctaBtn2:

@@ -1,10 +1,13 @@
 ---
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
+
 type Props = {
   title?: string;
+  subtitle?: string;
   titleAlign?: "left" | "center";
 };
 
-const { title = "Let's Work Together", titleAlign = "center" } =
+const { title, subtitle, titleAlign = "center" } =
   Astro.props as Props;
 ---
 
@@ -16,15 +19,22 @@ const { title = "Let's Work Together", titleAlign = "center" } =
     class="dark-teal-theme-orb dark-teal-theme-orb-2"
     aria-hidden="true"></div>
   <div class="container relative z-1">
-    <h1
-      class:list={[
-        "dark-teal-page-theme-title text-4xl text-light mb-12",
-        titleAlign === "left"
-          ? "dark-teal-page-theme-title-left"
-          : "dark-teal-page-theme-title-center",
-      ]}>
-      {title}
-    </h1>
+    {(subtitle || title) && (
+      <div
+        class:list={[
+          "dark-teal-page-theme-head mb-12",
+          titleAlign === "left"
+            ? "dark-teal-page-theme-head-left"
+            : "dark-teal-page-theme-head-center",
+        ]}>
+        {subtitle && (
+          <Subtitle content={subtitle} class="dark-teal-page-theme-subtitle" />
+        )}
+        {title && (
+          <h1 class="dark-teal-page-theme-title text-4xl text-light">{title}</h1>
+        )}
+      </div>
+    )}
   </div>
   <slot />
 </section>
@@ -40,14 +50,30 @@ const { title = "Let's Work Together", titleAlign = "center" } =
     }
   }
 
-  .dark-teal-page-theme .dark-teal-page-theme-title-center {
+  .dark-teal-page-theme .dark-teal-page-theme-head-center {
     width: min(100% - 2rem, 56rem);
     margin-inline: auto;
+    text-align: center;
   }
 
-  .dark-teal-page-theme .dark-teal-page-theme-title-left {
+  .dark-teal-page-theme .dark-teal-page-theme-head-left {
     width: min(100% - 2rem, 56rem);
     margin-inline: 0;
+    text-align: left;
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-subtitle {
+    margin-bottom: clamp(0.875rem, 1.6vw, 1.25rem);
+  }
+
+  .dark-teal-page-theme
+    .dark-teal-page-theme-head-left
+    .dark-teal-page-theme-subtitle {
+    margin-inline: 0;
+  }
+
+  .dark-teal-page-theme .dark-teal-page-theme-title {
+    margin-bottom: 0;
   }
 
   .dark-teal-page-theme section.section-light {
@@ -204,8 +230,8 @@ const { title = "Let's Work Together", titleAlign = "center" } =
   }
 
   @media (max-width: 767px) {
-    .dark-teal-page-theme .dark-teal-page-theme-title-center,
-    .dark-teal-page-theme .dark-teal-page-theme-title-left {
+    .dark-teal-page-theme .dark-teal-page-theme-head-center,
+    .dark-teal-page-theme .dark-teal-page-theme-head-left {
       width: calc(100% - 1.25rem);
     }
   }

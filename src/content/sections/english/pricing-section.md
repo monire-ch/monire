@@ -1,6 +1,6 @@
 ---
 enable: true # Control the visibility of this section across all pages where it is used
-title: "Two services. One goal: helping your business grow."
+title: "Two services. One goal: **helping your business grow.**"
 subtitle: Pricing
 
 heading: Need Something More Specific?
@@ -47,7 +47,7 @@ list:
     ctaBtn:
       enable: true
       label: Get started
-      url: /contact/
+      url: /contact
       rel:
       target:
 
@@ -83,7 +83,7 @@ list:
     ctaBtn:
       enable: true
       label: Get started
-      url: /contact/
+      url: /contact
       rel:
       target:
 
@@ -117,7 +117,7 @@ list:
     ctaBtn:
       enable: true
       label: Get started
-      url: /contact/
+      url: /contact
       rel:
       target:
 
@@ -128,8 +128,8 @@ ai_automations:
   ctas:
     - label: "Get started"
       variant: "primary"
-      url: "/contact/"
+      url: "/contact"
     - label: "Latest case study"
       variant: "secondary"
-      url: "/case-studies/expense-receipt-automation/"
+      url: "/case-studies/expense-receipt-automation"
 ---

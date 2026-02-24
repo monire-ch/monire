@@ -5,8 +5,12 @@ import OptimizedImage from "@/components/utilities/OptimizedImage.astro";
 
 type Props = {
   tag?: "button" | "a";
+  type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
   showIcon?: boolean;
+  iconLoading?: "eager" | "lazy";
+  iconDecoding?: "async" | "auto" | "sync";
+  iconFetchpriority?: "high" | "low" | "auto";
   content: {
     enable?: boolean;
     label: string;
@@ -21,8 +25,12 @@ type Props = {
 
 const {
   tag: tagProp,
+  type: typeProp,
   variant: variantProp,
   showIcon: showIconProp,
+  iconLoading = "lazy",
+  iconDecoding = "async",
+  iconFetchpriority = "auto",
   content: { enable, label, url, rel, target, variant: contentVariant },
   class: className,
   ...rest
@@ -62,13 +70,14 @@ const relAttr = opensContactModal
   : url?.startsWith("http")
     ? rel || "noopener noreferrer"
     : rel || undefined;
+const buttonType = typeProp || "button";
 ---
 
 {
   enable &&
     (tag === "button" ? (
       <button
-        type="button"
+        type={buttonType}
         data-content={label}
         data-open-contact={opensContactModal ? "true" : undefined}
         class:list={["btn", ctaClass, "relative overflow-hidden"]}
@@ -80,6 +89,11 @@ const relAttr = opensContactModal
               alt="icon"
               class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
               src="/images/icons/svg/star.svg"
+              width={25}
+              height={25}
+              loading={iconLoading}
+              decoding={iconDecoding}
+              fetchpriority={iconFetchpriority}
             />
           </span>
         )}
@@ -101,6 +115,11 @@ const relAttr = opensContactModal
               alt="icon"
               class="h-5 w-5 transition-all duration-300 group-hover:rotate-180"
               src="/images/icons/svg/star.svg"
+              width={25}
+              height={25}
+              loading={iconLoading}
+              decoding={iconDecoding}
+              fetchpriority={iconFetchpriority}
             />
           </span>
         )}

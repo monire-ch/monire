@@ -375,6 +375,7 @@ body:has(.dark-teal-theme-base) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   height: auto;
   min-height: 2.75rem;
   border: 1px solid transparent;
@@ -399,6 +400,8 @@ body:has(.dark-teal-theme-base) {
   touch-action: manipulation;
   user-select: none;
   cursor: pointer;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .pricing-tabs .pricing-tab[data-active="false"],
@@ -439,6 +442,25 @@ body:has(.dark-teal-theme-base) {
 }
 
 @media (hover: none), (pointer: coarse) {
+  .pricing-tabs .pricing-tab,
+  .pricing-tabs .pricing-tab:hover,
+  .pricing-tabs .pricing-tab:active,
+  .pricing-tabs .pricing-tab:focus,
+  .pricing-tabs .pricing-tab:focus-visible {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .pricing-tabs .pricing-tab[data-active="false"]:hover,
+  .pricing-tabs .pricing-tab[data-active="false"]:active,
+  .pricing-tabs .pricing-tab[data-active="false"]:focus,
+  .pricing-tabs .pricing-tab[data-active="false"]:focus-visible {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: color-mix(in srgb, white 84%, transparent) !important;
+  }
+
   .pricing-tab:focus,
   .pricing-tab:focus-visible {
     outline: none;

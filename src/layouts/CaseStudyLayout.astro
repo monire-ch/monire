@@ -19,7 +19,7 @@ const previewImageBySlug: Record<string, string> = {
 
 const previewImage = previewImageBySlug[entry.slug];
 const hasScrollablePreview = data.type === "website";
-const backToProjectsUrl = getLocaleUrlCTM("/#projects", Astro.currentLocale);
+const backToProjectsUrl = `${getLocaleUrlCTM("/", Astro.currentLocale)}#projects`;
 ---
 
 <Layout title={data.title} sectionSpacing="md" class="case-study-page">
@@ -35,7 +35,6 @@ const backToProjectsUrl = getLocaleUrlCTM("/#projects", Astro.currentLocale);
             }}
             variant="primary"
             showIcon={false}
-            onclick={`window.location.assign('${backToProjectsUrl}'); return false;`}
           />
         </div>
         <CaseStudyHero title={data.title} category={data.category} />

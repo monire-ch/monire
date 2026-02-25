@@ -36,28 +36,229 @@
   <div class="hero-noise"></div>
 </div>
 
+<div aria-hidden="true" class="hero-fallback-gradient"></div>
+
 <script>
+  const root = document.documentElement;
+  root.classList.add("hero-quality-off");
+
   // Detect Safari (desktop + iOS). Chrome on iOS also uses WebKit
   // but reports "CriOS"; we want to catch all WebKit-based browsers.
   const ua = navigator.userAgent;
+  const nav = navigator as Navigator & {
+    connection?: {
+      saveData?: boolean;
+      effectiveType?: string;
+    };
+    deviceMemory?: number;
+  };
   const isIOS = /iPad|iPhone|iPod/.test(ua);
   const isSafari = /^((?!chrome|android).)*safari/i.test(ua) || isIOS;
   const iosMajor = Number((ua.match(/OS (\d+)_/) || [])[1] || 0);
   const safariMajor = Number((ua.match(/Version\/(\d+)/) || [])[1] || 0);
-  // const isLegacyWebkit =
-  //   (isIOS && iosMajor > 0 && iosMajor < 16) ||
-  //   (isSafari && safariMajor > 0 && safariMajor < 16);
-   const isLegacyWebkit = true;
+  const isLegacyWebkit =
+    (isIOS && iosMajor > 0 && iosMajor < 16) ||
+    (isSafari && safariMajor > 0 && safariMajor < 16);
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const connection = nav.connection;
+  const saveData = connection?.saveData === true;
+  const lowBandwidth =
+    typeof connection?.effectiveType === "string" &&
+    /(^|slow-)2g/.test(connection.effectiveType);
+  const lowMemory = typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4;
+  const lowCpu =
+    typeof navigator.hardwareConcurrency === "number" &&
+    navigator.hardwareConcurrency <= 4;
+  const supportsBlend = CSS.supports("mix-blend-mode", "screen");
+  const supportsBackdrop =
+    CSS.supports("backdrop-filter", "blur(1px)") ||
+    CSS.supports("-webkit-backdrop-filter", "blur(1px)");
 
   if (isSafari) {
-    document.documentElement.classList.add("is-safari");
+    root.classList.add("is-safari");
   }
   if (isLegacyWebkit) {
-    document.documentElement.classList.add("is-legacy-webkit");
+    root.classList.add("is-legacy-webkit");
+  }
+
+  const shouldUseFullQuality =
+    !prefersReducedMotion &&
+    !saveData &&
+    !lowBandwidth &&
+    !lowMemory &&
+    !lowCpu &&
+    !isLegacyWebkit &&
+    supportsBlend &&
+    supportsBackdrop;
+
+  const setQuality = (quality: "full" | "off") => {
+    root.classList.toggle("hero-quality-full", quality === "full");
+    root.classList.toggle("hero-quality-off", quality !== "full");
+  };
+
+  const sampleFrameRate = () => {
+    if (typeof requestAnimationFrame !== "function") {
+      return;
+    }
+
+    let frames = 0;
+    const start = performance.now();
+    const sampleDurationMs = 1400;
+    const lowFpsThreshold = 45;
+
+    const sample = (now: number) => {
+      frames += 1;
+      if (now - start < sampleDurationMs) {
+        requestAnimationFrame(sample);
+        return;
+      }
+
+      const fps = (frames * 1000) / (now - start);
+      if (fps < lowFpsThreshold) {
+        setQuality("off");
+        root.classList.add("hero-low-fps");
+      }
+    };
+
+    requestAnimationFrame(sample);
+  };
+
+  const tryEnableFullQuality = () => {
+    if (!shouldUseFullQuality) {
+      return;
+    }
+
+    setQuality("full");
+    if (document.visibilityState === "visible") {
+      sampleFrameRate();
+    }
+  };
+
+  const scheduleUpgrade = () => {
+    const requestIdle = (
+      window as Window & {
+        requestIdleCallback?: (
+          callback: IdleRequestCallback,
+          options?: IdleRequestOptions,
+        ) => number;
+      }
+    ).requestIdleCallback;
+
+    if (typeof requestIdle === "function") {
+      requestIdle(tryEnableFullQuality, { timeout: 1200 });
+      return;
+    }
+    globalThis.setTimeout(tryEnableFullQuality, 700);
+  };
+
+  if (document.readyState === "complete") {
+    scheduleUpgrade();
+  } else {
+    window.addEventListener("load", scheduleUpgrade, { once: true });
   }
 </script>
 
 <style>
+  .hero-blobs-wrap {
+    display: none;
+  }
+
+  .hero-fallback-gradient {
+    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  :global(.hero-quality-full) .hero-blobs-wrap {
+    display: block;
+  }
+
+  :global(.hero-quality-off) .hero-fallback-gradient {
+    display: block;
+  }
+
+  .hero-fallback-gradient {
+    background:
+      radial-gradient(
+        130% 52% at 50% 92%,
+        rgb(122 232 255 / 0.32) 0%,
+        rgb(122 232 255 / 0.22) 24%,
+        rgb(122 232 255 / 0.12) 44%,
+        rgb(122 232 255 / 0.05) 62%,
+        transparent 80%
+      ),
+      radial-gradient(
+        170% 72% at 50% 100%,
+        rgb(84 196 228 / 0.16) 0%,
+        rgb(84 196 228 / 0.08) 42%,
+        transparent 76%
+      ),
+      linear-gradient(
+        to top,
+        rgb(94 214 244 / 0.12) 0%,
+        rgb(94 214 244 / 0.06) 16%,
+        transparent 42%
+      );
+    mask-image: linear-gradient(
+      to top,
+      rgb(0 0 0 / 1) 0%,
+      rgb(0 0 0 / 1) 30%,
+      rgb(0 0 0 / 0.65) 42%,
+      rgb(0 0 0 / 0) 58%
+    );
+    -webkit-mask-image: linear-gradient(
+      to top,
+      rgb(0 0 0 / 1) 0%,
+      rgb(0 0 0 / 1) 30%,
+      rgb(0 0 0 / 0.65) 42%,
+      rgb(0 0 0 / 0) 58%
+    );
+  }
+
+  @media (max-width: 768px) {
+    .hero-fallback-gradient {
+      background:
+        radial-gradient(
+          150% 50% at 50% 96%,
+          rgb(122 232 255 / 0.28) 0%,
+          rgb(122 232 255 / 0.16) 30%,
+          rgb(122 232 255 / 0.07) 50%,
+          transparent 72%
+        ),
+        radial-gradient(
+          180% 70% at 50% 104%,
+          rgb(84 196 228 / 0.13) 0%,
+          rgb(84 196 228 / 0.06) 42%,
+          transparent 74%
+        ),
+        linear-gradient(
+          to top,
+          rgb(94 214 244 / 0.1) 0%,
+          rgb(94 214 244 / 0.05) 18%,
+          transparent 40%
+        );
+      mask-image: linear-gradient(
+        to top,
+        rgb(0 0 0 / 1) 0%,
+        rgb(0 0 0 / 1) 34%,
+        rgb(0 0 0 / 0.52) 44%,
+        rgb(0 0 0 / 0) 56%
+      );
+      -webkit-mask-image: linear-gradient(
+        to top,
+        rgb(0 0 0 / 1) 0%,
+        rgb(0 0 0 / 1) 34%,
+        rgb(0 0 0 / 0.52) 44%,
+        rgb(0 0 0 / 0) 56%
+      );
+    }
+  }
+
   .hero-blobs-defs {
     position: absolute;
     width: 0;
@@ -275,15 +476,17 @@
     pointer-events: none;
   }
 
-  /* Fallback for older iPad/iOS Safari: keep blobs, but use static lightweight styling. */
+  /* Lite mode + old WebKit fallback: keep blobs with static lightweight styling. */
+  :global(.hero-quality-lite) .hero-blob,
   :global(.is-legacy-webkit) .hero-blob {
     animation: none !important;
     filter: none !important;
     mix-blend-mode: normal !important;
     transform: none !important;
-    will-change: auto;
+    will-change: auto !important;
   }
 
+  :global(.hero-quality-lite) .hero-blob-1,
   :global(.is-legacy-webkit) .hero-blob-1 {
     width: 980px;
     height: 980px;
@@ -302,6 +505,7 @@
     );
   }
 
+  :global(.hero-quality-lite) .hero-blob-2,
   :global(.is-legacy-webkit) .hero-blob-2 {
     width: 1080px;
     height: 1080px;
@@ -320,6 +524,7 @@
     );
   }
 
+  :global(.hero-quality-lite) .hero-blob-3,
   :global(.is-legacy-webkit) .hero-blob-3 {
     width: 930px;
     height: 930px;
@@ -338,6 +543,7 @@
     );
   }
 
+  :global(.hero-quality-lite) .hero-blob-4,
   :global(.is-legacy-webkit) .hero-blob-4 {
     width: 950px;
     height: 950px;
@@ -356,6 +562,7 @@
     );
   }
 
+  :global(.hero-quality-lite) .hero-blob-5,
   :global(.is-legacy-webkit) .hero-blob-5 {
     width: 950px;
     height: 950px;
@@ -374,6 +581,7 @@
     );
   }
 
+  :global(.hero-quality-lite) .hero-glass,
   :global(.is-legacy-webkit) .hero-glass {
     display: block;
     background: radial-gradient(
@@ -386,11 +594,13 @@
     -webkit-backdrop-filter: none;
   }
 
+  :global(.hero-quality-lite) .hero-noise,
   :global(.is-legacy-webkit) .hero-noise {
     display: none;
   }
 
   @media (max-width: 768px) {
+    :global(.hero-quality-lite) .hero-blob-1,
     :global(.is-legacy-webkit) .hero-blob-1 {
       width: 750px;
       height: 750px;
@@ -398,6 +608,7 @@
       bottom: -300px;
     }
 
+    :global(.hero-quality-lite) .hero-blob-2,
     :global(.is-legacy-webkit) .hero-blob-2 {
       width: 820px;
       height: 820px;
@@ -405,6 +616,7 @@
       bottom: -340px;
     }
 
+    :global(.hero-quality-lite) .hero-blob-3,
     :global(.is-legacy-webkit) .hero-blob-3 {
       width: 700px;
       height: 700px;
@@ -412,6 +624,8 @@
       bottom: -360px;
     }
 
+    :global(.hero-quality-lite) .hero-blob-4,
+    :global(.hero-quality-lite) .hero-blob-5,
     :global(.is-legacy-webkit) .hero-blob-4,
     :global(.is-legacy-webkit) .hero-blob-5 {
       display: none;

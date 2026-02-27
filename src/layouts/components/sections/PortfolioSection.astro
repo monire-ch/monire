@@ -78,7 +78,10 @@ const portfolioCategories = Array.from(
 
       <div class="container">
         <div class="portfolio-layout">
-          <div class="portfolio-categories-shell">
+          <div
+            class="portfolio-categories-shell"
+            data-aos="fade-up-sm"
+            data-aos-delay="150">
             <div class="portfolio-categories" aria-label="Project categories">
               {portfolioCategories.map((category) => (
                 <button
@@ -91,10 +94,13 @@ const portfolioCategories = Array.from(
             </div>
           </div>
 
-          <div class="portfolio-gallery">
+          <div
+            class="portfolio-gallery"
+            data-aos="fade-up-sm"
+            data-aos-delay="250">
             <div class="portfolio-carousel">
               <div class="portfolio-track" id="portfolio-track">
-                {portfolioItems.map((item) => (
+                {portfolioItems.map((item, index) => (
                   <a
                     class="portfolio-card"
                     href={item.url}
@@ -106,6 +112,12 @@ const portfolioCategories = Array.from(
                       <OptimizedImage
                         src={item.image}
                         alt={item.title}
+                        widths={[640, 960, 1280]}
+                        sizes="(min-width: 1024px) 58rem, 100vw"
+                        formats={["avif", "webp"]}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchpriority={index === 0 ? "high" : "auto"}
                         draggable="false"
                         ondragstart="return false;"
                         class:list={[

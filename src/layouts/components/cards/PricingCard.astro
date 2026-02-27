@@ -3,7 +3,7 @@ import type { ComparisonCategory, PricingPlans, PricingTier } from "@/types";
 import Button from "../buttons/Button.astro";
 import OptimizedImage from "../utilities/OptimizedImage.astro";
 import { markdownify } from "@/lib/utils/textConverter";
-import AnimatedNumber from "@/components/widgets/AnimatedNumber.astro";
+import FormattedNumber from "@/components/widgets/FormattedNumber.astro";
 
 type Props = {
   content: PricingTier & {
@@ -57,7 +57,7 @@ const cardSurfaceStyle = featured
     <div
       class:list={[
         // Base
-        "pricing-card relative max-lg:box-shadow-primary hover:lg:box-shadow-primary mt-4 md:mt-6 flex flex-col gap-8 rounded-3xl border px-9 py-9 transition duration-500",
+        "pricing-card max-lg:box-shadow-primary hover:lg:box-shadow-primary relative mt-4 flex flex-col gap-8 rounded-3xl border px-9 py-9 transition duration-500 md:mt-6",
 
         // Make the featured (middle) card taller + more prominent on desktop
         // - move it up a bit
@@ -76,7 +76,7 @@ const cardSurfaceStyle = featured
       {badge?.enable && (
         <span
           class:list={[
-            "pricing-badge inline-block rounded-full px-4 py-1 text-xs font-semibold",
+            "pricing-badge inline-block rounded-full px-4 py-2 text-xs font-semibold",
             { "bg-primary/10 text-primary": featured },
             { "bg-white/10 text-white": !featured },
           ]}>
@@ -108,9 +108,7 @@ const cardSurfaceStyle = featured
             </span>
 
             <span class="pricing-price text-h3/none font-secondary text-mustard flex gap-0">
-              <AnimatedNumber
-                animateOn="click"
-                transitionTime="1.2s"
+              <FormattedNumber
                 content={item}
               />
             </span>

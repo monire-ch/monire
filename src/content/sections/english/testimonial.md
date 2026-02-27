@@ -1,7 +1,7 @@
 ---
 enable: true
-subtitle: Testimonials
-title: Client stories
+subtitle: Projects
+title: Our Work
 
 list:
   - enable: true
@@ -23,11 +23,4 @@ list:
     customer:
       name: Margot & Hans-Peter Märki
       role: Owners, Juragarage Märki
-
-  - enable: true
-    content: >
-      Test testetststststststs
-    customer:
-      name: Test
-      role: tetstststs, Owner
 ---

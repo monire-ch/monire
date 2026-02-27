@@ -13,13 +13,15 @@ const { pathname } = Astro.url;
       class:list={[
         "nav-item",
         { "nav-item-cta": menu.action === "openContactModal" },
-      ]}
-      role="menuitem">
+      ]}>
       {menu.action === "openContactModal" ? (
         <Button
           variant="primary"
           content={{ enable: true, label: menu.name, url: "#" }}
           class="nav-link nav-link-cta uppercase font-bold"
+          iconLoading="eager"
+          iconFetchpriority="high"
+          iconDecoding="sync"
           data-menu-action={menu.action}
         />
       ) : (
@@ -128,7 +130,15 @@ const { pathname } = Astro.url;
       });
     };
 
-    window.addEventListener("load", updateActiveLinks);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", updateActiveLinks, {
+        once: true,
+      });
+    } else {
+      updateActiveLinks();
+    }
+
     window.addEventListener("hashchange", updateActiveLinks);
+    document.addEventListener("astro:page-load", updateActiveLinks);
   }
 </script>

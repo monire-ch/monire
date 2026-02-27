@@ -2,7 +2,7 @@
 // HeroBlobs.astro
 ---
 
-<div aria-hidden="true">
+<div aria-hidden="true" class="hero-blobs-wrap">
   <svg class="hero-blobs-defs" aria-hidden="true">
     <defs>
       <filter
@@ -36,16 +36,18 @@
   <div class="hero-noise"></div>
 </div>
 
-<style>
-  .hero-blobs-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-    isolation: isolate;
-  }
+<script>
+  // Detect Safari (desktop + iOS). Chrome on iOS also uses WebKit
+  // but reports "CriOS"; we want to catch all WebKit-based browsers.
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    || /iPad|iPhone|iPod/.test(navigator.userAgent);
 
+  if (isSafari) {
+    document.documentElement.classList.add('is-safari');
+  }
+</script>
+
+<style>
   .hero-blobs-defs {
     position: absolute;
     width: 0;
@@ -132,7 +134,7 @@
     right: 12%;
     bottom: -420px;
     filter: url(#hero-blur-2);
-    animation: hero-float-4 4ss ease-in-out infinite;
+    animation: hero-float-4 4s ease-in-out infinite;
     animation-delay: -4.5s;
     opacity: 0.46;
     background: radial-gradient(
@@ -167,6 +169,27 @@
       rgba(65, 175, 205, 0.05) 70%,
       rgba(65, 175, 205, 0) 85%
     );
+  }
+
+  /* =====================================================
+     SAFARI OVERRIDES
+     - Swap feGaussianBlur for CSS blur (no scroll flash)
+     - Remove mix-blend-mode (causes compositing layer crash)
+     - Remove backdrop-filter on glass (same crash trigger)
+     - Remove will-change (stops Safari creating bad layers)
+     ===================================================== */
+  :global(.is-safari) .hero-blob {
+    mix-blend-mode: normal;
+    will-change: auto;
+  }
+  :global(.is-safari) .hero-blob-1 { filter: blur(80px); }
+  :global(.is-safari) .hero-blob-2 { filter: blur(90px); }
+  :global(.is-safari) .hero-blob-3 { filter: blur(80px); }
+  :global(.is-safari) .hero-blob-4 { filter: blur(90px); }
+  :global(.is-safari) .hero-blob-5 { filter: blur(90px); }
+  :global(.is-safari) .hero-glass  {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   /* Animations - gentler movement */

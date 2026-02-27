@@ -10,7 +10,7 @@
   },
   "cookie": {
     "message": "We use cookies to analyze traffic and improve your experience.",
-    "learnMore": "Learn more",
+    "learnMore": "Read our privacy policy",
     "policyUrl": "/privacy-policy",
     "accept": "Accept",
     "reject": "Reject"
@@ -19,6 +19,7 @@
     "company": "Quick Links",
     "contact": "Contact",
     "privacyPolicy": "Privacy Policy",
+    "servingClientsWorldwide": "Serving clients worldwide",
     "description": "Custom website development and AI-powered workflow automation in Switzerland.",
     "copyright": "© {{ year }} Moniré. All rights reserved."
   }

@@ -26,5 +26,5 @@ tabs:
     cta:
     - label: "Latest case study"
       variant: "secondary"
-      url: "/case-studies/expense-receipt-automation/"
+      url: "/case-studies/expense-receipt-automation"
 ---

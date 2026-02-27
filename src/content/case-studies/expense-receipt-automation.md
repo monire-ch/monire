@@ -8,7 +8,6 @@ backUrl: "/pricing"
 backLabel: "Back to Pricing"
 
 client: "Brooksmiller & Partners AG"
-website: "https://brooksmillerpartners.com"
 
 tools:
   - OUTLOOK

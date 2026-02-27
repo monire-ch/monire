@@ -82,18 +82,15 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
       <div class="pricing-tabs">
         {
           pricingTabs.map((item, index) => (
-            <Button
-              class="btn-toggle pricing-tab"
-              tag="button"
+            <button
+              type="button"
+              class="pricing-tab"
               data-tab-key={index === 0 ? "web" : "ai"}
               data-tab={item.label}
               data-active={item.selected ? "true" : "false"}
-              content={{
-                enable: true,
-                label: item.label,
-              }}
-              variant="secondary"
-            />
+              aria-pressed={item.selected ? "true" : "false"}>
+              {item.label}
+            </button>
           ))
         }
       </div>
@@ -167,14 +164,29 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
     const tabs = document.querySelectorAll(".pricing-tab");
     const webDesign = document.getElementById("web-design-content");
     const aiBlock = document.getElementById("ai-content");
+    const isTouchLike =
+      window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
     function setActiveTab(activeTab: Element) {
       tabs.forEach((t) => {
         t.setAttribute("data-active", t === activeTab ? "true" : "false");
+        t.setAttribute("aria-pressed", t === activeTab ? "true" : "false");
       });
       const isWebTab = activeTab?.getAttribute("data-tab-key") === "web";
       webDesign?.classList.toggle("hidden", !isWebTab);
       aiBlock?.classList.toggle("hidden", isWebTab);
+
+      // iOS/WebKit can keep a stale tap/focus paint on the previously tapped button.
+      // On touch-like pointers, blur all tabs after toggling to clear that ghost state.
+      if (isTouchLike) {
+        tabs.forEach((t) => {
+          if (t instanceof HTMLElement) {
+            t.blur();
+          }
+        });
+      } else if (activeTab instanceof HTMLElement) {
+        activeTab.blur();
+      }
     }
 
     tabs.forEach((tab) => {

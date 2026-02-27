@@ -368,16 +368,129 @@ body:has(.dark-teal-theme-base) {
   border-radius: 9999px;
   padding: 0.35rem;
   margin: 0 auto;
+  max-width: 100%;
 }
 
 .pricing-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: auto;
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: color-mix(in srgb, white 84%, transparent);
+  box-shadow: none;
   padding-inline: 1.6rem;
+  padding-block: 0.4rem;
   border-radius: 9999px;
-  font-size: 0.95rem;
+  font-size: var(--btn-font-size);
   font-weight: 500;
   letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: none;
-  transition: all 0.25s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  cursor: pointer;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.pricing-tabs .pricing-tab[data-active="false"],
+.pricing-tabs .pricing-tab[data-active="false"]:hover,
+.pricing-tabs .pricing-tab[data-active="false"]:active,
+.pricing-tabs .pricing-tab[data-active="false"]:focus,
+.pricing-tabs .pricing-tab[data-active="false"]:focus-visible {
+  height: auto;
+  min-height: 2.75rem;
+  background: transparent !important;
+  border-color: transparent !important;
+  color: color-mix(in srgb, white 84%, transparent) !important;
+  box-shadow: none !important;
+}
+
+.pricing-tabs .pricing-tab[data-active="true"],
+.pricing-tabs .pricing-tab[data-active="true"]:hover,
+.pricing-tabs .pricing-tab[data-active="true"]:active,
+.pricing-tabs .pricing-tab[data-active="true"]:focus,
+.pricing-tabs .pricing-tab[data-active="true"]:focus-visible {
+  background: color-mix(in srgb, white 18%, transparent) !important;
+  border-color: var(--color-mustard-70) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.pricing-tabs .pricing-tab:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-mustard) 55%, transparent);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pricing-tabs .pricing-tab[data-active="false"]:hover {
+    background: color-mix(in srgb, white 10%, transparent) !important;
+    color: white !important;
+    border-color: transparent !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .pricing-tabs .pricing-tab,
+  .pricing-tabs .pricing-tab:hover,
+  .pricing-tabs .pricing-tab:active,
+  .pricing-tabs .pricing-tab:focus,
+  .pricing-tabs .pricing-tab:focus-visible {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .pricing-tabs .pricing-tab[data-active="false"]:hover,
+  .pricing-tabs .pricing-tab[data-active="false"]:active,
+  .pricing-tabs .pricing-tab[data-active="false"]:focus,
+  .pricing-tabs .pricing-tab[data-active="false"]:focus-visible {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: color-mix(in srgb, white 84%, transparent) !important;
+  }
+
+  .pricing-tab:focus,
+  .pricing-tab:focus-visible {
+    outline: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .pricing-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 0.35rem;
+    padding: 0.25rem;
+    box-sizing: border-box;
+  }
+
+  .pricing-tab {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+    height: auto;
+    min-height: 3.15rem;
+    padding-block: 0.45rem;
+    padding-inline: clamp(0.45rem, 2vw, 0.75rem);
+    font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
 }
 
 .pricing-card-dark,
@@ -648,25 +761,6 @@ footer {
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.7048 0.152545C13.7834 0.212172 13.8494 0.286703 13.8991 0.371871C13.9488 0.45704 13.9812 0.551175 13.9945 0.648889C14.0078 0.746602 14.0017 0.845976 13.9765 0.941322C13.9513 1.03667 13.9076 1.12612 13.8478 1.20455L5.84782 11.7045C5.78293 11.7896 5.70059 11.8598 5.60634 11.9104C5.51209 11.961 5.4081 11.9909 5.30135 11.998C5.19461 12.0051 5.08758 11.9892 4.98745 11.9516C4.88732 11.9139 4.79641 11.8552 4.72082 11.7795L0.220823 7.27954C0.0883431 7.13737 0.0162199 6.94932 0.0196481 6.75502C0.0230763 6.56072 0.101788 6.37534 0.239201 6.23792C0.376614 6.10051 0.561999 6.0218 0.7563 6.01837C0.950602 6.01494 1.13865 6.08707 1.28082 6.21955L5.17482 10.1125L12.6548 0.295545C12.7752 0.137497 12.9534 0.0336733 13.1502 0.00686313C13.3471 -0.0199471 13.5466 0.0324471 13.7048 0.152545Z' fill='white'/%3E%3C/svg%3E%0A");
       }
     }
-  }
-}
-
-/* Odometer (Number Count With Animation) Default Style Reset */
-.odometer {
-  span,
-  .odometer-inside {
-    @apply inline-block!;
-  }
-
-  &,
-  * {
-    @apply leading-inherit! font-[inherit]! text-inherit!;
-  }
-
-  /* change default duration from default 3s to "duration" */
-  &.odometer-animating-up .odometer-ribbon-inner,
-  &.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
-    transition-duration: var(--odometer-duration, 2s) !important;
   }
 }
 

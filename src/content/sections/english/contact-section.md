@@ -9,7 +9,7 @@ contactList:
     - label: "Email"
       value: "[hello@monire.ch](mailto:hello@monire.ch)"
     - label: "Location"
-      value: "Zürich, Switzerland"
+      value: "Zürich, Switzerland • Serving clients worldwide"
 
 social:
   enable: true
@@ -26,7 +26,7 @@ form:
     assistanceAt: "Please contact us for assistance at"
   # This note will show at the end of form
   # note: |
-  #   Your data is safe with us. We respect your privacy and never share your information. <br /> Read our [Privacy Policy](/privacy-policy/).
+  #   Your data is safe with us. We respect your privacy and never share your information. <br /> Read our [Privacy Policy](/privacy-policy).
   inputs:
     - label: "Full Name"
       placeholder: "Full Name"
@@ -86,8 +86,8 @@ form:
         search: # if type is search then it will work
           placeholder: ""
         items:
-          - label: "CHF 2’000 – 5’000"
-            value: "CHF 2’000 – 5’000"
+          - label: "<CHF 5’000"
+            value: "<CHF 5’000"
           - label: "CHF 5’000 – 10’000"
             value: "CHF 5’000 – 10’000"
           - label: "CHF 10’000 – 20’000"
@@ -102,7 +102,7 @@ form:
       name: "Tell us about your project:"
       required: true
       halfWidth: false
-    - label: "I agree to the terms and conditions and [privacy policy](/privacy-policy/)."
+    - label: "I agree to the terms and conditions and [privacy policy](/privacy-policy)."
       name: "Agreed Privacy"
       value: "Agreed"
       checked: false

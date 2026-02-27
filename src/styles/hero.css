@@ -1,7 +1,7 @@
 .hero-bg {
   --hero-header-offset: clamp(68px, 7.5vw, 92px);
   position: relative;
-  background-color: #011b22;
+  background-color: var(--color-primary);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -41,14 +41,22 @@ main.has-section-spacing-md > section.hero-bg {
 .gold-text,
 .gold-text * {
   @apply bg-clip-text text-transparent;
-  background-image: url("/images/hero/gold-fill.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image:
+    var(--image-texture-gold),
+    var(--gradient-gold-cool);
+  background-size:
+    cover,
+    100% 100%;
+  background-position:
+    center,
+    center;
+  background-repeat:
+    no-repeat,
+    no-repeat;
 
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  color: var(--color-primary); /* fallback */
+  color: var(--color-link-dark-bg); /* fallback */
 }

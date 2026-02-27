@@ -1,7 +1,7 @@
 # Site Configuration
 [site]
   title              = "Moniré"
-  description        = "Custom website development and AI-powered workflow automation in Switzerland."
+  description        = "Custom website development and AI-powered workflow automation — based in Switzerland, serving clients worldwide."
   tagline            = "WEB DEVELOPMENT & AI AUTOMATIONS"
   taglineSeparator   = "" # default is " - " 
   baseUrl            = "https://monire.ch"
@@ -19,6 +19,10 @@
   [site.favicon]
     path  = "/images/favicons" # favicon images path (No need to change it)
     image = "/images/monire_logo.png" # Add your site logo path here and follow upper instruction
+
+  [site.themeColor]
+    light = "#F8F5F1"
+    dark  = "#011B23"
 
 
 # SEO Metadata

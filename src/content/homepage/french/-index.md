@@ -1,8 +1,6 @@
 ---
-title: "Home"
-metaTitle: "Moniré | Custom Websites & AI Workflow Automation in Switzerland"
-disableTagline: true
-metaDescription: "Welcome to our website."
+title: "Moniré — Custom Websites & AI Workflow Automation"
+metaDescription: "Custom website development and AI-powered workflow automation — based in Switzerland, serving clients worldwide."
 
 faqSection: {}
 ---

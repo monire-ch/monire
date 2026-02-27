@@ -52,7 +52,7 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
       }
     </div>
 
-    <div class="grid gap-y-10 gap-x-6 lg:grid-cols-2 lg:gap-y-6">
+    <div class="grid gap-x-6 gap-y-10 lg:grid-cols-2 lg:gap-y-6">
       {
         items.map((item) => (
           <article class="text-left md:grid md:grid-cols-[300px_1fr] md:items-center md:gap-6">
@@ -61,8 +61,10 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
               style="border-color: var(--color-border-overlay); background: var(--color-surface-overlay);">
               <OptimizedImage
                 src={item.image}
-                width={640}
-                height={700}
+                width={600}
+                height={750}
+                widths={[220, 260, 300, 360, 420]}
+                sizes="(min-width: 768px) 300px, min(300px, calc(100vw - 2rem))"
                 alt={item.name}
                 class="aspect-[4/5] w-full object-cover object-center"
               />

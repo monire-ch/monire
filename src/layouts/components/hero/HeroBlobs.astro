@@ -40,6 +40,9 @@
 
 <script>
   const root = document.documentElement;
+  const legacyQualityStorageKey = "hero-blobs-quality";
+  const qualityFailureCountKey = "hero-blobs-failure-count";
+  const forceFallbackFailureThreshold = 2;
   root.classList.add("hero-quality-pending");
 
   // Detect Safari (desktop + iOS). Chrome on iOS also uses WebKit
@@ -72,9 +75,6 @@
     typeof navigator.hardwareConcurrency === "number" &&
     navigator.hardwareConcurrency <= 4;
   const supportsBlend = CSS.supports("mix-blend-mode", "screen");
-  const supportsBackdrop =
-    CSS.supports("backdrop-filter", "blur(1px)") ||
-    CSS.supports("-webkit-backdrop-filter", "blur(1px)");
 
   if (isSafari) {
     root.classList.add("is-safari");
@@ -86,12 +86,10 @@
   const shouldUseFullQuality =
     !prefersReducedMotion &&
     !saveData &&
-    !lowBandwidth &&
-    !lowMemory &&
-    !lowCpu &&
     !isLegacyWebkit &&
-    supportsBlend &&
-    supportsBackdrop;
+    (isIOS ||
+      (isSafari && !lowBandwidth) ||
+      (!lowBandwidth && !lowMemory && !lowCpu && supportsBlend));
 
   const setQuality = (quality: "full" | "off") => {
     root.classList.remove("hero-quality-pending");
@@ -106,13 +104,104 @@
     root.classList.add("hero-quality-off");
   };
 
+  const getFailureCount = () => {
+    try {
+      const rawValue = window.localStorage.getItem(qualityFailureCountKey);
+      const parsedValue = Number(rawValue);
+      return Number.isFinite(parsedValue) ? Math.max(0, parsedValue) : 0;
+    } catch {}
+    return 0;
+  };
+
+  const setFailureCount = (value: number) => {
+    try {
+      if (value <= 0) {
+        window.localStorage.removeItem(qualityFailureCountKey);
+        return;
+      }
+      window.localStorage.setItem(qualityFailureCountKey, String(value));
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  const incrementFailureCount = () => {
+    const nextValue = getFailureCount() + 1;
+    setFailureCount(nextValue);
+    return nextValue;
+  };
+
+  // Clean up legacy permanent-off key from previous strategy.
+  try {
+    window.localStorage.removeItem(legacyQualityStorageKey);
+  } catch {}
+
+  const monitorRuntimePerformance = () => {
+    if (typeof requestAnimationFrame !== "function") {
+      return;
+    }
+    if (document.visibilityState !== "visible") {
+      return;
+    }
+
+    const sampleDurationMs = 2400;
+    const slowFrameMs = 50;
+    const maxSlowFrames = 10;
+    const minFps = 34;
+    let frames = 0;
+    let slowFrames = 0;
+    let lastTimestamp = performance.now();
+    const startTimestamp = lastTimestamp;
+
+    const sample = (now: number) => {
+      if (!root.classList.contains("hero-quality-full")) {
+        return;
+      }
+
+      frames += 1;
+      const frameDelta = now - lastTimestamp;
+      lastTimestamp = now;
+
+      if (frameDelta > slowFrameMs) {
+        slowFrames += 1;
+      }
+
+      if (now - startTimestamp < sampleDurationMs) {
+        requestAnimationFrame(sample);
+        return;
+      }
+
+      const fps = (frames * 1000) / (now - startTimestamp);
+      if (fps < minFps || slowFrames > maxSlowFrames) {
+        setQuality("off");
+        root.classList.add("hero-low-fps");
+        incrementFailureCount();
+        return;
+      }
+
+      // Good runtime sample means we can trust this device again.
+      setFailureCount(0);
+    };
+
+    requestAnimationFrame(sample);
+  };
+
   const tryEnableFullQuality = () => {
+    const failureCount = getFailureCount();
+    if (failureCount >= forceFallbackFailureThreshold) {
+      setQuality("off");
+      // Decay failure count so this state is not permanent without a retry path.
+      setFailureCount(failureCount - 1);
+      return;
+    }
+
     if (!shouldUseFullQuality) {
       setQuality("off");
       return;
     }
 
     setQuality("full");
+    monitorRuntimePerformance();
   };
 
   tryEnableFullQuality();

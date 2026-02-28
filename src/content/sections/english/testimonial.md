@@ -1,7 +1,7 @@
 ---
 enable: true
 subtitle: Projects
-title: Our Work
+title: Our Recent Work
 
 list:
   - enable: true

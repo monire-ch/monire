@@ -4,6 +4,7 @@ import { getEntryCTM } from "@/lib/contentParser.astro";
 import overrideObjects from "@/lib/utils/overrideObjects.ts";
 import { markdownify } from "@/lib/utils/textConverter";
 import Button from "@/layouts/components/buttons/Button.astro";
+import Subtitle from "@/layouts/components/widgets/Subtitle.astro";
 import SectionWave from "@/assets/images/svgs/section-wave-mask.svg";
 
 type ctaSectionType = Section;
@@ -43,9 +44,7 @@ let {
           data-aos="fade-up-sm"
           data-aos-offset="0">
           {subtitle && (
-            <p class="text-s font-medium tracking-[0.2em] text-monire-deep-teal/80 uppercase">
-              {subtitle}
-            </p>
+            <Subtitle content={subtitle} class="mb-0" />
           )}
           {title && (
             <h2

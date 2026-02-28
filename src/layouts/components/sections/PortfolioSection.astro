@@ -392,9 +392,8 @@ const portfolioCategories = Array.from(
     }
 
     .portfolio-categories {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.7rem;
     }
 
@@ -403,7 +402,7 @@ const portfolioCategories = Array.from(
     }
 
     .portfolio-category {
-      width: auto;
+      width: 100%;
       min-height: 2.75rem;
       height: 2.75rem;
       font-size: 0.95rem;

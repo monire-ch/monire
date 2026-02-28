@@ -105,13 +105,4 @@
 # [head] (Add custom scripts, stylesheets, and meta tags to be rendered in the <head> section of the page)
 # -----------------------------------------------------------------------------------------------------------------------------------
 [head]
-content = """
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SV3QLRHSK6"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-SV3QLRHSK6');
-</script>
-"""
+content = ""

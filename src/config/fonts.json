@@ -1,18 +1,5 @@
 [
   {
-    "name": "Playfair Display",
-    "variants": [
-      {
-        "weight": "400",
-        "src": ["./src/assets/fonts/PlayfairDisplay.woff2"]
-      }
-    ],
-    "provider": "local",
-    "preload": false,
-    "cssVariable": "--font-secondary",
-    "fallback": "serif"
-  },
-  {
     "name": "Instrument Serif",
     "variants": [
       {

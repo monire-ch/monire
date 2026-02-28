@@ -8,7 +8,7 @@
       }
     ],
     "provider": "local",
-    "preload": false,
+    "preload": true,
     "cssVariable": "--font-secondary",
     "fallback": "serif"
   },

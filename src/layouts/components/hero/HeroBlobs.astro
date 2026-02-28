@@ -36,18 +36,279 @@
   <div class="hero-noise"></div>
 </div>
 
+<div aria-hidden="true" class="hero-fallback-gradient"></div>
+
 <script>
+  const root = document.documentElement;
+  const legacyQualityStorageKey = "hero-blobs-quality";
+  const qualityFailureCountKey = "hero-blobs-failure-count";
+  const forceFallbackFailureThreshold = 2;
+  root.classList.add("hero-quality-pending");
+
   // Detect Safari (desktop + iOS). Chrome on iOS also uses WebKit
   // but reports "CriOS"; we want to catch all WebKit-based browsers.
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-    || /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const ua = navigator.userAgent;
+  const nav = navigator as Navigator & {
+    connection?: {
+      saveData?: boolean;
+      effectiveType?: string;
+    };
+    deviceMemory?: number;
+  };
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(ua) || isIOS;
+  const iosMajor = Number((ua.match(/OS (\d+)_/) || [])[1] || 0);
+  const safariMajor = Number((ua.match(/Version\/(\d+)/) || [])[1] || 0);
+  const isLegacyWebkit =
+    (isIOS && iosMajor > 0 && iosMajor < 16) ||
+    (isSafari && safariMajor > 0 && safariMajor < 16);
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const connection = nav.connection;
+  const saveData = connection?.saveData === true;
+  const lowBandwidth =
+    typeof connection?.effectiveType === "string" &&
+    /(^|slow-)2g/.test(connection.effectiveType);
+  const lowMemory = typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4;
+  const lowCpu =
+    typeof navigator.hardwareConcurrency === "number" &&
+    navigator.hardwareConcurrency <= 4;
+  const supportsBlend = CSS.supports("mix-blend-mode", "screen");
 
   if (isSafari) {
-    document.documentElement.classList.add('is-safari');
+    root.classList.add("is-safari");
   }
+  if (isLegacyWebkit) {
+    root.classList.add("is-legacy-webkit");
+  }
+
+  const shouldUseFullQuality =
+    !prefersReducedMotion &&
+    !saveData &&
+    !isLegacyWebkit &&
+    (isIOS ||
+      (isSafari && !lowBandwidth) ||
+      (!lowBandwidth && !lowMemory && !lowCpu && supportsBlend));
+
+  const setQuality = (quality: "full" | "off") => {
+    root.classList.remove("hero-quality-pending");
+
+    if (quality === "full") {
+      root.classList.add("hero-quality-full");
+      root.classList.remove("hero-quality-off");
+      return;
+    }
+
+    root.classList.remove("hero-quality-full");
+    root.classList.add("hero-quality-off");
+  };
+
+  const getFailureCount = () => {
+    try {
+      const rawValue = window.localStorage.getItem(qualityFailureCountKey);
+      const parsedValue = Number(rawValue);
+      return Number.isFinite(parsedValue) ? Math.max(0, parsedValue) : 0;
+    } catch {}
+    return 0;
+  };
+
+  const setFailureCount = (value: number) => {
+    try {
+      if (value <= 0) {
+        window.localStorage.removeItem(qualityFailureCountKey);
+        return;
+      }
+      window.localStorage.setItem(qualityFailureCountKey, String(value));
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  const incrementFailureCount = () => {
+    const nextValue = getFailureCount() + 1;
+    setFailureCount(nextValue);
+    return nextValue;
+  };
+
+  // Clean up legacy permanent-off key from previous strategy.
+  try {
+    window.localStorage.removeItem(legacyQualityStorageKey);
+  } catch {}
+
+  const monitorRuntimePerformance = () => {
+    if (typeof requestAnimationFrame !== "function") {
+      return;
+    }
+    if (document.visibilityState !== "visible") {
+      return;
+    }
+
+    const sampleDurationMs = 2400;
+    const slowFrameMs = 50;
+    const maxSlowFrames = 10;
+    const minFps = 34;
+    let frames = 0;
+    let slowFrames = 0;
+    let lastTimestamp = performance.now();
+    const startTimestamp = lastTimestamp;
+
+    const sample = (now: number) => {
+      if (!root.classList.contains("hero-quality-full")) {
+        return;
+      }
+
+      frames += 1;
+      const frameDelta = now - lastTimestamp;
+      lastTimestamp = now;
+
+      if (frameDelta > slowFrameMs) {
+        slowFrames += 1;
+      }
+
+      if (now - startTimestamp < sampleDurationMs) {
+        requestAnimationFrame(sample);
+        return;
+      }
+
+      const fps = (frames * 1000) / (now - startTimestamp);
+      if (fps < minFps || slowFrames > maxSlowFrames) {
+        setQuality("off");
+        root.classList.add("hero-low-fps");
+        incrementFailureCount();
+        return;
+      }
+
+      // Good runtime sample means we can trust this device again.
+      setFailureCount(0);
+    };
+
+    requestAnimationFrame(sample);
+  };
+
+  const tryEnableFullQuality = () => {
+    const failureCount = getFailureCount();
+    if (failureCount >= forceFallbackFailureThreshold) {
+      setQuality("off");
+      // Decay failure count so this state is not permanent without a retry path.
+      setFailureCount(failureCount - 1);
+      return;
+    }
+
+    if (!shouldUseFullQuality) {
+      setQuality("off");
+      return;
+    }
+
+    setQuality("full");
+    monitorRuntimePerformance();
+  };
+
+  tryEnableFullQuality();
 </script>
 
 <style>
+  .hero-blobs-wrap {
+    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hero-fallback-gradient {
+    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  :global(.hero-quality-full) .hero-blobs-wrap {
+    display: block;
+  }
+
+  :global(.hero-quality-off) .hero-fallback-gradient {
+    display: block;
+  }
+
+  .hero-fallback-gradient {
+    background:
+      radial-gradient(
+        150% 66% at 50% 90%,
+        rgb(122 232 255 / 0.32) 0%,
+        rgb(122 232 255 / 0.22) 24%,
+        rgb(122 232 255 / 0.12) 44%,
+        rgb(122 232 255 / 0.05) 62%,
+        transparent 86%
+      ),
+      radial-gradient(
+        190% 88% at 50% 98%,
+        rgb(84 196 228 / 0.16) 0%,
+        rgb(84 196 228 / 0.08) 42%,
+        transparent 82%
+      ),
+      linear-gradient(
+        to top,
+        rgb(94 214 244 / 0.12) 0%,
+        rgb(94 214 244 / 0.06) 24%,
+        transparent 50%
+      );
+    mask-image: linear-gradient(
+      to top,
+      rgb(0 0 0 / 1) 0%,
+      rgb(0 0 0 / 1) 38%,
+      rgb(0 0 0 / 0.75) 50%,
+      rgb(0 0 0 / 0) 68%
+    );
+    -webkit-mask-image: linear-gradient(
+      to top,
+      rgb(0 0 0 / 1) 0%,
+      rgb(0 0 0 / 1) 38%,
+      rgb(0 0 0 / 0.75) 50%,
+      rgb(0 0 0 / 0) 68%
+    );
+  }
+
+  @media (max-width: 768px) {
+    .hero-fallback-gradient {
+      background:
+        radial-gradient(
+          165% 62% at 50% 92%,
+          rgb(122 232 255 / 0.28) 0%,
+          rgb(122 232 255 / 0.16) 30%,
+          rgb(122 232 255 / 0.07) 50%,
+          transparent 80%
+        ),
+        radial-gradient(
+          210% 86% at 50% 100%,
+          rgb(84 196 228 / 0.13) 0%,
+          rgb(84 196 228 / 0.06) 42%,
+          transparent 80%
+        ),
+        linear-gradient(
+          to top,
+          rgb(94 214 244 / 0.1) 0%,
+          rgb(94 214 244 / 0.05) 24%,
+          transparent 48%
+        );
+      mask-image: linear-gradient(
+        to top,
+        rgb(0 0 0 / 1) 0%,
+        rgb(0 0 0 / 1) 40%,
+        rgb(0 0 0 / 0.68) 52%,
+        rgb(0 0 0 / 0) 66%
+      );
+      -webkit-mask-image: linear-gradient(
+        to top,
+        rgb(0 0 0 / 1) 0%,
+        rgb(0 0 0 / 1) 40%,
+        rgb(0 0 0 / 0.68) 52%,
+        rgb(0 0 0 / 0) 66%
+      );
+    }
+  }
+
   .hero-blobs-defs {
     position: absolute;
     width: 0;
@@ -182,12 +443,22 @@
     mix-blend-mode: normal;
     will-change: auto;
   }
-  :global(.is-safari) .hero-blob-1 { filter: blur(80px); }
-  :global(.is-safari) .hero-blob-2 { filter: blur(90px); }
-  :global(.is-safari) .hero-blob-3 { filter: blur(80px); }
-  :global(.is-safari) .hero-blob-4 { filter: blur(90px); }
-  :global(.is-safari) .hero-blob-5 { filter: blur(90px); }
-  :global(.is-safari) .hero-glass  {
+  :global(.is-safari) .hero-blob-1 {
+    filter: blur(80px);
+  }
+  :global(.is-safari) .hero-blob-2 {
+    filter: blur(90px);
+  }
+  :global(.is-safari) .hero-blob-3 {
+    filter: blur(80px);
+  }
+  :global(.is-safari) .hero-blob-4 {
+    filter: blur(90px);
+  }
+  :global(.is-safari) .hero-blob-5 {
+    filter: blur(90px);
+  }
+  :global(.is-safari) .hero-glass {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -253,6 +524,162 @@
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
     pointer-events: none;
+  }
+
+  /* Lite mode + old WebKit fallback: keep blobs with static lightweight styling. */
+  :global(.hero-quality-lite) .hero-blob,
+  :global(.is-legacy-webkit) .hero-blob {
+    animation: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  :global(.hero-quality-lite) .hero-blob-1,
+  :global(.is-legacy-webkit) .hero-blob-1 {
+    width: 980px;
+    height: 980px;
+    left: -360px;
+    bottom: -360px;
+    opacity: 0.58;
+    background: radial-gradient(
+      circle,
+      rgba(70, 180, 210, 0.72) 0%,
+      rgba(70, 180, 210, 0.56) 14%,
+      rgba(70, 180, 210, 0.36) 30%,
+      rgba(70, 180, 210, 0.2) 48%,
+      rgba(70, 180, 210, 0.1) 64%,
+      rgba(70, 180, 210, 0.03) 78%,
+      rgba(70, 180, 210, 0) 92%
+    );
+  }
+
+  :global(.hero-quality-lite) .hero-blob-2,
+  :global(.is-legacy-webkit) .hero-blob-2 {
+    width: 1080px;
+    height: 1080px;
+    right: -390px;
+    bottom: -390px;
+    opacity: 0.54;
+    background: radial-gradient(
+      circle,
+      rgba(60, 170, 200, 0.68) 0%,
+      rgba(60, 170, 200, 0.52) 14%,
+      rgba(60, 170, 200, 0.34) 30%,
+      rgba(60, 170, 200, 0.18) 48%,
+      rgba(60, 170, 200, 0.09) 64%,
+      rgba(60, 170, 200, 0.03) 78%,
+      rgba(60, 170, 200, 0) 92%
+    );
+  }
+
+  :global(.hero-quality-lite) .hero-blob-3,
+  :global(.is-legacy-webkit) .hero-blob-3 {
+    width: 930px;
+    height: 930px;
+    left: 12%;
+    bottom: -430px;
+    opacity: 0.5;
+    background: radial-gradient(
+      circle,
+      rgba(75, 185, 215, 0.62) 0%,
+      rgba(75, 185, 215, 0.46) 14%,
+      rgba(75, 185, 215, 0.3) 30%,
+      rgba(75, 185, 215, 0.16) 48%,
+      rgba(75, 185, 215, 0.08) 64%,
+      rgba(75, 185, 215, 0.02) 78%,
+      rgba(75, 185, 215, 0) 92%
+    );
+  }
+
+  :global(.hero-quality-lite) .hero-blob-4,
+  :global(.is-legacy-webkit) .hero-blob-4 {
+    width: 950px;
+    height: 950px;
+    right: 12%;
+    bottom: -420px;
+    opacity: 0.42;
+    background: radial-gradient(
+      circle,
+      rgba(65, 175, 205, 0.54) 0%,
+      rgba(65, 175, 205, 0.4) 14%,
+      rgba(65, 175, 205, 0.25) 30%,
+      rgba(65, 175, 205, 0.14) 48%,
+      rgba(65, 175, 205, 0.07) 64%,
+      rgba(65, 175, 205, 0.02) 78%,
+      rgba(65, 175, 205, 0) 92%
+    );
+  }
+
+  :global(.hero-quality-lite) .hero-blob-5,
+  :global(.is-legacy-webkit) .hero-blob-5 {
+    width: 950px;
+    height: 950px;
+    right: 25%;
+    bottom: -420px;
+    opacity: 0.38;
+    background: radial-gradient(
+      circle,
+      rgba(65, 175, 205, 0.5) 0%,
+      rgba(65, 175, 205, 0.36) 14%,
+      rgba(65, 175, 205, 0.22) 30%,
+      rgba(65, 175, 205, 0.12) 48%,
+      rgba(65, 175, 205, 0.06) 64%,
+      rgba(65, 175, 205, 0.02) 78%,
+      rgba(65, 175, 205, 0) 92%
+    );
+  }
+
+  :global(.hero-quality-lite) .hero-glass,
+  :global(.is-legacy-webkit) .hero-glass {
+    display: block;
+    background: radial-gradient(
+      ellipse at 50% 68%,
+      rgba(95, 206, 236, 0.07) 0%,
+      rgba(95, 206, 236, 0.03) 35%,
+      rgba(95, 206, 236, 0) 72%
+    );
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  :global(.hero-quality-lite) .hero-noise,
+  :global(.is-legacy-webkit) .hero-noise {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    :global(.hero-quality-lite) .hero-blob-1,
+    :global(.is-legacy-webkit) .hero-blob-1 {
+      width: 750px;
+      height: 750px;
+      left: -300px;
+      bottom: -300px;
+    }
+
+    :global(.hero-quality-lite) .hero-blob-2,
+    :global(.is-legacy-webkit) .hero-blob-2 {
+      width: 820px;
+      height: 820px;
+      right: -340px;
+      bottom: -340px;
+    }
+
+    :global(.hero-quality-lite) .hero-blob-3,
+    :global(.is-legacy-webkit) .hero-blob-3 {
+      width: 700px;
+      height: 700px;
+      left: 8%;
+      bottom: -360px;
+    }
+
+    :global(.hero-quality-lite) .hero-blob-4,
+    :global(.hero-quality-lite) .hero-blob-5,
+    :global(.is-legacy-webkit) .hero-blob-4,
+    :global(.is-legacy-webkit) .hero-blob-5 {
+      display: none;
+    }
   }
 
   /* Mobile responsive */

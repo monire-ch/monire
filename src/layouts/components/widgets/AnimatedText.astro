@@ -6,6 +6,9 @@ interface Props {
   delay?: number;
   stagger?: number;
   blur?: boolean;
+  trigger?: "inView" | "load";
+  waitForFonts?: boolean;
+  fontLoadFamily?: string;
 }
 
 let {
@@ -14,28 +17,45 @@ let {
   delay = 0,
   stagger = 0.1,
   blur = true,
+  trigger = "inView",
+  waitForFonts = false,
+  fontLoadFamily,
   ...rest
 } = Astro.props;
 
 let processedContent = "";
 if (content) {
-  const words = content.split(" "); // Split text into words
   const wordStyle = [
     "display: inline-block",
+    "white-space: nowrap",
     "will-change: transform",
-    "transform: translateY(10px)",
+    "transform: translateY(8px)",
     "opacity: 0",
     blur ? "filter: blur(10px)" : "",
   ]
     .filter(Boolean)
     .join("; ");
 
-  processedContent = words
-    .map(
-      (word: string) =>
-        `<span class="word" style="${wordStyle}">${word}</span>`,
-    )
-    .join(" ");
+  // Preserve inline tags (e.g. <em>) and wrap only actual text words.
+  processedContent = content
+    .split(/(<[^>]+>)/g)
+    .filter(Boolean)
+    .map((token) => {
+      if (token.startsWith("<") && token.endsWith(">")) {
+        return token;
+      }
+
+      return token
+        .split(/(\s+)/)
+        .map((part) => {
+          if (!part || /^\s+$/.test(part)) {
+            return part;
+          }
+          return `<span class="word" style="${wordStyle}">${part}</span>`;
+        })
+        .join("");
+    })
+    .join("");
 }
 ---
 
@@ -46,6 +66,9 @@ if (content) {
   data-delay={delay}
   data-stagger={stagger}
   data-blur={blur ? "true" : "false"}
+  data-trigger={trigger}
+  data-wait-for-fonts={waitForFonts ? "true" : "false"}
+  data-font-load-family={fontLoadFamily || ""}
   {...rest}
 />
 
@@ -64,9 +87,14 @@ if (content) {
       animatedText.getAttribute("data-stagger") as string,
     );
     const useBlur = animatedText.getAttribute("data-blur") !== "false";
+    const trigger = animatedText.getAttribute("data-trigger") || "inView";
+    const waitForFonts =
+      animatedText.getAttribute("data-wait-for-fonts") === "true";
+    const fontLoadFamily =
+      (animatedText.getAttribute("data-font-load-family") || "").trim();
     const shouldBlur = useBlur && !isFirefox;
-    
-    inView(animatedText, (element) => {
+
+    const runAnimation = (element: Element) => {
       const words = element.querySelectorAll(".word");
 
       if (!shouldBlur) {
@@ -85,16 +113,49 @@ if (content) {
         delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
         easing: "ease-out",
       });
-     
-      // This will fire when the element leaves the viewport
-      return () => {
-        // animation.stop();
-        // animate(element.querySelectorAll(".word"), {
-        //   opacity: 0,
-        //   y: 20,
-        //   filter: "blur(10px)",
-        // });
+      return animation;
+    };
+
+    if (trigger === "load") {
+      const element = animatedText as HTMLElement;
+
+      const startAnimation = () => {
+        requestAnimationFrame(() => {
+          runAnimation(element);
+        });
       };
+
+      if (
+        waitForFonts &&
+        "fonts" in document &&
+        document.fonts &&
+        typeof document.fonts.ready !== "undefined"
+      ) {
+        // Keep words hidden only when explicitly waiting for font metrics.
+        element.style.visibility = "hidden";
+
+        const fontLoadPromise = fontLoadFamily
+          ? document.fonts.check(`400 1em "${fontLoadFamily}"`)
+            ? Promise.resolve()
+            : document.fonts.load(`400 1em "${fontLoadFamily}"`)
+          : document.fonts.ready;
+
+        Promise.race([
+          fontLoadPromise,
+          new Promise((resolve) => setTimeout(resolve, 320)),
+        ]).then(() => {
+          element.style.visibility = "visible";
+          startAnimation();
+        });
+      } else {
+        startAnimation();
+      }
+
+      return;
+    }
+
+    inView(animatedText, (element) => {
+      runAnimation(element);
     });
   });
 </script>

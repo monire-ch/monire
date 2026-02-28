@@ -5,6 +5,7 @@ import type { Button as ButtonData, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import Button from "../buttons/Button.astro";
 import HeroBackground from "@/components/hero/HeroBackground.astro";
+import AnimatedText from "../widgets/AnimatedText.astro";
 
 type homeBannerSectionType = Section & {
   button: ButtonData;
@@ -31,35 +32,6 @@ let {
   ctaContext,
 } =
   actualContent as homeBannerSectionType;
-
-function buildStaggeredTitleHtml(html: string): string {
-  let wordIndex = 0;
-
-  return html
-    .split(/(<[^>]+>)/g)
-    .filter(Boolean)
-    .map((token) => {
-      if (token.startsWith("<") && token.endsWith(">")) {
-        return token;
-      }
-
-      return token
-        .split(/(\s+)/)
-        .map((part) => {
-          if (!part || /^\s+$/.test(part)) {
-            return part;
-          }
-
-          const wrapped = `<span class="hero-title-word" style="--word-index:${wordIndex};">${part}</span>`;
-          wordIndex += 1;
-          return wrapped;
-        })
-        .join("");
-    })
-    .join("");
-}
-
-const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
 ---
 
 <section class="hero-bg">
@@ -72,14 +44,21 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
         <span class="hero-eyebrow-line"></span>
       </div>
       <div>
-          {
-            title && (
-              <h1
-                class="font-hero gold-text hero-title hero-title-animated mb-6 text-center"
-                set:html={titleHtml}
-              />
-            )
-          }
+        {
+          title && (
+            <AnimatedText
+              class="font-hero gold-text hero-title mb-6 text-center"
+              content={markdownify(title)}
+              trigger="load"
+              waitForFonts={false}
+              fontLoadFamily="Playfair Display"
+              blur={false}
+              duration={0.58}
+              delay={0}
+              stagger={0.018}
+            />
+          )
+        }
         {
           subtitle && (
             <p
@@ -106,30 +85,6 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
 </section>
 
 <style is:global>
-  @keyframes heroTitleWordIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-  }
-
-  @keyframes heroTitleWordInNoBlur {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @keyframes heroEaseIn {
     from {
       opacity: 0;
@@ -167,13 +122,6 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
       opacity: 1;
       animation: none;
       transform: none;
-    }
-
-    .hero-title-animated .hero-title-word {
-      opacity: 1;
-      transform: none;
-      filter: none;
-      animation: none;
     }
   }
 
@@ -218,7 +166,7 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
     letter-spacing: -0.01em;
     color: color-mix(in srgb, var(--color-link-dark-bg) 96%, #fff7e8 4%);
     text-wrap: balance;
-    /* max-width: 20ch; */
+    max-width: 20ch;
     margin-inline: auto;
   }
 
@@ -228,21 +176,11 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
     font-style: italic;
   }
 
-  .hero-title-animated .hero-title-word {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(10px);
-    filter: blur(4px);
-    animation: heroTitleWordIn 620ms ease-out forwards;
-    animation-delay: calc(80ms + (var(--word-index) * 34ms));
-    will-change: transform, opacity, filter;
-  }
-
   .hero-subtitle {
     font-size: clamp(1.06rem, 1.65vw, 1.28rem);
     line-height: 1.65;
     color: var(--color-text-shell-muted);
-    /* max-width: 45ch; */
+    max-width: 45ch;
     margin-inline: auto;
   }
 
@@ -278,7 +216,7 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
       font-size: 0.68rem;
       letter-spacing: 0.18em;
       line-height: 1.4;
-      /* max-width: min(100%, 30ch); */
+      max-width: min(100%, 30ch);
     }
 
     .hero-title {
@@ -289,7 +227,7 @@ const titleHtml = title ? buildStaggeredTitleHtml(markdownify(title)) : "";
 
     .hero-subtitle {
       font-size: clamp(1rem, 4.6vw, 1.16rem);
-      /* max-width: 31ch; */
+      max-width: 31ch;
       margin-inline: auto;
     }
 

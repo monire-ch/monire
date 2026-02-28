@@ -1,7 +1,7 @@
 ---
 enable: true # Control the visibility of this section across all pages where it is used
 subtitle: What We Deliver
-title: "**Intentional Websites and Systems** Built for Today’s Goals and Tomorrow’s Growth"
+title: "Everything your business needs. **Nothing it doesn’t.**"
 
 list:
   - title: 10+ Years of Experience

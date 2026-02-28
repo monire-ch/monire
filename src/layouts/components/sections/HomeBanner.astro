@@ -4,8 +4,8 @@ import { markdownify } from "@/lib/utils/textConverter";
 import type { Button as ButtonData, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import Button from "../buttons/Button.astro";
+import HeroBackground from "@/components/hero/HeroBackground.astro";
 import AnimatedText from "../widgets/AnimatedText.astro";
-import HeroBlobs from "@/components/hero/HeroBlobs.astro";
 
 type homeBannerSectionType = Section & {
   button: ButtonData;
@@ -25,153 +25,221 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as homeBannerSectionType;
 
-let { title, subtitle, description, button, ctaContext } =
+let {
+  title,
+  subtitle,
+  button,
+  ctaContext,
+} =
   actualContent as homeBannerSectionType;
-
-const background = "/images/hero/background.jpg";
 ---
 
 <section class="hero-bg">
-  <HeroBlobs />
+  <HeroBackground />
   <div class="container">
     <div class="relative z-10 mx-auto max-w-4xl">
+      <div class="hero-eyebrow-wrap hero-ease-in hero-ease-in--eyebrow">
+        <span class="hero-eyebrow-line"></span>
+        {ctaContext && <p class="hero-eyebrow">{ctaContext}</p>}
+        <span class="hero-eyebrow-line"></span>
+      </div>
       <div>
         {
           title && (
             <AnimatedText
-              class="font-hero gold-text hero-title mb-6 text-center tracking-wider capitalize"
+              class="font-hero gold-text hero-title mb-6 text-center"
               content={markdownify(title)}
+              trigger="load"
+              waitForFonts={true}
+              fontLoadFamily="Playfair Display"
+              blur={false}
+              duration={0.58}
+              delay={0}
+              stagger={0.018}
             />
           )
         }
         {
           subtitle && (
-            <AnimatedText
-              class="hero-subtitle text-center"
-              stagger={0.03}
-              delay={0.3}
-              content={markdownify(subtitle)}
-            />
-          )
-        }
-        {
-          description && (
             <p
-              class="hero-description shrink-0 text-center tracking-wider opacity-90"
-              data-aos="fade-in"
-              data-aos-delay="300"
-              data-aos-duration="900"
-              set:html={markdownify(description)}
+              class="hero-subtitle hero-ease-in hero-ease-in--subtitle text-center opacity-90"
+              set:html={markdownify(subtitle)}
             />
           )
         }
       </div>
-      <div
-        data-aos="fade-in"
-        data-aos-delay="400"
-        data-aos-duration="900"
-        class="hero-cta-stack flex flex-col items-center justify-center">
+      <div class="hero-cta-stack hero-ease-in hero-ease-in--cta flex items-center justify-center">
         {
-          ctaContext && (
-            <p
-              class="hero-cta-context text-center"
-              set:html={markdownify(ctaContext)}
-            />
-          )
-        }
-        {
-          button && (
-            <Button
-              content={button}
-              variant="primary"
-              iconLoading="eager"
-              iconFetchpriority="high"
-            />
-          )
-        }
+            button && (
+              <Button
+                content={button}
+                variant="primary"
+                iconLoading="eager"
+                iconFetchpriority="high"
+              />
+            )
+          }
       </div>
     </div>
   </div>
 </section>
 
 <style is:global>
-  .container {
-    position: relative;
-    z-index: 10;
+  @keyframes heroEaseIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .gold-text,
-  .gold-text * {
-    @apply bg-clip-text text-transparent;
-    background-image:
-      var(--image-texture-gold),
-      var(--gradient-gold-cool);
-    background-size:
-      cover,
-      100% 100%;
-    background-position:
-      center,
-      center;
-    background-repeat:
-      no-repeat,
-      no-repeat;
+  .hero-ease-in {
+    opacity: 0;
+    animation-name: heroEaseIn;
+    animation-duration: 650ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    will-change: opacity, transform;
+  }
 
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .hero-ease-in--eyebrow {
+    animation-delay: 120ms;
+  }
 
-    color: var(--color-link-dark-bg);
+  .hero-ease-in--subtitle {
+    animation-delay: 190ms;
+  }
+
+  .hero-ease-in--cta {
+    animation-delay: 260ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-ease-in {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+  }
+
+  .hero-bg .container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: clamp(5rem, 10vh, 7rem);
+    padding-bottom: clamp(6rem, 12vh, 9.25rem);
+  }
+
+  .hero-eyebrow-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.6rem, 1.1vw, 1rem);
+    margin-bottom: clamp(1.4rem, 2.2vw, 2rem);
+  }
+
+  .hero-eyebrow-line {
+    width: clamp(1.8rem, 5vw, 4rem);
+    height: 1px;
+    background: color-mix(in srgb, var(--color-text-shell-muted) 36%, transparent);
+  }
+
+  .hero-eyebrow {
+    margin: 0;
+    font-size: clamp(0.68rem, 0.88vw, 0.86rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-align: center;
+    color: color-mix(in srgb, var(--color-text-shell-muted) 82%, #e3f6fc 18%);
   }
 
   .hero-title {
-    font-size: clamp(2rem, 4.6vw, 4.2rem);
-    line-height: 1.06;
-    letter-spacing: 0.01em;
+    font-family: "Silk Serif", "Playfair Display", serif;
+    display: block;
+    font-size: clamp(2.45rem, 5.25vw, 5.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: color-mix(in srgb, var(--color-link-dark-bg) 96%, #fff7e8 4%);
+    max-width: min(100%, 10.5em);
+    margin-inline: auto;
+  }
+
+  .hero-title em,
+  .hero-title i {
+    color: color-mix(in srgb, var(--color-dark-teal-orb-soft) 72%, #d6f6ff);
+    font-style: italic;
   }
 
   .hero-subtitle {
-    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
-    line-height: 1.45;
+    font-size: clamp(1.06rem, 1.65vw, 1.28rem);
+    line-height: 1.65;
     color: var(--color-text-shell-muted);
-  }
-
-  .hero-description {
-    font-size: clamp(1rem, 1.35vw, 1.35rem);
-    line-height: 1.5;
-    margin-bottom: 0;
-    color: var(--color-text-shell-muted);
+    max-width: 45ch;
+    margin-inline: auto;
   }
 
   .hero-cta-stack {
-    margin-top: clamp(1.5rem, 2.4vw, 2.2rem);
-    gap: clamp(1.5rem, 2.4vw, 2.2rem);
-  }
-
-  .hero-cta-context {
-    font-size: clamp(0.85rem, 1vw, 0.95rem);
-    line-height: 1.45;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-text-shell-muted) 94%, white);
+    margin-top: clamp(1.7rem, 2.7vw, 2.7rem);
+    gap: clamp(0.9rem, 1.7vw, 1.15rem);
   }
 
   @media (max-width: 1023px) {
-    .hero-description {
-      max-width: 34ch;
-      margin-inline: auto;
+    .hero-bg .container {
+      padding-top: clamp(3.2rem, 6.5vh, 4.8rem);
+      padding-bottom: clamp(4.6rem, 8.5vh, 6.4rem);
     }
+
   }
 
   @media (max-width: 767px) {
+    .hero-bg .container {
+      padding-top: clamp(2.2rem, 4.2vh, 3rem);
+      padding-bottom: clamp(3.8rem, 7vh, 5rem);
+    }
+
+    .hero-eyebrow-wrap {
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-eyebrow-line {
+      width: clamp(1.1rem, 7vw, 1.9rem);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+      max-width: min(100%, 30ch);
+    }
+
+    .hero-title {
+      font-size: clamp(1.95rem, 8.8vw, 2.55rem);
+      line-height: 1.08;
+      margin-bottom: 1.05rem !important;
+    }
 
     .hero-subtitle {
+      font-size: clamp(1rem, 4.6vw, 1.16rem);
       max-width: 31ch;
       margin-inline: auto;
     }
 
-    .hero-description {
-      max-width: 31ch;
-      margin-inline: auto;
+    .hero-cta-stack {
+      margin-top: 1.45rem;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-bg .container {
+      padding-bottom: clamp(7.6rem, 15vh, 11.5rem);
     }
   }
 </style>

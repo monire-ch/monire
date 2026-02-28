@@ -6,6 +6,9 @@ interface Props {
   delay?: number;
   stagger?: number;
   blur?: boolean;
+  trigger?: "inView" | "load";
+  waitForFonts?: boolean;
+  fontLoadFamily?: string;
 }
 
 let {
@@ -14,46 +17,129 @@ let {
   delay = 0,
   stagger = 0.1,
   blur = true,
+  trigger = "inView",
+  waitForFonts = false,
+  fontLoadFamily,
   ...rest
 } = Astro.props;
 
 let processedContent = "";
 if (content) {
-  const words = content.split(" "); // Split text into words
-  const wordStyle = [
-    "display: inline-block",
-    "will-change: transform",
-    "transform: translateY(10px)",
-    "opacity: 0",
-    blur ? "filter: blur(10px)" : "",
-  ]
-    .filter(Boolean)
-    .join("; ");
+  let wordIndex = 0;
+  const baseWordStyle = [
+    "display:inline-block",
+    "white-space:nowrap",
+    "will-change:transform,opacity,filter",
+  ];
+  const loadWordStyle =
+    trigger === "load"
+      ? [
+          "opacity:0",
+          "transform:translateY(8px)",
+          blur ? "filter:blur(10px)" : "filter:blur(0px)",
+        ]
+      : [];
 
-  processedContent = words
-    .map(
-      (word: string) =>
-        `<span class="word" style="${wordStyle}">${word}</span>`,
-    )
-    .join(" ");
+  // Preserve inline tags (e.g. <em>) and wrap only actual text words.
+  processedContent = content
+    .split(/(<[^>]+>)/g)
+    .filter(Boolean)
+    .map((token) => {
+      if (token.startsWith("<") && token.endsWith(">")) {
+        return token;
+      }
+
+      return token
+        .split(/(\s+)/)
+        .map((part) => {
+          if (!part || /^\s+$/.test(part)) {
+            return part;
+          }
+          const html = `<span class="word" style="${[...baseWordStyle, ...loadWordStyle, `--word-index:${wordIndex}`].join(";")}">${part}</span>`;
+          wordIndex += 1;
+          return html;
+        })
+        .join("");
+    })
+    .join("");
 }
 ---
 
 <div
   class:list={["animated-text", Astro.props.class]}
-  set:html={processedContent}
+  style={`--at-duration:${duration}s; --at-delay:${delay}s; --at-stagger:${stagger}s;${trigger === "load" ? "position:relative;" : ""}`}
   data-duration={duration}
   data-delay={delay}
   data-stagger={stagger}
   data-blur={blur ? "true" : "false"}
+  data-trigger={trigger}
+  data-wait-for-fonts={waitForFonts ? "true" : "false"}
+  data-font-load-family={fontLoadFamily || ""}
+  data-overlay={trigger === "load" ? "true" : "false"}
   {...rest}
-/>
+>
+  {
+    trigger === "load" ? (
+      <>
+        <span
+          class="animated-text-sizer"
+          style="display:block;visibility:hidden;pointer-events:none;user-select:none;"
+          set:html={processedContent}
+        />
+        <span
+          class="animated-text-overlay"
+          style="display:block;position:absolute;inset:0;pointer-events:none;"
+          aria-hidden="true"
+          set:html={processedContent}
+        />
+      </>
+    ) : (
+      <span class="animated-text-content" style="display:block;" set:html={processedContent} />
+    )
+  }
+</div>
 
 <script>
   import { animate, stagger, inView } from "motion";
 
-  const animatedTexts = document.querySelectorAll(".animated-text");
+  const loadAnimatedTexts = document.querySelectorAll(
+    '.animated-text[data-trigger="load"]',
+  );
+  const animatedTexts = document.querySelectorAll(
+    '.animated-text[data-trigger="inView"]',
+  );
   const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+
+  const revealLoadText = async (element: Element) => {
+    const animatedText = element as HTMLElement;
+    const waitForFonts =
+      animatedText.getAttribute("data-wait-for-fonts") === "true";
+    const fontLoadFamily =
+      (animatedText.getAttribute("data-font-load-family") || "").trim();
+
+    if (!waitForFonts || !("fonts" in document)) {
+      animatedText.classList.add("is-ready");
+      return;
+    }
+
+    const fonts = (document as Document & { fonts: FontFaceSet }).fonts;
+    const fontPromise = fontLoadFamily
+      ? fonts.load(`1em "${fontLoadFamily}"`)
+      : fonts.ready;
+
+    await Promise.race([
+      fontPromise.catch(() => undefined),
+      new Promise((resolve) => setTimeout(resolve, 900)),
+    ]);
+
+    animatedText.classList.add("is-ready");
+  };
+
+  requestAnimationFrame(() => {
+    loadAnimatedTexts.forEach((animatedText) => {
+      revealLoadText(animatedText);
+    });
+  });
 
   animatedTexts.forEach((animatedText) => {
     const duration = parseFloat(
@@ -64,9 +150,13 @@ if (content) {
       animatedText.getAttribute("data-stagger") as string,
     );
     const useBlur = animatedText.getAttribute("data-blur") !== "false";
+    const waitForFonts =
+      animatedText.getAttribute("data-wait-for-fonts") === "true";
+    const fontLoadFamily =
+      (animatedText.getAttribute("data-font-load-family") || "").trim();
     const shouldBlur = useBlur && !isFirefox;
-    
-    inView(animatedText, (element) => {
+
+    const runAnimation = (element: Element) => {
       const words = element.querySelectorAll(".word");
 
       if (!shouldBlur) {
@@ -76,8 +166,7 @@ if (content) {
       }
 
       const animationProps = shouldBlur
-        ? // @ts-expect-error
-          { opacity: 1, y: 0, filter: "blur(0px)" }
+        ? { opacity: 1, y: 0, filter: "blur(0px)" }
         : { opacity: 1, y: 0 };
 
       const animation = animate(words, animationProps, {
@@ -85,16 +174,78 @@ if (content) {
         delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
         easing: "ease-out",
       });
-     
-      // This will fire when the element leaves the viewport
-      return () => {
-        // animation.stop();
-        // animate(element.querySelectorAll(".word"), {
-        //   opacity: 0,
-        //   y: 20,
-        //   filter: "blur(10px)",
-        // });
-      };
+      return animation;
+    };
+
+    inView(animatedText, (element) => {
+      (element as HTMLElement).classList.add("is-ready");
+      runAnimation(element);
     });
   });
 </script>
+
+<style is:global>
+  .animated-text {
+    display: block;
+    white-space: normal;
+  }
+
+  .animated-text .animated-text-sizer,
+  .animated-text .animated-text-overlay,
+  .animated-text .animated-text-content {
+    display: block;
+  }
+
+  .animated-text .word {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform, opacity, filter;
+  }
+
+  .animated-text[data-trigger="inView"] .word {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  @keyframes animatedTextWordIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(0px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+  }
+
+  @keyframes animatedTextWordInBlur {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+  }
+
+  .animated-text[data-trigger="load"].is-ready .word {
+    opacity: 0;
+    transform: translateY(8px);
+    animation-name: animatedTextWordIn;
+    animation-duration: var(--at-duration, 0.6s);
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    animation-delay: calc(
+      var(--at-delay, 0s) + (var(--word-index, 0) * var(--at-stagger, 0.1s))
+    );
+  }
+
+  .animated-text[data-trigger="load"][data-blur="true"].is-ready .word {
+    animation-name: animatedTextWordInBlur;
+  }
+</style>

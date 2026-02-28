@@ -5,11 +5,19 @@ import type { Button as ButtonData, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import Button from "../buttons/Button.astro";
 import AnimatedText from "../widgets/AnimatedText.astro";
-import HeroBlobs from "@/components/hero/HeroBlobs.astro";
+import HeroBackground from "@/components/hero/HeroBackground.astro";
+import Link from "@/components/links/Link.astro";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 
 type homeBannerSectionType = Section & {
   button: ButtonData;
   ctaContext?: string;
+  secondaryButton?: ButtonData;
+  ctaNote?: string;
+  metrics?: {
+    value: string;
+    label: string;
+  }[];
 };
 
 type Props = {
@@ -25,21 +33,35 @@ let actualContent = overrideObjects(
   Astro.props.content,
 ) as homeBannerSectionType;
 
-let { title, subtitle, description, button, ctaContext } =
+let {
+  title,
+  subtitle,
+  description,
+  button,
+  ctaContext,
+  secondaryButton,
+  ctaNote,
+  metrics,
+} =
   actualContent as homeBannerSectionType;
-
-const background = "/images/hero/background.jpg";
+const secondaryHref =
+  secondaryButton?.url && getLocaleUrlCTM(secondaryButton.url, Astro.currentLocale);
 ---
 
 <section class="hero-bg">
-  <HeroBlobs />
+  <HeroBackground />
   <div class="container">
     <div class="relative z-10 mx-auto max-w-4xl">
+      <div class="hero-eyebrow-wrap">
+        <span class="hero-eyebrow-line"></span>
+        {ctaContext && <p class="hero-eyebrow">{ctaContext}</p>}
+        <span class="hero-eyebrow-line"></span>
+      </div>
       <div>
         {
           title && (
             <AnimatedText
-              class="font-hero gold-text hero-title mb-6 text-center tracking-wider capitalize"
+              class="font-hero hero-title mb-6 text-center"
               content={markdownify(title)}
             />
           )
@@ -71,98 +93,202 @@ const background = "/images/hero/background.jpg";
         data-aos-delay="400"
         data-aos-duration="900"
         class="hero-cta-stack flex flex-col items-center justify-center">
-        {
-          ctaContext && (
-            <p
-              class="hero-cta-context text-center"
-              set:html={markdownify(ctaContext)}
-            />
-          )
-        }
-        {
-          button && (
-            <Button
-              content={button}
-              variant="primary"
-              iconLoading="eager"
-              iconFetchpriority="high"
-            />
-          )
-        }
+        <div class="hero-cta-row">
+          {
+            button && (
+              <Button
+                content={button}
+                variant="primary"
+                iconLoading="eager"
+                iconFetchpriority="high"
+              />
+            )
+          }
+          {
+            secondaryButton?.enable && secondaryHref && (
+              <Link class="hero-secondary-cta" href={secondaryHref}>
+                {secondaryButton.label}
+              </Link>
+            )
+          }
+        </div>
+        {ctaNote && <p class="hero-cta-context text-center">{ctaNote}</p>}
       </div>
     </div>
+    {
+      metrics && metrics.length > 0 && (
+        <div class="hero-metric-bar" data-aos="fade-in" data-aos-delay="550" data-aos-duration="900">
+          {
+            metrics.map((item) => (
+              <div class="hero-metric-item">
+                <p class="hero-metric-value">{item.value}</p>
+                <p class="hero-metric-label">{item.label}</p>
+              </div>
+            ))
+          }
+        </div>
+      )
+    }
   </div>
 </section>
 
 <style is:global>
-  .container {
+  .hero-bg .container {
     position: relative;
     z-index: 10;
   }
 
-  .gold-text,
-  .gold-text * {
-    @apply bg-clip-text text-transparent;
-    background-image:
-      var(--image-texture-gold),
-      var(--gradient-gold-cool);
-    background-size:
-      cover,
-      100% 100%;
-    background-position:
-      center,
-      center;
-    background-repeat:
-      no-repeat,
-      no-repeat;
+  .hero-eyebrow-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    margin-bottom: clamp(1.4rem, 2.2vw, 2rem);
+  }
 
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .hero-eyebrow-line {
+    width: clamp(2.8rem, 8vw, 5.3rem);
+    height: 1px;
+    background: color-mix(in srgb, var(--color-dark-teal-orb-soft) 70%, transparent);
+  }
 
-    color: var(--color-link-dark-bg);
+  .hero-eyebrow {
+    margin: 0;
+    font-size: clamp(0.68rem, 0.88vw, 0.86rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-dark-teal-orb-soft) 78%, white 12%);
   }
 
   .hero-title {
-    font-size: clamp(2rem, 4.6vw, 4.2rem);
-    line-height: 1.06;
-    letter-spacing: 0.01em;
+    font-family: "Silk Serif", "Playfair Display", serif;
+    font-size: clamp(2.45rem, 5.25vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    color: color-mix(in srgb, var(--color-link-dark-bg) 92%, white);
+    text-wrap: balance;
+  }
+
+  .hero-title em,
+  .hero-title i {
+    color: color-mix(in srgb, var(--color-dark-teal-orb-soft) 72%, #d6f6ff);
+    font-style: italic;
   }
 
   .hero-subtitle {
-    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
-    line-height: 1.45;
+    font-size: clamp(1.04rem, 1.65vw, 1.28rem);
+    line-height: 1.5;
     color: var(--color-text-shell-muted);
+    max-width: 38ch;
+    margin-inline: auto;
   }
 
   .hero-description {
-    font-size: clamp(1rem, 1.35vw, 1.35rem);
-    line-height: 1.5;
+    font-size: clamp(1.06rem, 1.35vw, 1.24rem);
+    line-height: 1.65;
     margin-bottom: 0;
+    margin-inline: auto;
+    max-width: 58ch;
     color: var(--color-text-shell-muted);
+    opacity: 0.82 !important;
   }
 
   .hero-cta-stack {
-    margin-top: clamp(1.5rem, 2.4vw, 2.2rem);
-    gap: clamp(1.5rem, 2.4vw, 2.2rem);
+    margin-top: clamp(1.7rem, 2.7vw, 2.7rem);
+    gap: clamp(0.9rem, 1.7vw, 1.15rem);
+  }
+
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .hero-secondary-cta {
+    min-height: 3.1rem;
+    border-radius: 0 !important;
+    border: 1px solid color-mix(in srgb, var(--color-dark-teal-orb-soft) 42%, transparent) !important;
+    background: transparent !important;
+    color: color-mix(in srgb, var(--color-link-dark-bg) 86%, white) !important;
+    font-size: 0.88rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.16em !important;
+    padding-inline: clamp(1.35rem, 2.1vw, 2rem) !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-secondary-cta:hover {
+    border-color: color-mix(in srgb, var(--color-dark-teal-orb-soft) 72%, transparent) !important;
+    color: color-mix(in srgb, var(--color-link-dark-bg) 94%, white) !important;
+    background: color-mix(in srgb, var(--color-monire-deep-teal) 58%, var(--color-dark-teal-orb-soft)) !important;
   }
 
   .hero-cta-context {
-    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-size: clamp(0.82rem, 0.95vw, 0.9rem);
     line-height: 1.45;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
+    color: color-mix(in srgb, var(--color-text-shell-muted) 82%, transparent);
+    font-style: italic;
+    margin: 0;
+  }
+
+  .hero-metric-bar {
+    margin-top: clamp(2.3rem, 4.2vw, 3.8rem);
+    border-top: 1px solid color-mix(in srgb, white 16%, transparent);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .hero-metric-item {
+    padding: clamp(1.2rem, 2.2vw, 1.65rem) clamp(0.55rem, 1.1vw, 0.9rem);
+    border-left: 1px solid color-mix(in srgb, white 10%, transparent);
+    text-align: center;
+  }
+
+  .hero-metric-item:first-child {
+    border-left: 0;
+  }
+
+  .hero-metric-value {
+    margin: 0;
+    font-family: "Silk Serif", "Playfair Display", serif;
+    font-size: clamp(2rem, 3.3vw, 3rem);
+    line-height: 1;
+    color: color-mix(in srgb, var(--color-link-dark-bg) 92%, white);
+  }
+
+  .hero-metric-label {
+    margin: 0.5rem 0 0;
+    font-size: clamp(0.68rem, 0.85vw, 0.82rem);
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-text-shell-muted) 94%, white);
+    letter-spacing: 0.12em;
+    color: color-mix(in srgb, var(--color-text-shell-muted) 82%, white);
   }
 
   @media (max-width: 1023px) {
+    .hero-title {
+      max-width: 10.5ch;
+      margin-inline: auto;
+    }
+
     .hero-description {
       max-width: 34ch;
       margin-inline: auto;
     }
+
+    .hero-metric-bar {
+      margin-top: 2.1rem;
+    }
   }
 
   @media (max-width: 767px) {
+    .hero-eyebrow-wrap {
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
 
     .hero-subtitle {
       max-width: 31ch;
@@ -172,6 +298,19 @@ const background = "/images/hero/background.jpg";
     .hero-description {
       max-width: 31ch;
       margin-inline: auto;
+    }
+
+    .hero-metric-bar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero-metric-item {
+      border-left: 0;
+      border-top: 1px solid color-mix(in srgb, white 10%, transparent);
+    }
+
+    .hero-metric-item:nth-child(-n + 2) {
+      border-top: 0;
     }
   }
 </style>

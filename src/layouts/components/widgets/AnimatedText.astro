@@ -8,6 +8,7 @@ interface Props {
   blur?: boolean;
   trigger?: "inView" | "load";
   waitForFonts?: boolean;
+  fontLoadFamily?: string;
 }
 
 let {
@@ -18,6 +19,7 @@ let {
   blur = true,
   trigger = "inView",
   waitForFonts = false,
+  fontLoadFamily,
   ...rest
 } = Astro.props;
 
@@ -52,6 +54,7 @@ if (content) {
   data-blur={blur ? "true" : "false"}
   data-trigger={trigger}
   data-wait-for-fonts={waitForFonts ? "true" : "false"}
+  data-font-load-family={fontLoadFamily || ""}
   {...rest}
 />
 
@@ -72,6 +75,8 @@ if (content) {
     const useBlur = animatedText.getAttribute("data-blur") !== "false";
     const trigger = animatedText.getAttribute("data-trigger") || "inView";
     const waitForFonts = animatedText.getAttribute("data-wait-for-fonts") === "true";
+    const fontLoadFamily =
+      (animatedText.getAttribute("data-font-load-family") || "").trim();
     const shouldBlur = useBlur && !isFirefox;
 
     const runAnimation = (element: Element) => {
@@ -107,8 +112,11 @@ if (content) {
         document.fonts &&
         typeof document.fonts.ready !== "undefined"
       ) {
+        const explicitFontLoad = fontLoadFamily
+          ? document.fonts.load(`400 1em "${fontLoadFamily}"`)
+          : Promise.resolve();
         Promise.race([
-          document.fonts.ready,
+          Promise.all([document.fonts.ready, explicitFontLoad]),
           new Promise((resolve) => setTimeout(resolve, 900)),
         ]).then(startAnimation);
       } else {

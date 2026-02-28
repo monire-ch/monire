@@ -124,32 +124,7 @@ if (content) {
           runAnimation(element);
         });
       };
-
-      if (
-        waitForFonts &&
-        "fonts" in document &&
-        document.fonts &&
-        typeof document.fonts.ready !== "undefined"
-      ) {
-        // Keep words hidden only when explicitly waiting for font metrics.
-        element.style.visibility = "hidden";
-
-        const fontLoadPromise = fontLoadFamily
-          ? document.fonts.check(`400 1em "${fontLoadFamily}"`)
-            ? Promise.resolve()
-            : document.fonts.load(`400 1em "${fontLoadFamily}"`)
-          : document.fonts.ready;
-
-        Promise.race([
-          fontLoadPromise,
-          new Promise((resolve) => setTimeout(resolve, 320)),
-        ]).then(() => {
-          element.style.visibility = "visible";
-          startAnimation();
-        });
-      } else {
-        startAnimation();
-      }
+      startAnimation();
 
       return;
     }
@@ -159,3 +134,15 @@ if (content) {
     });
   });
 </script>
+
+<style is:global>
+  .animated-text {
+    display: block;
+    white-space: normal;
+  }
+
+  .animated-text .word {
+    display: inline-block !important;
+    white-space: nowrap;
+  }
+</style>

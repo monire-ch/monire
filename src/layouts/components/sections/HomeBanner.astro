@@ -57,11 +57,9 @@ let {
           }
         {
           subtitle && (
-            <AnimatedText
-              class="hero-subtitle text-center opacity-90"
-              stagger={0.03}
-              delay={0.3}
-              content={markdownify(subtitle)}
+            <p
+              class="hero-subtitle hero-ease-in hero-ease-in--subtitle text-center opacity-90"
+              set:html={markdownify(subtitle)}
             />
           )
         }
@@ -105,6 +103,10 @@ let {
 
   .hero-ease-in--eyebrow {
     animation-delay: 120ms;
+  }
+
+  .hero-ease-in--subtitle {
+    animation-delay: 190ms;
   }
 
   .hero-ease-in--cta {

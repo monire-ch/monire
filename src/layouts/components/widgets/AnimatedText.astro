@@ -20,20 +20,10 @@ let {
 let processedContent = "";
 if (content) {
   const words = content.split(" "); // Split text into words
-  const wordStyle = [
-    "display: inline-block",
-    "will-change: transform",
-    "transform: translateY(10px)",
-    "opacity: 0",
-    blur ? "filter: blur(10px)" : "",
-  ]
-    .filter(Boolean)
-    .join("; ");
-
   processedContent = words
     .map(
-      (word: string) =>
-        `<span class="word" style="${wordStyle}">${word}</span>`,
+      (word: string, index: number) =>
+        `<span class="word" style="--word-index:${index}">${word}</span>`,
     )
     .join(" ");
 }
@@ -50,51 +40,122 @@ if (content) {
 />
 
 <script>
-  import { animate, stagger, inView } from "motion";
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
 
-  const animatedTexts = document.querySelectorAll(".animated-text");
-  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+  function revealAnimatedText(animatedText) {
+    if (animatedText.dataset.animatedTextVisible === "true") {
+      return;
+    }
 
-  animatedTexts.forEach((animatedText) => {
-    const duration = parseFloat(
-      animatedText.getAttribute("data-duration") as string,
+    animatedText.dataset.animatedTextVisible = "true";
+    animatedText.classList.add("is-visible");
+  }
+
+  function initializeAnimatedText(animatedText) {
+    if (animatedText.dataset.animatedTextReady === "true") {
+      return;
+    }
+
+    animatedText.dataset.animatedTextReady = "true";
+    animatedText.style.setProperty(
+      "--animated-text-duration",
+      `${animatedText.dataset.duration || "0.6"}s`,
     );
-    const delay = parseFloat(animatedText.getAttribute("data-delay") as string);
-    const dataStagger = parseFloat(
-      animatedText.getAttribute("data-stagger") as string,
+    animatedText.style.setProperty(
+      "--animated-text-delay",
+      `${animatedText.dataset.delay || "0"}s`,
     );
-    const useBlur = animatedText.getAttribute("data-blur") !== "false";
-    const shouldBlur = useBlur && !isFirefox;
-    
-    inView(animatedText, (element) => {
-      const words = element.querySelectorAll(".word");
+    animatedText.style.setProperty(
+      "--animated-text-stagger",
+      `${animatedText.dataset.stagger || "0.1"}s`,
+    );
+    animatedText.classList.toggle(
+      "animated-text--blur",
+      animatedText.dataset.blur === "true",
+    );
 
-      if (!shouldBlur) {
-        words.forEach((word) => {
-          (word as HTMLElement).style.filter = "none";
-        });
-      }
+    if (prefersReducedMotion.matches) {
+      revealAnimatedText(animatedText);
+      return;
+    }
 
-      const animationProps = shouldBlur
-        ? // @ts-expect-error
-          { opacity: 1, y: 0, filter: "blur(0px)" }
-        : { opacity: 1, y: 0 };
+    if (!("IntersectionObserver" in window)) {
+      revealAnimatedText(animatedText);
+      return;
+    }
 
-      const animation = animate(words, animationProps, {
-        duration: duration,
-        delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
-        easing: "ease-out",
-      });
-     
-      // This will fire when the element leaves the viewport
-      return () => {
-        // animation.stop();
-        // animate(element.querySelectorAll(".word"), {
-        //   opacity: 0,
-        //   y: 20,
-        //   filter: "blur(10px)",
-        // });
-      };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        revealAnimatedText(animatedText);
+        observer.disconnect();
+      },
+      {
+        threshold: 0.25,
+      },
+    );
+
+    observer.observe(animatedText);
+  }
+
+  function initAnimatedTexts() {
+    document
+      .querySelectorAll(".animated-text")
+      .forEach((animatedText) => initializeAnimatedText(animatedText));
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAnimatedTexts, {
+      once: true,
     });
-  });
+  } else {
+    initAnimatedTexts();
+  }
+
+  document.addEventListener("astro:page-load", initAnimatedTexts);
 </script>
+
+<style>
+  .animated-text .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    transition:
+      transform var(--animated-text-duration, 0.6s) ease-out,
+      opacity var(--animated-text-duration, 0.6s) ease-out,
+      filter var(--animated-text-duration, 0.6s) ease-out;
+    transition-delay: calc(
+      var(--animated-text-delay, 0s)
+      + (var(--word-index, 0) * var(--animated-text-stagger, 0.1s))
+    );
+  }
+
+  .animated-text--blur .word {
+    filter: blur(10px);
+  }
+
+  .animated-text.is-visible .word {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .animated-text.is-visible.animated-text--blur .word {
+    filter: blur(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animated-text .word {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+    }
+  }
+</style>

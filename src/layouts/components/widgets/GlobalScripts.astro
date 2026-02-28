@@ -3,30 +3,159 @@
 ---
 
 <script>
-  import SmoothScroll from "smoothscroll-for-websites";
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    try {
-      // AOS
-      const AOS = await import("aos");
-      AOS.init({
-        duration: 700,
-        easing: "ease-out",
-        disable: "mobile",
-        once: true,
-      });
-
-      SmoothScroll({
-        animationTime: 600,
-        stepSize: 60,
-        touchpadSupport: true,
-      });
-
-      initHorizontalScroll();
-    } catch (error) {
-      console.error("Error initializing scripts:", error);
+  function runWhenIdle(callback, timeout = 1500) {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(callback, { timeout });
+      return;
     }
-  });
+
+    window.setTimeout(callback, 1);
+  }
+
+  function reportWebVital(metric) {
+    window.__monireWebVitals = window.__monireWebVitals || [];
+    window.__monireWebVitals.push(metric);
+    window.dispatchEvent(new CustomEvent("monire:web-vital", { detail: metric }));
+
+    if (typeof window.__reportWebVitals === "function") {
+      window.__reportWebVitals(metric);
+    }
+  }
+
+  function initWebVitalsMonitoring() {
+    if (
+      !("PerformanceObserver" in window)
+      || window.__monireWebVitalsInitialized
+    ) {
+      return;
+    }
+
+    window.__monireWebVitalsInitialized = true;
+
+    let clsValue = 0;
+    let lcpEntry = null;
+    let inpValue = 0;
+    let hasFlushedVitals = false;
+
+    const finalizeVitals = () => {
+      if (hasFlushedVitals) {
+        return;
+      }
+
+      hasFlushedVitals = true;
+
+      reportWebVital({
+        name: "CLS",
+        value: Number(clsValue.toFixed(4)),
+      });
+
+      if (lcpEntry) {
+        reportWebVital({
+          name: "LCP",
+          value: Number(lcpEntry.startTime.toFixed(2)),
+          element: lcpEntry.element?.tagName || null,
+        });
+      }
+
+      if (inpValue > 0) {
+        reportWebVital({
+          name: "INP",
+          value: Number(inpValue.toFixed(2)),
+        });
+      }
+
+      if (
+        performance.getEntriesByName("hero-dom-ready").length
+        && performance.getEntriesByName("hero-blobs:animation-start").length
+        && !performance.getEntriesByName("hero-ready-to-animate").length
+      ) {
+        performance.measure(
+          "hero-ready-to-animate",
+          "hero-dom-ready",
+          "hero-blobs:animation-start",
+        );
+      }
+    };
+
+    try {
+      new PerformanceObserver((entryList) => {
+        for (const entry of entryList.getEntries()) {
+          if (!entry.hadRecentInput) {
+            clsValue += entry.value;
+          }
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    } catch {}
+
+    try {
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        lcpEntry = entries[entries.length - 1] || lcpEntry;
+      }).observe({ type: "largest-contentful-paint", buffered: true });
+    } catch {}
+
+    try {
+      new PerformanceObserver((entryList) => {
+        for (const entry of entryList.getEntries()) {
+          inpValue = Math.max(inpValue, entry.duration || 0);
+        }
+      }).observe({ type: "event", buffered: true, durationThreshold: 40 });
+    } catch {}
+
+    const flushVitals = () => {
+      finalizeVitals();
+    };
+
+    window.addEventListener("pagehide", flushVitals, { once: true });
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.visibilityState === "hidden") {
+          flushVitals();
+        }
+      },
+      { once: true },
+    );
+  }
+
+  async function initAOS() {
+    if (!document.querySelector("[data-aos]")) {
+      return;
+    }
+
+    const AOS = await import("aos");
+    AOS.init({
+      duration: 700,
+      easing: "ease-out",
+      disable: prefersReducedMotion.matches ? true : "mobile",
+      once: true,
+      startEvent: "monire:aos:start",
+    });
+
+    document.dispatchEvent(new Event("monire:aos:start"));
+  }
+
+  async function initSmoothScroll() {
+    if (
+      prefersReducedMotion.matches
+      || document.body.dataset.smoothScrollInitialized === "true"
+    ) {
+      return;
+    }
+
+    document.body.dataset.smoothScrollInitialized = "true";
+
+    const { default: SmoothScroll } = await import("smoothscroll-for-websites");
+    SmoothScroll({
+      animationTime: 500,
+      stepSize: 60,
+      touchpadSupport: true,
+    });
+  }
 
   function initHorizontalScroll() {
     // Only target elements with specific class or attribute
@@ -52,12 +181,51 @@
       }
     });
   }
+
+  function markHeroLifecycle() {
+    const hero = document.querySelector(".hero-bg");
+
+    if (!hero || performance.getEntriesByName("hero-dom-ready").length) {
+      return;
+    }
+
+    performance.mark("hero-dom-ready");
+  }
+
+  function initGlobalScripts() {
+    markHeroLifecycle();
+    initWebVitalsMonitoring();
+    initHorizontalScroll();
+
+    runWhenIdle(() => {
+      initAOS().catch((error) => {
+        console.error("Error initializing AOS:", error);
+      });
+
+      initSmoothScroll().catch((error) => {
+        console.error("Error initializing smooth scroll:", error);
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGlobalScripts, {
+      once: true,
+    });
+  } else {
+    initGlobalScripts();
+  }
 </script>
 
 <!-- Google Analytics (loads only if cookieConsent=accepted) -->
 <script>
   // Check cookie first
-  if (document.cookie.includes("cookieConsent=accepted")) {
+  const hasGtagScript = Boolean(
+    window.gtag
+    || document.querySelector('script[src*="googletagmanager.com/gtag/js"]'),
+  );
+
+  if (document.cookie.includes("cookieConsent=accepted") && !hasGtagScript) {
     // Load GA script
     const gtagScript = document.createElement("script");
     gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-SV3QLRHSK6";

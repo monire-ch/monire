@@ -40,7 +40,7 @@
 
 <script>
   const root = document.documentElement;
-  root.classList.add("hero-quality-off");
+  root.classList.add("hero-quality-pending");
 
   // Detect Safari (desktop + iOS). Chrome on iOS also uses WebKit
   // but reports "CriOS"; we want to catch all WebKit-based browsers.
@@ -94,75 +94,36 @@
     supportsBackdrop;
 
   const setQuality = (quality: "full" | "off") => {
-    root.classList.toggle("hero-quality-full", quality === "full");
-    root.classList.toggle("hero-quality-off", quality !== "full");
-  };
+    root.classList.remove("hero-quality-pending");
 
-  const sampleFrameRate = () => {
-    if (typeof requestAnimationFrame !== "function") {
+    if (quality === "full") {
+      root.classList.add("hero-quality-full");
+      root.classList.remove("hero-quality-off");
       return;
     }
 
-    let frames = 0;
-    const start = performance.now();
-    const sampleDurationMs = 1400;
-    const lowFpsThreshold = 45;
-
-    const sample = (now: number) => {
-      frames += 1;
-      if (now - start < sampleDurationMs) {
-        requestAnimationFrame(sample);
-        return;
-      }
-
-      const fps = (frames * 1000) / (now - start);
-      if (fps < lowFpsThreshold) {
-        setQuality("off");
-        root.classList.add("hero-low-fps");
-      }
-    };
-
-    requestAnimationFrame(sample);
+    root.classList.remove("hero-quality-full");
+    root.classList.add("hero-quality-off");
   };
 
   const tryEnableFullQuality = () => {
     if (!shouldUseFullQuality) {
+      setQuality("off");
       return;
     }
 
     setQuality("full");
-    if (document.visibilityState === "visible") {
-      sampleFrameRate();
-    }
   };
 
-  const scheduleUpgrade = () => {
-    const requestIdle = (
-      window as Window & {
-        requestIdleCallback?: (
-          callback: IdleRequestCallback,
-          options?: IdleRequestOptions,
-        ) => number;
-      }
-    ).requestIdleCallback;
-
-    if (typeof requestIdle === "function") {
-      requestIdle(tryEnableFullQuality, { timeout: 1200 });
-      return;
-    }
-    globalThis.setTimeout(tryEnableFullQuality, 700);
-  };
-
-  if (document.readyState === "complete") {
-    scheduleUpgrade();
-  } else {
-    window.addEventListener("load", scheduleUpgrade, { once: true });
-  }
+  tryEnableFullQuality();
 </script>
 
 <style>
   .hero-blobs-wrap {
     display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
 
   .hero-fallback-gradient {

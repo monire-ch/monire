@@ -4,12 +4,15 @@ import { markdownify } from "@/lib/utils/textConverter";
 import type { Button as ButtonData, Section } from "@/types";
 import { getEntryCTM } from "@/lib/contentParser.astro";
 import Button from "../buttons/Button.astro";
-import HeroBackground from "@/components/hero/HeroBackground.astro";
 import AnimatedText from "../widgets/AnimatedText.astro";
+import HeroBackground from "@/components/hero/HeroBackground.astro";
+import Link from "@/components/links/Link.astro";
+import { getLocaleUrlCTM } from "@/lib/utils/i18nUtils";
 
 type homeBannerSectionType = Section & {
   button: ButtonData;
   ctaContext?: string;
+  secondaryButton?: ButtonData;
 };
 
 type Props = {
@@ -49,11 +52,6 @@ let {
               <AnimatedText
                 class="font-hero gold-text hero-title mb-6 text-center"
                 content={markdownify(title)}
-                trigger="load"
-                blur={false}
-                duration={0.62}
-                delay={0.12}
-                stagger={0.035}
               />
             )
           }

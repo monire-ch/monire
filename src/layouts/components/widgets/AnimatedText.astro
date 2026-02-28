@@ -6,6 +6,7 @@ interface Props {
   delay?: number;
   stagger?: number;
   blur?: boolean;
+  trigger?: "inView" | "load";
 }
 
 let {
@@ -14,6 +15,7 @@ let {
   delay = 0,
   stagger = 0.1,
   blur = true,
+  trigger = "inView",
   ...rest
 } = Astro.props;
 
@@ -46,6 +48,7 @@ if (content) {
   data-delay={delay}
   data-stagger={stagger}
   data-blur={blur ? "true" : "false"}
+  data-trigger={trigger}
   {...rest}
 />
 
@@ -64,9 +67,10 @@ if (content) {
       animatedText.getAttribute("data-stagger") as string,
     );
     const useBlur = animatedText.getAttribute("data-blur") !== "false";
+    const trigger = animatedText.getAttribute("data-trigger") || "inView";
     const shouldBlur = useBlur && !isFirefox;
-    
-    inView(animatedText, (element) => {
+
+    const runAnimation = (element: Element) => {
       const words = element.querySelectorAll(".word");
 
       if (!shouldBlur) {
@@ -80,21 +84,22 @@ if (content) {
           { opacity: 1, y: 0, filter: "blur(0px)" }
         : { opacity: 1, y: 0 };
 
-      const animation = animate(words, animationProps, {
+      animate(words, animationProps, {
         duration: duration,
-        delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
+        delay: stagger(dataStagger, { startDelay: delay }),
         easing: "ease-out",
       });
-     
-      // This will fire when the element leaves the viewport
-      return () => {
-        // animation.stop();
-        // animate(element.querySelectorAll(".word"), {
-        //   opacity: 0,
-        //   y: 20,
-        //   filter: "blur(10px)",
-        // });
-      };
+    };
+
+    if (trigger === "load") {
+      requestAnimationFrame(() => {
+        runAnimation(animatedText);
+      });
+      return;
+    }
+
+    inView(animatedText, (element) => {
+      runAnimation(element);
     });
   });
 </script>

@@ -7,7 +7,6 @@ interface Props {
   stagger?: number;
   blur?: boolean;
   trigger?: "inView" | "load";
-  waitForFonts?: boolean;
 }
 
 let {
@@ -17,7 +16,6 @@ let {
   stagger = 0.1,
   blur = true,
   trigger = "inView",
-  waitForFonts = false,
   ...rest
 } = Astro.props;
 
@@ -51,7 +49,6 @@ if (content) {
   data-stagger={stagger}
   data-blur={blur ? "true" : "false"}
   data-trigger={trigger}
-  data-wait-for-fonts={waitForFonts ? "true" : "false"}
   {...rest}
 />
 
@@ -71,7 +68,6 @@ if (content) {
     );
     const useBlur = animatedText.getAttribute("data-blur") !== "false";
     const trigger = animatedText.getAttribute("data-trigger") || "inView";
-    const waitForFonts = animatedText.getAttribute("data-wait-for-fonts") === "true";
     const shouldBlur = useBlur && !isFirefox;
 
     const runAnimation = (element: Element) => {
@@ -96,24 +92,9 @@ if (content) {
     };
 
     if (trigger === "load") {
-      const startAnimation = () =>
-        requestAnimationFrame(() => {
-          runAnimation(animatedText);
-        });
-
-      if (
-        waitForFonts &&
-        "fonts" in document &&
-        document.fonts &&
-        typeof document.fonts.ready !== "undefined"
-      ) {
-        Promise.race([
-          document.fonts.ready,
-          new Promise((resolve) => setTimeout(resolve, 900)),
-        ]).then(startAnimation);
-      } else {
-        startAnimation();
-      }
+      requestAnimationFrame(() => {
+        runAnimation(animatedText);
+      });
       return;
     }
 

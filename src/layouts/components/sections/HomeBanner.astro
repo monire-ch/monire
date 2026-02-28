@@ -13,11 +13,6 @@ type homeBannerSectionType = Section & {
   button: ButtonData;
   ctaContext?: string;
   secondaryButton?: ButtonData;
-  ctaNote?: string;
-  metrics?: {
-    value: string;
-    label: string;
-  }[];
 };
 
 type Props = {
@@ -36,65 +31,43 @@ let actualContent = overrideObjects(
 let {
   title,
   subtitle,
-  description,
   button,
   ctaContext,
-  secondaryButton,
-  ctaNote,
-  metrics,
 } =
   actualContent as homeBannerSectionType;
-const secondaryHref =
-  secondaryButton?.url && getLocaleUrlCTM(secondaryButton.url, Astro.currentLocale);
 ---
 
 <section class="hero-bg">
   <HeroBackground />
   <div class="container">
     <div class="relative z-10 mx-auto max-w-4xl">
-      <div class="hero-eyebrow-wrap">
+      <div class="hero-eyebrow-wrap hero-ease-in hero-ease-in--eyebrow">
         <span class="hero-eyebrow-line"></span>
         {ctaContext && <p class="hero-eyebrow">{ctaContext}</p>}
         <span class="hero-eyebrow-line"></span>
       </div>
       <div>
-        {
-          title && (
-            <AnimatedText
-              class="font-hero hero-title mb-6 text-center"
-              content={markdownify(title)}
-            />
-          )
-        }
+          {
+            title && (
+              <AnimatedText
+                class="font-hero gold-text hero-title mb-6 text-center"
+                content={markdownify(title)}
+              />
+            )
+          }
         {
           subtitle && (
             <AnimatedText
-              class="hero-subtitle text-center"
+              class="hero-subtitle text-center opacity-90"
               stagger={0.03}
               delay={0.3}
               content={markdownify(subtitle)}
             />
           )
         }
-        {
-          description && (
-            <p
-              class="hero-description shrink-0 text-center tracking-wider opacity-90"
-              data-aos="fade-in"
-              data-aos-delay="300"
-              data-aos-duration="900"
-              set:html={markdownify(description)}
-            />
-          )
-        }
       </div>
-      <div
-        data-aos="fade-in"
-        data-aos-delay="400"
-        data-aos-duration="900"
-        class="hero-cta-stack flex flex-col items-center justify-center">
-        <div class="hero-cta-row">
-          {
+      <div class="hero-cta-stack hero-ease-in hero-ease-in--cta flex items-center justify-center">
+        {
             button && (
               <Button
                 content={button}
@@ -104,52 +77,72 @@ const secondaryHref =
               />
             )
           }
-          {
-            secondaryButton?.enable && secondaryHref && (
-              <Link class="hero-secondary-cta" href={secondaryHref}>
-                {secondaryButton.label}
-              </Link>
-            )
-          }
-        </div>
-        {ctaNote && <p class="hero-cta-context text-center">{ctaNote}</p>}
       </div>
     </div>
-    {
-      metrics && metrics.length > 0 && (
-        <div class="hero-metric-bar" data-aos="fade-in" data-aos-delay="550" data-aos-duration="900">
-          {
-            metrics.map((item) => (
-              <div class="hero-metric-item">
-                <p class="hero-metric-value">{item.value}</p>
-                <p class="hero-metric-label">{item.label}</p>
-              </div>
-            ))
-          }
-        </div>
-      )
-    }
   </div>
 </section>
 
 <style is:global>
+  @keyframes heroEaseIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-ease-in {
+    opacity: 0;
+    animation-name: heroEaseIn;
+    animation-duration: 650ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    will-change: opacity, transform;
+  }
+
+  .hero-ease-in--eyebrow {
+    animation-delay: 120ms;
+  }
+
+  .hero-ease-in--cta {
+    animation-delay: 260ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-ease-in {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+  }
+
   .hero-bg .container {
+    --hero-title-measure: 20ch;
     position: relative;
     z-index: 10;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: clamp(5rem, 10vh, 7rem);
+    padding-bottom: clamp(6rem, 12vh, 9.25rem);
   }
 
   .hero-eyebrow-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.1rem;
+    gap: clamp(0.6rem, 1.1vw, 1rem);
     margin-bottom: clamp(1.4rem, 2.2vw, 2rem);
   }
 
   .hero-eyebrow-line {
-    width: clamp(2.8rem, 8vw, 5.3rem);
+    width: clamp(1.8rem, 5vw, 4rem);
     height: 1px;
-    background: color-mix(in srgb, var(--color-dark-teal-orb-soft) 70%, transparent);
+    background: color-mix(in srgb, var(--color-text-shell-muted) 36%, transparent);
   }
 
   .hero-eyebrow {
@@ -157,16 +150,19 @@ const secondaryHref =
     font-size: clamp(0.68rem, 0.88vw, 0.86rem);
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-dark-teal-orb-soft) 78%, white 12%);
+    text-align: center;
+    color: color-mix(in srgb, var(--color-text-shell-muted) 82%, #e3f6fc 18%);
   }
 
   .hero-title {
     font-family: "Silk Serif", "Playfair Display", serif;
     font-size: clamp(2.45rem, 5.25vw, 5.25rem);
-    line-height: 0.98;
+    line-height: 1.1;
     letter-spacing: -0.01em;
-    color: color-mix(in srgb, var(--color-link-dark-bg) 92%, white);
+    color: color-mix(in srgb, var(--color-link-dark-bg) 96%, #fff7e8 4%);
     text-wrap: balance;
+    max-width: var(--hero-title-measure);
+    margin-inline: auto;
   }
 
   .hero-title em,
@@ -176,21 +172,11 @@ const secondaryHref =
   }
 
   .hero-subtitle {
-    font-size: clamp(1.04rem, 1.65vw, 1.28rem);
-    line-height: 1.5;
+    font-size: clamp(1.06rem, 1.65vw, 1.28rem);
+    line-height: 1.65;
     color: var(--color-text-shell-muted);
     max-width: 38ch;
     margin-inline: auto;
-  }
-
-  .hero-description {
-    font-size: clamp(1.06rem, 1.35vw, 1.24rem);
-    line-height: 1.65;
-    margin-bottom: 0;
-    margin-inline: auto;
-    max-width: 58ch;
-    color: var(--color-text-shell-muted);
-    opacity: 0.82 !important;
   }
 
   .hero-cta-stack {
@@ -198,119 +184,59 @@ const secondaryHref =
     gap: clamp(0.9rem, 1.7vw, 1.15rem);
   }
 
-  .hero-cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.8rem;
-  }
-
-  .hero-secondary-cta {
-    min-height: 3.1rem;
-    border-radius: 0 !important;
-    border: 1px solid color-mix(in srgb, var(--color-dark-teal-orb-soft) 42%, transparent) !important;
-    background: transparent !important;
-    color: color-mix(in srgb, var(--color-link-dark-bg) 86%, white) !important;
-    font-size: 0.88rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.16em !important;
-    padding-inline: clamp(1.35rem, 2.1vw, 2rem) !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .hero-secondary-cta:hover {
-    border-color: color-mix(in srgb, var(--color-dark-teal-orb-soft) 72%, transparent) !important;
-    color: color-mix(in srgb, var(--color-link-dark-bg) 94%, white) !important;
-    background: color-mix(in srgb, var(--color-monire-deep-teal) 58%, var(--color-dark-teal-orb-soft)) !important;
-  }
-
-  .hero-cta-context {
-    font-size: clamp(0.82rem, 0.95vw, 0.9rem);
-    line-height: 1.45;
-    letter-spacing: 0.04em;
-    color: color-mix(in srgb, var(--color-text-shell-muted) 82%, transparent);
-    font-style: italic;
-    margin: 0;
-  }
-
-  .hero-metric-bar {
-    margin-top: clamp(2.3rem, 4.2vw, 3.8rem);
-    border-top: 1px solid color-mix(in srgb, white 16%, transparent);
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .hero-metric-item {
-    padding: clamp(1.2rem, 2.2vw, 1.65rem) clamp(0.55rem, 1.1vw, 0.9rem);
-    border-left: 1px solid color-mix(in srgb, white 10%, transparent);
-    text-align: center;
-  }
-
-  .hero-metric-item:first-child {
-    border-left: 0;
-  }
-
-  .hero-metric-value {
-    margin: 0;
-    font-family: "Silk Serif", "Playfair Display", serif;
-    font-size: clamp(2rem, 3.3vw, 3rem);
-    line-height: 1;
-    color: color-mix(in srgb, var(--color-link-dark-bg) 92%, white);
-  }
-
-  .hero-metric-label {
-    margin: 0.5rem 0 0;
-    font-size: clamp(0.68rem, 0.85vw, 0.82rem);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: color-mix(in srgb, var(--color-text-shell-muted) 82%, white);
-  }
-
   @media (max-width: 1023px) {
-    .hero-title {
-      max-width: 10.5ch;
-      margin-inline: auto;
+    .hero-bg .container {
+      --hero-title-measure: 18ch;
+      padding-top: clamp(3.2rem, 6.5vh, 4.8rem);
+      padding-bottom: clamp(4.6rem, 8.5vh, 6.4rem);
     }
 
-    .hero-description {
-      max-width: 34ch;
-      margin-inline: auto;
-    }
-
-    .hero-metric-bar {
-      margin-top: 2.1rem;
-    }
   }
 
   @media (max-width: 767px) {
+    .hero-bg .container {
+      --hero-title-measure: 15ch;
+      padding-top: clamp(2.2rem, 4.2vh, 3rem);
+      padding-bottom: clamp(3.8rem, 7vh, 5rem);
+    }
+
     .hero-eyebrow-wrap {
-      gap: 0.7rem;
-      margin-bottom: 1.2rem;
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-eyebrow-line {
+      width: clamp(1.1rem, 7vw, 1.9rem);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+      max-width: min(100%, 30ch);
+    }
+
+    .hero-title {
+      font-size: clamp(1.95rem, 8.8vw, 2.55rem);
+      line-height: 1.08;
+      margin-bottom: 1.05rem !important;
     }
 
     .hero-subtitle {
+      font-size: clamp(1rem, 4.6vw, 1.16rem);
       max-width: 31ch;
       margin-inline: auto;
     }
 
-    .hero-description {
-      max-width: 31ch;
-      margin-inline: auto;
+    .hero-cta-stack {
+      margin-top: 1.45rem;
+      width: 100%;
     }
+  }
 
-    .hero-metric-bar {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .hero-metric-item {
-      border-left: 0;
-      border-top: 1px solid color-mix(in srgb, white 10%, transparent);
-    }
-
-    .hero-metric-item:nth-child(-n + 2) {
-      border-top: 0;
+  @media (min-width: 1024px) {
+    .hero-bg .container {
+      padding-bottom: clamp(7.6rem, 15vh, 11.5rem);
     }
   }
 </style>

@@ -223,7 +223,7 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
 
   <h2 class="contact-modal-title text-4xl text-light mb-8 mt-6">{modalHeading}</h2>
 
-  <ContactSection />
+  <ContactSection enhanceForm={false} />
   <slot />
 </div>
 
@@ -232,6 +232,7 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
     const overlay = document.getElementById("contactOverlay");
     const panel = document.getElementById("contactPanel");
     const closeBtn = document.getElementById("closeModalBtn");
+    let modalFormInitialized = false;
 
     const getScrollbarWidth = () => {
       const outer = document.createElement("div");
@@ -248,8 +249,24 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
       return scrollbarWidth;
     };
 
-    const open = () => {
+    const enhanceModalForm = async () => {
+      if (modalFormInitialized || !panel) {
+        return;
+      }
+
+      const { initContactForms } = await import("@/lib/client/initContactForms");
+      await initContactForms(panel);
+      modalFormInitialized = true;
+    };
+
+    const open = async () => {
       if (panel && overlay) {
+        try {
+          await enhanceModalForm();
+        } catch (error) {
+          console.error("Failed to initialize modal contact form", error);
+        }
+
         const scrollY = window.scrollY;
 
         const scrollbarWidth = getScrollbarWidth();
@@ -307,13 +324,17 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
     };
 
     document.querySelectorAll("[data-open-contact]").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
+      btn.addEventListener("click", async (e) => {
         e.preventDefault();
-        open();
+        await open();
       });
     });
 
-    window.addEventListener("open-contact-modal", open);
+    window.addEventListener("open-contact-modal", () => {
+      open().catch((error) => {
+        console.error("Failed to open contact modal", error);
+      });
+    });
 
     overlay?.addEventListener("click", close);
 

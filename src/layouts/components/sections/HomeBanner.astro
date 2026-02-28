@@ -27,8 +27,6 @@ let actualContent = overrideObjects(
 
 let { title, subtitle, description, button, ctaContext } =
   actualContent as homeBannerSectionType;
-
-const background = "/images/hero/background.jpg";
 ---
 
 <section class="hero-bg">
@@ -95,6 +93,28 @@ const background = "/images/hero/background.jpg";
 </section>
 
 <style is:global>
+  .hero-bg {
+    --hero-header-offset: clamp(68px, 7.5vw, 92px);
+    position: relative;
+    background-color: var(--color-primary);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    margin-top: calc(-1 * var(--hero-header-offset));
+    padding-top: var(--hero-header-offset);
+    min-height: calc(100svh + var(--hero-header-offset));
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  main.has-section-spacing-lg > section.hero-bg,
+  main.has-section-spacing-md > section.hero-bg {
+    padding-top: var(--hero-header-offset);
+    padding-bottom: 0;
+  }
+
   .container {
     position: relative;
     z-index: 10;
@@ -156,6 +176,11 @@ const background = "/images/hero/background.jpg";
   }
 
   @media (max-width: 1023px) {
+    .hero-bg {
+      --hero-header-offset: 64px;
+      min-height: calc(100svh + var(--hero-header-offset));
+    }
+
     .hero-description {
       max-width: 34ch;
       margin-inline: auto;
@@ -163,6 +188,10 @@ const background = "/images/hero/background.jpg";
   }
 
   @media (max-width: 767px) {
+    .hero-bg {
+      --hero-header-offset: 56px;
+      min-height: calc(100svh + var(--hero-header-offset));
+    }
 
     .hero-subtitle {
       max-width: 31ch;

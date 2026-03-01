@@ -65,7 +65,7 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
 
   <div class="container space-y-9 md:space-y-12">
     <!-- Title & Subtitle -->
-    <div class="mx-auto max-w-2xl space-y-5 text-center">
+    <div class="mx-auto max-w-2xl space-y-5 text-center" data-aos="fade-up-sm">
       {subtitle && <Subtitle content={subtitle} />}
       {
         title && (
@@ -78,7 +78,7 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
     </div>
 
     <!-- Tab Buttons -->
-    <div class="flex justify-center">
+    <div class="flex justify-center" data-aos="fade-up-sm" data-aos-delay="150">
       <div class="pricing-tabs">
         {
           pricingTabs.map((item, index) => (
@@ -112,6 +112,8 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
         heading && (
           <h4
             class="mt-20 text-center font-medium text-[var(--color-text-shell-muted)]"
+            data-aos="fade-up-sm"
+            data-aos-delay="250"
             set:html={markdownify(heading)}
           />
         )
@@ -121,6 +123,8 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
         description && (
           <div
             class="mx-auto p-6 text-center text-[var(--color-text-shell-muted)]"
+            data-aos="fade-up-sm"
+            data-aos-delay="300"
             set:html={markdownify(description, true)}
           />
         )
@@ -132,15 +136,24 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
       id="ai-content"
       class:list={[plans?.list?.[1]?.selected ? "block" : "hidden"]}
       class="space-y-6 pt-6 pb-6 text-center md:pt-8 md:pb-8">
-      <h3 class="mx-auto max-w-3xl text-2xl font-medium tracking-[0.02em] text-mustard md:text-4xl">
+      <h3
+        class="mx-auto max-w-3xl text-2xl font-medium tracking-[0.02em] text-mustard md:text-4xl"
+        data-aos="fade-up-sm"
+        data-aos-delay="200">
         {ai_automations.title}
       </h3>
 
-      <p class="mx-auto max-w-xl text-base text-[var(--color-text-shell-muted)]">
+      <p
+        class="mx-auto max-w-xl text-base text-[var(--color-text-shell-muted)]"
+        data-aos="fade-up-sm"
+        data-aos-delay="250">
         {ai_automations.subtitle}
       </p>
 
-      <div class="mt-6 flex items-center justify-center gap-4">
+      <div
+        class="mt-6 flex items-center justify-center gap-4"
+        data-aos="fade-up-sm"
+        data-aos-delay="300">
         {
           aiCtas.map((btn) => (
             <Button

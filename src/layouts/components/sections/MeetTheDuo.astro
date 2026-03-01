@@ -36,7 +36,7 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
 
 <section class="relative pt-8 pb-20 md:pt-10 md:pb-28">
   <div class="container mx-auto space-y-8 md:space-y-10">
-    <div class="text-left">
+    <div class="text-left" data-aos="fade-up-sm">
       {
         title && (
           <Subtitle content={title} class="mx-0!" />
@@ -54,8 +54,11 @@ let { title, description, items } = actualContent as meetTheDuoSectionType;
 
     <div class="grid gap-x-6 gap-y-10 lg:grid-cols-2 lg:gap-y-6">
       {
-        items.map((item) => (
-          <article class="text-left md:grid md:grid-cols-[300px_1fr] md:items-center md:gap-6">
+        items.map((item, index) => (
+          <article
+            class="mx-auto flex max-w-[300px] flex-col items-center text-center md:max-w-none md:grid md:grid-cols-[300px_1fr] md:items-center md:gap-6 md:text-left"
+            data-aos="fade-up-sm"
+            data-aos-delay={String(200 + index * 100)}>
             <div
               class="relative w-full max-w-[300px] overflow-hidden rounded-3xl border"
               style="border-color: var(--color-border-overlay); background: var(--color-surface-overlay);">

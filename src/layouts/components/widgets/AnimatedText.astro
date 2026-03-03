@@ -7,7 +7,6 @@ interface Props {
   stagger?: number;
   blur?: boolean;
   waitForFonts?: boolean;
-  fontLoadFamily?: string;
 }
 
 let {
@@ -17,7 +16,6 @@ let {
   stagger = 0.1,
   blur = true,
   waitForFonts = false,
-  fontLoadFamily,
   ...rest
 } = Astro.props;
 
@@ -65,7 +63,6 @@ if (content) {
   style={`--at-duration:${duration}s; --at-delay:${delay}s; --at-stagger:${stagger}s;position:relative;`}
   data-blur={blur ? "true" : "false"}
   data-wait-for-fonts={waitForFonts ? "true" : "false"}
-  data-font-load-family={fontLoadFamily || ""}
   {...rest}
 >
   <span
@@ -88,17 +85,19 @@ if (content) {
     const animatedText = element as HTMLElement;
     const waitForFonts =
       animatedText.getAttribute("data-wait-for-fonts") === "true";
-    const fontLoadFamily =
-      (animatedText.getAttribute("data-font-load-family") || "").trim();
-
     if (!waitForFonts || !("fonts" in document)) {
       animatedText.classList.add("is-ready");
       return;
     }
 
     const fonts = (document as Document & { fonts: FontFaceSet }).fonts;
-    const fontPromise = fontLoadFamily
-      ? fonts.load(`1em "${fontLoadFamily}"`)
+    const computedFontFamily = getComputedStyle(animatedText).fontFamily.trim();
+    const primaryFamily = computedFontFamily
+      .split(",")[0]
+      ?.trim()
+      .replace(/^['"]|['"]$/g, "");
+    const fontPromise = primaryFamily
+      ? fonts.load(`1em "${primaryFamily}"`)
       : fonts.ready;
 
     await Promise.race([

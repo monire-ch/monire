@@ -1,0 +1,109 @@
+---
+---
+
+<div aria-hidden="true" class="hero-editorial-bg">
+  <div class="hero-teal-wash"></div>
+  <div class="hero-grid-overlay"></div>
+</div>
+
+<style>
+  .hero-editorial-bg {
+    --hero-grid-size: 96px;
+    --hero-grid-opacity: 0.12;
+    --hero-top: rgb(0 24 33 / 0.98);
+    --hero-mid-1: rgb(1 33 45 / 0.94);
+    --hero-mid-2: rgb(3 43 56 / 0.84);
+    --hero-bottom-mid: rgb(6 76 93 / 0.62);
+    --hero-bottom: rgb(11 114 135 / 0.5);
+    --hero-glow-main-start: rgb(104 224 250 / 0.34);
+    --hero-glow-main-mid: rgb(104 224 250 / 0.22);
+    --hero-glow-main-late: rgb(104 224 250 / 0.1);
+    --hero-glow-side-start: rgb(93 208 238 / 0.16);
+    --hero-glow-side-mid: rgb(93 208 238 / 0.08);
+    --hero-main-radial-size: 170% 104%;
+    --hero-main-radial-pos: 50% 112%;
+    --hero-side-radial-size: 125% 88%;
+    --hero-side-radial-left-pos: 15% 112%;
+    --hero-side-radial-right-pos: 85% 112%;
+
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: var(--hero-grid-opacity);
+    background-image:
+      linear-gradient(
+        to right,
+        rgb(78 196 224 / 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgb(78 196 224 / 0.03) 1px,
+        transparent 1px
+      );
+    background-size: var(--hero-grid-size) var(--hero-grid-size);
+    background-position: center top;
+  }
+
+  .hero-teal-wash {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        var(--hero-top) 0%,
+        var(--hero-mid-1) 26%,
+        var(--hero-mid-2) 40%,
+        var(--hero-bottom-mid) 64%,
+        var(--hero-bottom) 100%
+      ),
+      radial-gradient(
+        var(--hero-main-radial-size) at var(--hero-main-radial-pos),
+        var(--hero-glow-main-start) 0%,
+        var(--hero-glow-main-mid) 32%,
+        var(--hero-glow-main-late) 54%,
+        transparent 78%
+      ),
+      radial-gradient(
+        var(--hero-side-radial-size) at var(--hero-side-radial-left-pos),
+        var(--hero-glow-side-start) 0%,
+        var(--hero-glow-side-mid) 34%,
+        transparent 72%
+      ),
+      radial-gradient(
+        var(--hero-side-radial-size) at var(--hero-side-radial-right-pos),
+        var(--hero-glow-side-start) 0%,
+        var(--hero-glow-side-mid) 34%,
+        transparent 72%
+      );
+  }
+
+  @media (max-width: 767px) {
+    .hero-editorial-bg {
+      --hero-grid-size: 72px;
+      --hero-grid-opacity: 0.09;
+      --hero-top: rgb(0 23 32 / 0.96);
+      --hero-mid-1: rgb(1 32 44 / 0.91);
+      --hero-mid-2: rgb(3 43 56 / 0.8);
+      --hero-bottom-mid: rgb(6 76 93 / 0.58);
+      --hero-bottom: rgb(11 114 135 / 0.46);
+      --hero-main-radial-size: 195% 116%;
+      --hero-main-radial-pos: 50% 114%;
+      --hero-glow-main-start: rgb(104 224 250 / 0.28);
+      --hero-glow-main-mid: rgb(104 224 250 / 0.17);
+      --hero-glow-main-late: rgb(104 224 250 / 0.07);
+      --hero-side-radial-size: 145% 96%;
+      --hero-side-radial-left-pos: 16% 116%;
+      --hero-side-radial-right-pos: 84% 116%;
+      --hero-glow-side-start: rgb(93 208 238 / 0.12);
+      --hero-glow-side-mid: rgb(93 208 238 / 0.06);
+    }
+  }
+</style>

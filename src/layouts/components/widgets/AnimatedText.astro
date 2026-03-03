@@ -6,6 +6,7 @@ interface Props {
   delay?: number;
   stagger?: number;
   blur?: boolean;
+  waitForFonts?: boolean;
 }
 
 let {
@@ -14,87 +15,177 @@ let {
   delay = 0,
   stagger = 0.1,
   blur = true,
+  waitForFonts = false,
   ...rest
 } = Astro.props;
 
 let processedContent = "";
 if (content) {
-  const words = content.split(" "); // Split text into words
+  let wordIndex = 0;
   const wordStyle = [
-    "display: inline-block",
-    "will-change: transform",
-    "transform: translateY(10px)",
-    "opacity: 0",
-    blur ? "filter: blur(10px)" : "",
+    "display:inline-block",
+    "white-space:nowrap",
+    "will-change:transform,opacity,filter",
+    "opacity:0",
+    "transform:translateY(8px)",
+    blur ? "filter:blur(10px)" : "filter:blur(0px)",
   ]
     .filter(Boolean)
-    .join("; ");
+    .join(";");
 
-  processedContent = words
-    .map(
-      (word: string) =>
-        `<span class="word" style="${wordStyle}">${word}</span>`,
-    )
-    .join(" ");
+  // Preserve inline tags (e.g. <em>) and wrap only text words.
+  processedContent = content
+    .split(/(<[^>]+>)/g)
+    .filter(Boolean)
+    .map((token) => {
+      if (token.startsWith("<") && token.endsWith(">")) {
+        return token;
+      }
+
+      return token
+        .split(/(\s+)/)
+        .map((part) => {
+          if (!part || /^\s+$/.test(part)) {
+            return part;
+          }
+          const html = `<span class="word" style="${wordStyle};--word-index:${wordIndex}">${part}</span>`;
+          wordIndex += 1;
+          return html;
+        })
+        .join("");
+    })
+    .join("");
 }
 ---
 
 <div
   class:list={["animated-text", Astro.props.class]}
-  set:html={processedContent}
-  data-duration={duration}
-  data-delay={delay}
-  data-stagger={stagger}
+  style={`--at-duration:${duration}s; --at-delay:${delay}s; --at-stagger:${stagger}s;position:relative;`}
   data-blur={blur ? "true" : "false"}
+  data-wait-for-fonts={waitForFonts ? "true" : "false"}
   {...rest}
-/>
+>
+  <span
+    class="animated-text-sizer"
+    style="display:block;visibility:hidden;pointer-events:none;user-select:none;"
+    set:html={processedContent}
+  />
+  <span
+    class="animated-text-overlay"
+    style="display:block;position:absolute;inset:0;pointer-events:none;"
+    aria-hidden="true"
+    set:html={processedContent}
+  />
+</div>
 
 <script>
-  import { animate, stagger, inView } from "motion";
-
   const animatedTexts = document.querySelectorAll(".animated-text");
-  const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
 
-  animatedTexts.forEach((animatedText) => {
-    const duration = parseFloat(
-      animatedText.getAttribute("data-duration") as string,
-    );
-    const delay = parseFloat(animatedText.getAttribute("data-delay") as string);
-    const dataStagger = parseFloat(
-      animatedText.getAttribute("data-stagger") as string,
-    );
-    const useBlur = animatedText.getAttribute("data-blur") !== "false";
-    const shouldBlur = useBlur && !isFirefox;
-    
-    inView(animatedText, (element) => {
-      const words = element.querySelectorAll(".word");
+  const revealLoadText = async (element: Element) => {
+    const animatedText = element as HTMLElement;
+    const waitForFonts =
+      animatedText.getAttribute("data-wait-for-fonts") === "true";
+    if (!waitForFonts || !("fonts" in document)) {
+      animatedText.classList.add("is-ready");
+      return;
+    }
 
-      if (!shouldBlur) {
-        words.forEach((word) => {
-          (word as HTMLElement).style.filter = "none";
-        });
-      }
+    const fonts = (document as Document & { fonts: FontFaceSet }).fonts;
+    const computedFontFamily = getComputedStyle(animatedText).fontFamily.trim();
+    const primaryFamily = computedFontFamily
+      .split(",")[0]
+      ?.trim()
+      .replace(/^['"]|['"]$/g, "");
+    const fontCandidates = computedFontFamily
+      .split(",")
+      .map((family) => family.trim().replace(/^['"]|['"]$/g, ""))
+      .filter(Boolean);
+    const fontPromise = fontCandidates.length
+      ? Promise.allSettled(
+          fontCandidates.map((family) => fonts.load(`1em "${family}"`)),
+        ).then(() => fonts.ready)
+      : primaryFamily
+        ? fonts.load(`1em "${primaryFamily}"`).then(() => fonts.ready)
+        : fonts.ready;
 
-      const animationProps = shouldBlur
-        ? // @ts-expect-error
-          { opacity: 1, y: 0, filter: "blur(0px)" }
-        : { opacity: 1, y: 0 };
+    await Promise.race([
+      fontPromise.catch(() => undefined),
+      new Promise((resolve) => setTimeout(resolve, 900)),
+    ]);
 
-      const animation = animate(words, animationProps, {
-        duration: duration,
-        delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
-        easing: "ease-out",
+    animatedText.classList.add("is-ready");
+  };
+
+  requestAnimationFrame(() => {
+    animatedTexts.forEach((animatedText) => {
+      revealLoadText(animatedText).catch(() => {
+        (animatedText as HTMLElement).classList.add("is-ready");
       });
-     
-      // This will fire when the element leaves the viewport
-      return () => {
-        // animation.stop();
-        // animate(element.querySelectorAll(".word"), {
-        //   opacity: 0,
-        //   y: 20,
-        //   filter: "blur(10px)",
-        // });
-      };
     });
   });
 </script>
+
+<style is:global>
+  .animated-text {
+    display: block;
+    white-space: normal;
+  }
+
+  .animated-text .animated-text-sizer,
+  .animated-text .animated-text-overlay {
+    display: block;
+  }
+
+  .animated-text .word {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform, opacity, filter;
+  }
+
+  .gold-text .word {
+    padding-inline: 0.045em;
+    margin-inline: -0.045em;
+  }
+
+  @keyframes animatedTextWordIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(0px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+  }
+
+  @keyframes animatedTextWordInBlur {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+  }
+
+  .animated-text.is-ready .word {
+    opacity: 0;
+    transform: translateY(8px);
+    animation-name: animatedTextWordIn;
+    animation-duration: var(--at-duration, 0.6s);
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    animation-delay: calc(
+      var(--at-delay, 0s) + (var(--word-index, 0) * var(--at-stagger, 0.1s))
+    );
+  }
+
+  .animated-text[data-blur="true"].is-ready .word {
+    animation-name: animatedTextWordInBlur;
+  }
+</style>

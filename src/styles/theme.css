@@ -121,6 +121,8 @@
   --breakpoint-xl: 1320px;
 
   /* Typography */
+  --font-hero-title: "Silk Serif", var(--font-playfair), serif;
+
   --text-base: 1rem;
   --text-base-scale: 1.272;
   --text-base-sm: calc(var(--text-base) * 0.9);

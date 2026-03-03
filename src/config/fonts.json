@@ -9,7 +9,7 @@
     ],
     "provider": "local",
     "preload": true,
-    "cssVariable": "--font-secondary",
+    "cssVariable": "--font-playfair",
     "fallback": "serif"
   },
   {

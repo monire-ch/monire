@@ -53,7 +53,7 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
   <div class="pricing-orb pricing-orb-1" aria-hidden="true"></div>
   <div class="pricing-orb pricing-orb-2" aria-hidden="true"></div>
   <!-- background glows -->
-  <div aria-hidden class="pointer-events-none absolute inset-0">
+  <div aria-hidden class="pricing-section-glows pointer-events-none absolute inset-0">
     <div
       class="absolute -top-40 left-1/2 h-[600px] w-[800px] -translate-x-1/2 rounded-full bg-[color-mix(in_oklab,oklch(0.61_0.06_205.6)_20%,transparent)] blur-[120px]">
     </div>
@@ -209,3 +209,11 @@ const aiCtas: Pick<ButtonData, "label" | "url" | "variant">[] =
     });
   });
 </script>
+
+<style>
+  @media (max-width: 767px) {
+    .pricing-section-glows {
+      display: none;
+    }
+  }
+</style>

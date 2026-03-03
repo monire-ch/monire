@@ -79,10 +79,9 @@ if (content) {
 </div>
 
 <script>
-  const animatedTexts = document.querySelectorAll(".animated-text");
+  const INITIALIZED_ATTR = "data-animated-text-initialized";
 
-  const revealLoadText = async (element: Element) => {
-    const animatedText = element as HTMLElement;
+  const revealLoadText = async (animatedText: HTMLElement) => {
     const waitForFonts =
       animatedText.getAttribute("data-wait-for-fonts") === "true";
     if (!waitForFonts || !("fonts" in document)) {
@@ -116,11 +115,28 @@ if (content) {
     animatedText.classList.add("is-ready");
   };
 
-  requestAnimationFrame(() => {
-    animatedTexts.forEach((animatedText) => {
-      revealLoadText(animatedText).catch(() => {
-        (animatedText as HTMLElement).classList.add("is-ready");
+  const initAnimatedTexts = () => {
+    const animatedTexts = document.querySelectorAll<HTMLElement>(
+      `.animated-text:not([${INITIALIZED_ATTR}="true"])`,
+    );
+
+    if (!animatedTexts.length) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      animatedTexts.forEach((animatedText) => {
+        animatedText.setAttribute(INITIALIZED_ATTR, "true");
+        revealLoadText(animatedText).catch(() => {
+          animatedText.classList.add("is-ready");
+        });
       });
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAnimatedTexts, {
+      once: true,
     });
   } else {
     initAnimatedTexts();

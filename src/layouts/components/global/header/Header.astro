@@ -125,31 +125,23 @@ const {
       ) !important;
       opacity: 0;
       pointer-events: none;
-      display: flex !important;
+      display: none !important;
       flex-direction: column;
       gap: 0;
       overflow-y: auto;
       overflow-x: hidden;
       z-index: 9999 !important;
-      transition:
-        clip-path 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.38s ease;
+      transition: opacity 0.24s ease;
       box-sizing: border-box;
-      transform: translate3d(0, -0.75rem, 0) !important;
-      clip-path: inset(0 0 100% 0);
-      transform-origin: top center;
       visibility: hidden;
-      will-change: transform, opacity;
     }
 
     .navbar.open,
     #nav-menu.navbar.open,
     .navbar#nav-menu.open {
+      display: flex !important;
       opacity: 1 !important;
       pointer-events: auto !important;
-      transform: translate3d(0, 0, 0) !important;
-      clip-path: inset(0 0 0 0);
       visibility: visible;
     }
 
@@ -158,8 +150,6 @@ const {
       .navbar#nav-menu,
       nav .navbar {
         transition: opacity 0.2s ease;
-        transform: none !important;
-        clip-path: none;
       }
     }
 

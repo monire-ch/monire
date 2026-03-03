@@ -1,6 +1,6 @@
 <div
   id="nav-backdrop"
-  class="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-[9998] h-full w-full bg-black/50 opacity-0 transition-opacity duration-300 lg:hidden"
+  class="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-[9998] h-full w-full bg-black/50 opacity-0 transition-opacity lg:hidden"
   aria-hidden="true">
 </div>
 
@@ -50,6 +50,35 @@
     const backdrop = document.getElementById("nav-backdrop");
     const hamburgerIcon = document.getElementById("hamburger-icon");
     const closeIcon = document.getElementById("close-icon");
+    let closeTimer = 0;
+
+    const parseDurationMs = (value: string, fallback: number) => {
+      const normalized = value.trim();
+      if (!normalized) return fallback;
+      if (normalized.endsWith("ms")) {
+        const ms = parseFloat(normalized.slice(0, -2));
+        return Number.isFinite(ms) ? ms : fallback;
+      }
+      if (normalized.endsWith("s")) {
+        const s = parseFloat(normalized.slice(0, -1));
+        return Number.isFinite(s) ? s * 1000 : fallback;
+      }
+      const raw = parseFloat(normalized);
+      return Number.isFinite(raw) ? raw : fallback;
+    };
+
+    const getCloseDurationMs = () => {
+      const rootStyle = getComputedStyle(document.documentElement);
+      const panelMs = parseDurationMs(
+        rootStyle.getPropertyValue("--nav-menu-panel-duration"),
+        720,
+      );
+      const fadeMs = parseDurationMs(
+        rootStyle.getPropertyValue("--nav-menu-fade-duration"),
+        520,
+      );
+      return Math.max(panelMs, fadeMs) + 40;
+    };
 
     if (!toggleBtn || !navMenu || !backdrop) {
       return;
@@ -57,6 +86,7 @@
 
     const openMenu = () => {
       try {
+        window.clearTimeout(closeTimer);
         navMenu.classList.add("open");
         navMenu.style.right = "0"; // Force inline style as backup
         navMenu.style.opacity = "1"; // Force opacity
@@ -76,18 +106,23 @@
 
     const closeMenu = () => {
       try {
+        window.clearTimeout(closeTimer);
         navMenu.classList.remove("open");
         navMenu.style.right = ""; // Remove inline style
         navMenu.style.opacity = ""; // Remove inline opacity
         navMenu.style.pointerEvents = ""; // Remove inline pointer events
-        backdrop.classList.remove("opacity-100", "pointer-events-auto");
-        backdrop.classList.add("opacity-0", "pointer-events-none");
+        backdrop.classList.remove("opacity-100");
+        backdrop.classList.add("opacity-0");
         hamburgerIcon?.classList.remove("hidden");
         closeIcon?.classList.add("hidden");
         toggleBtn.setAttribute("aria-expanded", "false");
-        // Restore body scroll
-        document.documentElement.style.overflow = "";
-        document.body.style.overflow = "";
+        closeTimer = window.setTimeout(() => {
+          backdrop.classList.remove("pointer-events-auto");
+          backdrop.classList.add("pointer-events-none");
+          // Restore body scroll after close animation completes
+          document.documentElement.style.overflow = "";
+          document.body.style.overflow = "";
+        }, getCloseDurationMs());
       } catch (error) {
         // Silently handle errors
       }
@@ -141,3 +176,10 @@
     initMobileMenu();
   }
 </script>
+
+<style>
+  #nav-backdrop {
+    transition-duration: var(--nav-menu-fade-duration);
+    transition-timing-function: var(--nav-menu-motion-ease);
+  }
+</style>

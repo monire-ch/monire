@@ -1,4 +1,9 @@
 /* Header */
+:root {
+  --nav-menu-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --nav-menu-panel-duration: 720ms;
+  --nav-menu-fade-duration: 520ms;
+}
 
 .header {
   @apply z-30 w-full;

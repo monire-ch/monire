@@ -47,8 +47,8 @@ let {
               content={markdownify(title)}
               waitForFonts={true}
               blur={false}
-              duration={0.58}
-              stagger={0.018}
+              duration={0.72}
+              stagger={0.06}
             />
           )
         }
@@ -92,22 +92,22 @@ let {
   .hero-ease-in {
     opacity: 0;
     animation-name: heroEaseIn;
-    animation-duration: 650ms;
+    animation-duration: 820ms;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
     will-change: opacity, transform;
   }
 
   .hero-ease-in--eyebrow {
-    animation-delay: 120ms;
+    animation-delay: 220ms;
   }
 
   .hero-ease-in--subtitle {
-    animation-delay: 190ms;
+    animation-delay: 320ms;
   }
 
   .hero-ease-in--cta {
-    animation-delay: 260ms;
+    animation-delay: 420ms;
   }
 
   @media (prefers-reduced-motion: reduce) {

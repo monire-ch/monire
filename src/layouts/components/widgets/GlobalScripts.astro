@@ -7,6 +7,9 @@
 
   document.addEventListener("DOMContentLoaded", async () => {
     try {
+      const isTouchLike =
+        window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
       // AOS
       const AOS = await import("aos");
       AOS.init({
@@ -16,11 +19,13 @@
         once: true,
       });
 
-      SmoothScroll({
-        animationTime: 600,
-        stepSize: 60,
-        touchpadSupport: true,
-      });
+      if (!isTouchLike) {
+        SmoothScroll({
+          animationTime: 600,
+          stepSize: 60,
+          touchpadSupport: true,
+        });
+      }
 
       initHorizontalScroll();
     } catch (error) {

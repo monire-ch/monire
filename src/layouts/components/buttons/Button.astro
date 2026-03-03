@@ -54,7 +54,7 @@ const ctaClass = [
   className,
 ];
 
-const tag = tagProp || (url || opensContactModal ? "a" : "button");
+const tag = opensContactModal ? "button" : tagProp || (url ? "a" : "button");
 const href = opensContactModal
   ? "#"
   : url
@@ -71,6 +71,12 @@ const relAttr = opensContactModal
     ? rel || "noopener noreferrer"
     : rel || undefined;
 const buttonType = typeProp || "button";
+const isPrefetchableInternalLink =
+  tag === "a" &&
+  typeof href === "string" &&
+  href.length > 0 &&
+  !href.startsWith("#") &&
+  !/^https?:\/\//i.test(href);
 ---
 
 {
@@ -104,6 +110,7 @@ const buttonType = typeProp || "button";
         href={href}
         rel={relAttr}
         target={targetAttr}
+        data-astro-prefetch={isPrefetchableInternalLink ? "viewport" : undefined}
         data-content={label}
         data-open-contact={opensContactModal ? "true" : undefined}
         class:list={["btn", ctaClass, "relative overflow-hidden"]}

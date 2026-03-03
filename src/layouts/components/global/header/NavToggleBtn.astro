@@ -1,6 +1,6 @@
 <div
   id="nav-backdrop"
-  class="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-[9998] h-full w-full bg-black/50 opacity-0 transition-opacity duration-300 lg:hidden"
+  class="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-[9998] hidden h-full w-full bg-black/50 opacity-0 transition-opacity duration-300 lg:hidden"
   aria-hidden="true">
 </div>
 
@@ -61,8 +61,11 @@
         navMenu.style.right = "0"; // Force inline style as backup
         navMenu.style.opacity = "1"; // Force opacity
         navMenu.style.pointerEvents = "auto"; // Force pointer events
-        backdrop.classList.remove("opacity-0", "pointer-events-none");
-        backdrop.classList.add("opacity-100", "pointer-events-auto");
+        backdrop.classList.remove("hidden");
+        requestAnimationFrame(() => {
+          backdrop.classList.remove("opacity-0", "pointer-events-none");
+          backdrop.classList.add("opacity-100", "pointer-events-auto");
+        });
         hamburgerIcon?.classList.add("hidden");
         closeIcon?.classList.remove("hidden");
         toggleBtn.setAttribute("aria-expanded", "true");
@@ -82,6 +85,11 @@
         navMenu.style.pointerEvents = ""; // Remove inline pointer events
         backdrop.classList.remove("opacity-100", "pointer-events-auto");
         backdrop.classList.add("opacity-0", "pointer-events-none");
+        window.setTimeout(() => {
+          if (!navMenu.classList.contains("open")) {
+            backdrop.classList.add("hidden");
+          }
+        }, 300);
         hamburgerIcon?.classList.remove("hidden");
         closeIcon?.classList.add("hidden");
         toggleBtn.setAttribute("aria-expanded", "false");

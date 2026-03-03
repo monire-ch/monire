@@ -541,6 +541,17 @@ body:has(.dark-teal-theme-base) {
   background: var(--color-glow-surface-light);
 }
 
+@media (max-width: 767px) {
+  .pricing-dark-teal {
+    background: var(--color-bg-dark-soft);
+  }
+
+  .pricing-orb,
+  .dark-teal-theme-base .dark-teal-theme-orb {
+    display: none;
+  }
+}
+
 .value-card:hover {
   transform: translateY(-0.25rem);
   border-color: var(--color-mustard-50);

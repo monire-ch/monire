@@ -71,6 +71,8 @@ const cardSurfaceStyle = featured
         // Base text for the whole card
         cardTextClass,
       ]}
+      data-aos="fade-up-sm"
+      data-aos-delay={String(200 + index * 100)}
       style={cardSurfaceStyle}
       {...rest}>
       {badge?.enable && (

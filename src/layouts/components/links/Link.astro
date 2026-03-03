@@ -22,6 +22,11 @@ const {
 } = Astro.props;
 
 const isExternal = /^https?:\/\//i.test(href || "");
+const isPrefetchableInternalLink =
+  typeof href === "string" &&
+  href.length > 0 &&
+  !href.startsWith("#") &&
+  !isExternal;
 const computedRel = isExternal ? rel || "noopener noreferrer" : rel;
 const computedTarget = isExternal ? target || "_blank" : target;
 ---
@@ -30,6 +35,7 @@ const computedTarget = isExternal ? target || "_blank" : target;
   href={href}
   rel={computedRel}
   target={computedTarget}
+  data-astro-prefetch={isPrefetchableInternalLink ? "viewport" : undefined}
   class:list={[
     "link",
     {

@@ -28,6 +28,12 @@ let {
   ctaContext,
 } =
   actualContent as homeBannerSectionType;
+
+const ctaContextParts = ctaContext
+  ?.split("•")
+  .map((part) => part.trim())
+  .filter(Boolean);
+const hasSplitCtaContext = (ctaContextParts?.length ?? 0) === 2;
 ---
 
 <section class="hero-bg">
@@ -36,7 +42,23 @@ let {
     <div class="relative z-10 mx-auto max-w-4xl">
       <div class="hero-eyebrow-wrap hero-ease-in hero-ease-in--eyebrow">
         <span class="hero-eyebrow-line"></span>
-        {ctaContext && <p class="hero-eyebrow">{ctaContext}</p>}
+        {ctaContext && (
+          <p class="hero-eyebrow">
+            {hasSplitCtaContext ? (
+              <>
+                <span class="hero-eyebrow-part">{ctaContextParts?.[0]}</span>
+                <span class="hero-eyebrow-separator" aria-hidden="true">
+                  •
+                </span>
+                <span class="hero-eyebrow-part hero-eyebrow-part--secondary">
+                  {ctaContextParts?.[1]}
+                </span>
+              </>
+            ) : (
+              ctaContext
+            )}
+          </p>
+        )}
         <span class="hero-eyebrow-line"></span>
       </div>
       <div>
@@ -152,6 +174,11 @@ let {
     color: var(--color-text-shell-muted);
   }
 
+  .hero-eyebrow-separator {
+    display: inline-block;
+    margin-inline: 0.45em;
+  }
+
   .hero-title {
     font-family: var(--font-hero-title);
     display: block;
@@ -212,7 +239,7 @@ let {
 
     .hero-subtitle {
       font-size: clamp(1rem, 4.6vw, 1.16rem);
-      max-width: 31ch;
+      max-width: 100%;
       margin-inline: auto;
     }
 
@@ -221,7 +248,6 @@ let {
       width: 100%;
     }
   }
-
   @media (min-width: 1024px) {
     .hero-bg .container {
       padding-bottom: clamp(7.6rem, 15vh, 11.5rem);

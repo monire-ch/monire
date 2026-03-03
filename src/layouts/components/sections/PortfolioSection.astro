@@ -78,7 +78,10 @@ const portfolioCategories = Array.from(
 
       <div class="container">
         <div class="portfolio-layout">
-          <div class="portfolio-categories-shell">
+          <div
+            class="portfolio-categories-shell"
+            data-aos="fade-up-sm"
+            data-aos-delay="150">
             <div class="portfolio-categories" aria-label="Project categories">
               {portfolioCategories.map((category) => (
                 <button
@@ -91,23 +94,30 @@ const portfolioCategories = Array.from(
             </div>
           </div>
 
-          <div class="portfolio-gallery">
+          <div
+            class="portfolio-gallery"
+            data-aos="fade-up-sm"
+            data-aos-delay="250">
             <div class="portfolio-carousel">
               <div class="portfolio-track" id="portfolio-track">
-                {portfolioItems.map((item) => (
+                {portfolioItems.map((item, index) => (
                   <a
                     class="portfolio-card"
                     href={item.url}
                     data-category={item.category}
                     draggable="false"
-                    ondragstart="return false;"
                     aria-label={`View ${item.title} case study`}>
                     {item.image ? (
                       <OptimizedImage
                         src={item.image}
                         alt={item.title}
+                        widths={[640, 960, 1280]}
+                        sizes="(min-width: 1024px) 58rem, 100vw"
+                        formats={["avif", "webp"]}
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority={index === 0 ? "high" : "auto"}
                         draggable="false"
-                        ondragstart="return false;"
                         class:list={[
                           "portfolio-card-image",
                           item.category === "AI Automation" &&
@@ -249,36 +259,25 @@ const portfolioCategories = Array.from(
 
   .portfolio-carousel {
     width: 100%;
-    overflow-x: auto;
-    overflow-y: visible;
+    overflow: hidden;
     padding: 0.15rem 0 0;
     margin: 0;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    cursor: grab;
+    position: relative;
     -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
   }
 
   .portfolio-track {
-    display: flex;
-    gap: 24px;
-    padding-right: 0;
-    align-items: stretch;
+    display: grid;
   }
 
   .portfolio-carousel.is-dragging {
-    cursor: grabbing;
     user-select: none;
   }
 
-  .portfolio-carousel.is-dragging .portfolio-card {
-    filter: none;
-    opacity: 1;
-  }
-
   .portfolio-card {
-    flex: 0 0 100%;
-    max-width: 100%;
+    grid-area: 1 / 1;
+    width: 100%;
     position: relative;
     border-radius: 1.5rem;
     border: 0;
@@ -288,18 +287,26 @@ const portfolioCategories = Array.from(
     text-decoration: none;
     color: inherit;
     transition:
-      transform 0.35s ease,
-      box-shadow 0.35s ease,
-      filter 0.35s ease,
-      opacity 0.35s ease;
-    scroll-snap-align: start;
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.4s ease,
+      opacity 0.4s ease,
+      visibility 0.4s ease;
     filter: brightness(0.62) saturate(0.88);
-    opacity: 0.92;
+    opacity: 0;
     background: var(--color-monire-dark-teal, #0b3d4a);
     -webkit-user-drag: none;
     user-drag: none;
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
+    aspect-ratio: 16 / 8.5;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(4%, 0, 0) scale(0.985);
+    will-change: transform, opacity, filter;
+  }
+
+  .portfolio-card.is-before {
+    transform: translate3d(-4%, 0, 0) scale(0.985);
   }
 
   .portfolio-card::after {
@@ -315,12 +322,15 @@ const portfolioCategories = Array.from(
   .portfolio-card.is-active {
     filter: none;
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0) scale(1);
+    z-index: 1;
   }
 
   .portfolio-card-image {
     width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 8.5;
+    height: 100%;
     object-fit: cover;
     object-position: top center;
     display: block;
@@ -380,9 +390,8 @@ const portfolioCategories = Array.from(
     }
 
     .portfolio-categories {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.7rem;
     }
 
@@ -391,10 +400,11 @@ const portfolioCategories = Array.from(
     }
 
     .portfolio-category {
-      width: auto;
+      width: 100%;
       min-height: 2.75rem;
       height: 2.75rem;
       font-size: 0.95rem;
+      text-align: center;
       padding-inline: 1.35rem;
       padding-block: 0;
     }
@@ -402,42 +412,42 @@ const portfolioCategories = Array.from(
 
   @media (max-width: 1023px) {
     .portfolio-card {
-      flex: 0 0 100%;
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .portfolio-card {
+      transition: none;
+      transform: none;
     }
   }
 </style>
 
 <script>
-  const scroller = document.querySelector(".portfolio-carousel");
+  const scroller = document.querySelector<HTMLElement>(".portfolio-carousel");
   const track = document.getElementById("portfolio-track");
-  const prev = document.querySelector("[data-portfolio-prev]");
-  const next = document.querySelector("[data-portfolio-next]");
+  const prev = document.querySelector<HTMLButtonElement>(
+    "[data-portfolio-prev]",
+  );
+  const next = document.querySelector<HTMLButtonElement>(
+    "[data-portfolio-next]",
+  );
   const categoryButtons = Array.from(
-    document.querySelectorAll("[data-portfolio-category]"),
+    document.querySelectorAll<HTMLButtonElement>("[data-portfolio-category]"),
   );
   const cards = track
-    ? Array.from(track.querySelectorAll(".portfolio-card"))
+    ? Array.from(track.querySelectorAll<HTMLAnchorElement>(".portfolio-card"))
     : [];
-  let activeIndex = Math.min(cards.length - 1, 0);
-  let isDragging = false;
+  let activeIndex = 0;
   let startX = 0;
-  let scrollStart = 0;
   let dragMoved = false;
+  let isPointerDown = false;
+  let activePointerId: number | null = null;
 
-  const getScrollStep = () => {
-    if (!track) return 0;
-    const card = track.querySelector(".portfolio-card");
-    if (!card) return 0;
-    const styles = window.getComputedStyle(track);
-    const gap = parseFloat(styles.gap || styles.columnGap || "0");
-    return card.getBoundingClientRect().width + gap;
-  };
-
-  const setActive = (index) => {
-    activeIndex = Math.max(0, Math.min(cards.length - 1, index));
-    if (!scroller) return;
-    const step = getScrollStep();
-    scroller.scrollTo({ left: step * activeIndex, behavior: "smooth" });
+  const setActive = (index: number) => {
+    const nextIndex = Math.max(0, Math.min(cards.length - 1, index));
+    activeIndex = nextIndex;
     updateArrows();
     updateActiveCategory();
     updateActiveCard();
@@ -472,7 +482,12 @@ const portfolioCategories = Array.from(
 
   const updateActiveCard = () => {
     cards.forEach((card, index) => {
-      card.classList.toggle("is-active", index === activeIndex);
+      const isActive = index === activeIndex;
+      card.classList.toggle("is-active", isActive);
+      card.classList.toggle("is-before", index < activeIndex);
+      card.classList.toggle("is-after", index > activeIndex);
+      card.setAttribute("aria-hidden", isActive ? "false" : "true");
+      card.tabIndex = isActive ? 0 : -1;
     });
   };
 
@@ -508,53 +523,54 @@ const portfolioCategories = Array.from(
   window.addEventListener("load", initPortfolioUI);
 
   if (scroller) {
-    scroller.addEventListener("mousedown", (event) => {
-      if (event.button !== 0) return;
-      event.preventDefault();
-      isDragging = true;
+    const resetPointerState = () => {
+      isPointerDown = false;
+      activePointerId = null;
+      scroller.classList.remove("is-dragging");
+    };
+
+    scroller.addEventListener("pointerdown", (event: PointerEvent) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      isPointerDown = true;
+      activePointerId = event.pointerId;
       dragMoved = false;
-      startX = event.pageX;
-      scrollStart = scroller.scrollLeft;
+      startX = event.clientX;
+      scroller.setPointerCapture?.(event.pointerId);
       scroller.classList.add("is-dragging");
     });
 
-    window.addEventListener("mousemove", (event) => {
-      if (!isDragging) return;
-      event.preventDefault();
-      const delta = event.pageX - startX;
-      if (Math.abs(delta) > 5) {
+    scroller.addEventListener("pointermove", (event: PointerEvent) => {
+      if (!isPointerDown) return;
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 8) {
         dragMoved = true;
       }
-      scroller.scrollLeft = scrollStart - delta;
     });
 
-    window.addEventListener("mouseup", () => {
-      if (!isDragging) return;
-      isDragging = false;
-      scroller.classList.remove("is-dragging");
-      const step = getScrollStep();
-      if (step > 0) {
-        activeIndex = Math.round(scroller.scrollLeft / step);
+    const finishSwipe = (event: PointerEvent) => {
+      if (!isPointerDown) return;
+      const delta = event.clientX - startX;
+      if (activePointerId !== null) {
+        scroller.releasePointerCapture?.(activePointerId);
       }
-      updateArrows();
-      updateActiveCategory();
-      updateActiveCard();
-    });
-
-    scroller.addEventListener("mouseleave", () => {
-      if (!isDragging) return;
-      isDragging = false;
-      scroller.classList.remove("is-dragging");
-    });
-
-    scroller.addEventListener("scroll", () => {
-      const step = getScrollStep();
-      if (step > 0) {
-        activeIndex = Math.round(scroller.scrollLeft / step);
+      resetPointerState();
+      if (Math.abs(delta) < 36) {
+        return;
       }
-      updateArrows();
-      updateActiveCategory();
-      updateActiveCard();
+      if (delta < 0) {
+        setActive(activeIndex + 1);
+        return;
+      }
+      setActive(activeIndex - 1);
+    };
+
+    scroller.addEventListener("pointerup", finishSwipe);
+    scroller.addEventListener("pointercancel", () => {
+      resetPointerState();
+    });
+    scroller.addEventListener("pointerleave", () => {
+      if (!isPointerDown) return;
+      resetPointerState();
     });
   }
 

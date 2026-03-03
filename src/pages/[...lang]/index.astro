@@ -68,4 +68,10 @@ const homepage = await getEntryCTM("homepage", "-index", Astro.currentLocale);
     position: relative;
     z-index: 1;
   }
+
+  @media (max-width: 767px) {
+    .about-flow-orb {
+      display: none;
+    }
+  }
 </style>

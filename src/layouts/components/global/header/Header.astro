@@ -65,7 +65,8 @@ const {
 
   @media (max-width: 1023px) {
     .header.sticky-header {
-      top: 0 !important;
+      position: relative !important;
+      top: auto !important;
       z-index: 9998 !important;
     }
   }
@@ -125,31 +126,23 @@ const {
       ) !important;
       opacity: 0;
       pointer-events: none;
-      display: flex !important;
+      display: none !important;
       flex-direction: column;
       gap: 0;
       overflow-y: auto;
       overflow-x: hidden;
       z-index: 9999 !important;
-      transition:
-        clip-path 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.38s ease;
+      transition: opacity 0.24s ease;
       box-sizing: border-box;
-      transform: translate3d(0, -0.75rem, 0) !important;
-      clip-path: inset(0 0 100% 0);
-      transform-origin: top center;
       visibility: hidden;
-      will-change: transform, opacity;
     }
 
     .navbar.open,
     #nav-menu.navbar.open,
     .navbar#nav-menu.open {
+      display: flex !important;
       opacity: 1 !important;
       pointer-events: auto !important;
-      transform: translate3d(0, 0, 0) !important;
-      clip-path: inset(0 0 0 0);
       visibility: visible;
     }
 
@@ -158,8 +151,6 @@ const {
       .navbar#nav-menu,
       nav .navbar {
         transition: opacity 0.2s ease;
-        transform: none !important;
-        clip-path: none;
       }
     }
 
@@ -217,17 +208,29 @@ const {
     }
 
     #nav-menu
-      :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(.nav-link:hover)) {
+      :global(
+        .nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(
+            .nav-link:hover
+          )
+      ) {
       background-color: color-mix(in srgb, white 4%, transparent);
     }
 
     #nav-menu
-      :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(.nav-link:active)) {
+      :global(
+        .nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(
+            .nav-link:active
+          )
+      ) {
       background-color: color-mix(in srgb, white 6%, transparent);
     }
 
     #nav-menu
-      :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(.nav-link:focus-visible)) {
+      :global(
+        .nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(
+            .nav-link:focus-visible
+          )
+      ) {
       background-color: color-mix(in srgb, white 4%, transparent);
     }
 
@@ -265,7 +268,8 @@ const {
     #nav-menu :global(.nav-link:focus-visible) {
       background-color: transparent;
       color: var(--color-text-shell-strong);
-      outline: 1px solid color-mix(in srgb, var(--color-mustard) 45%, transparent);
+      outline: 1px solid
+        color-mix(in srgb, var(--color-mustard) 45%, transparent);
       outline-offset: 2px;
     }
 
@@ -298,7 +302,8 @@ const {
     }
 
     #nav-menu :global(.nav-link.nav-link-cta:focus-visible) {
-      outline: 1px solid color-mix(in srgb, var(--color-mustard) 50%, transparent);
+      outline: 1px solid
+        color-mix(in srgb, var(--color-mustard) 50%, transparent);
       outline-offset: 2px;
     }
 

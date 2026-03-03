@@ -34,13 +34,6 @@ const themeColorDark = config.site?.themeColor?.dark || "#000000";
     content={themeColorDark}
   />
   <meta name="generator" content={Astro.generator} />
-  <link
-    rel="preload"
-    href="/images/hero/gold-fill.webp"
-    as="image"
-    type="image/webp"
-    fetchpriority="high"
-  />
   {
     config.head?.content && (
       // Injecting custom scripts such as Google Analytics, Google Tag Manager, etc. tracking code,

@@ -19,7 +19,7 @@ export function getStaticPaths() {
 const homepage = await getEntryCTM("homepage", "-index", Astro.currentLocale);
 ---
 
-<Base {...homepage.data} homepage={true}>
+<Base {...homepage.data} homepage={true} disableTagline={true}>
   <HomeBanner />
   <OurValue />
   <div class="about-flow relative overflow-hidden">

@@ -1,4 +1,9 @@
 /* Header */
+:root {
+  --nav-menu-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --nav-menu-panel-duration: 720ms;
+  --nav-menu-fade-duration: 520ms;
+}
 
 .header {
   @apply z-30 w-full;
@@ -18,22 +23,17 @@
     @apply mx-auto transition-all duration-300 ease-[cubic-bezier(0.617,1.5,0.68,1)];
 
     > nav {
-      background-color: var(--color-monire-deep-teal);
+      background-color: rgb(var(--color-monire-nav));
       min-height: clamp(4rem, 5.4vw, 4.7rem);
       @apply rounded-full backdrop-blur-md;
     }
   }
 }
 
-/* Keep original translucent pill on dark backgrounds */
 body:has(.hero-bg) .header > .container > nav,
 body:has(.dark-teal-theme-base) .header > .container > nav,
 body:has(.page-theme-dark-teal) .header > .container > nav {
-  background-color: color-mix(
-    in oklab,
-    rgb(var(--color-monire-nav)) 70%,
-    transparent
-  );
+  background-color: rgb(var(--color-monire-nav));
 }
 
 @media (max-width: 1023px) {

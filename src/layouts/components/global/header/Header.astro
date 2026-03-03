@@ -118,11 +118,7 @@ const {
       border-radius: 0 !important;
       border: none !important;
       box-shadow: none !important;
-      background: linear-gradient(
-        180deg,
-        var(--color-bg-dark) 0%,
-        var(--color-bg-dark-soft) 100%
-      ) !important;
+      background: rgb(var(--color-monire-nav));
       opacity: 0;
       pointer-events: none;
       display: flex !important;
@@ -132,14 +128,13 @@ const {
       overflow-x: hidden;
       z-index: 9999 !important;
       transition:
-        clip-path 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.38s ease;
+        clip-path var(--nav-menu-panel-duration) var(--nav-menu-motion-ease),
+        transform var(--nav-menu-panel-duration) var(--nav-menu-motion-ease),
+        opacity var(--nav-menu-fade-duration) var(--nav-menu-motion-ease);
       box-sizing: border-box;
       transform: translate3d(0, -0.75rem, 0) !important;
       clip-path: inset(0 0 100% 0);
       transform-origin: top center;
-      visibility: hidden;
       will-change: transform, opacity;
     }
 
@@ -150,7 +145,6 @@ const {
       pointer-events: auto !important;
       transform: translate3d(0, 0, 0) !important;
       clip-path: inset(0 0 0 0);
-      visibility: visible;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -198,11 +192,7 @@ const {
     }
 
     :global(.dark) #nav-menu {
-      background: linear-gradient(
-        180deg,
-        var(--color-bg-dark) 0%,
-        var(--color-bg-dark-soft) 100%
-      );
+      background: rgb(var(--color-monire-nav));
       box-shadow: var(--shadow-elevation-soft);
     }
 

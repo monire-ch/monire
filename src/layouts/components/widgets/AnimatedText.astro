@@ -75,7 +75,6 @@ if (content) {
   data-trigger={trigger}
   data-wait-for-fonts={waitForFonts ? "true" : "false"}
   data-font-load-family={fontLoadFamily || ""}
-  data-overlay={trigger === "load" ? "true" : "false"}
   {...rest}
 >
   {
@@ -137,7 +136,9 @@ if (content) {
 
   requestAnimationFrame(() => {
     loadAnimatedTexts.forEach((animatedText) => {
-      revealLoadText(animatedText);
+      revealLoadText(animatedText).catch(() => {
+        (animatedText as HTMLElement).classList.add("is-ready");
+      });
     });
   });
 
@@ -150,10 +151,6 @@ if (content) {
       animatedText.getAttribute("data-stagger") as string,
     );
     const useBlur = animatedText.getAttribute("data-blur") !== "false";
-    const waitForFonts =
-      animatedText.getAttribute("data-wait-for-fonts") === "true";
-    const fontLoadFamily =
-      (animatedText.getAttribute("data-font-load-family") || "").trim();
     const shouldBlur = useBlur && !isFirefox;
 
     const runAnimation = (element: Element) => {
@@ -171,14 +168,13 @@ if (content) {
 
       const animation = animate(words, animationProps, {
         duration: duration,
-        delay: stagger(dataStagger, { startDelay: delay }), // Fixed here
+        delay: stagger(dataStagger, { startDelay: delay }),
         easing: "ease-out",
       });
       return animation;
     };
 
     inView(animatedText, (element) => {
-      (element as HTMLElement).classList.add("is-ready");
       runAnimation(element);
     });
   });

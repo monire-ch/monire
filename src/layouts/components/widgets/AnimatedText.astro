@@ -96,9 +96,17 @@ if (content) {
       .split(",")[0]
       ?.trim()
       .replace(/^['"]|['"]$/g, "");
-    const fontPromise = primaryFamily
-      ? fonts.load(`1em "${primaryFamily}"`)
-      : fonts.ready;
+    const fontCandidates = computedFontFamily
+      .split(",")
+      .map((family) => family.trim().replace(/^['"]|['"]$/g, ""))
+      .filter(Boolean);
+    const fontPromise = fontCandidates.length
+      ? Promise.allSettled(
+          fontCandidates.map((family) => fonts.load(`1em "${family}"`)),
+        ).then(() => fonts.ready)
+      : primaryFamily
+        ? fonts.load(`1em "${primaryFamily}"`).then(() => fonts.ready)
+        : fonts.ready;
 
     await Promise.race([
       fontPromise.catch(() => undefined),
@@ -132,6 +140,11 @@ if (content) {
     display: inline-block;
     white-space: nowrap;
     will-change: transform, opacity, filter;
+  }
+
+  .gold-text .word {
+    padding-inline: 0.045em;
+    margin-inline: -0.045em;
   }
 
   @keyframes animatedTextWordIn {

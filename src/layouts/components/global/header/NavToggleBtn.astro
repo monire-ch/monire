@@ -191,6 +191,26 @@
       }, getCloseDurationMs());
     };
 
+    const beginImmediateScrollTo = (target: string) => {
+      unlockScrollRestore();
+
+      if (target === "__top__") {
+        history.pushState(
+          null,
+          "",
+          window.location.pathname + window.location.search
+        );
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        return;
+      }
+
+      history.pushState(null, "", target);
+
+      const el = document.querySelector(target);
+      if (!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
     // toggle click (mobile only)
     toggleBtn.addEventListener("click", (e) => {
       if (!isMobile()) return;
@@ -222,14 +242,16 @@
 
         if (isSamePage && url.hash) {
           e.preventDefault();
-          pending = url.hash;
+          pending = "";
+          beginImmediateScrollTo(url.hash);
           closeMenu();
           return;
         }
 
         if (isSamePage && (!url.hash || url.hash === "#")) {
           e.preventDefault();
-          pending = "__top__";
+          pending = "";
+          beginImmediateScrollTo("__top__");
           closeMenu();
           return;
         }

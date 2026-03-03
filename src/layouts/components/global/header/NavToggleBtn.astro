@@ -83,7 +83,7 @@
       return Math.max(panelMs, fadeMs) + 40;
     };
 
-    // --- scroll lock (only when menu actually opens on mobile). Needed for close button to be visible ---
+    // --- body-fixed scroll lock (mobile only) ---
     let scrollY = 0;
     let isLocked = false;
 
@@ -98,7 +98,7 @@
       isLocked = true;
     };
 
-    const unlockScroll = (restore = true) => {
+    const unlockScrollRestore = () => {
       if (!isLocked) return;
 
       const html = document.documentElement;
@@ -111,23 +111,31 @@
       document.body.style.right = "";
       document.body.style.width = "";
 
-      if (restore) window.scrollTo(0, scrollY);
+      window.scrollTo(0, scrollY);
 
       html.style.scrollBehavior = prevScrollBehavior;
       isLocked = false;
     };
 
-    // pending hash (mobile only)
-    let pendingHash = "";
+    // pending target for mobile clicks
+    let pending = "";
+    let closeTimer = 0;
 
-    const scrollToHash = (hash) => {
-      if (!hash || hash === "#") return;
+    const scrollToPending = () => {
+      if (!pending) return;
+
+      if (pending === "__top__") {
+        pending = "";
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        return;
+      }
+
+      const hash = pending;
+      pending = "";
       const el = document.querySelector(hash);
       if (!el) return;
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     };
-
-    let closeTimer = 0;
 
     const openMenu = () => {
       if (!isMobile()) return;
@@ -162,23 +170,28 @@
         backdrop.classList.remove("pointer-events-auto");
         backdrop.classList.add("pointer-events-none");
 
-        // If user clicked an anchor, do NOT restore old scroll; go to target instead.
-        const shouldRestore = !pendingHash;
-        unlockScroll(shouldRestore);
+        // ALWAYS restore scroll position first (prevents snap/jump),
+        // then do the smooth scroll to target.
+        unlockScrollRestore();
 
-        if (pendingHash) {
-          const hash = pendingHash;
-          pendingHash = "";
+        if (pending) {
+          // keep URL in sync (optional)
+          if (pending === "__top__") {
+            history.pushState(
+              null,
+              "",
+              window.location.pathname + window.location.search
+            );
+          } else {
+            history.pushState(null, "", pending);
+          }
 
-          // update URL without immediate browser jump (we’ll scroll ourselves)
-          history.pushState(null, "", hash);
-
-          requestAnimationFrame(() => scrollToHash(hash));
+          requestAnimationFrame(scrollToPending);
         }
       }, getCloseDurationMs());
     };
 
-    // Toggle button (mobile only)
+    // toggle click (mobile only)
     toggleBtn.addEventListener("click", (e) => {
       if (!isMobile()) return;
       e.preventDefault();
@@ -186,17 +199,18 @@
       navMenu.classList.contains("open") ? closeMenu() : openMenu();
     });
 
-    // Backdrop click (mobile only)
+    // backdrop click (mobile only)
     backdrop.addEventListener("click", (e) => {
       if (!isMobile()) return;
       e.preventDefault();
       e.stopPropagation();
+      pending = "";
       closeMenu();
     });
 
-    // Nav link clicks:
-    // - Desktop: do nothing, let browser handle anchors normally
-    // - Mobile: if same-page hash, intercept and scroll after closing
+    // nav link clicks:
+    // desktop: do nothing
+    // mobile: close menu, then scroll to hash or top
     navMenu.querySelectorAll("a.nav-link").forEach((link) => {
       link.addEventListener("click", (e) => {
         if (!isMobile()) return;
@@ -207,37 +221,45 @@
           url.pathname === window.location.pathname;
 
         if (isSamePage && url.hash) {
-          e.preventDefault(); // prevent jump while body is fixed
-          pendingHash = url.hash;
+          e.preventDefault();
+          pending = url.hash;
           closeMenu();
           return;
         }
 
-        // Normal navigation to another page: allow default, but close menu + unlock
-        // so the page isn't left locked if navigation is slow.
-        pendingHash = "";
-        closeMenu();
+        if (isSamePage && (!url.hash || url.hash === "#")) {
+          e.preventDefault();
+          pending = "__top__";
+          closeMenu();
+          return;
+        }
+
+        // different page: allow navigation, but unlock immediately so we don't leave page locked
+        pending = "";
+        unlockScrollRestore();
       });
     });
 
-    // Close menu on resize to desktop
     window.addEventListener("resize", () => {
       if (!isMobile()) {
-        // If we were open/locked and user resized, clean up.
+        // cleanup if user resizes while open
         navMenu.classList.remove("open");
         backdrop.classList.remove("opacity-100", "pointer-events-auto");
         backdrop.classList.add("opacity-0", "pointer-events-none");
         hamburgerIcon?.classList.remove("hidden");
         closeIcon?.classList.add("hidden");
         toggleBtn.setAttribute("aria-expanded", "false");
-        unlockScroll(true);
-        pendingHash = "";
+        pending = "";
+        unlockScrollRestore();
       }
     });
 
     document.addEventListener("keydown", (e) => {
       if (!isMobile()) return;
-      if (e.key === "Escape" && navMenu.classList.contains("open")) closeMenu();
+      if (e.key === "Escape" && navMenu.classList.contains("open")) {
+        pending = "";
+        closeMenu();
+      }
     });
   }
 

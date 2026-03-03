@@ -38,6 +38,18 @@
   transform: translate3d(30px, 0, 0);
 }
 
+@media (max-width: 767px) {
+  [data-aos],
+  [data-aos="fade-up-sm"],
+  [data-aos="fade-down-sm"],
+  [data-aos="fade-right-sm"],
+  [data-aos="fade-left-sm"] {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
+
 .home-banner {
   animation: spin-banner-image-border 12s linear infinite;
   transform: rotate(80deg);

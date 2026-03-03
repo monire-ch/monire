@@ -208,12 +208,12 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
 
 <div
   id="contactOverlay"
-  class="modal-overlay pointer-events-none fixed inset-0 z-999 bg-black/50 opacity-0">
+  class="modal-overlay pointer-events-none fixed inset-0 z-999 hidden bg-black/50 opacity-0">
 </div>
 
 <div
   id="contactPanel"
-  class="modal-panel contact-modal-panel fixed top-0 right-0 z-1000 flex h-full w-full translate-x-full flex-col overflow-y-auto p-8 shadow-2xl sm:w-[30rem] md:p-10">
+  class="modal-panel contact-modal-panel fixed top-0 right-0 z-1000 hidden h-full w-full translate-x-full flex-col overflow-y-auto p-8 shadow-2xl sm:w-[30rem] md:p-10">
   <button
     id="closeModalBtn"
     class="contact-modal-close absolute top-4 right-4 flex h-9 w-9 items-center justify-center text-2xl transition-colors"
@@ -261,10 +261,15 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
         document.body.classList.add("modal-open");
         document.body.style.top = `-${scrollY}px`;
 
+        overlay.classList.remove("hidden");
+        panel.classList.remove("hidden");
         panel.scrollTo({ top: 0, behavior: "auto" });
-        panel.classList.remove("translate-x-full");
-        overlay.classList.remove("opacity-0", "pointer-events-none");
-        overlay.classList.add("opacity-100", "pointer-events-auto", "active");
+        requestAnimationFrame(() => {
+          panel.classList.add("flex");
+          panel.classList.remove("translate-x-full");
+          overlay.classList.remove("opacity-0", "pointer-events-none");
+          overlay.classList.add("opacity-100", "pointer-events-auto", "active");
+        });
 
         document.body.setAttribute("data-scroll-y", scrollY.toString());
       }
@@ -282,6 +287,13 @@ const modalHeading = contactPage?.data?.pageHeading || "Let's Work Together";
           "active",
         );
         overlay.classList.add("opacity-0", "pointer-events-none");
+        window.setTimeout(() => {
+          if (!document.body.classList.contains("modal-open")) {
+            overlay.classList.add("hidden");
+            panel.classList.remove("flex");
+            panel.classList.add("hidden");
+          }
+        }, 320);
 
         const html = document.documentElement;
         const originalScrollBehavior = html.style.scrollBehavior;

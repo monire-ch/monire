@@ -104,6 +104,7 @@
   --gradient-shell-dark: var(--gradient-value-card-featured);
   --color-border-shell-dark: rgba(255, 255, 255, 0.14);
   --color-divider-shell: rgba(248, 245, 241, 0.24);
+  --color-divider-shell-strong: rgba(248, 245, 241, 0.34);
   --color-text-shell-muted: rgba(248, 245, 241, 0.9);
   --color-text-shell-strong: #ffffff;
   --shadow-shell-soft: 0 18px 34px rgba(15, 75, 90, 0.18);
@@ -120,6 +121,8 @@
   --breakpoint-xl: 1320px;
 
   /* Typography */
+  --font-hero-title: "Silk Serif", var(--font-playfair), serif;
+
   --text-base: 1rem;
   --text-base-scale: 1.272;
   --text-base-sm: calc(var(--text-base) * 0.9);

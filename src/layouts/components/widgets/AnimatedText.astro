@@ -24,19 +24,18 @@ let {
 let processedContent = "";
 if (content) {
   let wordIndex = 0;
-  const baseWordStyle = [
+  const wordStyle = [
     "display:inline-block",
     "white-space:nowrap",
     "will-change:transform,opacity,filter",
-  ];
-  const loadWordStyle =
-    [
-      "opacity:0",
-      "transform:translateY(8px)",
-      blur ? "filter:blur(10px)" : "filter:blur(0px)",
-    ];
+    "opacity:0",
+    "transform:translateY(8px)",
+    blur ? "filter:blur(10px)" : "filter:blur(0px)",
+  ]
+    .filter(Boolean)
+    .join(";");
 
-  // Preserve inline tags (e.g. <em>) and wrap only actual text words.
+  // Preserve inline tags (e.g. <em>) and wrap only text words.
   processedContent = content
     .split(/(<[^>]+>)/g)
     .filter(Boolean)
@@ -51,7 +50,7 @@ if (content) {
           if (!part || /^\s+$/.test(part)) {
             return part;
           }
-          const html = `<span class="word" style="${[...baseWordStyle, ...loadWordStyle, `--word-index:${wordIndex}`].join(";")}">${part}</span>`;
+          const html = `<span class="word" style="${wordStyle};--word-index:${wordIndex}">${part}</span>`;
           wordIndex += 1;
           return html;
         })
@@ -63,7 +62,7 @@ if (content) {
 
 <div
   class:list={["animated-text", Astro.props.class]}
-  style={`--at-duration:${duration}s; --at-delay:${delay}s; --at-stagger:${stagger}s; position:relative;`}
+  style={`--at-duration:${duration}s; --at-delay:${delay}s; --at-stagger:${stagger}s;position:relative;`}
   data-blur={blur ? "true" : "false"}
   data-wait-for-fonts={waitForFonts ? "true" : "false"}
   data-font-load-family={fontLoadFamily || ""}

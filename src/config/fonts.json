@@ -8,8 +8,8 @@
       }
     ],
     "provider": "local",
-    "preload": false,
-    "cssVariable": "--font-secondary",
+    "preload": true,
+    "cssVariable": "--font-playfair",
     "fallback": "serif"
   },
   {

@@ -217,17 +217,29 @@ const {
     }
 
     #nav-menu
-      :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(.nav-link:hover)) {
+      :global(
+        .nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(
+            .nav-link:hover
+          )
+      ) {
       background-color: color-mix(in srgb, white 4%, transparent);
     }
 
     #nav-menu
-      :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(.nav-link:active)) {
+      :global(
+        .nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(
+            .nav-link:active
+          )
+      ) {
       background-color: color-mix(in srgb, white 6%, transparent);
     }
 
     #nav-menu
-      :global(.nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(.nav-link:focus-visible)) {
+      :global(
+        .nav-item:not(.mobile-logo-wrapper):not(.nav-item-cta):has(
+            .nav-link:focus-visible
+          )
+      ) {
       background-color: color-mix(in srgb, white 4%, transparent);
     }
 
@@ -265,7 +277,8 @@ const {
     #nav-menu :global(.nav-link:focus-visible) {
       background-color: transparent;
       color: var(--color-text-shell-strong);
-      outline: 1px solid color-mix(in srgb, var(--color-mustard) 45%, transparent);
+      outline: 1px solid
+        color-mix(in srgb, var(--color-mustard) 45%, transparent);
       outline-offset: 2px;
     }
 
@@ -298,7 +311,8 @@ const {
     }
 
     #nav-menu :global(.nav-link.nav-link-cta:focus-visible) {
-      outline: 1px solid color-mix(in srgb, var(--color-mustard) 50%, transparent);
+      outline: 1px solid
+        color-mix(in srgb, var(--color-mustard) 50%, transparent);
       outline-offset: 2px;
     }
 
